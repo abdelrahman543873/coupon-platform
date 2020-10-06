@@ -1,0 +1,15 @@
+.env
+node_modules
+Bazars-Images
+Users-Images
+Coupons-Images
+Providers-Images
+Products-Images
+Bazars-Ads
+Chat-Images
+service-account-file.JSON
+Payments-Images
+Offers-Images
+AdsPayments-Images
+QR-Images
+externalVolumes
