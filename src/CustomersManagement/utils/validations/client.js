@@ -4,7 +4,7 @@ import { errorsOverride } from "../../../utils/JoiErrorOverriding";
 const addClientSchema = Joi.object({
   username: Joi.string()
     .min(3)
-    .pattern(new RegExp("^(w)*$"))
+    .pattern(new RegExp("^(\\w)*$"))
     .max(30)
     .required()
     .error(errorsOverride),
@@ -57,7 +57,7 @@ const verifyMobileSchema = Joi.object({
 
 const updateProfile = Joi.object({
   username: Joi.string()
-    .pattern(new RegExp("^(w)*$"))
+    .pattern(new RegExp("^(\\w)*$"))
     .min(3)
     .max(30)
     .optional()

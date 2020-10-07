@@ -47,12 +47,13 @@ class Room {
     if (this.users.length == 0) this.saveToDB();
   }
 
-  saveToDB() {
+  async saveToDB() {
     console.log("Mesages: ", this.newMessages);
     let messages = this.newMessages;
     if (messages.length > 0) {
       console.log("leng: ", messages.length);
-      ChatModule.saveMessges(messages);
+      await ChatModule.saveMessges(messages);
+      this.newMessages=[]
     }
   }
 
