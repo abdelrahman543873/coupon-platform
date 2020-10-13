@@ -23,10 +23,7 @@ const CityValidation = {
   }),
 
   addDistrict: Joi.object({
-    name: langNameSchema,
-    city:Joi.custom(checkMongooseId, "custom validation")
-    .required()
-    .error(errorsOverride),
+    name: langNameSchema
   })
   
 };
