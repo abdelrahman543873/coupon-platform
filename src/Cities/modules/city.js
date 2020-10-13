@@ -38,10 +38,10 @@ const CityModule = {
       });
   },
 
-  async addDistricts(city, name) {
+  async addDistricts(name,city) {
     // let city = await this.getById(id);
     // if (!city) return null;
-    return await DistrictModel({city,name})
+    return await DistrictModel({name,city})
     .save()
     .then(docs=>{
       return {docs,err:null}

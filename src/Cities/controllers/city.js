@@ -16,8 +16,11 @@ const CityController = {
   async addDistricts(req, res, next) {
     let name = req.body.name,
       city = req.params.city;
-    let district = await CityModule.addDistricts(city, name);
-    if (district.err) return next(boom.notFound("Can not find city"));
+    let district = await CityModule.addDistricts(name, city);
+    if (district.err) {
+      console.log(district.err);
+      return next(boom.notFound("Can not find city"));
+    }
     return res.status(201).send({
       isSuccessed: true,
       data: district.docs,
@@ -76,7 +79,7 @@ const CityController = {
 
   async getCities(req, res, next) {
     let lang = req.headers.lang || "ar";
-    console.log(lang)
+    console.log(lang);
     let cities = await CityModule.getAll(lang);
     return res.status(200).send({
       isSuccessed: true,
