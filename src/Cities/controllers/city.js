@@ -15,7 +15,7 @@ const CityController = {
 
   async addDistricts(req, res, next) {
     let name = req.body.name,
-      city = req.params.city;
+      city = req.params.id;
     let district = await CityModule.addDistricts(name, city);
     if (district.err) {
       console.log(district.err);
