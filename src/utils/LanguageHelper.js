@@ -1,5 +1,6 @@
 function modifyValuesByLang(arr, attrb, lang){
-  if(lang = "ar") {
+  if(lang == "ar") {
+    console.log(lang)
     return getArabicValues(arr, attrb)
   } else {
     return getEnglishValues(arr, attrb)

@@ -1,0 +1,62 @@
+import { CityModel } from "../models/city";
+import { modifyValuesByLang } from "../../utils/LanguageHelper";
+import { DistrictModel } from "../models/district";
+
+const CityModule = {
+  async getAll(lang) {
+    return await CityModel.find({})
+      .lean()
+      .then(async (cities) => {
+        cities = await modifyValuesByLang(cities, "name", lang);
+        return cities;
+      });
+  },
+
+  async getById(id) {
+    return await CityModel.findById(id);
+  },
+
+  async getDistricts(city, lang) {
+    return await DistrictModel.find({city})
+      .lean()
+      .then(async(districts) => {
+        districts = await modifyValuesByLang(districts, "name", lang);
+        return districts;
+      });
+  },
+
+  async addCity(name) {
+    return await CityModel({
+      name
+    })
+      .save()
+      .then(docs=>{
+        return {docs,err:null}
+      })
+      .catch((err) => {
+        return {docs:null,err}
+      });
+  },
+
+  async addDistricts(city, name) {
+    // let city = await this.getById(id);
+    // if (!city) return null;
+    return await DistrictModel({city,name})
+    .save()
+    .then(docs=>{
+      return {docs,err:null}
+    })
+    .catch((err) => {
+      return {docs:null,err}
+    });
+  },
+  
+  // async deleteCity(cityId) {
+  //   return await CityModel.deleteOne({ _id: cityId }).catch((err) => {
+  //     console.log(err);
+  //     return null;
+  //   });
+  // },
+};
+
+export { CityModule };
