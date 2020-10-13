@@ -3,18 +3,20 @@ import { ProviderValidations } from "../utils/validations/provider";
 
 const ProviderValidationWares = {
   add(req, res, next) {
-    console.log(req.body);
-    if (typeof req.body.roles === "string") {
-      let rolesArr = [];
-      rolesArr.push(req.body.roles);
-      req.body.roles = rolesArr;
-    }
+    typeof req.body.cities == "string"
+      ? (req.body.cities = [req.body.cities])
+      : "";
+    typeof req.body.districts == "string"
+      ? (req.body.districts = [req.body.districts])
+      : "";
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
     }
     next();
   },
+
+
   login(req, res, next) {
     const { error } = ProviderValidations.login.validate(req.body);
 
@@ -51,7 +53,8 @@ const ProviderValidationWares = {
     if (!req.body.countryCode) delete req.body.countryCode;
     if (!req.body.gender) delete req.body.gender;
     if (!req.body.roles) delete req.body.roles;
-    if (!req.body.deleteImg || req.body.deleteImg==="false") delete req.body.deleteImg;
+    if (!req.body.deleteImg || req.body.deleteImg === "false")
+      delete req.body.deleteImg;
 
     if (req.body.roles && typeof req.body.roles === "string") {
       let rolesArr = [];

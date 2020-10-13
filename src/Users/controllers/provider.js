@@ -2,43 +2,35 @@ import boom from "@hapi/boom";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
-
+import { IP } from "../../../serverIP";
+import { generateToken } from "../../utils/JWTHelper";
+import { Provider } from "../../middlewares/responsHandler";
 const ProviderControllers = {
   async addProvider(req, res, next) {
-    let { username, email, countryCode, phone, password, gender } = req.body;
-    let imgURL = "";
-    email = email.toLowerCase();
+    let provider = req.body;
+    let logoURL = "";
+    provider.email = provider.email.toLowerCase();
 
     if (req.file) {
-      imgURL =
-        "http://api.bazar.alefsoftware.com/api/v1/providers-management/providers/providers-images/" +
+      logoURL =
+        IP +
+        "/providers-management/providers/providers-images/" +
         req.file.filename;
     }
-    let hashedPass = await hashPass(password);
-    let roles = ["BAZAR_CREATOR"];
-    console.log(countryCode);
-    let { doc, err } = await ProviderModule.add(
-      username,
-      email,
-      countryCode,
-      phone,
-      hashedPass,
-      imgURL,
-      gender,
-      roles
-    );
+    let hashedPass = await hashPass(provider.password);
+    provider.password = hashPass;
+    let { doc, err } = await ProviderModule.add(provider);
 
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
 
-    let provider = doc.toObject();
-    provider.bazar = null;
-    let authToken = generateProviderToken(provider._id, provider.roles);
- 
+    provider = doc.toObject();
+    let authToken = generateToken(provider._id, "PROVIDER");
+    Provider = new Provider(provider);
     return res.status(201).send({
       isSuccessed: true,
       data: {
-        user: provider,
+        user: Provider,
         authToken,
       },
       error: false,
@@ -62,7 +54,6 @@ const ProviderControllers = {
       error: false,
     });
   },
-
 
   // async login(req, res, next) {
   //   let { firstCardinality, password } = req.body,
@@ -115,7 +106,6 @@ const ProviderControllers = {
   //   });
   // },
 
-
   // async verifyMobile(req, res, next) {
   //   let code = req.body.smsToken,
   //     id = req.params.id;
@@ -154,7 +144,6 @@ const ProviderControllers = {
   //     error: false,
   //   });
   // },
-
 
   // async resendMobileVerification(req, res, next) {
   //   let id = req.params.id,
@@ -318,7 +307,6 @@ const ProviderControllers = {
   //     error: null,
   //   });
   // },
-
 };
 
 export { ProviderControllers };
