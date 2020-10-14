@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { providerManagementRouter } from "../Users/routes";
+import { providersRouter } from "../Users/routes/provider";
 import {citiesRouter} from '../Cities/routes/cities'
 
 
@@ -13,7 +13,7 @@ const router = Router();
 
 //router.use("/platform", platformSpecRouter);
 
-router.use("/providers-management", providerManagementRouter);
+router.use("/providers-management", providersRouter);
 router.use("/cities-management", citiesRouter);
 
 //router.use("/products", productsRouter);

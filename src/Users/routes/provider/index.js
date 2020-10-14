@@ -3,30 +3,29 @@ import path from "path";
 import { ProviderControllers } from "../../controllers/provider";
 import { ProviderValidationWares } from "../../middlewares/provider";
 import { uploadHelper } from "../../../utils/MulterHelper";
-import { ProviderModule } from "../../modules/provider";
 
 const providersRouter = express.Router();
 
 providersRouter
   .route("/")
   .post(
-    uploadHelper("Providers-Images/").single("imgURL"),
+    uploadHelper("Providers-Images/").single("logoURL"),
     ProviderValidationWares.add,
     ProviderControllers.addProvider
   );
 
 
-providersRouter
-  .route("/emails/verification")
-  .post(
-    ProviderValidationWares.emailVerification,
-    ProviderControllers.emailVerification
-  );
-
-
 // providersRouter
-//   .route("/auth")
-//   .post(ProviderValidationWares.login, ProviderControllers.login);
+//   .route("/emails/verification")
+//   .post(
+//     ProviderValidationWares.emailVerification,
+//     ProviderControllers.emailVerification
+//   );
+
+
+providersRouter
+  .route("/auth")
+  .post(ProviderValidationWares.login, ProviderControllers.login);
 
 
 // providersRouter
@@ -94,4 +93,5 @@ providersRouter
 
 
 //rovidersRouter.route("/:id/app/banks").get(ProviderControllers.getAppBanks);
+providersRouter.use("/providers/providers-images", express.static("Providers-Images"));
 export {providersRouter};

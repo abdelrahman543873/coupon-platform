@@ -16,95 +16,81 @@ const ProviderControllers = {
         IP +
         "/providers-management/providers/providers-images/" +
         req.file.filename;
+      provider.logoURL = logoURL;
     }
     let hashedPass = await hashPass(provider.password);
-    provider.password = hashPass;
+    provider.password = hashedPass;
     let { doc, err } = await ProviderModule.add(provider);
 
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
-
+    //doc=await doc.populate('districts').populate('cities').execPopulate()
     provider = doc.toObject();
     let authToken = generateToken(provider._id, "PROVIDER");
-    Provider = new Provider(provider);
+    provider = new Provider(provider);
     return res.status(201).send({
       isSuccessed: true,
       data: {
-        user: Provider,
+        user: provider,
         authToken,
       },
       error: false,
     });
   },
 
-  async emailVerification(req, res, next) {
-    let email = req.body.email.toLowerCase(),
-      user = await ProviderModule.getByEmail(email),
-      lang = req.headers.lang || "ar",
-      errMsg =
-        lang == "en" ? "This email is not exist" : "هذا البريد غير مسجل من قبل";
-    if (!user) {
-      return next(boom.notFound(errMsg));
-    }
-    res.status(200).send({
-      isSuccessed: true,
-      data: {
-        isExist: true,
-      },
-      error: false,
-    });
-  },
-
-  // async login(req, res, next) {
-  //   let { firstCardinality, password } = req.body,
+  // async emailVerification(req, res, next) {
+  //   let email = req.body.email.toLowerCase(),
+  //     user = await ProviderModule.getByEmail(email),
   //     lang = req.headers.lang || "ar",
-  //     user = firstCardinality.includes("@")
-  //       ? await ProviderModule.getByEmail(firstCardinality.toLowerCase())
-  //       : await ProviderModule.getByUsername(firstCardinality),
   //     errMsg =
-  //       lang == "en"
-  //         ? "Login cardinalities are invalid!"
-  //         : "احداثيات المرور غير صحيحه";
-
+  //       lang == "en" ? "This email is not exist" : "هذا البريد غير مسجل من قبل";
   //   if (!user) {
-  //     return next(boom.badData(errMsg));
+  //     return next(boom.notFound(errMsg));
   //   }
-
-  //   if (user.isActive === false && !user.roles.includes("BAZAR_CREATOR")) {
-  //     errMsg =
-  //       req.headers.lang == "en"
-  //         ? "this account not active"
-  //         : "هذا الحساب غير مفعل";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
-
-  //   if (
-  //     user.bazar &&
-  //     user.bazar.isBazarAccepted === false &&
-  //     !user.roles.includes("BAZAR_CREATOR")
-  //   ) {
-  //     errMsg =
-  //       req.headers.lang == "en"
-  //         ? "waiting admin approval for the business"
-  //         : "في انتظار تفعيل الادمن للمحل";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
-
-  //   if (!(await bcryptCheckPass(password, user.password))) {
-  //     return next(boom.badData(errMsg));
-  //   }
-  //   let leanedUser = user.toObject();
-  //   delete leanedUser.password;
-  //   let authToken = generateProviderToken(leanedUser._id, leanedUser.roles);
-  //   return res.status(200).send({
+  //   res.status(200).send({
   //     isSuccessed: true,
   //     data: {
-  //       user: leanedUser,
-  //       authToken,
+  //       isExist: true,
   //     },
-  //     error: null,
+  //     error: false,
   //   });
   // },
+
+  async login(req, res, next) {
+    let { email, password } = req.body,
+      lang = req.headers.lang || "ar",
+      user = await ProviderModule.getByEmail(email.toLowerCase()),
+      errMsg =
+        lang == "en"
+          ? "Login cardinalities are invalid!"
+          : "احداثيات المرور غير صحيحه";
+
+    if (!user) {
+      return next(boom.badData(errMsg));
+    }
+
+    if (user.isActive === false) {
+      errMsg =
+        req.headers.lang == "en"
+          ? "this account not active"
+          : "هذا الحساب غير مفعل";
+      return next(boom.unauthorized(errMsg));
+    }
+    console.log(user)
+    if (!(await bcryptCheckPass(password, user.password))) {
+      return next(boom.badData(errMsg));
+    }
+    let authToken = generateToken(user._id, "PROVIDER");
+    user = new Provider(user);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: {
+        user: user,
+        authToken,
+      },
+      error: null,
+    });
+  },
 
   // async verifyMobile(req, res, next) {
   //   let code = req.body.smsToken,

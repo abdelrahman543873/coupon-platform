@@ -17,7 +17,6 @@ let providerSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false
     },
 
     slogan: {
@@ -43,6 +42,8 @@ let providerSchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref:'City',
+        autopopulate: true
       },
     ],
 
@@ -50,6 +51,8 @@ let providerSchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref:'Districts',
+        autopopulate: true
       },
     ],
 
@@ -73,6 +76,7 @@ let providerSchema = mongoose.Schema(
   }
 );
 
+providerSchema.plugin(require('mongoose-autopopulate'));
 let ProviderModel = mongoose.model("Provider", providerSchema);
 
 export { ProviderModel };

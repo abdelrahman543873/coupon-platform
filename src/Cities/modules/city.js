@@ -7,7 +7,6 @@ const CityModule = {
     return await CityModel.find({})
       .lean()
       .then(async (cities) => {
-        cities = await modifyValuesByLang(cities, "name", lang);
         return cities;
       });
   },
@@ -20,7 +19,6 @@ const CityModule = {
     return await DistrictModel.find({city})
       .lean()
       .then(async(districts) => {
-        districts = await modifyValuesByLang(districts, "name", lang);
         return districts;
       });
   },

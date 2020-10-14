@@ -1,4 +1,5 @@
 import boom from "@hapi/boom";
+import { City, District } from "../../middlewares/responsHandler";
 import { CityModule } from "../modules/city";
 
 const CityController = {
@@ -6,9 +7,10 @@ const CityController = {
     let name = req.body.name;
     let city = await CityModule.addCity(name);
     if (city.err) return next(boom.badData("Can not add city!"));
+    city = new City(city.docs);
     return res.status(201).send({
       isSuccessed: true,
-      data: city.docs,
+      data: city,
       error: null,
     });
   },
@@ -21,9 +23,10 @@ const CityController = {
       console.log(district.err);
       return next(boom.notFound("Can not find city"));
     }
+    district = new District(district.docs);
     return res.status(201).send({
       isSuccessed: true,
-      data: district.docs,
+      data: district,
       error: null,
     });
   },
@@ -81,6 +84,9 @@ const CityController = {
     let lang = req.headers.lang || "ar";
     console.log(lang);
     let cities = await CityModule.getAll(lang);
+    cities = cities.map((city) => {
+      return new City(city);
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: cities,
@@ -94,6 +100,9 @@ const CityController = {
       cityId,
       req.headers.lang || "ar"
     );
+    districts = districts.map((dist) => {
+      return new District(dist);
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: districts,

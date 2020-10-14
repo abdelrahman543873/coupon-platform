@@ -38,7 +38,7 @@ const ProviderValidations = {
   }),
 
   login: Joi.object({
-    firstCardinality: Joi.string()
+    email: Joi.string()
       .min(3)
       .max(40)
       .required()
