@@ -1,8 +1,9 @@
 import boom from "@hapi/boom";
+import { couponRouter } from "../Coupons/routes";
 import { decodeToken } from "./JWTHelper";
 
 async function checkUserAuth(req, res, next) {
-  console.log("3213",req.body);
+  console.log("3213", req.body);
   let lang = req.headers.lang || "ar",
     auth = req.headers.authentication;
 
@@ -13,11 +14,12 @@ async function checkUserAuth(req, res, next) {
 
   let authInfo = await decodeToken(auth);
 
-  if (!authInfo && auth!="Just for development") {
+  if (!authInfo && auth != "Just for development") {
     let errMsg = lang == "en" ? "Invalid token" : "رمز التحقيق غير صحيح";
     return next(boom.unauthorized(errMsg));
   }
-  return authInfo;
+  console.log(authInfo);
+  next();
 }
 
-export { checkUserAuth }
+export { checkUserAuth };

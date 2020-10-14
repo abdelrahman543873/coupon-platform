@@ -12,6 +12,7 @@ let QRController = {
     }
 
     let code = shortid.generate();
+    
     let fileName = code + Date.now() + ".png";
     let imagURL = QRCode.toFile("./QR-Images/" + fileName, code, function (
       err

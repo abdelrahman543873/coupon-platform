@@ -1,8 +1,5 @@
 class Provider {
   constructor(provider) {
-    console.log(provider);
-    //provider=
-    // provider=provider.populate('cities').populate('districts').execPopulate();
     this.id = provider._id;
     this.name = provider.name;
     this.email = provider.email;
@@ -38,4 +35,29 @@ class District {
   }
 }
 
-export { Provider, City, District };
+class Category {
+  constructor(category) {
+    console.log(category);
+    this.id = category._id;
+    this.name = category.name;
+    this.images = category.images;
+  }
+}
+
+class Coupon {
+  constructor(coupon) {
+    this.id = coupon._id;
+    this.name = coupon.name;
+    this.description = coupon.description;
+    this.provider = new Provider(coupon.provider);
+    this.servicePrice = coupon.servicePrice;
+    this.offerPrice = coupon.offerPrice;
+    this.totalCount = coupon.totalCount;
+    this.category = new Category(coupon.category);
+    this.code = coupon.code;
+    this.imgURL = coupon.imgURL;
+    this.qrURL = coupon.qrURL;
+  }
+}
+
+export { Provider, City, District, Category, Coupon };
