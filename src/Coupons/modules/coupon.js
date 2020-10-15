@@ -20,11 +20,13 @@ const CouponModule = {
       });
   },
 
-
   async getById(id) {
     return await CouponModel.findById(id);
   },
 
+  async getAll() {
+    return await CouponModel.find({ isDeleted: false }).sort("-createdAt");
+  },
 
   // async getCouponByProvider(bazar, isDeleted = false) {
   //   return await CouponModel.find({ bazar, isDeleted }).catch((err) => {
@@ -106,7 +108,6 @@ const CouponModule = {
   //   return coupons;
   // },
 
-
   // async updateCoupon(id, couponData) {
   //   return await CouponModel.findByIdAndUpdate(
   //     id,
@@ -117,7 +118,6 @@ const CouponModule = {
   //     return { err: err };
   //   });
   // },
-
 
   // async deleteCoupon(id) {
   //   return await CouponModel.findByIdAndUpdate(

@@ -1,5 +1,8 @@
 import express from "express";
+import { CategoryController } from "../../Category/controllers";
+import { CouponController } from "../../Coupons/controllers";
 import { ClientControllers } from "../controllers/client";
+import { ProviderControllers } from "../controllers/provider";
 import { ClientValidationWares } from "../middlewares/validations/client";
 
 const customersRouter = express.Router();
@@ -8,7 +11,9 @@ customersRouter
   .route("/")
   .post(ClientValidationWares.addClient, ClientControllers.add);
 
-customersRouter.route("/auth").post(ClientValidationWares.login, ClientControllers.auth);
+customersRouter
+  .route("/auth")
+  .post(ClientValidationWares.login, ClientControllers.auth);
 
 // customersRouter
 //   .route("/customers/social-auth")
@@ -21,6 +26,10 @@ customersRouter
 customersRouter
   .route("/:id/mobile/verification/resend")
   .post(ClientControllers.resendMobileVerification);
+
+customersRouter.route("/providers").get(ProviderControllers.getAll);
+customersRouter.route("/categories").get(CategoryController.getAll);
+customersRouter.route("/coupons").get(CouponController.getAll);
 
 // customersRouter
 //   .route("/customers/fav-products/:id")

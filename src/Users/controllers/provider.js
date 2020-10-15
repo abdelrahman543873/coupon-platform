@@ -5,6 +5,7 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { IP } from "../../../serverIP";
 import { generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
+import { ProviderModel } from "../models/provider";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -76,7 +77,7 @@ const ProviderControllers = {
           : "هذا الحساب غير مفعل";
       return next(boom.unauthorized(errMsg));
     }
-    console.log(user)
+    console.log(user);
     if (!(await bcryptCheckPass(password, user.password))) {
       return next(boom.badData(errMsg));
     }
@@ -91,90 +92,6 @@ const ProviderControllers = {
       error: null,
     });
   },
-
-  // async verifyMobile(req, res, next) {
-  //   let code = req.body.smsToken,
-  //     id = req.params.id;
-  //   let verification = await VerificationsModule.get(id, code);
-  //   if (verification.err)
-  //     return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
-  //   if (!verification.doc) {
-  //     let errMsg =
-  //       req.headers.lang == "en"
-  //         ? "No previous record for this token!, add phone number or check the token please"
-  //         : "لا يوجد بيانات سابقه لهذا الرمز فى التحقيقات";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let nowDate = new Date();
-  //   let diffInMilliSeconds = (nowDate - verification.doc.createdAt) / 1000;
-  //   let diffInMinuts = Math.floor(diffInMilliSeconds / 60) % 60;
-  //   if (diffInMinuts > 3) {
-  //     let errMsg =
-  //       req.headers.lang == "en"
-  //         ? "This token has exceeded the verification time of 1 minut please resend it"
-  //         : "رمز التحقيق قد تعدى الوقت المسموح به ( دقيقه واحده ) قم بأعدة ارساله";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let provider = await ProviderModule.verifyProvider(id);
-  //   if (!provider) {
-  //     let errMsg =
-  //       req.headers.lang == "en" ? "Provider not found" : "المستخدم غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let leanedProvider = provider.toObject();
-  //   delete leanedProvider.password;
-
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: leanedProvider,
-  //     error: false,
-  //   });
-  // },
-
-  // async resendMobileVerification(req, res, next) {
-  //   let id = req.params.id,
-  //     lang = req.headers.lang || "ar",
-  //     provider = await ProviderModule.getById(id);
-
-  //   if (!provider) {
-  //     let errMsg = lang == "en" ? "Provider not found" : "المستخدم غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   if (provider.isPhoneVerified) {
-  //     let errMsg =
-  //       lang == "en"
-  //         ? "Provider mobile is already verified"
-  //         : "جوال المستخدم متوثق من قبل";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let smsToken = getSMSToken(5);
-
-  //   let addToVerificationRes = await VerificationsModule.add(
-  //     provider._id,
-  //     smsToken,
-  //     provider.countryCode,
-  //     provider.phone
-  //   );
-  //   if (addToVerificationRes.err)
-  //     return next(
-  //       boom.badData(
-  //         getErrorMessage(addToVerificationRes.err, req.headers.lang || "ar")
-  //       )
-  //     );
-  //   let smsMessage =
-  //     req.headers.lang == "en"
-  //       ? "Bazaar app : welcome to bazaar your verification code is "
-  //       : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-  //   //  smsToken = await Messages.sendMessage(
-  //   //     provider.phone,
-  //   //     smsMessage + smsToken
-  //   //   );
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: smsToken,
-  //     error: null,
-  //   });
-  // },
 
   // async updatePersonal(req, res, next) {
   //   let id = req.params.id;
@@ -293,6 +210,19 @@ const ProviderControllers = {
   //     error: null,
   //   });
   // },
+
+  async getAll(req, res, next) {
+    let providers = await ProviderModule.getAll();
+    providers = providers.map((provider) => {
+      return new Provider(provider);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: providers,
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };

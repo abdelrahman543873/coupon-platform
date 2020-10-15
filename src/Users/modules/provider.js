@@ -2,7 +2,7 @@ import { ProviderModel } from "../models/provider";
 
 const ProviderModule = {
   async add(provider) {
-    return await ProviderModel({...provider})
+    return await ProviderModel({ ...provider })
       .save()
       .then((doc) => {
         return {
@@ -25,7 +25,10 @@ const ProviderModule = {
   async getByEmail(email) {
     return await ProviderModel.findOne({ email });
   },
-  
+
+  async getAll() {
+    return ProviderModel.find({ isActive: true, isDeleted: false });
+  },
   // async updateBazarID(id, bazarr) {
   //   return await ProviderModel.updateOne(
   //     { _id: id },
@@ -33,9 +36,6 @@ const ProviderModule = {
   //   );
   // },
 
-
-  
-  
   // async updateProviderPersonal(id, providerData) {
   //   if (providerData.deleteImg) {
   //     providerData.imgURL = "";

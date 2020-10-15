@@ -6,6 +6,7 @@ import QRCode from "qrcode";
 import { IP } from "../../../serverIP";
 import { Coupon } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
+import { CouponModel } from "../models/coupon";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -144,6 +145,22 @@ const CouponController = {
   //     error: null,
   //   });
   // },
+
+  async getAll(req, res, next) {
+    let coupons = await CouponModule.getAll();
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: {
+        newst: coupons,
+        mostPopular: coupons,
+      },
+      error: null,
+    });
+  },
 };
 
 // function addFavProp(coupons, userFav) {
