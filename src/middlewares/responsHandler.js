@@ -60,4 +60,15 @@ class Coupon {
   }
 }
 
-export { Provider, City, District, Category, Coupon };
+class Client {
+  constructor(client) {
+    this.id = client._id;
+    this.name = client.name;
+    this.mobile = client.mobile;
+    this.countryCode = client.countryCode;
+    this.isVerified = client.isVerified;
+    this.fcmToken = client.fcmToken;
+  }
+}
+
+export { Provider, City, District, Category, Coupon, Client };

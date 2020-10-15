@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { ProviderValidations } from "../utils/validations/provider";
+import { ProviderValidations } from "../../utils/validations/provider";
 
 const ProviderValidationWares = {
   add(req, res, next) {

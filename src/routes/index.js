@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { providersRouter } from "../Users/routes/provider";
-import {citiesRouter} from '../Cities/routes/cities'
+import { customersRouter } from "../Users/routes/client";
+import { citiesRouter } from "../Cities/routes/cities";
 import { categoryRouter } from "../Category/routes";
 import { couponRouter } from "../Coupons/routes";
-
 
 const router = Router();
 //router.use("/customers-management", customersRouter);
@@ -16,6 +16,7 @@ const router = Router();
 //router.use("/platform", platformSpecRouter);
 
 router.use("/providers-management", providersRouter);
+router.use("/customers-management", customersRouter);
 router.use("/cities-management", citiesRouter);
 router.use("/categories-management", categoryRouter);
 router.use("/coupons-management", couponRouter);
