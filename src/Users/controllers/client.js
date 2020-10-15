@@ -101,7 +101,7 @@ const ClientControllers = {
     if (user.isVerified) authToken = generateToken(user._id, "CLIENT");
     user = new Client(user);
     return res.status(200).send({
-      isSuccessed: true,
+      isSuccessed: true, 
       data: {
         user: user,
         authToken,
