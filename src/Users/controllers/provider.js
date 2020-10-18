@@ -2,10 +2,8 @@ import boom from "@hapi/boom";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
-import { IP } from "../../../serverIP";
 import { generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
-import { ProviderModel } from "../models/provider";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -14,8 +12,7 @@ const ProviderControllers = {
 
     if (req.file) {
       logoURL =
-        "/providers-management/providers/providers-images/" +
-        req.file.filename;
+        "/providers-management/providers/providers-images/" + req.file.filename;
       provider.logoURL = logoURL;
     }
     let hashedPass = await hashPass(provider.password);
@@ -24,7 +21,6 @@ const ProviderControllers = {
 
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
-    //doc=await doc.populate('districts').populate('cities').execPopulate()
     provider = doc.toObject();
     let authToken = generateToken(provider._id, "PROVIDER");
     provider = new Provider(provider);

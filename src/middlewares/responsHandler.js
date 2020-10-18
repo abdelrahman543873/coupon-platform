@@ -2,11 +2,12 @@ import { IP } from "../../serverIP";
 
 class Provider {
   constructor(provider) {
+    console.log(provider);
     this.id = provider._id;
     this.name = provider.name;
     this.email = provider.email;
     this.slogan = provider.slogan;
-    this.logoURL = IP + provider.logoURL;
+    this.logoURL = provider.logoURL ? IP + provider.logoURL : provider.logoURL;
     this.cities = provider.cities.map((city) => {
       return new City(city);
     });
