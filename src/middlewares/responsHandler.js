@@ -1,10 +1,12 @@
+import { IP } from "../../serverIP";
+
 class Provider {
   constructor(provider) {
     this.id = provider._id;
     this.name = provider.name;
     this.email = provider.email;
     this.slogan = provider.slogan;
-    this.logoURL = provider.logoURL;
+    this.logoURL = IP + provider.logoURL;
     this.cities = provider.cities.map((city) => {
       return new City(city);
     });
@@ -40,7 +42,10 @@ class Category {
     console.log(category);
     this.id = category._id;
     this.name = category.name;
-    this.images = category.images;
+    this.images = {
+      selected: IP + category.images.selected,
+      unSelected: IP + category.images.unSelected,
+    };
   }
 }
 
@@ -55,8 +60,8 @@ class Coupon {
     this.totalCount = coupon.totalCount;
     this.category = new Category(coupon.category);
     this.code = coupon.code;
-    this.imgURL = coupon.imgURL;
-    this.qrURL = coupon.qrURL;
+    this.imgURL = IP + coupon.imgURL;
+    this.qrURL = IP + coupon.qrURL;
   }
 }
 

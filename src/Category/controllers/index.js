@@ -12,11 +12,9 @@ const CategoryController = {
 
     if (req.files) {
       selected =
-        IP +
         "/categories-management/categories-images/" +
         req.files["selectedImage"][0].filename;
       unSelected =
-        IP +
         "/categories-management/categories-images/" +
         req.files["unselectedImage"][0].filename;
       category.images = { selected, unSelected };

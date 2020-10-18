@@ -14,7 +14,6 @@ const ProviderControllers = {
 
     if (req.file) {
       logoURL =
-        IP +
         "/providers-management/providers/providers-images/" +
         req.file.filename;
       provider.logoURL = logoURL;

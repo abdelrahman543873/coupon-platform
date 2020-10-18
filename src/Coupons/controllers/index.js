@@ -23,10 +23,10 @@ const CouponController = {
     coupon.code = nanoid(6);
     let fileName = coupon.code + Date.now() + ".png";
     let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code);
-    coupon.qrURL = IP + "/coupons-management/coupons-images/" + fileName;
+    coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
-      imgURL = IP + "/coupons-management/coupons-images/" + req.file.filename;
+      imgURL ="/coupons-management/coupons-images/" + req.file.filename;
       coupon.imgURL = imgURL;
     }
 
