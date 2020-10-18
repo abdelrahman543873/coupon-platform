@@ -2,39 +2,46 @@ import { IP } from "../../serverIP";
 
 class Provider {
   constructor(provider) {
-    //console.log(provider);
-    this.id = provider._id;
-    this.name = provider.name;
-    this.email = provider.email;
-    this.slogan = provider.slogan;
-    this.logoURL = provider.logoURL ? IP + provider.logoURL : provider.logoURL;
-    this.cities = provider.cities.map((city) => {
-      return new City(city);
-    });
-    this.districts = provider.districts.map((dist) => {
-      return new District(dist);
-    });
-    this.lat = provider.lat || "";
-    this.lng = provider.lng || "";
-    this.officeTele = provider.officeTele;
-    this.websiteLink = provider.websiteLink || "";
-    this.facebookLink = provider.facebookLink || "";
-    this.instaLink = provider.instaLink || "";
-    this.fcmToken = provider.fcmToken;
+    if (provider) {
+      this.id = provider._id;
+      this.name = provider.name;
+      this.email = provider.email;
+      this.slogan = provider.slogan;
+      this.logoURL = provider.logoURL
+        ? IP + provider.logoURL
+        : provider.logoURL;
+      this.cities = provider.cities.map((city) => {
+        return new City(city);
+      });
+      this.districts = provider.districts.map((dist) => {
+        return new District(dist);
+      });
+      this.lat = provider.lat || "";
+      this.lng = provider.lng || "";
+      this.officeTele = provider.officeTele;
+      this.websiteLink = provider.websiteLink || "";
+      this.facebookLink = provider.facebookLink || "";
+      this.instaLink = provider.instaLink || "";
+      this.fcmToken = provider.fcmToken;
+    }
   }
 }
 
 class City {
   constructor(city) {
-    this.id = city._id;
-    this.name = city.name;
+    if (city) {
+      this.id = city._id;
+      this.name = city.name;
+    }
   }
 }
 
 class District {
   constructor(district) {
-    this.id = district._id;
-    this.name = district.name;
+    if (district) {
+      this.id = district._id;
+      this.name = district.name;
+    }
   }
 }
 
@@ -71,12 +78,14 @@ class Coupon {
 
 class Client {
   constructor(client) {
-    this.id = client._id;
-    this.name = client.name;
-    this.mobile = client.mobile;
-    this.countryCode = client.countryCode;
-    this.isVerified = client.isVerified;
-    this.fcmToken = client.fcmToken;
+    if (client) {
+      this.id = client._id;
+      this.name = client.name;
+      this.mobile = client.mobile;
+      this.countryCode = client.countryCode;
+      this.isVerified = client.isVerified;
+      this.fcmToken = client.fcmToken;
+    }
   }
 }
 
