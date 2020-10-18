@@ -2,7 +2,7 @@ import { IP } from "../../serverIP";
 
 class Provider {
   constructor(provider) {
-    console.log(provider);
+    //console.log(provider);
     this.id = provider._id;
     this.name = provider.name;
     this.email = provider.email;
@@ -40,29 +40,32 @@ class District {
 
 class Category {
   constructor(category) {
-    console.log(category);
-    this.id = category._id;
-    this.name = category.name;
-    this.images = {
-      selected: IP + category.images.selected,
-      unSelected: IP + category.images.unSelected,
-    };
+    if (category) {
+      this.id = category._id;
+      this.name = category.name;
+      this.images = {
+        selected: IP + category.images.selected,
+        unSelected: IP + category.images.unSelected,
+      };
+    }
   }
 }
 
 class Coupon {
   constructor(coupon) {
-    this.id = coupon._id;
-    this.name = coupon.name;
-    this.description = coupon.description;
-    this.provider = new Provider(coupon.provider);
-    this.servicePrice = coupon.servicePrice;
-    this.offerPrice = coupon.offerPrice;
-    this.totalCount = coupon.totalCount;
-    this.category = new Category(coupon.category);
-    this.code = coupon.code;
-    this.imgURL = IP + coupon.imgURL;
-    this.qrURL = IP + coupon.qrURL;
+    if (coupon) {
+      this.id = coupon._id;
+      this.name = coupon.name;
+      this.description = coupon.description;
+      this.provider = new Provider(coupon.provider);
+      this.servicePrice = coupon.servicePrice;
+      this.offerPrice = coupon.offerPrice;
+      this.totalCount = coupon.totalCount;
+      this.category = new Category(coupon.category);
+      this.code = coupon.code;
+      this.imgURL = IP + coupon.imgURL;
+      this.qrURL = IP + coupon.qrURL;
+    }
   }
 }
 

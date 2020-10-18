@@ -27,9 +27,9 @@ customersRouter
   .route("/:id/mobile/verification/resend")
   .post(ClientControllers.resendMobileVerification);
 
-customersRouter.route("/providers").get(ProviderControllers.getAll);
-customersRouter.route("/categories").get(CategoryController.getAll);
-customersRouter.route("/coupons").get(CouponController.getAll);
+customersRouter.route("/home").get(ClientControllers.home);
+// customersRouter.route("/categories").get(CategoryController.getAll);
+// customersRouter.route("/coupons").get(CouponController.getAll);
 
 // customersRouter
 //   .route("/customers/fav-products/:id")

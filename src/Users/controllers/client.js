@@ -5,9 +5,10 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../modules/verifications";
 import { generateToken } from "../../utils/JWTHelper";
-import { Messages } from "../../utils/twilloHelper";
-import { IP } from "../../../serverIP";
-import { Client } from "../../middlewares/responsHandler";
+import { Category, Client, Coupon, Provider } from "../../middlewares/responsHandler";
+import { ProviderModule } from "../modules/provider";
+import { CategoryModule } from "../../Category/modules";
+import { CouponModule } from "../../Coupons/modules/coupon";
 
 const ClientControllers = {
   async add(req, res, next) {
@@ -47,6 +48,31 @@ const ClientControllers = {
       data: {
         user: client,
         smsToken,
+      },
+      error: null,
+    });
+  },
+
+  async home(req, res, next) {
+    let providers = await ProviderModule.getAll();
+    let categories = await CategoryModule.getAll();
+    let coupons = await CouponModule.getAll();
+
+    res.status(201).send({
+      isSuccessed: true,
+      data: {
+        providers: providers.map((provider) => {
+          return new Provider(provider);
+        }),
+        categories: categories.map((category) => {
+          return new Category(category);
+        }),
+        newest: coupons.map((cuopon) => {
+          return new Coupon(cuopon);
+        }),
+        bestSeller: coupons.map((cuopon) => {
+          return new Coupon(cuopon);
+        }),
       },
       error: null,
     });
@@ -101,7 +127,7 @@ const ClientControllers = {
     if (user.isVerified) authToken = generateToken(user._id, "CLIENT");
     user = new Client(user);
     return res.status(200).send({
-      isSuccessed: true, 
+      isSuccessed: true,
       data: {
         user: user,
         authToken,
