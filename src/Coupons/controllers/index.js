@@ -3,10 +3,9 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { CouponModule } from "../modules/coupon";
 import { nanoid } from "nanoid";
 import QRCode from "qrcode";
-import { IP } from "../../../serverIP";
 import { Coupon } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
-import { CouponModel } from "../models/coupon";
+import Jimp from "jimp";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -26,7 +25,25 @@ const CouponController = {
     coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
-      imgURL ="/coupons-management/coupons-images/" + req.file.filename;
+      console.log("1111");
+      Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
+        return Jimp.read("src/logo.png")
+          .then((logoTpl) => {
+            logoTpl.opacity(1.0);
+            console.log(logoTpl.bitmap.height);
+            return tpl.composite(
+              logoTpl.resize(40, 40),
+              tpl.bitmap.width - logoTpl.bitmap.width - 5,
+              tpl.bitmap.height - logoTpl.bitmap.height,
+              [Jimp.BLEND_DESTINATION_OVER]
+            );
+          })
+          .then((tpl) => {
+            return tpl.write("Coupons-Images/" + req.file.filename);
+          });
+      });
+      console.log("1321");
+      imgURL = "/coupons-management/coupons-images/" + req.file.filename;
       coupon.imgURL = imgURL;
     }
 

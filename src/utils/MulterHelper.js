@@ -19,25 +19,6 @@ function uploadHelper(dest) {
     ".SVG",
     ".JPEG"
   ];
-  let videoExt = [
-    ".WEBM",
-    ".MPG",
-    ".MP2",
-    ".MPEG",
-    ".MPE",
-    ".MPV",
-    ".OGG",
-    ".MP4",
-    ".M4P",
-    ".M4V",
-    ".AVI",
-    ".WMV",
-    ".MOV",
-    ".QT",
-    ".FLV",
-    ".SWF",
-    ".AVCHD",
-  ];
   let storage = multer.diskStorage({
       destination: dest,
       filename: function (req, file, cb) {
@@ -53,7 +34,6 @@ function uploadHelper(dest) {
         var ext = path.extname(file.originalname).toUpperCase();
         console.log(ext);
         console.log(dest);
-        if (dest === "Bazars-Ads/") imgExt = imgExt.concat(videoExt);
         if (!imgExt.includes(ext)) {
           return callback(boom.unauthorized("bad data"));
         }
