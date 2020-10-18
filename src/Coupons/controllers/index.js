@@ -32,7 +32,7 @@ const CouponController = {
             logoTpl.opacity(1.0);
             console.log(logoTpl.bitmap.height);
             return tpl.composite(
-              logoTpl.resize(40, 40),
+              logoTpl.resize(30,30),
               tpl.bitmap.width - logoTpl.bitmap.width - 5,
               tpl.bitmap.height - logoTpl.bitmap.height,
               [Jimp.BLEND_DESTINATION_OVER]
