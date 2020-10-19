@@ -1,14 +1,14 @@
 version: "3.7"
 services:
-  couponat:
+  couponat-backend:
     build: ./
     env_file: ./.env
     restart: always
     volumes:
       - ./:/couponat-backend
-      - ./externalVolumes/Coupons-Images:/Coupons-Images
-      - ./externalVolumes/Providers-Images:/Providers-Images
-      - ./externalVolumes/Categories-Images:/Categories-Images
+      - ../externalVolumes/Coupons-Images:/Coupons-Images
+      - ../externalVolumes/Providers-Images:/Providers-Images
+      - ../externalVolumes/Categories-Images:/Categories-Images
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:
@@ -23,7 +23,7 @@ services:
     env_file: ./.env
     volumes:
       - mongo:/var/lib/mongo
-      - ./externalVolumes/db:/data/db
+      - ../externalVolumes/db:/data/db
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
     networks:
       net:

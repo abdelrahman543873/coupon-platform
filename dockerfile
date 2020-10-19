@@ -1,6 +1,6 @@
 FROM node:13.11
 
-WORKDIR /couponat
+WORKDIR /couponat-backend
 
 COPY package*.json ./
 
