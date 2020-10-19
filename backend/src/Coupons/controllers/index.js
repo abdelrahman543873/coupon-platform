@@ -32,7 +32,7 @@ const CouponController = {
             logoTpl.opacity(1.0);
             console.log(logoTpl.bitmap.height);
             return tpl.composite(
-              logoTpl.resize(30,30),
+              logoTpl.resize(30, 30),
               tpl.bitmap.width - logoTpl.bitmap.width - 5,
               tpl.bitmap.height - logoTpl.bitmap.height,
               [Jimp.BLEND_DESTINATION_OVER]
@@ -164,17 +164,19 @@ const CouponController = {
   // },
 
   async getAll(req, res, next) {
-    let coupons = await CouponModule.getAll();
+    let category = req.query.category || null,
+      limit = parseInt(req.query.limit) || null,
+      skip = parseInt(req.query.skip) || null,
+      section = req.query.section || null,
+      provider = req.query.provider || null;
+    let coupons = await CouponModule.getAll(skip, limit, category,provider, null);
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);
     });
 
     return res.status(200).send({
       isSuccessed: true,
-      data: {
-        newst: coupons,
-        mostPopular: coupons,
-      },
+      data: coupons,
       error: null,
     });
   },

@@ -22,7 +22,7 @@ const CategoryModule = {
     return await CategoryModel.findById(id);
   },
   async getAll() {
-    return await CategoryModel.find();
+    return await CategoryModel.find().sort("-createdAt");
   },
 };
 

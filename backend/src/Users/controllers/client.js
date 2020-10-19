@@ -5,7 +5,12 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../modules/verifications";
 import { generateToken } from "../../utils/JWTHelper";
-import { Category, Client, Coupon, Provider } from "../../middlewares/responsHandler";
+import {
+  Category,
+  Client,
+  Coupon,
+  Provider,
+} from "../../middlewares/responsHandler";
 import { ProviderModule } from "../modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModule } from "../../Coupons/modules/coupon";
@@ -56,7 +61,7 @@ const ClientControllers = {
   async home(req, res, next) {
     let providers = await ProviderModule.getAll();
     let categories = await CategoryModule.getAll();
-    let coupons = await CouponModule.getAll();
+    let coupons = await CouponModule.getAll(0, 30, null, null);
 
     res.status(201).send({
       isSuccessed: true,

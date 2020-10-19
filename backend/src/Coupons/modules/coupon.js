@@ -24,8 +24,16 @@ const CouponModule = {
     return await CouponModel.findById(id);
   },
 
-  async getAll() {
-    return await CouponModel.find({ isDeleted: false }).sort("-createdAt");
+  async getAll(skip, limit, category, provider, section) {
+    let queryOp = {};
+    queryOp.isDeleted = false;
+    if (category) queryOp.category = category;
+    if (provider) queryOp.provider = provider;
+    console.log(queryOp);
+    return await CouponModel.find({ ...queryOp })
+      .sort("-createdAt")
+      .skip(skip)
+      .limit(limit);
   },
 
   // async getCouponByProvider(bazar, isDeleted = false) {

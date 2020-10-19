@@ -27,7 +27,7 @@ const ProviderModule = {
   },
 
   async getAll() {
-    return ProviderModel.find({ isActive: true, isDeleted: false });
+    return ProviderModel.find({ isActive: true, isDeleted: false }).sort("-createdAt").limit(2);
   },
   // async updateBazarID(id, bazarr) {
   //   return await ProviderModel.updateOne(
