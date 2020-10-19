@@ -1,12 +1,12 @@
 FROM node:13.11
 
-WORKDIR /couponat-backend
+WORKDIR /backend
 
 COPY package*.json ./
 
 RUN npm install
 
-RUN npm install -g nodemon
+RUN npm install --save nodemon
 
 COPY . .
 
