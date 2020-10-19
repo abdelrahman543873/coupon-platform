@@ -5,6 +5,7 @@ services:
     env_file: ./.env
     restart: always
     volumes:
+      - ./:/couponat-backend
       - ../externalVolumes/Coupons-Images:/Coupons-Images
       - ../externalVolumes/Providers-Images:/Providers-Images
       - ../externalVolumes/Categories-Images:/Categories-Images
