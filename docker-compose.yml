@@ -5,10 +5,9 @@ services:
     env_file: ./.env
     restart: always
     volumes:
-      - ./:/couponat-backend
-      - ../externalVolumes/Coupons-Images:/couponat-backend/Coupons-Images
-      - ../externalVolumes/couponat-backend/Providers-Images:/couponat-backend/Providers-Images
-      - ../externalVolumes/couponat-backend/Categories-Images:/couponat-backend/Categories-Images
+      - ../externalVolumes/Coupons-Images:/Coupons-Images
+      - ../externalVolumes/couponat-backend/Providers-Images:/Providers-Images
+      - ../externalVolumes/couponat-backend/Categories-Images:/Categories-Images
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:
