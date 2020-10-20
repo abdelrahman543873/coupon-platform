@@ -6,6 +6,7 @@ import QRCode from "qrcode";
 import { Coupon } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
 import Jimp from "jimp";
+import { CouponModel } from "../models/coupon";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -56,6 +57,23 @@ const CouponController = {
     return res.status(201).send({
       isSuccessed: true,
       data: savedCoupon,
+      error: null,
+    });
+  },
+
+  async search(req, res, next) {
+    let name = req.query.name,
+      skip = parseInt(req.query.skip) || 0,
+      limit = parseInt(req.query.limit) || 0;
+
+    let coupons = await CouponModule.search(skip, limit, name);
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: coupons,
       error: null,
     });
   },
@@ -169,7 +187,13 @@ const CouponController = {
       skip = parseInt(req.query.skip) || null,
       section = req.query.section || null,
       provider = req.query.provider || null;
-    let coupons = await CouponModule.getAll(skip, limit, category,provider, null);
+    let coupons = await CouponModule.getAll(
+      skip,
+      limit,
+      category,
+      provider,
+      null
+    );
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);
     });

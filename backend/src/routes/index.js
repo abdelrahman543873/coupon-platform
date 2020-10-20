@@ -4,6 +4,7 @@ import { customersRouter } from "../Users/routes/client";
 import { citiesRouter } from "../Cities/routes/cities";
 import { categoryRouter } from "../Category/routes";
 import { couponRouter } from "../Coupons/routes";
+import { adminRouter } from "../Admin/routes/adminRouter";
 
 const router = Router();
 //router.use("/customers-management", customersRouter);
@@ -20,6 +21,8 @@ router.use("/customers-management", customersRouter);
 router.use("/cities-management", citiesRouter);
 router.use("/categories-management", categoryRouter);
 router.use("/coupons-management", couponRouter);
+router.use("/admin-management", adminRouter);
+
 
 //router.use("/products", productsRouter);
 

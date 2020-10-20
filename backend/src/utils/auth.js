@@ -14,7 +14,7 @@ async function checkUserAuth(req, res, next) {
 
   let authInfo = await decodeToken(auth);
 
-  if (!authInfo && auth != "Just for development") {
+  if (!authInfo) {
     let errMsg = lang == "en" ? "Invalid token" : "رمز التحقيق غير صحيح";
     return next(boom.unauthorized(errMsg));
   }

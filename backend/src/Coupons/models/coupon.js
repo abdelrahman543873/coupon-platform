@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 let couponSchema = mongoose.Schema(
   {
     name: {
@@ -50,19 +49,24 @@ let couponSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    sellCount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
       autopopulate: true,
     },
-    code:{
+    code: {
       type: String,
       required: true,
-      unique:true
+      unique: true,
     },
     imgURL: String,
-    qrURL:String
+    qrURL: String,
   },
   {
     timestamps: true,

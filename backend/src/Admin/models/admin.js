@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let adminSchema = mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       unique: true,
@@ -16,12 +16,6 @@ let adminSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      enum: ["ADMIN", "EDITOR", "CUSTOMER_SERVICE"],
-      required: true,
-    },
-    
     fcmToken:String,
   },
   {

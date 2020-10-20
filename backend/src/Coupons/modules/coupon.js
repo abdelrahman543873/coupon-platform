@@ -36,12 +36,29 @@ const CouponModule = {
       .limit(limit);
   },
 
-  // async getCouponByProvider(bazar, isDeleted = false) {
-  //   return await CouponModel.find({ bazar, isDeleted }).catch((err) => {
-  //     console.log(err);
-  //     return null;
-  //   });
-  // },
+  async search(skip = 1, limit = 1, name = "") {
+    let queryOp = {};
+    queryOp.isDeleted = false;
+    if (name !== "") {
+      queryOp.$or = [
+        {
+          "name.english": new RegExp(name, "i"),
+        },
+        {
+          "name.arabic": new RegExp(name, "i"),
+        },
+      ];
+    }
+    return await CouponModel.find({
+      ...queryOp,
+    })
+      .skip(skip)
+      .limit(limit)
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
+  },
 
   // async getCouponsProviders() {
   //   let coupons = await CouponModel.aggregate([

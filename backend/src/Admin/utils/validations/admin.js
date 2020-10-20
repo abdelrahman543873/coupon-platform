@@ -3,13 +3,9 @@ import { errorsOverride } from "../../../utils/JoiErrorOverriding";
 
 const adminValidationSchemas = {
   add: Joi.object({
-    username: Joi.string().min(3).max(30).required().error(errorsOverride),
+    name: Joi.string().min(3).max(30).required().error(errorsOverride),
     email: Joi.string().email().required().error(errorsOverride),
     password: Joi.string().min(8).required().error(errorsOverride),
-    role: Joi.string()
-      .valid("ADMIN", "EDITOR", "CUSTOMER_SERVICE")
-      .required()
-      .error(errorsOverride),
   }),
   login: Joi.object({
     email: Joi.string().email().required().error(errorsOverride),

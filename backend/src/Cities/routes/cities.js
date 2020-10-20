@@ -6,7 +6,6 @@ const citiesRouter = Router();
 
 citiesRouter
   .route("/")
-  .post(cityValidationware.addCity, CityController.addCity)
   .get(CityController.getCities);
 
 // citiesRouter
@@ -15,7 +14,6 @@ citiesRouter
 
 citiesRouter
   .route("/:id/districts")
-  .post(cityValidationware.addDistricts, CityController.addDistricts)
   .get(CityController.getDistricts);
 
 export { citiesRouter };

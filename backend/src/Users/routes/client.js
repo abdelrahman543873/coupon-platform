@@ -32,6 +32,8 @@ customersRouter.route("/home").get(ClientControllers.home);
 // customersRouter.route("/categories").get(CategoryController.getAll);
 customersRouter.route("/coupons").get(CouponController.getAll);
 
+customersRouter.route("/search").get(CouponController.search);
+
 // customersRouter
 //   .route("/customers/fav-products/:id")
 //   .put(checkCustomerAuth, ClientControllers.updateFavProducts);
