@@ -49,7 +49,7 @@ let couponSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    sellCount: {
+    subCount: {
       type: Number,
       required: true,
       default: 0,

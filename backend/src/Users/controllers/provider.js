@@ -2,7 +2,7 @@ import boom from "@hapi/boom";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
-import { generateToken } from "../../utils/JWTHelper";
+import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
 const ProviderControllers = {
   async addProvider(req, res, next) {
@@ -88,123 +88,53 @@ const ProviderControllers = {
     });
   },
 
-  // async updatePersonal(req, res, next) {
-  //   let id = req.params.id;
-  //   let newData = req.body;
-  //   let smsToken = "";
-  //   if (req.file) {
-  //     let imgURL =
-  //       "http://api.bazar.alefsoftware.com/api/v1/providers-management/providers/providers-images/" +
-  //       req.file.filename;
-  //     newData.imgURL = imgURL;
-  //   }
-  //   if (req.body.phone) {
-  //     if (!req.body.countryCode) {
-  //       let errMsg =
-  //         lang == "en" ? "Country Code must be send" : "يجب ادخال كود الدولة";
-  //       return next(boom.badData(errMsg));
-  //     }
-  //     req.body.isPhoneVerified = false;
-  //     smsToken = getSMSToken(5);
-  //     let addToVerificationRes = await VerificationsModule.add(
-  //       id,
-  //       smsToken,
-  //       req.body.countryCode,
-  //       req.body.phone
-  //     );
-  //     if (addToVerificationRes.err)
-  //       return next(
-  //         boom.badData(getErrorMessage(err, req.headers.lang || "ar"))
-  //       );
-  //     let smsMessage =
-  //       req.headers.lang == "en"
-  //         ? "Bazaar app : welcome to bazaar your verification code is "
-  //         : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-  //     //  smsToken = await Messages.sendMessage(
-  //     //     req.body.phone,
-  //     //     smsMessage + smsToken
-  //     //   );
-  //   }
-  //   console.log(newData);
-  //   let update = await ProviderModule.updateProviderPersonal(id, newData);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: update,
-  //     smsToken,
-  //     error: null,
-  //   });
-  // },
+  async updateProvider(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id;
+    let newData = req.body;
+    if (req.file) {
+      let logoURL =
+        "/providers-management/providers/providers-images/" + req.file.filename;
+      newData.logoURL = logoURL;
+    }
+    console.log(id);
+    let { doc, err } = await ProviderModule.updateProvider(id, newData);
+    if (err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    console.log("doc: ", doc);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: new Provider(doc),
+      error: null,
+    });
+  },
 
-  // async changePassword(req, res, next) {
-  //   let id = req.params.id,
-  //     currentPssword = req.body.currentPassword,
-  //     newPssword = req.body.newPassword;
-  //   let user = await ProviderModule.getById(id);
-  //   if (!user) {
-  //     return next(boom.badData(errMsg));
-  //   }
+  async changePassword(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id,
+      currentPssword = req.body.currentPassword,
+      newPssword = req.body.newPassword;
+    let user = await ProviderModule.getById(id);
+    if (!user) {
+      return next(boom.badData(errMsg));
+    }
 
-  //   if (!(await bcryptCheckPass(currentPssword, user.password))) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
-  //     return next(boom.badData(errMsg));
-  //   }
+    if (!(await bcryptCheckPass(currentPssword, user.password))) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
+      return next(boom.badData(errMsg));
+    }
 
-  //   let hashedPass = await hashPass(newPssword);
-  //   let changePassword = await ProviderModule.changePassword(id, hashedPass);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: changePassword,
-  //     error: null,
-  //   });
-  // },
-
-  // async getProfileInfo(req, res, next) {
-  //   let id = req.params.id,
-  //     provider = await ProviderModule.getById(id);
-  //   if (!provider) {
-  //     return res.status(404).send({
-  //       isSuccessed: false,
-  //       data: null,
-  //       error: "not found",
-  //     });
-  //   }
-  //   provider = await provider
-  //     .populate("bazar.cityId")
-  //     .populate("bazar.paymentType")
-  //     .populate("bazar.bankAccount")
-  //     .populate("bazar.creditCard")
-  //     .execPopulate();
-
-  //   provider = provider.toObject();
-
-  //   if (provider.bazar) {
-  //     provider.bazar.districtId = provider.bazar.districtId.map((dis) => {
-  //       return dis.toString();
-  //     });
-
-  //     provider.bazar.cityId.districts = provider.bazar.cityId.districts.filter(
-  //       (dist) => {
-  //         console.log(dist._id);
-  //         console.log(provider.bazar.districtId);
-  //         return provider.bazar.districtId.includes(dist._id.toString());
-  //       }
-  //     );
-
-  //     delete provider.bazar.districtId;
-  //   }
-  //   if (!provider) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "not found!" : "المستخدم غير موجود";
-  //     return next(boom.badData(errMsg));
-  //   }
-  //   delete provider.password;
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: provider,
-  //     error: null,
-  //   });
-  // },
+    let hashedPass = await hashPass(newPssword);
+    let { doc, err } = await ProviderModule.changePassword(id, hashedPass);
+    if (err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    return res.status(200).send({
+      isSuccessed: true,
+      data: new Provider(doc),
+      error: null,
+    });
+  },
 
   async getAll(req, res, next) {
     let providers = await ProviderModule.getAll();

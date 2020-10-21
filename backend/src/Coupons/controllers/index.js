@@ -26,16 +26,22 @@ const CouponController = {
     coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
+      let diffHight = 0,
+        diffWidth = 0;
       console.log("1111");
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
         return Jimp.read("src/logo.png")
           .then((logoTpl) => {
-            logoTpl.opacity(1.0);
+            diffHight = parseInt(
+              (tpl.bitmap.height - logoTpl.bitmap.height) / 2
+            );
+            diffWidth = parseInt((tpl.bitmap.width - logoTpl.bitmap.width) / 2);
+            logoTpl.opacity(0.4);
             console.log(logoTpl.bitmap.height);
             return tpl.composite(
-              logoTpl.resize(30, 30),
-              tpl.bitmap.width - logoTpl.bitmap.width - 5,
-              tpl.bitmap.height - logoTpl.bitmap.height,
+              logoTpl.resize(65, 65),
+              tpl.bitmap.width - logoTpl.bitmap.width - diffWidth,
+              tpl.bitmap.height - logoTpl.bitmap.height - diffHight,
               [Jimp.BLEND_DESTINATION_OVER]
             );
           })

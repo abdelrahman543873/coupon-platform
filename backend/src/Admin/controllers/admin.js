@@ -4,15 +4,24 @@ import { nanoid } from "nanoid";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { getErrorMessage } from "../../utils/handleDBError";
-import { generateToken } from "../../utils/JWTHelper";
+import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { AdminModule } from "../modules/admin";
 import QRCode from "qrcode";
-import { Coupon } from "../../middlewares/responsHandler";
+import { Coupon, Provider } from "../../middlewares/responsHandler";
+import { ProviderModule } from "../../Users/modules/provider";
 
 const AdminsController = {
   async add(req, res, next) {
-    let { email, name, password } = req.body;
+    let { email, name, password } = req.body,
+      auth = decodeToken(req.headers.authentication);
     let hashedPass = await hashPass(password);
+
+    if (auth && auth.type != "BOSS") {
+      let errMsg =
+        req.headers.lang == "en" ? "Not  Allowed!" : "ليس لديك الصلاحية";
+      return next(boom.unauthorized(errMsg));
+    }
+
     let { user, err } = await AdminModule.add(email, name, hashedPass);
     if (err) {
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
@@ -33,7 +42,8 @@ const AdminsController = {
   async login(req, res, next) {
     let { email, password } = req.body,
       lang = req.headers.lang,
-      admin = await AdminModule.getByEmail(email);
+      admin = await AdminModule.getByEmail(email),
+      type = "";
     if (!admin) {
       let errMsg = lang == "en" ? "Wrong email" : "البريد الاكترونى غير موجود";
       return next(boom.notFound(errMsg));
@@ -43,7 +53,9 @@ const AdminsController = {
       let errMsg = lang == "en" ? "Wrong password" : "كلمة المرور غير صحيحه";
       return next(boom.badData(errMsg));
     }
-    let authToken = generateToken(admin._id, "ADMIN");
+    if (email == "Boss@gmail.com") type = "BOSS";
+    else type = "ADMIN";
+    let authToken = generateToken(admin._id, type);
 
     return res.status(200).send({
       isSuccessed: true,
@@ -97,6 +109,60 @@ const AdminsController = {
     return res.status(201).send({
       isSuccessed: true,
       data: savedCoupon,
+      error: null,
+    });
+  },
+
+  async updateProvider(req, res, next) {
+    let id = req.params.id;
+    let newData = req.body;
+    if (req.file) {
+      let logoURL =
+        "/providers-management/providers/providers-images/" + req.file.filename;
+      newData.logoURL = logoURL;
+    }
+    console.log(id);
+    let { doc, err } = await ProviderModule.updateProvider(id, newData);
+    if (err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    console.log("doc: ", doc);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: new Provider(doc),
+      error: null,
+    });
+  },
+
+  async getProviders(req, res, next) {
+    let providers = await ProviderModule.getAll();
+    providers = providers.map((provider) => {
+      return new Provider(provider);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: providers,
+      error: null,
+    });
+  },
+
+  async deleteProvider(req, res, next) {
+    let id = req.params.id;
+    let coupons = await CouponModule.getAll(null, null, null, id, null);
+    if (coupons.length > 0) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Cann't remove this Provider!"
+          : "لا يمكن حذف هذا المستخدم";
+      return next(boom.unauthorized(errMsg));
+    }
+
+    let { doc, err } = await ProviderModule.delete(id);
+    if (err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    console.log("doc: ", doc);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: doc,
       error: null,
     });
   },

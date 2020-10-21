@@ -27,41 +27,56 @@ const ProviderModule = {
   },
 
   async getAll() {
-    return ProviderModel.find({ isActive: true, isDeleted: false }).sort("-createdAt").limit(2);
+    return ProviderModel.find({ isActive: true, isDeleted: false }).sort(
+      "-createdAt"
+    );
   },
-  // async updateBazarID(id, bazarr) {
-  //   return await ProviderModel.updateOne(
-  //     { _id: id },
-  //     { $set: { bazar: bazarr } }
-  //   );
-  // },
 
-  // async updateProviderPersonal(id, providerData) {
-  //   if (providerData.deleteImg) {
-  //     providerData.imgURL = "";
-  //     delete providerData.deleteImg;
-  //   }
-  //   return await ProviderModel.findByIdAndUpdate(
-  //     id,
-  //     { $set: { ...providerData } },
-  //     { new: true }
-  //   ).catch((err) => {
-  //     console.log(err);
-  //     return { err: err };
-  //   });
-  // },
+  async updateProvider(id, providerData) {
+    return await ProviderModel.findByIdAndUpdate(
+      id,
+      { $set: { ...providerData } },
+      { new: true }
+    )
+      .then((doc) => {
+        return {
+          doc: doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        return {
+          doc: null,
+          err: err,
+        };
+      });
+  },
 
-  // async changePassword(id, newPassword) {
-  //   console.log(id);
-  //   return await ProviderModel.findByIdAndUpdate(
-  //     id,
-  //     { $set: { password: newPassword } },
-  //     { new: true }
-  //   ).catch((err) => {
-  //     console.log(err);
-  //     return { err: err };
-  //   });
-  // },
+  async changePassword(id, newPassword) {
+    return await ProviderModel.findByIdAndUpdate(
+      id,
+      { $set: { password: newPassword } },
+      { new: true }
+    )
+      .then((doc) => {
+        return {
+          doc: doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        return {
+          doc: null,
+          err: err,
+        };
+      });
+  },
+
+  async delete(id) {
+    return await ProviderModel.deleteOne({ _id: id })
+      .then((doc) => ({ doc, err: null }))
+      .catch((err) => ({ err, doc: null }));
+  },
 };
 
 export { ProviderModule };

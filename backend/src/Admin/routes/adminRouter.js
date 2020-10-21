@@ -49,11 +49,26 @@ adminRouter
 adminRouter
   .route("/providers/:id/coupons")
   .post(
-    uploadHelper("Coupons-Images/").single("imgURL"),
     AdminAuth,
+    uploadHelper("Coupons-Images/").single("imgURL"),
     CouponValidationWares.addCoupon,
     AdminsController.addCoupon
   );
+
+adminRouter
+  .route("/providers/:id/modification")
+  .put(
+    AdminAuth,
+    uploadHelper("Providers-Images/").single("logoURL"),
+    ProviderValidationWares.updateProvider,
+    AdminsController.updateProvider
+  );
+
+adminRouter.route("/providers").get(AdminAuth, AdminsController.getProviders);
+
+adminRouter
+  .route("/providers/:id/deletion")
+  .delete(AdminAuth, AdminsController.deleteProvider);
 // citiesRouter
 //   .route("/:id/districts/:districtId")
 //   .delete(AdminCityControllers.deleteDistrict);
