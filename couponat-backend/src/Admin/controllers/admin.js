@@ -97,7 +97,7 @@ const AdminsController = {
       });
       console.log("1321");
       imgURL = "/coupons-management/coupons-images/" + req.file.filename;
-      coupon.imgURL = imgURL;
+      coupon.imgURL = imgURL;  
     }
 
     let savedCoupon = await CouponModule.add(coupon);
