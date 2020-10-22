@@ -101,7 +101,7 @@ const AdminsController = {
     }
 
     let savedCoupon = await CouponModule.add(coupon);
-    if (savedCoupon.err)
+    if (savedCoupon.err) 
       return next(
         boom.badData(getErrorMessage(savedCoupon.err, req.headers.lang || "ar"))
       );
