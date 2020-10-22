@@ -6,9 +6,9 @@ services:
     restart: always
     volumes:
       - ./couponat-backend:/coupons/backend:delegated
-      - ./externalVolumes/Coupons-Images:/coupons/backend/Coupons-Images
-      - ./externalVolumes/Providers-Images:/coupons/backend/Providers-Images
-      - ./externalVolumes/Categories-Images:/coupons/backend/Categories-Images
+      - ./externalVolumes/Coupons-Images:/coupons/Coupons-Images
+      - ./externalVolumes/Providers-Images:/coupons/Providers-Images
+      - ./externalVolumes/Categories-Images:/coupons/Categories-Images
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:
