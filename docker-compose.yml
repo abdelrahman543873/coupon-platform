@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   backend:
-    build: backend/
+    build: ./couponat-backend
     env_file: ./.env
     restart: always
     volumes:
-      - ./backend:/backend
-      - ./externalVolumes/Coupons-Images:/backend/Coupons-Images
-      - ./externalVolumes/Providers-Images:/backend/Providers-Images
-      - ./externalVolumes/Categories-Images:/backend/Categories-Images
+      - ./couponat-backend:/couponat-backend
+      - ./externalVolumes/Coupons-Images:/couponat-backend/Coupons-Images
+      - ./externalVolumes/Providers-Images:/couponat-backend/Providers-Images
+      - ./externalVolumes/Categories-Images:/couponat-backend/Categories-Images
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:
@@ -19,7 +19,7 @@ services:
     image: mongo:latest
     restart: always
     #ports:
-    #  - "27019:27017"
+    #  - "27016:27017"
     env_file: ./.env
     volumes:
       - mongo:/var/lib/mongo
