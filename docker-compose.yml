@@ -5,7 +5,7 @@ services:
     env_file: ./.env
     restart: always
     volumes:
-      - ./couponat-backend:/couponat-backend
+      - ./couponat-backend:/coupons/backend:delegated
       - ./externalVolumes/Coupons-Images:/couponat-backend/Coupons-Images
       - ./externalVolumes/Providers-Images:/couponat-backend/Providers-Images
       - ./externalVolumes/Categories-Images:/couponat-backend/Categories-Images
@@ -19,7 +19,7 @@ services:
     image: mongo:latest
     restart: always
     #ports:
-    #  - "270169:27017"
+    #  - "27019:27017"
     env_file: ./.env
     volumes:
       - mongo:/var/lib/mongo

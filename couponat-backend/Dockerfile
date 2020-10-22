@@ -1,10 +1,10 @@
-FROM node:13.11
+FROM node:12.19.0-alpine
 
-WORKDIR /couponat-backend
+WORKDIR /coupons
 
-COPY package*.json ./
+COPY package.json .
 
-RUN npm install
+RUN yarn install
 
 RUN npm install -g nodemon
 
