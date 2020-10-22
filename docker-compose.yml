@@ -6,6 +6,7 @@ services:
     restart: always
     volumes:
       - ./couponat-backend:/couponat-backend
+      - ./couponat-backend/node_modules:/couponat-backend/node_modules
       - ./externalVolumes/Coupons-Images:/couponat-backend/Coupons-Images
       - ./externalVolumes/Providers-Images:/couponat-backend/Providers-Images
       - ./externalVolumes/Categories-Images:/couponat-backend/Categories-Images
