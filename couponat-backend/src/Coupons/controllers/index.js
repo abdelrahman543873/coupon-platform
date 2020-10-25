@@ -246,8 +246,7 @@ const CouponController = {
 
     let pdfDoc = new PDFDocument();
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
-    pdfDoc.addPage();
-    pdfDoc.moveDown(10);
+    pdfDoc.moveDown(35);
     pdfDoc
       .fillColor("red")
       .font("Times-Bold")
