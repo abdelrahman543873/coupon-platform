@@ -255,22 +255,22 @@ const CouponController = {
         .fontSize(27)
         .text("Provider: ", {
           //here it is,
-          lineBreak: false,
+          continued: true,
         })
         .fillColor("black")
         .fontSize(20)
-        .text(coupon.provider.name);
+        .text(coupon.provider.name, { align: "left" });
       pdfDoc.moveDown(0.5);
       pdfDoc
         .fillColor("blue")
         .fontSize(27)
         .text("Name: ", {
           //here it is,
-          lineBreak: false,
+          continued: true,
         })
         .fillColor("black")
         .fontSize(20)
-        .text(coupon.name.english);
+        .text(coupon.name.english, { align: "left" });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
         width: 150,
