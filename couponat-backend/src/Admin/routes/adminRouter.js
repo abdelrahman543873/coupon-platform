@@ -46,8 +46,12 @@ adminRouter
       { name: "unselectedImage" },
     ]),
     CategoryalidationWares.update,
-    CategoryController.updateCategory
+    AdminsController.updateCategory
   );
+
+adminRouter
+  .route("/categories/:id/deletion")
+  .delete(AdminAuth, AdminsController.deleteCategory);
 
 adminRouter
   .route("/providers")

@@ -44,6 +44,12 @@ const CategoryModule = {
         };
       });
   },
+
+  async delete(id) {
+    return await CategoryModel.deleteOne({ _id: id })
+      .then((doc) => ({ doc, err: null }))
+      .catch((err) => ({ err, doc: null }));
+  },
 };
 
 export { CategoryModule };
