@@ -7,7 +7,7 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { AdminModule } from "../modules/admin";
 import QRCode from "qrcode";
-import { Coupon, Provider } from "../../middlewares/responsHandler";
+import { Category, Coupon, Provider } from "../../middlewares/responsHandler";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
 
