@@ -16,7 +16,7 @@ const AdminsController = {
     let { email, name, password } = req.body,
       auth = decodeToken(req.headers.authentication);
     let hashedPass = await hashPass(password);
-    console.log(auth.type)
+    console.log(auth.type);
     if (auth && auth.type != "BOSS") {
       let errMsg =
         req.headers.lang == "en" ? "Not  Allowed!" : "ليس لديك الصلاحية";
