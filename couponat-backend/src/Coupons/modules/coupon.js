@@ -133,16 +133,31 @@ const CouponModule = {
   //   return coupons;
   // },
 
-  // async updateCoupon(id, couponData) {
-  //   return await CouponModel.findByIdAndUpdate(
-  //     id,
-  //     { $set: { ...couponData } },
-  //     { new: true }
-  //   ).catch((err) => {
-  //     console.log(err);
-  //     return { err: err };
-  //   });
-  // },
+  async updateCoupon(id, couponData) {
+    return await CouponModel.findByIdAndUpdate(
+      id,
+      { $set: { ...couponData } },
+      { new: true }
+    )
+      .then((doc) => {
+        return {
+          doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        return {
+          doc: null,
+          err: err,
+        };
+      });
+  },
+
+  async delete(id) {
+    return await CouponModel.deleteOne({ _id: id })
+      .then((doc) => ({ doc, err: null }))
+      .catch((err) => ({ err, doc: null }));
+  },
 
   // async deleteCoupon(id) {
   //   return await CouponModel.findByIdAndUpdate(

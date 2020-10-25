@@ -223,6 +223,14 @@ const AdminsController = {
 
   async deleteCategory(req, res, next) {
     let id = req.params.id;
+    let category = await CategoryModule.getById(id);
+
+    if (!category) {
+      let errMsg =
+        req.headers.lang == "en" ? "Category not found" : "التصنيف غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
     let coupons = await CouponModule.getAll(null, null, id, null, null);
     if (coupons.length > 0) {
       let errMsg =

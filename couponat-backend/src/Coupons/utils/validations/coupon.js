@@ -7,7 +7,7 @@ const langNameSchema = Joi.object().keys({
   english: Joi.string().min(3).required().error(errorsOverride),
 });
 
-const uodatelangNameSchema = Joi.object().keys({
+const updatelangNameSchema = Joi.object().keys({
   arabic: Joi.string().min(3).optional().error(errorsOverride),
   english: Joi.string().min(3).optional().error(errorsOverride),
 });
@@ -25,8 +25,8 @@ const CouponValidations = {
   }),
 
   updateCoupon: Joi.object({
-    name: uodatelangNameSchema,
-    description: uodatelangNameSchema,
+    name: updatelangNameSchema,
+    description: updatelangNameSchema,
     servicePrice: Joi.number().optional().positive().error(errorsOverride),
     offerPrice: Joi.number().optional().positive().error(errorsOverride),
     totalCount: Joi.number().optional().positive().error(errorsOverride),

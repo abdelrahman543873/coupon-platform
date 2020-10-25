@@ -84,108 +84,120 @@ const CouponController = {
     });
   },
 
-  // async getCouponsProviders(req, res, next) {
-  //   let providers = await CouponModule.getCouponsProviders(),
-  //     auth = req.headers.authentication,
-  //     favs = [];
-  //   if (auth) {
-  //     let decodeAuth = await decodeTokenAndGetType(auth);
-  //     if (decodeAuth && decodeAuth.type == "CUSTOMER") {
-  //       favs = ClientModule.getFavCoupons(decodeAuth.id);
-  //     }
-  //   }
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: providers.map((provider) => {
-  //       return Object.assign(provider, {
-  //         coupons: addFavProp(provider.coupons, favs),
-  //       });
-  //     }),
-  //     error: null,
-  //   });
-  // },
+  async updateCoupon(req, res, next) {
+    let id = req.params.id;
+    let auth = await decodeToken(req.headers.authentication),
+      imgURL = "";
+    console.log(auth);
+    if (
+      auth != "Just for development" &&
+      auth.type != "PROVIDER" &&
+      auth.type != "ADMIN"
+    ) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
+      return next(boom.unauthorized(errMsg));
+    }
 
-  // async getCouponsByPovider(req, res, next) {
-  //   let provider = req.params.id;
-  //   let coupons = await CouponModule.getCouponByProvider(provider);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: coupons,
-  //     error: null,
-  //   });
-  // },
+    let coupon = await CouponModule.getById(id);
+    if (!coupon) {
+      let errMsg =
+        req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+    let body = req.body;
 
-  // async updateCoupon(req, res, next) {
-  //   let id = req.query.couponId;
-  //   let newData = req.body;
+    body.name && !body.name.arabic
+      ? (body.name.arabic = coupon.name.arabic)
+      : "";
 
-  //   let bazarId = req.body.bazar,
-  //     bazar = await BazarModule.getById(bazarId),
-  //     providerId = bazar.provider,
-  //     provider = await ProviderModule.getById(providerId),
-  //     coupon = await CouponModule.getById(id);
+    body.name && !body.name.english
+      ? (body.name.english = coupon.name.english)
+      : "";
 
-  //   if (!coupon || coupon.bazar + "" !== bazarId) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "coupon not found" : "الكوبون غير موجود";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
-  //   if (
-  //     !provider.roles.includes("BAZAR_CREATOR") &&
-  //     !provider.roles.includes("BAZAR_PRODUCTS_EDITOR")
-  //   ) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
+    body.description && !body.description.arabic
+      ? (body.description.arabic = coupon.description.arabic)
+      : "";
 
-  //   if (req.file) {
-  //     let keyImageURL =
-  //       "http://api.bazar.alefsoftware.com/api/v1/products/coupons/coupons-images/" +
-  //       req.file.filename;
-  //     newData.keyImageURL = keyImageURL;
-  //   }
+    body.description && !body.description.english
+      ? (body.description.english = coupon.description.english)
+      : "";
 
-  //   delete newData.bazar;
-  //   let update = await CouponModule.updateCoupon(id, newData);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: update,
-  //     error: null,
-  //   });
-  // },
+    if (req.file) {
+      let diffHight = 0,
+        diffWidth = 0;
+      console.log("1111");
+      Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
+        return Jimp.read("src/logo.png")
+          .then((logoTpl) => {
+            diffHight = parseInt(
+              (tpl.bitmap.height - logoTpl.bitmap.height) / 2
+            );
+            diffWidth = parseInt((tpl.bitmap.width - logoTpl.bitmap.width) / 2);
+            logoTpl.opacity(0.4);
+            console.log(logoTpl.bitmap.height);
+            return tpl.composite(
+              logoTpl.resize(65, 65),
+              tpl.bitmap.width - logoTpl.bitmap.width - diffWidth,
+              tpl.bitmap.height - logoTpl.bitmap.height - diffHight,
+              [Jimp.BLEND_DESTINATION_OVER]
+            );
+          })
+          .then((tpl) => {
+            return tpl.write("Coupons-Images/" + req.file.filename);
+          });
+      });
+      console.log("1321");
+      imgURL = "/coupons-management/coupons-images/" + req.file.filename;
+      body.imgURL = imgURL;
+    }
 
-  // async deleteCoupon(req, res, next) {
-  //   let id = req.query.couponId;
-  //   let newData = req.body;
+    let updateCoupon = await CouponModule.updateCoupon(id, body);
+    if (updateCoupon.err)
+      return next(
+        boom.badData(
+          getErrorMessage(updateCoupon.err, req.headers.lang || "ar")
+        )
+      );
+    updateCoupon = new Coupon(updateCoupon.doc);
+    return res.status(201).send({
+      isSuccessed: true,
+      data: updateCoupon,
+      error: null,
+    });
+  },
 
-  //   let bazarId = req.body.bazar,
-  //     bazar = await BazarModule.getById(bazarId),
-  //     providerId = bazar.provider,
-  //     provider = await ProviderModule.getById(providerId),
-  //     coupon = await CouponModule.getById(id);
+  async deleteCoupon(req, res, next) {
+    let id = req.params.id;
+    let auth = await decodeToken(req.headers.authentication);
+    console.log(auth);
+    if (
+      auth != "Just for development" &&
+      auth.type != "PROVIDER" &&
+      auth.type != "ADMIN"
+    ) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
+      return next(boom.unauthorized(errMsg));
+    }
 
-  //   if (!coupon || coupon.bazar + "" !== bazarId) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "coupon not found" : "الكوبون غير موجود";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
-  //   if (
-  //     !provider.roles.includes("BAZAR_CREATOR") &&
-  //     !provider.roles.includes("BAZAR_PRODUCTS_EDITOR")
-  //   ) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
-  //     return next(boom.unauthorized(errMsg));
-  //   }
+    let coupon = await CouponModule.getById(id);
+    if (!coupon) {
+      let errMsg =
+        req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
 
-  //   let deleteCoupon = await CouponModule.deleteCoupon(id);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: deleteCoupon,
-  //     error: null,
-  //   });
-  // },
+    let { doc, err } = await CouponModule.delete(id);
+    if (err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    console.log("doc: ", doc);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: doc,
+      error: null,
+    });
+  },
 
   async getAll(req, res, next) {
     let category = req.query.category || null,

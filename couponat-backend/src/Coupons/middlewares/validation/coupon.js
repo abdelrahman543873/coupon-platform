@@ -3,7 +3,7 @@ import { CouponValidations } from "../../utils/validations/coupon";
 
 const CouponValidationWares = {
   async addCoupon(req, res, next) {
-    console.log("here now")
+    console.log("here now");
     let lang = req.headers.lang || "ar",
       errMsg =
         lang == "en"
@@ -21,25 +21,13 @@ const CouponValidationWares = {
     next();
   },
 
-  // async updateCoupon(req, res, next) {
-  //   if (!req.body.titleEn) delete req.body.titleEn;
-  //   if (!req.body.titleAr) delete req.body.titleAr;
-  //   if (!req.body.descriptionEn) delete req.body.descriptionEn;
-  //   if (!req.body.descriptionAr) delete req.body.descriptionAr;
-  //   if (!req.body.discount) delete req.body.discount;
-  //   if (!req.body.price) delete req.body.price;
-  //   if (!req.body.expirationDate) delete req.body.expirationDate;
-  //   if (!req.body.keyImg) delete req.body.keyImg;
+  async updateCoupon(req, res, next) {
+    const { error } = CouponValidations.updateCoupon.validate(body);
 
-  //   if (req.body === {}) return next(boom.badData(error.details[0].message));
-  //   let body = Object.create(req.body);
-  //   delete body.bazar;
-  //   const { error } = CouponValidations.updateCoupon.validate(body);
-
-  //   if (error) {
-  //     return next(boom.badData(error.details[0].message));
-  //   }
-  //   next();
-  // },
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+    next();
+  },
 };
 export { CouponValidationWares };

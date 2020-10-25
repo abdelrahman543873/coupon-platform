@@ -9,11 +9,24 @@ const couponRouter = express.Router();
 couponRouter
   .route("/")
   .post(
-    uploadHelper("Coupons-Images/").single("imgURL"),
     checkUserAuth,
+    uploadHelper("Coupons-Images/").single("imgURL"),
     CouponValidationWares.addCoupon,
     CouponController.addCoupon
   );
+
+couponRouter
+  .route("/:id/modification")
+  .put(
+    checkUserAuth,
+    uploadHelper("Coupons-Images/").single("imgURL"),
+    CouponValidationWares.updateCoupon,
+    CouponController.updateCoupon
+  );
+
+couponRouter
+  .route("/:id/deletion")
+  .delete(checkUserAuth, CouponController.deleteCoupon);
 
 couponRouter.use("/coupons-images", express.static("Coupons-Images"));
 export { couponRouter };

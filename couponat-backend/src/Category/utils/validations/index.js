@@ -6,7 +6,7 @@ const langNameSchema = Joi.object().keys({
   english: Joi.string().min(3).max(30).required().error(errorsOverride),
 });
 
-const uodatelangNameSchema = Joi.object().keys({
+const updatelangNameSchema = Joi.object().keys({
   arabic: Joi.string().min(3).optional().error(errorsOverride),
   english: Joi.string().min(3).optional().error(errorsOverride),
 });
@@ -17,7 +17,7 @@ const CategoryValidations = {
   }),
 
   edit: Joi.object({
-    name: uodatelangNameSchema,
+    name: updatelangNameSchema,
   }),
 };
 
