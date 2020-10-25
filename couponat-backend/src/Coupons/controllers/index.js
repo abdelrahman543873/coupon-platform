@@ -253,7 +253,6 @@ const CouponController = {
       pdfDoc
         .fillColor("blue")
         .fontSize(27)
-        .font(bold)
         .text("Provider: ", {
           //here it is,
           lineBreak: false,
@@ -265,7 +264,6 @@ const CouponController = {
       pdfDoc
         .fillColor("blue")
         .fontSize(27)
-        .font(bold)
         .text("Name: ", {
           //here it is,
           lineBreak: false,
