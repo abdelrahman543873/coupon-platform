@@ -250,7 +250,7 @@ const CouponController = {
     pdfDoc
       .text("Couponat El Madina", { align: "center" })
       .fillColor("red")
-      .font('bold')
+      .font("Times-Roman")
       .fontSize(30); // the text and the position where the it should come
     coupons.map((coupon) => {
       let segment_array = coupon.qrURL.split("/");
