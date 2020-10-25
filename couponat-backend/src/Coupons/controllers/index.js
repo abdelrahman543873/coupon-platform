@@ -246,7 +246,7 @@ const CouponController = {
 
     let pdfDoc = new PDFDocument();
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
-    doc.addPage();
+    pdfDoc.addPage();
     pdfDoc.moveDown(10);
     pdfDoc
       .fillColor("red")
@@ -255,7 +255,7 @@ const CouponController = {
       .text("Couponat El Madina", { align: "center" });
 
     coupons.map((coupon) => {
-      doc.addPage();
+      pdfDoc.addPage();
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
       pdfDoc
