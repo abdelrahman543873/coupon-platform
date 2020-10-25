@@ -59,7 +59,7 @@ const CategoryController = {
     let category = await CategoryModule.getById(id);
 
     if (!category) {
-      let errMsg = lang == "en" ? "Category not found" : "التصنيف غير موجود";
+      let errMsg = req.headers.lang == "en" ? "Category not found" : "التصنيف غير موجود";
       return next(boom.notFound(errMsg));
     }
 
