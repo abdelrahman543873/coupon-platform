@@ -248,10 +248,11 @@ const CouponController = {
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
 
     pdfDoc
-      .text("Couponat El Madina", { align: "center" })
       .fillColor("red")
       .font("Times-Roman")
-      .fontSize(30); // the text and the position where the it should come
+      .fontSize(30) // the text and the position where the it should come
+      .text("Couponat El Madina", { align: "center" });
+
     coupons.map((coupon) => {
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
