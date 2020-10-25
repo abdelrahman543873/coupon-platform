@@ -246,15 +246,16 @@ const CouponController = {
 
     let pdfDoc = new PDFDocument();
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
-
+    doc.addPage();
+    pdfDoc.moveDown(10);
     pdfDoc
       .fillColor("red")
       .font("Times-Bold")
-      .fontSize(30) // the text and the position where the it should come
+      .fontSize(50) // the text and the position where the it should come
       .text("Couponat El Madina", { align: "center" });
-    pdfDoc.moveDown(1);
 
     coupons.map((coupon) => {
+      doc.addPage();
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
       pdfDoc
@@ -278,9 +279,9 @@ const CouponController = {
         .text(coupon.name.english, { align: "left" });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
-        width: 150,
-        height: 150,
-        align: "left",
+        width: 300,
+        height: 300,
+        align: "cebnter",
       });
 
       pdfDoc.text("------------------------------------------------------");
