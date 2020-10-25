@@ -253,18 +253,26 @@ const CouponController = {
       pdfDoc
         .fillColor("blue")
         .fontSize(27)
-        .text("Provider: ")
+        .font(bold)
+        .text("Provider: ", {
+          //here it is,
+          lineBreak: false,
+        })
         .fillColor("black")
-        .fontSize(15)
+        .fontSize(20)
         .text(coupon.provider.name);
       pdfDoc.moveDown(0.5);
       pdfDoc
         .fillColor("blue")
         .fontSize(27)
-        .text("Name: ", { align: "left" })
+        .font(bold)
+        .text("Name: ", {
+          //here it is,
+          lineBreak: false,
+        })
         .fillColor("black")
-        .fontSize(15)
-        .text(coupon.name);
+        .fontSize(20)
+        .text(coupon.name.english);
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
         width: 150,
