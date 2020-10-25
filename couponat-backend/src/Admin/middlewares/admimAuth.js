@@ -20,7 +20,7 @@ async function AdminAuth(req, res, next) {
     return next(boom.unauthorized(errMsg));
   }
 
-  if (authInfo.type != "ADMIN") {
+  if (authInfo.type != "ADMIN"  && authInfo.type != "BOSS"  ) {
     let errMsg = lang == "en" ? "Not have accsses" : "ليس لديك صلاحيات";
     return next(boom.unauthorized(errMsg));
   }
