@@ -252,7 +252,7 @@ const CouponController = {
       let last_segment = segment_array.pop();
       pdfDoc
         .fillColor("blue")
-        .fontSize(27)
+        .fontSize(20)
         .text("Provider: ", {
           //here it is,
           continued: true,
@@ -263,7 +263,7 @@ const CouponController = {
       pdfDoc.moveDown(0.5);
       pdfDoc
         .fillColor("blue")
-        .fontSize(27)
+        .fontSize(20)
         .text("Name: ", {
           //here it is,
           continued: true,
@@ -275,7 +275,10 @@ const CouponController = {
       pdfDoc.image("./Coupons-Images/" + last_segment, {
         width: 150,
         height: 150,
+        align: "left",
       });
+
+      pdfDoc.text('------------------------------------------------------')
     });
     pdfDoc.end();
     return res.status(200).send({
