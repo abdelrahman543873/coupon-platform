@@ -246,7 +246,7 @@ const CouponController = {
 
     let pdfDoc = new PDFDocument();
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
-    pdfDoc.moveDown(35);
+    pdfDoc.moveDown(25);
     pdfDoc
       .fillColor("red")
       .font("Times-Bold")
@@ -282,8 +282,6 @@ const CouponController = {
         height: 300,
         align: "cebnter",
       });
-
-      pdfDoc.text("------------------------------------------------------");
     });
     pdfDoc.end();
     return res.status(200).send({
