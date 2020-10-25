@@ -22,7 +22,7 @@ const CouponValidationWares = {
   },
 
   async updateCoupon(req, res, next) {
-    const { error } = CouponValidations.updateCoupon.validate(body);
+    const { error } = CouponValidations.updateCoupon.validate(req.body);
 
     if (error) {
       return next(boom.badData(error.details[0].message));
