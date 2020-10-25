@@ -254,7 +254,6 @@ const CouponController = {
         .fillColor("blue")
         .fontSize(20)
         .text("Provider: ", {
-          //here it is,
           continued: true,
         })
         .fillColor("black")
@@ -265,7 +264,6 @@ const CouponController = {
         .fillColor("blue")
         .fontSize(20)
         .text("Name: ", {
-          //here it is,
           continued: true,
         })
         .fillColor("black")
@@ -278,7 +276,7 @@ const CouponController = {
         align: "left",
       });
 
-      pdfDoc.text('------------------------------------------------------')
+      pdfDoc.text("------------------------------------------------------");
     });
     pdfDoc.end();
     return res.status(200).send({
