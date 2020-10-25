@@ -54,8 +54,7 @@ const AdminsController = {
       let errMsg = lang == "en" ? "Wrong password" : "كلمة المرور غير صحيحه";
       return next(boom.badData(errMsg));
     }
-    if (email == "Boss@gmail.com") type = "BOSS";
-    else type = "ADMIN";
+    email == "Boss@gmail.com" ? (type = "BOSS") : (type = "ADMIN");
     let authToken = generateToken(admin._id, type);
 
     return res.status(200).send({
