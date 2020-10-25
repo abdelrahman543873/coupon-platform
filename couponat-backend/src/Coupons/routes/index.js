@@ -28,5 +28,7 @@ couponRouter
   .route("/:id/deletion")
   .delete(checkUserAuth, CouponController.deleteCoupon);
 
+couponRouter.route("/pdf").get(checkUserAuth, CouponController.generatePDF);
+
 couponRouter.use("/coupons-images", express.static("Coupons-Images"));
 export { couponRouter };

@@ -6,7 +6,9 @@ import QRCode from "qrcode";
 import { Coupon } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
 import Jimp from "jimp";
-import { CouponModel } from "../models/coupon";
+import PDFDocument from "pdfkit";
+import fs from "fs";
+import { IP } from "../../../serverIP";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -219,6 +221,50 @@ const CouponController = {
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
+      error: null,
+    });
+  },
+
+  async generatePDF(req, res, next) {
+    let id = req.query.id || null;
+    let coupons = await CouponModule.getAll(null, null, null, id, null);
+
+    if (coupons.length < 1) {
+      return res.status(200).send({
+        isSuccessed: true,
+        data: null,
+        error:
+          req.headers.lang == "en"
+            ? "there is no coupons now"
+            : "لا يوجود كوبونات خصم حاليا",
+      });
+    }
+
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+
+    let pdfDoc = new PDFDocument();
+    pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
+
+    coupons.map((coupon) => {
+      let segment_array = coupon.qrURL.split("/");
+      let last_segment = segment_array.pop();
+      pdfDoc.text("Provider: ").fillColor("blue").fontSize(17);
+      pdfDoc.text(coupon.provider.name).fillColor("black").fontSize(15);
+      pdfDoc.moveDown(0.5);
+      pdfDoc.text("Name: ", { align: "left" }).fillColor("blue").fontSize(17);
+      pdfDoc.text(coupon.provider.name).fillColor("black").fontSize(15);
+      pdfDoc.moveDown(0.5);
+      pdfDoc.image("./Coupons-Images/" + last_segment, {
+        width: 80,
+        height: 80,
+      });
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: IP + "/coupons-management/coupons-images/Coupons.pdf",
       error: null,
     });
   },
