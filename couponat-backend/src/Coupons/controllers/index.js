@@ -248,17 +248,10 @@ const CouponController = {
     pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
 
     pdfDoc
-      .moveTo(200, 200) // this is your starting position of the line, from the left side of the screen 200 and from top 200
-      .lineTo(400, 200) // this is the end point the line
-      .dash(5, { space: 10 }) // here we are formatting it to dash
-      .text("Couponat El Madina", 410, 195)
+      .text("Couponat El Madina", { align: "center" })
       .fillColor("red")
+      .font('bold')
       .fontSize(30); // the text and the position where the it should come
-    pdfDoc
-      .moveTo(500, 200) //again we are giving a starting position for the text
-      .lineTo(800, 200) //end point
-      .dash(5, { space: 10 }) //adding dash
-      .stroke();
     coupons.map((coupon) => {
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
