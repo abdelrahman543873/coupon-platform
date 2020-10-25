@@ -249,7 +249,7 @@ const CouponController = {
 
     pdfDoc
       .fillColor("red")
-      .font("Times-Bold")
+      .font('fonts/Chalkboard.ttc', 'Chalkboard-Bold')
       .fontSize(30) // the text and the position where the it should come
       .text("Couponat El Madina", { align: "center" });
     pdfDoc.moveDown(1);
