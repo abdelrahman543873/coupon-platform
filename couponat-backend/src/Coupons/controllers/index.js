@@ -261,7 +261,7 @@ const CouponController = {
         height: 80,
       });
     });
-
+    doc.end();
     return res.status(200).send({
       isSuccessed: true,
       data: IP + "/coupons-management/coupons-images/Coupons.pdf",
