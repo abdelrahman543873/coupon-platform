@@ -250,15 +250,25 @@ const CouponController = {
     coupons.map((coupon) => {
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
-      pdfDoc.text("Provider: ").fillColor("blue").fontSize(17);
-      pdfDoc.text(coupon.provider.name).fillColor("black").fontSize(15);
+      pdfDoc
+        .text("Provider: ")
+        .fillColor("blue")
+        .fontSize(17)
+        .text(coupon.provider.name)
+        .fillColor("black")
+        .fontSize(15);
       pdfDoc.moveDown(0.5);
-      pdfDoc.text("Name: ", { align: "left" }).fillColor("blue").fontSize(17);
-      pdfDoc.text(coupon.provider.name).fillColor("black").fontSize(15);
+      pdfDoc
+        .text("Name: ", { align: "left" })
+        .fillColor("blue")
+        .fontSize(17)
+        .text(coupon.name)
+        .fillColor("black")
+        .fontSize(15);
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
-        width: 80,
-        height: 80,
+        width: 150,
+        height: 150,
       });
     });
     pdfDoc.end();
