@@ -38,6 +38,18 @@ adminRouter
   );
 
 adminRouter
+  .route("/categories/:id/modification")
+  .put(
+    AdminAuth,
+    uploadHelper("Categories-Images/").fields([
+      { name: "selectedImage" },
+      { name: "unselectedImage" },
+    ]),
+    CategoryalidationWares.update,
+    CategoryController.updateCategory
+  );
+
+adminRouter
   .route("/providers")
   .post(
     AdminAuth,

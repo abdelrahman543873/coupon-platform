@@ -24,6 +24,26 @@ const CategoryModule = {
   async getAll() {
     return await CategoryModel.find().sort("-createdAt");
   },
+
+  async update(id, newData) {
+    return await CategoryModel.findByIdAndUpdate(
+      id,
+      { $set: { ...newData } },
+      { new: true }
+    )
+      .then((doc) => {
+        return {
+          doc: doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        return {
+          doc: null,
+          err: err,
+        };
+      });
+  },
 };
 
 export { CategoryModule };
