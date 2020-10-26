@@ -55,7 +55,18 @@ const ClientValidationWares = {
   },
 
   updateProfile(req, res, next) {
-    const { error } = updateProfile.validate(req.body);
+    if (
+      (req.body.mobile && !req.body.countryCode) ||
+      (!req.body.mobile && req.body.countryCode)
+    ) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "Must enter both mobile and country code!"
+            : "يجب إدخال رقم الهاتف مع رمز الدولة";
+      return next(boom.badData(errMsg));
+    }
+    const { error } = ClientValidations.updateProfile.validate(req.body);
 
     if (error) {
       return next(boom.badData(error.details[0].message));

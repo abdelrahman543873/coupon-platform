@@ -404,48 +404,45 @@ const ClientControllers = {
   //   });
   // },
 
-  // async changePassword(req, res, next) {
-  //   let id = req.body.authId;
-  //   delete req.body.authId;
-  //   let currentPssword = req.body.currentPassword,
-  //     newPssword = req.body.newPassword;
-  //   let user = await ClientModule.getById(id);
-  //   if (!user) {
-  //     return next(boom.notFound(errMsg));
-  //   }
-
-  //   if (!(await bcryptCheckPass(currentPssword, user.password))) {
-  //     let lang = req.headers.lang || "ar",
-  //       errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
-  //     return next(boom.badData(errMsg));
-  //   }
-
-  //   let hashedPass = await hashPass(newPssword);
-  //   let changePassword = await ClientModule.changePassword(id, hashedPass);
-  //   changePassword = changePassword.toObject();
-  //   delete changePassword.password;
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: changePassword,
-  //     error: null,
-  //   });
-  // },
+  async changePassword(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let { currentPassword, newPassword } = req.body;
+    let user = await ClientModule.getById(id);
+    if (!user) {
+      return next(boom.notFound(errMsg));
+    }
+    if (!(await bcryptCheckPass(currentPassword, user.password))) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
+      return next(boom.badData(errMsg));
+    }
+    user.password = await hashPass(newPassword);
+    user = await user.save();
+    user = new Client(user);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: user,
+      error: null,
+    });
+  },
 
   async updateProfile(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
-    let newData = req.body;
-
+    let newData = req.body,
+      smsToken = null;
+    if (newData.mobile) {
+      newData.isVerified = false;
+      smsToken = getSMSToken(5);
+    }
     let update = await ClientModule.updateProfile(id, newData);
-
     if (update.err)
       return next(
         boom.badData(getErrorMessage(update.err, req.headers.lang || "ar"))
       );
     let client = new Client(update.doc);
-    if (req.body.mobile) {
-      req.body.isVerified = false;
-      smsToken = getSMSToken(5);
+    if (smsToken) {
       let addVerification = await VerificationsModule.add(
         smsToken,
         client.id,
@@ -468,7 +465,7 @@ const ClientControllers = {
     }
     return res.status(200).send({
       isSuccessed: true,
-      data: update,
+      data: client,
       smsToken,
       error: null,
     });

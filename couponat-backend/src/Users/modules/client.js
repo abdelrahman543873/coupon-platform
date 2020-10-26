@@ -138,16 +138,5 @@ const ClientModule = {
         };
       });
   },
-
-  async changePassword(id, newPassword) {
-    return await ClientModel.findByIdAndUpdate(
-      id,
-      { $set: { password: newPassword } },
-      { new: true }
-    ).catch((err) => {
-      console.log(err);
-      return { err: err };
-    });
-  },
 };
 export { ClientModule };

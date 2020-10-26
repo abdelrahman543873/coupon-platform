@@ -47,20 +47,20 @@ customersRouter
   .get(checkUserAuth, ClientControllers.getFavCoupons);
 
 customersRouter
-  .route("/customers/modification")
+  .route("/modification")
   .put(
     checkUserAuth,
     ClientValidationWares.updateProfile,
     ClientControllers.updateProfile
   );
 
-// customersRouter
-//   .route("/customers/newPassword")
-//   .put(
-//     Validations.changePassword,
-//     checkCustomerAuth,
-//     ClientControllers.changePassword
-//   );
+customersRouter
+  .route("/newPassword")
+  .put(
+    checkUserAuth,
+    ClientValidationWares.changePassword,
+    ClientControllers.changePassword
+  );
 
 // customersRouter
 //   .route("/customers/info")
