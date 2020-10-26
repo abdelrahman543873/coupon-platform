@@ -108,7 +108,7 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    let { err, doc } = await CouponModule.getById(id);
+    let { err } = await CouponModule.getById(id);
     if (err) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
@@ -188,20 +188,20 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    let { err } = await CouponModule.getById(id);
+    let { doc, err } = await CouponModule.getById(id);
     if (err) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
     }
 
-    let { doc, err } = await CouponModule.delete(id);
-    if (err)
+    let delet = await CouponModule.delete(id);
+    if (delet.err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
     console.log("doc: ", doc);
     return res.status(200).send({
       isSuccessed: true,
-      data: doc,
+      data: delet.doc,
       error: null,
     });
   },
