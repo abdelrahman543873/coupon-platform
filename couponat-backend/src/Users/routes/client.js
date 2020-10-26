@@ -1,6 +1,7 @@
 import express from "express";
 import { CategoryController } from "../../Category/controllers";
 import { CouponController } from "../../Coupons/controllers";
+import { checkUserAuth } from "../../utils/auth";
 import { ClientControllers } from "../controllers/client";
 import { ProviderControllers } from "../controllers/provider";
 import { ClientValidationWares } from "../middlewares/validations/client";
@@ -35,24 +36,16 @@ customersRouter.route("/coupons").get(CouponController.getAll);
 customersRouter.route("/search").get(CouponController.search);
 
 // customersRouter
-//   .route("/customers/fav-products/:id")
-//   .put(checkCustomerAuth, ClientControllers.updateFavProducts);
-
-// customersRouter
 //   .route("/customers/fav-products/sync")
 //   .post(checkCustomerAuth, ClientControllers.asyncFavProducts);
 
-// customersRouter
-//   .route("/customers/fav-products/")
-//   .get(checkCustomerAuth, ClientControllers.getFavProducts);
+customersRouter
+  .route("/fav-coupons/:id")
+  .put(checkUserAuth, ClientControllers.updateFavCoupons);
 
-// customersRouter
-//   .route("/customers/fav-coupons/:id")
-//   .put(checkCustomerAuth, ClientControllers.updateFavCoupons);
-
-// customersRouter
-//   .route("/customers/fav-coupons")
-//   .get(checkCustomerAuth, ClientControllers.getFavCoupons);
+customersRouter
+  .route("/fav-coupons")
+  .get(checkUserAuth, ClientControllers.getFavCoupons);
 
 // customersRouter
 //   .route("/customers/modification")

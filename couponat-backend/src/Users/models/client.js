@@ -31,7 +31,7 @@ let clientSchema = mongoose.Schema(
       type: String,
       enum: ["GOOGLE", "FACEBOOK", "TWITTER"],
     },
-    favCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "coupon" }],
+    favCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupon"}],
     fcmToken: String,
   },
   {

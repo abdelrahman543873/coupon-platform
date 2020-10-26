@@ -9,6 +9,7 @@ import Jimp from "jimp";
 import PDFDocument from "pdfkit";
 import fs from "fs";
 import { IP } from "../../../serverIP";
+import { ClientModule } from "../../Users/modules/client";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -70,6 +71,8 @@ const CouponController = {
   },
 
   async search(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth ? auth.id : null;
     let name = req.query.name,
       skip = parseInt(req.query.skip) || 0,
       limit = parseInt(req.query.limit) || 0;
@@ -79,6 +82,9 @@ const CouponController = {
       return new Coupon(coupon);
     });
 
+    let user = await ClientModule.getById(id);
+    if (user && user.favCoupons)
+      coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
@@ -124,7 +130,6 @@ const CouponController = {
     body.description && !body.description.english
       ? (body.description.english = coupon.description.english)
       : "";
-
     if (req.file) {
       let diffHight = 0,
         diffWidth = 0;
@@ -153,7 +158,6 @@ const CouponController = {
       imgURL = "/coupons-management/coupons-images/" + req.file.filename;
       body.imgURL = imgURL;
     }
-
     let updateCoupon = await CouponModule.updateCoupon(id, body);
     if (updateCoupon.err)
       return next(
@@ -202,6 +206,8 @@ const CouponController = {
   },
 
   async getAll(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth ? auth.id : null;
     let category = req.query.category || null,
       limit = parseInt(req.query.limit) || null,
       skip = parseInt(req.query.skip) || null,
@@ -217,7 +223,9 @@ const CouponController = {
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);
     });
-
+    let user = await ClientModule.getById(id);
+    if (user && user.favCoupons)
+      coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
@@ -292,11 +300,11 @@ const CouponController = {
   },
 };
 
-// function addFavProp(coupons, userFav) {
-//   return coupons.map((coupon) => {
-//     return Object.assign(coupon, {
-//       isFav: userFav.some((item) => item._id + "" === coupon._id + ""),
-//     });
-//   });
-// }
+function addFavProp(coupons, userFav) {
+  return coupons.map((coupon) => {
+    return Object.assign(coupon, {
+      isFav: userFav.some((item) => item._id + "" === coupon._id + ""),
+    });
+  });
+}
 export { CouponController };

@@ -98,7 +98,6 @@ const ClientModule = {
       user.favCoupons.splice(coupontIndex, 1);
     }
     user = await user.save();
-    user = await user.populate("favCoupons").execPopulate();
     return user;
   },
 
@@ -132,4 +131,11 @@ const ClientModule = {
   },
 };
 
+function addFavProp(coupons, userFav) {
+  return coupons.map((coupon) => {
+    return Object.assign(coupon, {
+      isFav: userFav.some((item) => item._id + "" === coupon._id + ""),
+    });
+  });
+}
 export { ClientModule };

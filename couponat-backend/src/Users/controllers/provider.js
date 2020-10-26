@@ -116,6 +116,10 @@ const ProviderControllers = {
       newPssword = req.body.newPassword;
     let user = await ProviderModule.getById(id);
     if (!user) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "this account not found"
+          : "هذا الحساب غير موجود";
       return next(boom.badData(errMsg));
     }
 

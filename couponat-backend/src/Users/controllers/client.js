@@ -4,7 +4,7 @@ import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../modules/verifications";
-import { generateToken } from "../../utils/JWTHelper";
+import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import {
   Category,
   Client,
@@ -59,10 +59,18 @@ const ClientControllers = {
   },
 
   async home(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth ? auth.id : null;
     let providers = await ProviderModule.getAll();
     let categories = await CategoryModule.getAll();
     let coupons = await CouponModule.getAll(0, 30, null, null);
+    coupons = coupons.map((cuopon) => {
+      return new Coupon(cuopon);
+    });
 
+    let user = await ClientModule.getById(id);
+    if (user && user.favCoupons)
+      coupons = await addFavProp(coupons, user.favCoupons);
     res.status(201).send({
       isSuccessed: true,
       data: {
@@ -72,12 +80,8 @@ const ClientControllers = {
         categories: categories.map((category) => {
           return new Category(category);
         }),
-        newest: coupons.map((cuopon) => {
-          return new Coupon(cuopon);
-        }),
-        bestSeller: coupons.map((cuopon) => {
-          return new Coupon(cuopon);
-        }),
+        newest: coupons,
+        bestSeller: coupons,
       },
       error: null,
     });
@@ -352,44 +356,50 @@ const ClientControllers = {
   //   });
   // },
 
-  // async updateFavCoupons(req, res, next) {
-  //   let couponId = req.params.id,
-  //     userId = req.body.authId,
-  //     lang = req.headers.lang || "ar";
+  async updateFavCoupons(req, res, next) {
+    let couponId = req.params.id,
+      auth = await decodeToken(req.headers.authentication),
+      userId = auth.id,
+      lang = req.headers.lang || "ar";
 
-  //   if (!(await CouponModule.getById(couponId))) {
-  //     let errMsg = lang == "en" ? "Coupon not found" : "الكوبون غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let user = await ClientModule.toggleCouponInFavs(userId, couponId);
-  //   if (!user) {
-  //     let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let favCoupons = user.favCoupons;
+    if (!(await CouponModule.getById(couponId))) {
+      let errMsg = lang == "en" ? "Coupon not found" : "الكوبون غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+    let user = await ClientModule.toggleCouponInFavs(userId, couponId);
+    if (!user) {
+      let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+    let favCoupons = user.favCoupons;
 
-  //   let favArray = [];
-  //   favCoupons.map((favCop) => {
-  //     let obj = {
-  //       id: favCop,
-  //     };
-  //     favArray.push(obj);
-  //   });
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: favArray,
-  //     error: null,
-  //   });
-  // },
+    let favArray = [];
+    favCoupons.map((favCop) => {
+      let obj = {
+        id: favCop,
+      };
+      favArray.push(obj);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: true,
+      error: null,
+    });
+  },
 
-  // async getFavCoupons(req, res, next) {
-  //   let userId = req.body.authId;
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: await ClientModule.getFavCoupons(userId),
-  //     error: null,
-  //   });
-  // },
+  async getFavCoupons(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      userId = auth.id;
+    let coupons = await ClientModule.getFavCoupons(userId);
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: coupons,
+      error: null,
+    });
+  },
 
   // async getProfile(req, res, next) {
   //   let id = req.body.authId;
