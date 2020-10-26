@@ -24,6 +24,7 @@ const ClientModule = {
         return { doc: null, err };
       });
   },
+
   async add(name, mobile, countryCode, password) {
     return await new ClientModel({
       name,
@@ -45,11 +46,20 @@ const ClientModule = {
         };
       });
   },
-  async addViaSocialMedia({ name, socialMediaId, socialMediaType }) {
+
+  async addViaSocialMedia({
+    name,
+    socialMediaId,
+    socialMediaType,
+    mobile,
+    countryCode,
+  }) {
     return await new ClientModel({
       name,
       socialMediaId,
       socialMediaType,
+      mobile,
+      countryCode,
       isSocialMediaVerified: true,
     })
       .save()
@@ -130,12 +140,4 @@ const ClientModule = {
     });
   },
 };
-
-function addFavProp(coupons, userFav) {
-  return coupons.map((coupon) => {
-    return Object.assign(coupon, {
-      isFav: userFav.some((item) => item._id + "" === coupon._id + ""),
-    });
-  });
-}
 export { ClientModule };

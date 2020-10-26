@@ -17,7 +17,7 @@ const ClientValidations = {
       .required()
       .error(errorsOverride),
     mobile: Joi.string().min(8).required().error(errorsOverride),
-    countryCode: Joi.string().min(8).required().error(errorsOverride),
+    countryCode: Joi.string().min(3).required().error(errorsOverride),
   }),
 
   socialLogin: Joi.object({
@@ -31,6 +31,8 @@ const ClientValidations = {
       .valid("GOOGLE", "FACEBOOK", "TWITTER")
       .required()
       .error(errorsOverride),
+    mobile: Joi.string().min(8).required().error(errorsOverride),
+    countryCode: Joi.string().min(3).required().error(errorsOverride),
   }),
 
   login: Joi.object({

@@ -83,7 +83,7 @@ const CouponController = {
     });
 
     let user = await ClientModule.getById(id);
-   ///console.log(user.favCoupons);
+    ///console.log(user.favCoupons);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
@@ -226,7 +226,7 @@ const CouponController = {
       return new Coupon(coupon);
     });
     let user = await ClientModule.getById(id);
-   // console.log(user.favCoupons);
+    // console.log(user.favCoupons);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
@@ -256,7 +256,10 @@ const CouponController = {
     });
 
     let pdfDoc = new PDFDocument();
-    pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/Coupons.pdf"));
+    let name = "AllCoupons.pdf";
+    if (id) name = coupons[0].provider.name + ".pdf";
+    name = name.trim();
+    pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/" + name));
     pdfDoc.moveDown(25);
     pdfDoc
       .fillColor("red")
@@ -297,7 +300,7 @@ const CouponController = {
     pdfDoc.end();
     return res.status(200).send({
       isSuccessed: true,
-      data: IP + "/coupons-management/coupons-images/Coupons.pdf",
+      data: IP + "/coupons-management/coupons-images/" + name,
       error: null,
     });
   },

@@ -16,9 +16,9 @@ customersRouter
   .route("/auth")
   .post(ClientValidationWares.login, ClientControllers.auth);
 
-// customersRouter
-//   .route("/customers/social-auth")
-//   .post(Validations.socialAuth, ClientControllers.socialAuth);
+customersRouter
+  .route("/social-auth")
+  .post(ClientValidationWares.socialAuth, ClientControllers.socialAuth);
 
 customersRouter
   .route("/:id/mobile/verification")

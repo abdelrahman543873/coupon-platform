@@ -88,35 +88,32 @@ const ClientControllers = {
     });
   },
 
-  // async addViaSocialMedia(
-  //   email = "",
-  //   username,
-  //   socialMediaId,
-  //   socialMediaType,
-  //   userPicUrl = ""
-  // ) {
-  //   email = email.toLowerCase();
-  //   let { doc, err } = await ClientModule.addViaSocialMedia({
-  //     username,
-  //     email,
-  //     imgURL: userPicUrl,
-  //     socialMediaId,
-  //     socialMediaType,
-  //   });
+  async addViaSocialMedia(
+    name,
+    socialMediaId,
+    socialMediaType,
+    mobile,
+    countryCode
+  ) {
+    let { doc, err } = await ClientModule.addViaSocialMedia({
+      name,
+      socialMediaId,
+      socialMediaType,
+      mobile,
+      countryCode,
+    });
 
-  //   if (err)
-  //     return {
-  //       user: null,
-  //       err,
-  //     };
-
-  //   let client = doc.toObject();
-  //   delete client.password;
-  //   return {
-  //     user: client,
-  //     err: null,
-  //   };
-  // },
+    if (err)
+      return {
+        user: null,
+        err,
+      };
+    //let client = new Client(doc);
+    return {
+      user: doc,
+      err: null,
+    };
+  },
 
   async auth(req, res, next) {
     let { mobile, password } = req.body,
@@ -228,83 +225,92 @@ const ClientControllers = {
     });
   },
 
-  // async socialAuth(req, res, next) {
-  //   let socialMediaId = req.body.socialMediaId;
-  //   let user = await ClientModule.getBySocialMediaId(socialMediaId);
-  //   if (user) {
-  //     user = user.toObject();
-  //     delete user.password;
-  //     if (!user.isVerified) {
-  //       // is supposed to be 302 and contains the redirect data!
-  //       return res.status(200).send({
-  //         isSuccessed: true,
-  //         data: {
-  //           user,
-  //           token: null,
-  //         },
-  //         error: "User not verified!",
-  //       });
-  //     } else {
-  //       let authToken = generateToken(user._id, "CUSTOMER");
-  //       return res.status(200).send({
-  //         isSuccessed: true,
-  //         data: {
-  //           user: user,
-  //           authToken,
-  //         },
-  //         error: null,
-  //       });
-  //     }
-  //   } else {
-  //     let { email, username, socialMediaType, userPicURL = "" } = req.body;
+  async socialAuth(req, res, next) {
+    let socialMediaId = req.body.socialMediaId;
+    let user = await ClientModule.getBySocialMediaId(socialMediaId);
+    if (user) {
+      user = new Client(user);
+      if (!user.isVerified) {
+        return res.status(200).send({
+          isSuccessed: true,
+          data: {
+            user,
+            token: null,
+          },
+          error: "User not verified!",
+        });
+      } else {
+        let authToken = generateToken(user.id, "CLIENT");
+        return res.status(200).send({
+          isSuccessed: true,
+          data: {
+            user: user,
+            authToken,
+          },
+          error: null,
+        });
+      }
+    } else {
+      let { name, socialMediaType, mobile, countryCode } = req.body;
 
-  //     user = await ClientModule.getByEmail(email);
-  //     if (user) {
-  //       user = await ClientModule.fillSocialMediaData(
-  //         user,
-  //         socialMediaId,
-  //         socialMediaType,
-  //         userPicURL
-  //       );
-  //       if (!user)
-  //         return next(boom.internal("Error filling social media data"));
-  //       let authToken = generateToken(user._id, "CUSTOMER");
-  //       return res.status(200).send({
-  //         isSuccessed: true,
-  //         data: {
-  //           user: user,
-  //           authToken,
-  //         },
-  //         error: null,
-  //       });
-  //     } else {
-  //       let registerationRes = await ClientControllers.addViaSocialMedia(
-  //         email,
-  //         username,
-  //         socialMediaId,
-  //         socialMediaType,
-  //         userPicURL
-  //       );
-  //       if (registerationRes.err) {
-  //         return next(
-  //           boom.badData(
-  //             getErrorMessage(registerationRes.err, req.headers.lang || "ar")
-  //           )
-  //         );
-  //       }
-  //       return res.status(201).send({
-  //         isSuccessed: true,
-  //         data: {
-  //           user: registerationRes.user,
-  //           authToken: null,
-  //         },
-  //         error: null,
-  //       });
-  //     }
-  //   }
-  // },
-
-
+      user = await ClientModule.getByMobile(mobile);
+      if (user) {
+        user = await ClientModule.fillSocialMediaData(
+          user,
+          socialMediaId,
+          socialMediaType
+        );
+        if (!user)
+          return next(boom.internal("Error filling social media data"));
+        let authToken = generateToken(user._id, "CLIENT");
+        user = new Client(user);
+        return res.status(200).send({
+          isSuccessed: true,
+          data: {
+            user: user,
+            authToken,
+          },
+          error: null,
+        });
+      } else {
+        let registerationRes = await ClientControllers.addViaSocialMedia(
+          name,
+          socialMediaId,
+          socialMediaType,
+          mobile,
+          countryCode
+        );
+        if (registerationRes.err) {
+          return next(
+            boom.badData(
+              getErrorMessage(registerationRes.err, req.headers.lang || "ar")
+            )
+          );
+        }
+        user = new Client(registerationRes.user);
+        let smsToken = getSMSToken(5);
+        let addVerification = await VerificationsModule.add(
+          smsToken,
+          user.id,
+          user.countryCode + user.mobile
+        );
+        if (addVerification.err)
+          return next(
+            boom.badData(
+              getErrorMessage(addVerification.err, req.headers.lang || "ar")
+            )
+          );
+        return res.status(201).send({
+          isSuccessed: true,
+          data: {
+            user,
+            smsToken,
+          },
+          error: null,
+        });
+      }
+    }
+  },
 
   async asyncFavCoupons(req, res, next) {
     let coupons = req.body.coupons;
