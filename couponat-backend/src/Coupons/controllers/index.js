@@ -83,6 +83,7 @@ const CouponController = {
     });
 
     let user = await ClientModule.getById(id);
+   ///console.log(user.favCoupons);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
@@ -208,6 +209,7 @@ const CouponController = {
   async getAll(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
       id = auth ? auth.id : null;
+    console.log(id);
     let category = req.query.category || null,
       limit = parseInt(req.query.limit) || null,
       skip = parseInt(req.query.skip) || null,
@@ -224,6 +226,7 @@ const CouponController = {
       return new Coupon(coupon);
     });
     let user = await ClientModule.getById(id);
+   // console.log(user.favCoupons);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     return res.status(200).send({
@@ -300,10 +303,14 @@ const CouponController = {
   },
 };
 
-function addFavProp(coupons, userFav) {
+async function addFavProp(coupons, userFav) {
   return coupons.map((coupon) => {
     return Object.assign(coupon, {
-      isFav: userFav.some((item) => item._id + "" === coupon._id + ""),
+      isFav: userFav.some((item) => {
+        console.log(coupon.id, "---", item);
+        console.log(item == coupon.id);
+        return item + "" == coupon.id + "";
+      }),
     });
   });
 }

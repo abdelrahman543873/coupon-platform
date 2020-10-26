@@ -69,6 +69,7 @@ const ClientControllers = {
     });
 
     let user = await ClientModule.getById(id);
+    //console.log(user.favCoupons);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     res.status(201).send({
@@ -506,5 +507,17 @@ const ClientControllers = {
   //   });
   // },
 };
+
+async function addFavProp(coupons, userFav) {
+  return coupons.map((coupon) => {
+    return Object.assign(coupon, {
+      isFav: userFav.some((item) => {
+        console.log(coupon.id, "---", item);
+        console.log(item == coupon.id)
+        return item + "" == coupon.id + "";
+      }),
+    });
+  });
+}
 
 export { ClientControllers };
