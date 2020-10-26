@@ -54,26 +54,14 @@ const ClientValidationWares = {
     next();
   },
 
-  // updateProfile(req, res, next) {
-  //   //let body={};
-  //   if (!req.body.username) delete req.body.username;
-  //   if (!req.body.email) delete req.body.email;
-  //   if (!req.body.mobile) delete req.body.mobile;
-  //   if (!req.body.countryCode) delete req.body.countryCode;
-  //   if (!req.body.gender) delete req.body.gender;
-  //   if (!req.body.deleteImg || req.body.deleteImg === "false")
-  //     delete req.body.deleteImg;
+  updateProfile(req, res, next) {
+    const { error } = updateProfile.validate(req.body);
 
-  //     console.log("kaJASaJS");
-  //   if (req.body === {}) return next(boom.badData(error.details[0].message));
-
-  //   const { error } = updateProfile.validate(req.body);
-
-  //   if (error) {
-  //     return next(boom.badData(error.details[0].message));
-  //   }
-  //   next();
-  // },
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+    next();
+  },
 
   changePassword(req, res, next) {
     console.log(req.body);

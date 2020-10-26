@@ -118,15 +118,25 @@ const ClientModule = {
     return user.favCoupons;
   },
 
-  async updatePrfile(id, clientData) {
+  async updateProfile(id, clientData) {
     return await ClientModel.findByIdAndUpdate(
       id,
       { $set: { ...clientData } },
       { new: true }
-    ).catch((err) => {
-      console.log(err);
-      return { err: err };
-    });
+    )
+      .then((doc) => {
+        return {
+          doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+        return {
+          doc: null,
+          err: err,
+        };
+      });
   },
 
   async changePassword(id, newPassword) {

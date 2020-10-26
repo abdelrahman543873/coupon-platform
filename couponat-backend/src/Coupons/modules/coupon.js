@@ -21,7 +21,19 @@ const CouponModule = {
   },
 
   async getById(id) {
-    return await CouponModel.findById(id);
+    return await CouponModel.findById(id)
+      .then((doc) => {
+        return {
+          doc,
+          err: null,
+        };
+      })
+      .catch((err) => {
+        return {
+          doc: null,
+          err: err,
+        };
+      });
   },
 
   async getAll(skip, limit, category, provider, section) {

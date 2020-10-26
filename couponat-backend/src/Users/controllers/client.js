@@ -345,9 +345,10 @@ const ClientControllers = {
       auth = await decodeToken(req.headers.authentication),
       userId = auth.id,
       lang = req.headers.lang || "ar";
-
-    if (!(await CouponModule.getById(couponId))) {
-      let errMsg = lang == "en" ? "Coupon not found" : "الكوبون غير موجود";
+    let { err } = await CouponModule.getById(couponId);
+    if (err) {
+      let errMsg =
+        req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
     }
     let user = await ClientModule.toggleCouponInFavs(userId, couponId);
@@ -430,55 +431,48 @@ const ClientControllers = {
   //   });
   // },
 
-  // async updateProfile(req, res, next) {
-  //   let id = req.body.authId;
-  //   delete req.body.authId;
-  //   let newData = req.body;
-  //   let lang = req.headers.lang || "ar",
-  //     errMsg = lang == "en" ? "Error" : "Error";
-  //   let smsToken = "";
-  //   if (req.file) {
-  //     let imgURL =
-  //       "http://api.bazar.alefsoftware.com/api/v1/customers-management/user-image/" +
-  //       req.file.filename;
-  //     newData.imgURL = imgURL;
-  //   }
-  //   if (req.body.mobile) {
-  //     if (!req.body.countryCode) {
-  //       let errMsg =
-  //         lang == "en" ? "Country Code must be send" : "يجب ادخال كود الدولة";
-  //       return next(boom.badData(errMsg));
-  //     }
-  //     req.body.isVerified = false;
-  //     smsToken = getSMSToken(5);
-  //     let addToVerificationRes = await VerificationsModule.add(
-  //       id,
-  //       smsToken,
-  //       req.body.countryCode,
-  //       req.body.mobile
-  //     );
-  //     if (addToVerificationRes.err) return next(boom.badData(errMsg));
-  //     let smsMessage =
-  //       req.headers.lang == "en"
-  //         ? "Bazaar app : welcome to bazaar your verification code is "
-  //         : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-  //     // smsToken = await Messages.sendMessage(
-  //     //   req.body.countryCode+req.body.mobile,
-  //     //   smsMessage + smsToken
-  //     // );
-  //   }
+  async updateProfile(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let newData = req.body;
 
-  //   // console.log(newData);
-  //   let update = await ClientModule.updatePrfile(id, newData);
-  //   update = update.toObject();
-  //   delete update.password;
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: update,
-  //     smsToken,
-  //     error: null,
-  //   });
-  // },
+    let update = await ClientModule.updateProfile(id, newData);
+
+    if (update.err)
+      return next(
+        boom.badData(getErrorMessage(update.err, req.headers.lang || "ar"))
+      );
+    let client = new Client(update.doc);
+    if (req.body.mobile) {
+      req.body.isVerified = false;
+      smsToken = getSMSToken(5);
+      let addVerification = await VerificationsModule.add(
+        smsToken,
+        client.id,
+        client.countryCode + client.mobile
+      );
+      if (addVerification.err)
+        return next(
+          boom.badData(
+            getErrorMessage(addVerification.err, req.headers.lang || "ar")
+          )
+        );
+      // let smsMessage =
+      //   req.headers.lang == "en"
+      //     ? "Bazaar app : welcome to bazaar your verification code is "
+      //     : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
+      // // smsToken = await Messages.sendMessage(
+      // //   req.body.countryCode+req.body.mobile,
+      // //   smsMessage + smsToken
+      // // );
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: update,
+      smsToken,
+      error: null,
+    });
+  },
 
   // async getFamiliarQuestions(req, res, next) {
   //   let lang = req.headers.lang || "ar";

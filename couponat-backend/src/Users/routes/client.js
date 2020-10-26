@@ -29,8 +29,7 @@ customersRouter
   .post(ClientControllers.resendMobileVerification);
 
 customersRouter.route("/home").get(ClientControllers.home);
-// customersRouter.route("/providers").get(ProviderControllers.getAll);
-// customersRouter.route("/categories").get(CategoryController.getAll);
+
 customersRouter.route("/coupons").get(CouponController.getAll);
 
 customersRouter.route("/search").get(CouponController.search);
@@ -47,14 +46,13 @@ customersRouter
   .route("/fav-coupons")
   .get(checkUserAuth, ClientControllers.getFavCoupons);
 
-// customersRouter
-//   .route("/customers/modification")
-//   .put(
-//     uploadHelper("Users-Images/").single("imgURL"),
-//     Validations.updateProfile,
-//     checkCustomerAuth,
-//     ClientControllers.updateProfile
-//   );
+customersRouter
+  .route("/customers/modification")
+  .put(
+    checkUserAuth,
+    ClientValidationWares.updateProfile,
+    ClientControllers.updateProfile
+  );
 
 // customersRouter
 //   .route("/customers/newPassword")
