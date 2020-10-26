@@ -304,58 +304,35 @@ const ClientControllers = {
   //   }
   // },
 
-  // async updateFavProducts(req, res, next) {
-  //   let productId = req.params.id,
-  //     userId = req.body.authId,
-  //     lang = req.headers.lang || "ar";
 
-  //   if (!(await ProductModule.getById(productId))) {
-  //     let errMsg = lang == "en" ? "Product not found" : "المنتج غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let user = await ClientModule.toggleProductInFavs(userId, productId);
-  //   if (!user) {
-  //     let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   let favProducts = user.favProducts;
-  //   let favArray = [];
-  //   favProducts.map((favPro) => {
-  //     let obj = {
-  //       id: favPro,
-  //     };
-  //     favArray.push(obj);
-  //   });
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: favArray,
-  //     error: null,
-  //   });
-  // },
 
-  // async asyncFavProducts(req, res, next) {
-  //   let products = req.body.products;
-  //   let id = req.body.authId;
+  async asyncFavCoupons(req, res, next) {
+    let coupons = req.body.coupons;
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let user = await ClientModule.getById(id);
+    if (!user) {
+      let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
 
-  //   let user = await ClientModule.getById(id);
-  //   if (!user) {
-  //     let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
-  //     return next(boom.notFound(errMsg));
-  //   }
-
-  //   user.favProducts = user.favProducts.concat(products);
-  //   for (let i = 0; i < user.favProducts.length; i++) {
-  //     console.log(typeof user.favProducts[i]);
-  //     user.favProducts[i] = user.favProducts[i] + "";
-  //   }
-  //   user.favProducts = Array.from(new Set(user.favProducts));
-  //   user = await user.save();
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: user.favProducts,
-  //     error: null,
-  //   });
-  // },
+    user.favCoupons = user.favCoupons.concat(coupons);
+    for (let i = 0; i < user.favCoupons.length; i++) {
+      console.log(typeof user.favCoupons[i]);
+      user.favCoupons[i] = user.favCoupons[i] + "";
+    }
+    user.favCoupons = Array.from(new Set(user.favCoupons));
+    user = await user.save();
+    coupons = await ClientModule.getFavCoupons(user._id);
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: coupons,
+      error: null,
+    });
+  },
 
   async updateFavCoupons(req, res, next) {
     let couponId = req.params.id,
@@ -513,7 +490,7 @@ async function addFavProp(coupons, userFav) {
     return Object.assign(coupon, {
       isFav: userFav.some((item) => {
         console.log(coupon.id, "---", item);
-        console.log(item == coupon.id)
+        console.log(item == coupon.id);
         return item + "" == coupon.id + "";
       }),
     });

@@ -35,9 +35,9 @@ customersRouter.route("/coupons").get(CouponController.getAll);
 
 customersRouter.route("/search").get(CouponController.search);
 
-// customersRouter
-//   .route("/customers/fav-products/sync")
-//   .post(checkCustomerAuth, ClientControllers.asyncFavProducts);
+customersRouter
+  .route("/fav-products/sync")
+  .post(checkUserAuth, ClientControllers.asyncFavCoupons);
 
 customersRouter
   .route("/fav-coupons/:id")
