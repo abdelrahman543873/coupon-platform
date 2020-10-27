@@ -243,7 +243,14 @@ const AdminsController = {
         req.headers.lang == "en"
           ? "Cann't remove this Category!"
           : "لا يمكن حذف هذا التصنيف";
-      return next(boom.unauthorized(errMsg));
+      return res.status(401).send({
+        isSuccessed: false,
+        data: null,
+        error:
+          req.headers.lang == "en"
+            ? "Cann't remove this Category!"
+            : "لا يمكن حذف هذا التصنيف",
+      });
     }
 
     let { doc, err } = await CategoryModule.delete(id);
