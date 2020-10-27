@@ -64,6 +64,9 @@ const ClientControllers = {
     let providers = await ProviderModule.getAll();
     let categories = await CategoryModule.getAll();
     let coupons = await CouponModule.getAll(0, 30, null, null);
+    if (coupons.err) {
+      return next(boom.unauthorized(coupons.err));
+    }
     coupons = coupons.map((cuopon) => {
       return new Coupon(cuopon);
     });

@@ -149,6 +149,9 @@ const AdminsController = {
   async deleteProvider(req, res, next) {
     let id = req.params.id;
     let coupons = await CouponModule.getAll(null, null, null, id, null);
+    if(coupons.err){
+      return next(boom.unauthorized(coupons.err));
+    }
     if (coupons.length > 0) {
       let errMsg =
         req.headers.lang == "en"

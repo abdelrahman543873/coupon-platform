@@ -221,6 +221,9 @@ const CouponController = {
       provider,
       null
     );
+    if (coupons.err) {
+      return next(boom.unauthorized(coupons.err));
+    }
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);
     });
@@ -238,7 +241,9 @@ const CouponController = {
   async generatePDF(req, res, next) {
     let id = req.query.id || null;
     let coupons = await CouponModule.getAll(null, null, null, id, null);
-
+    if (coupons.err) {
+      return next(boom.unauthorized(coupons.err));
+    }
     if (coupons.length < 1) {
       return res.status(200).send({
         isSuccessed: true,

@@ -45,7 +45,10 @@ const CouponModule = {
     return await CouponModel.find({ ...queryOp })
       .sort("-createdAt")
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .catch((err) => {
+        return { err };
+      });
   },
 
   async search(skip = 1, limit = 1, name = "") {
