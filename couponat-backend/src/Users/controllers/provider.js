@@ -125,7 +125,13 @@ const ProviderControllers = {
 
     if (!(await bcryptCheckPass(currentPssword, user.password))) {
       let lang = req.headers.lang || "ar",
-        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
+        errMsg = lang == "en" ? "Wrong Password!" : "كلمة السر غير صحيحة";
+      return next(boom.badData(errMsg));
+    }
+
+    if (currentPassword == newPassword) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Same Password!" : "لا يوجد تغير في كلمة السر";
       return next(boom.badData(errMsg));
     }
 

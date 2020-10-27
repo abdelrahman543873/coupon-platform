@@ -408,13 +408,19 @@ const ClientControllers = {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
     let { currentPassword, newPassword } = req.body;
+
     let user = await ClientModule.getById(id);
     if (!user) {
       return next(boom.notFound(errMsg));
     }
     if (!(await bcryptCheckPass(currentPassword, user.password))) {
       let lang = req.headers.lang || "ar",
-        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
+        errMsg = lang == "en" ? "Wrong Password!" : "كلمة السر غير صحيحة";
+      return next(boom.badData(errMsg));
+    }
+    if (currentPassword == newPassword) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Same Password!" : "لا يوجد تغير في كلمة السر";
       return next(boom.badData(errMsg));
     }
     user.password = await hashPass(newPassword);
