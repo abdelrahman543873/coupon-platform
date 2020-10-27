@@ -411,7 +411,8 @@ const ClientControllers = {
     let user = await ClientModule.getById(id);
     if (!user) {
       let lang = req.headers.lang || "ar",
-        errMsg = lang == "en" ? "user not found!" : "المستخدم غير موجود";
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
       return next(boom.notFound(errMsg));
     }
     if (!(await bcryptCheckPass(currentPassword, user.password))) {
