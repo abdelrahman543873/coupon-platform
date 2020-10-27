@@ -50,6 +50,45 @@ const AdminModule = {
     };
   },
 
+  // async getCategoryStatistics() {
+  //   let coupons = await CouponModel.aggregate([
+  //     {
+  //       $lookup: {
+  //         from: "categories",
+  //         localField: "category",
+  //         foreignField: "_id",
+  //         as: "category",
+  //       },
+  //     },
+  //     {
+  //       $group: {
+  //         _id: "$category.name.english",
+  //         count: { $sum: 1 },
+  //       },
+  //     },
+  //     { $sort: { _id: 1 } },
+  //     {
+  //       $group: {
+  //         _id: null,
+  //         counts: {
+  //           $push: {
+  //             k: "$_id",
+  //             v: "$count",
+  //           },
+  //         },
+  //       },
+  //     },
+  //     {
+  //       $replaceRoot: {
+  //         newRoot: { $arrayToObject: "$counts" },
+  //       },
+  //     },
+  //   ]);
+  //   return {
+  //     coupons,
+  //   };
+  // },
+
   // async getStatistics() {
   //   let bazars = await BazarModel.aggregate([
   //     {

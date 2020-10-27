@@ -10,6 +10,7 @@ import QRCode from "qrcode";
 import { Category, Coupon, Provider } from "../../middlewares/responsHandler";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
+import { CouponModel } from "../../Coupons/models/coupon";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -246,6 +247,26 @@ const AdminsController = {
     return res.status(200).send({
       isSuccessed: true,
       data: doc,
+      error: null,
+    });
+  },
+
+  async getAllCategories(req, res, next) {
+    let categories = await CategoryModule.getAll();
+    categories = categories.map((category) => {
+      return new Category(category);
+    });
+
+    for (let i = 0; i < categories.length; i++) {
+      categories[i].totalCoupons = await CouponModel.countDocuments({
+        totalCount: { $gt: 0 },
+        category: categories[i].id,
+      });
+      console.log(categories[i].totalCount);
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: categories,
       error: null,
     });
   },

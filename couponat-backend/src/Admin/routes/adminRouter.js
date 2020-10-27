@@ -35,7 +35,8 @@ adminRouter
     ]),
     CategoryalidationWares.add,
     CategoryController.addCategory
-  );
+  )
+  .get(AdminAuth, AdminsController.getAllCategories);
 
 adminRouter
   .route("/categories/:id/modification")
