@@ -408,10 +408,16 @@ const ClientControllers = {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
     let { currentPassword, newPassword } = req.body;
-
     let user = await ClientModule.getById(id);
     if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "user not found!" : "المستخدم غير موجود";
       return next(boom.notFound(errMsg));
+    }
+    if (!(await bcryptCheckPass(currentPassword, user.password))) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
+      return next(boom.badData(errMsg));
     }
     if (!(await bcryptCheckPass(currentPassword, user.password))) {
       let lang = req.headers.lang || "ar",
