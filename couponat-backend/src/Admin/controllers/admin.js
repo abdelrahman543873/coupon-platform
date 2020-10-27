@@ -81,7 +81,7 @@ const AdminsController = {
     if (req.file) {
       console.log("1111");
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
-        return Jimp.read("src/logo.png")
+        return Jimp.read("assets/images/logo.png")
           .then((logoTpl) => {
             logoTpl.opacity(1.0);
             console.log(logoTpl.bitmap.height);

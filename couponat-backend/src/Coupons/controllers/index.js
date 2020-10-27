@@ -33,7 +33,7 @@ const CouponController = {
         diffWidth = 0;
       console.log("1111");
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
-        return Jimp.read("src/logo.png")
+        return Jimp.read("assets/images/logo.png")
           .then((logoTpl) => {
             diffHight = parseInt(
               (tpl.bitmap.height - logoTpl.bitmap.height) / 2
@@ -136,7 +136,7 @@ const CouponController = {
         diffWidth = 0;
       console.log("1111");
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
-        return Jimp.read("src/logo.png")
+        return Jimp.read("assets/images/logo.png")
           .then((logoTpl) => {
             diffHight = parseInt(
               (tpl.bitmap.height - logoTpl.bitmap.height) / 2
