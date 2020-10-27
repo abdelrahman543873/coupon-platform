@@ -40,11 +40,6 @@ let couponSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    isDeleted: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     totalCount: {
       type: Number,
       required: true,

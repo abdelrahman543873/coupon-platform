@@ -31,19 +31,12 @@ let providerSchema = mongoose.Schema(
       required: true,
       default: true,
     },
-
-    isDeleted: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
-    cities:[
+    cities: [
       {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:'City',
-        autopopulate: true
+        ref: "City",
+        autopopulate: true,
       },
     ],
 
@@ -51,8 +44,8 @@ let providerSchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:'Districts',
-        autopopulate: true
+        ref: "Districts",
+        autopopulate: true,
       },
     ],
 
@@ -76,7 +69,7 @@ let providerSchema = mongoose.Schema(
   }
 );
 
-providerSchema.plugin(require('mongoose-autopopulate'));
+providerSchema.plugin(require("mongoose-autopopulate"));
 let ProviderModel = mongoose.model("Provider", providerSchema);
 
 export { ProviderModel };

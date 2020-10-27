@@ -379,6 +379,15 @@ const AdminsController = {
   //     error: null,
   //   });
   // },
+
+  async getStatistics(req, res, next) {
+    let stat = await AdminModule.getStatistics();
+    return res.status(200).send({
+      isSuccessed: true,
+      data: stat,
+      error: null,
+    });
+  },
 };
 
 export { AdminsController };

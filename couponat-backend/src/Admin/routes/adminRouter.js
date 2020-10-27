@@ -85,9 +85,6 @@ adminRouter.route("/providers").get(AdminAuth, AdminsController.getProviders);
 adminRouter
   .route("/providers/:id/deletion")
   .delete(AdminAuth, AdminsController.deleteProvider);
-// citiesRouter
-//   .route("/:id/districts/:districtId")
-//   .delete(AdminCityControllers.deleteDistrict);
 
 adminRouter
   .route("/cities/:id/districts")
@@ -96,6 +93,8 @@ adminRouter
     cityValidationware.addDistricts,
     CityController.addDistricts
   );
+
+adminRouter.route("/statistics").get(AdminAuth, AdminsController.getStatistics);
 
 // adminRouter
 //   .route("/questions/new")

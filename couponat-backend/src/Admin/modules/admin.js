@@ -1,6 +1,6 @@
 import { AdminModel } from "../models/admin";
-
-
+import { ProviderModel } from "../../Users/models/provider";
+import { CouponModel } from "../../Coupons/models/coupon";
 const AdminModule = {
   async add(email, name, password) {
     return await AdminModel({
@@ -29,6 +29,25 @@ const AdminModule = {
       console.log(err);
       return null;
     });
+  },
+
+  async getStatistics() {
+    let selectionDate = new Date(new Date().setDate(new Date().getDate() - 10));
+    let providers = await ProviderModel.countDocuments({ isActive: true });
+    let coupons = await CouponModel.countDocuments({ totalCount: { $gt: 0 } });
+    let newProviders = await ProviderModel.countDocuments({
+      createdAt: { $gte: selectionDate },
+    });
+    let newCoupons = await CouponModel.countDocuments({
+      createdAt: { $gte: selectionDate },
+    });
+
+    return {
+      providers,
+      newProviders,
+      coupons,
+      newCoupons,
+    };
   },
 
   // async getStatistics() {
@@ -131,7 +150,6 @@ const AdminModule = {
   // async deleteAllPayment() {
   //   return await PeymentTypeModel.deleteMany({});
   // },
-
 };
 
 export { AdminModule };
