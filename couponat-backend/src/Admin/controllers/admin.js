@@ -153,6 +153,7 @@ const AdminsController = {
       return next(boom.unauthorized(coupons.err));
     }
     if (coupons.length > 0) {
+      console.log(coupons);
       let errMsg =
         req.headers.lang == "en"
           ? "Cann't remove this Provider!"
@@ -243,14 +244,7 @@ const AdminsController = {
         req.headers.lang == "en"
           ? "Cann't remove this Category!"
           : "لا يمكن حذف هذا التصنيف";
-      return res.status(401).send({
-        isSuccessed: false,
-        data: null,
-        error:
-          req.headers.lang == "en"
-            ? "Cann't remove this Category!"
-            : "لا يمكن حذف هذا التصنيف",
-      });
+      return next(boom.unauthorized(errMsg));
     }
 
     let { doc, err } = await CategoryModule.delete(id);

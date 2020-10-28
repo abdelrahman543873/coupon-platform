@@ -22,7 +22,19 @@ const CategoryModule = {
     return await CategoryModel.findById(id);
   },
   async getAll() {
-    return await CategoryModel.find().sort("-createdAt");
+    let categories = await CategoryModel.find().sort("-createdAt");
+    let all = {
+      name: {
+        arabic: "الكل",
+        english: "All",
+      },
+      images: {
+        selected: "/categories-management/categories-images/selected.png",
+        unSelected: "/categories-management/categories-images/unselected.png",
+      },
+    };
+    let newCategories = [all].concat(categories);
+    return newCategories;
   },
 
   async update(id, newData) {

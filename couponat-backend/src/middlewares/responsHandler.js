@@ -48,7 +48,7 @@ class District {
 class Category {
   constructor(category) {
     if (category) {
-      this.id = category._id;
+      this.id = category._id ? category._id : null;
       this.name = category.name;
       this.images = {
         selected: IP + category.images.selected,
