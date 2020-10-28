@@ -38,7 +38,6 @@ const CouponModule = {
 
   async getAll(skip, limit, category, provider, section) {
     let queryOp = {};
-    queryOp.isDeleted = false;
     if (category) queryOp.category = category;
     if (provider) queryOp.provider = provider;
     console.log(queryOp);
