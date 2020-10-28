@@ -74,7 +74,10 @@ const AdminsController = {
 
     let provider = await ProviderModule.getById(req.params.id);
     if (!provider) {
-      let errMsg = lang == "en" ? "Provider not found" : "مقد الخدمة غير موجود";
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Provider not found"
+          : "مقد الخدمة غير موجود";
       return next(boom.notFound(errMsg));
     }
 
@@ -122,7 +125,7 @@ const AdminsController = {
 
   async updateProvider(req, res, next) {
     let id = req.params.id;
-   
+
     let newData = req.body;
     if (req.file) {
       let logoURL =

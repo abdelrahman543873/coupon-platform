@@ -97,7 +97,6 @@ const CouponController = {
     let id = req.params.id;
     let auth = await decodeToken(req.headers.authentication),
       imgURL = "";
-    console.log(auth);
     if (
       auth != "Just for development" &&
       auth.type != "PROVIDER" &&
@@ -108,14 +107,15 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    let { err } = await CouponModule.getById(id);
-    if (err) {
+    let coupons = await CouponModule.getById(id);
+    console.log(coupons);
+    console.log(coupons.err ? true : false);
+    if (!coupons.doc || coupons.err) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
     }
     let body = req.body;
-
     body.name && !body.name.arabic
       ? (body.name.arabic = coupon.name.arabic)
       : "";
@@ -154,7 +154,6 @@ const CouponController = {
             return tpl.write("Coupons-Images/" + req.file.filename);
           });
       });
-      console.log("1321");
       imgURL = "/coupons-management/coupons-images/" + req.file.filename;
       body.imgURL = imgURL;
     }
