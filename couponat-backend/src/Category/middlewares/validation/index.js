@@ -6,6 +6,7 @@ const CategoryalidationWares = {
     console.log(req.body);
     let lang = req.headers.lang || "ar",
       errMsg = lang == "en" ? "Please Images to upload!" : "صور التصنيف مطلوبة";
+    req.body.name=JSON.parse(req.body.name);
     let { error } = CategoryValidations.add.validate(req.body);
 
     if (error) {
