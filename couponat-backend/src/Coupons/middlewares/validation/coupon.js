@@ -1,4 +1,5 @@
 import boom from "@hapi/boom";
+import { CategoryModule } from "../../../Category/modules";
 import { CouponValidations } from "../../utils/validations/coupon";
 
 const CouponValidationWares = {
@@ -9,6 +10,12 @@ const CouponValidationWares = {
         lang == "en"
           ? "Please select keyImage to upload!"
           : "صورة الكوبون مطلوبة";
+
+    let category = await CategoryModule.getById(req.body.category);
+    if (!category) {
+      let errMsg = lang == "en" ? "Category not found" : "التصنيف غير موجود";
+      return next(boom.notFound(errMsg));
+    }
     let { error } = CouponValidations.addCoupon.validate(req.body);
 
     if (error) {

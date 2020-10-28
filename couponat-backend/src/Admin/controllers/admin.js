@@ -72,6 +72,12 @@ const AdminsController = {
     let coupon = req.body,
       imgURL = "";
 
+    let provider = await ProviderModule.getById(req.params.id);
+    if (!provider) {
+      let errMsg = lang == "en" ? "Provider not found" : "مقد الخدمة غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
     coupon.provider = req.params.id;
     coupon.code = nanoid(6);
     let fileName = coupon.code + Date.now() + ".png";
@@ -116,6 +122,7 @@ const AdminsController = {
 
   async updateProvider(req, res, next) {
     let id = req.params.id;
+   
     let newData = req.body;
     if (req.file) {
       let logoURL =
