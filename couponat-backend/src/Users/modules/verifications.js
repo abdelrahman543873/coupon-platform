@@ -16,6 +16,12 @@ const VerificationsModule = {
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));
   },
+
+  async getByCode(code) {
+    return await VerificationModel.findOne({ code: code })
+      .then((doc) => ({ doc, err: null }))
+      .catch((err) => ({ err, doc: null }));
+  },
   async delete(user) {
     return await VerificationModel.deleteMany({ user })
       .then((doc) => ({ doc, err: null }))

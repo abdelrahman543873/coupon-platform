@@ -32,11 +32,7 @@ const ClientControllers = {
     let client = new Client(doc.toObject());
     console.log(client);
     let smsToken = getSMSToken(5);
-    let addVerification = await VerificationsModule.add(
-      smsToken,
-      client.id,
-      client.countryCode + client.mobile
-    );
+    let addVerification = await VerificationsModule.add(smsToken, client.id);
     if (addVerification.err)
       return next(
         boom.badData(
@@ -207,8 +203,7 @@ const ClientControllers = {
     let deleteCode = await VerificationsModule.delete(id);
     let addToVerificationRes = await VerificationsModule.add(
       smsToken,
-      client._id,
-      client.countryCode + client.mobile
+      client._id
     );
     if (addToVerificationRes.err)
       return next(
@@ -292,11 +287,7 @@ const ClientControllers = {
         }
         user = new Client(registerationRes.user);
         let smsToken = getSMSToken(5);
-        let addVerification = await VerificationsModule.add(
-          smsToken,
-          user.id,
-          user.countryCode + user.mobile
-        );
+        let addVerification = await VerificationsModule.add(smsToken, user.id);
         if (addVerification.err)
           return next(
             boom.badData(
@@ -459,11 +450,7 @@ const ClientControllers = {
       );
     let client = new Client(update.doc);
     if (smsToken) {
-      let addVerification = await VerificationsModule.add(
-        smsToken,
-        client.id,
-        client.countryCode + client.mobile
-      );
+      let addVerification = await VerificationsModule.add(smsToken, client.id);
       if (addVerification.err)
         return next(
           boom.badData(
