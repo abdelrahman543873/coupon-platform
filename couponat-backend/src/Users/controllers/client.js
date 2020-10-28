@@ -72,7 +72,7 @@ const ClientControllers = {
     });
 
     let user = await ClientModule.getById(id);
-    //console.log(user.favCoupons);
+    console.log(providers);
     if (user && user.favCoupons)
       coupons = await addFavProp(coupons, user.favCoupons);
     res.status(201).send({

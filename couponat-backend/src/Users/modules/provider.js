@@ -27,7 +27,7 @@ const ProviderModule = {
   },
 
   async getAll() {
-    return ProviderModel.find({ isActive: true, isDeleted: false }).sort(
+    return ProviderModel.find({ isActive: true}).sort(
       "-createdAt"
     );
   },
