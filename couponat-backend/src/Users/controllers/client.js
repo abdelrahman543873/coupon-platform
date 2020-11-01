@@ -411,11 +411,6 @@ const ClientControllers = {
     }
     if (!(await bcryptCheckPass(currentPassword, user.password))) {
       let lang = req.headers.lang || "ar",
-        errMsg = lang == "en" ? "Wrong Password!" : "الباسورد غير صحيح";
-      return next(boom.badData(errMsg));
-    }
-    if (!(await bcryptCheckPass(currentPassword, user.password))) {
-      let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "Wrong Password!" : "كلمة السر غير صحيحة";
       return next(boom.badData(errMsg));
     }
