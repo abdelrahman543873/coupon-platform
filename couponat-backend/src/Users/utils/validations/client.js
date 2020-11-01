@@ -50,9 +50,9 @@ const ClientValidations = {
   }),
 
   updateProfile: Joi.object({
-    name: Joi.string().min(3).max(30).required().error(errorsOverride),
-    mobile: Joi.string().min(8).required().error(errorsOverride),
-    countryCode: Joi.string().min(3).required().error(errorsOverride),
+    name: Joi.string().min(3).max(30).optional().error(errorsOverride),
+    mobile: Joi.string().min(8).optional().error(errorsOverride),
+    countryCode: Joi.string().min(3).optional().error(errorsOverride),
   }),
 };
 
