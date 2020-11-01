@@ -109,7 +109,7 @@ class Payment {
       this.id = payment._id;
       this.name = payment.name;
       this.key = payment.key;
-      this.imgURL = payment.imgURL;
+      this.imgURL = IP + payment.imgURL;
     }
   }
 }
@@ -139,8 +139,8 @@ class Subscription {
         this.paymentType.key == "ONLINE_PAYMENT"
           ? new Cridit(subscription.account)
           : new Bank(subscription.account);
-      this.qrURL = subscription.qrURL;
-      subscription.imgURL ? (this.imgURL = subscription.imgURL) : "";
+      this.qrURL = IP + subscription.qrURL;
+      subscription.imgURL ? (this.imgURL = IP + subscription.imgURL) : "";
       subscription.note ? (this.note = subscription.note) : "";
     }
   }

@@ -2,7 +2,7 @@ const { Payment } = require("../../middlewares/responsHandler");
 const { paymentTypeModule } = require("../modules/paymentType");
 
 let PaymentTypeController = {
-  async addPaymentWay(req, res, next) {
+  async add(req, res, next) {
     let payment = req.body;
 
     if (req.file) {
@@ -28,7 +28,7 @@ let PaymentTypeController = {
     });
   },
 
-  async getPaymentWay(req, res, next) {
+  async getAll(req, res, next) {
     let getPay = await paymentTypeModule.getAll();
     getPay = getPay.map((pay) => {
       return new Payment(pay);
@@ -45,7 +45,7 @@ let PaymentTypeController = {
     let switchPay = await paymentTypeModule.switchPayment(id);
     return res.status(201).send({
       isSuccessed: true,
-      data: switchPay,
+      data: true,
       error: null,
     });
   },

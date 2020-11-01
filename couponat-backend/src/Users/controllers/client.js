@@ -467,8 +467,10 @@ const ClientControllers = {
     // // );
     return res.status(200).send({
       isSuccessed: true,
-      data: user,
-      smsToken,
+      data: {
+        user: user,
+        smsToken,
+      },
       error: null,
     });
   },

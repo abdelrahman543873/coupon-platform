@@ -1,6 +1,6 @@
 import { Bank } from "../../middlewares/responsHandler";
-import { AppBankModel } from "../../Payment/models/appBanks";
-import { BanksModule } from "../../Paymentes/modules/bankAccounts";
+import { AppBankModel } from "../models/appBanks";
+import { BanksModule } from "../modules/bankAccounts";
 
 let BankAccountController = {
   async add(req, res, next) {

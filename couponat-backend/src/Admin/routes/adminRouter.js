@@ -4,6 +4,10 @@ import { CategoryalidationWares } from "../../Category/middlewares/validation";
 import { CityController } from "../../Cities/controllers/city";
 import { cityValidationware } from "../../Cities/middlewares/validations/city";
 import { CouponValidationWares } from "../../Coupons/middlewares/validation/coupon";
+import { BankAccountController } from "../../Purchasing/controllers/bank";
+import { PaymentTypeController } from "../../Purchasing/controllers/paymentType";
+import { BankValidationWares } from "../../Purchasing/middlewares/bank";
+import { PaymentValidationWares } from "../../Purchasing/middlewares/paymentTypes";
 import { ProviderControllers } from "../../Users/controllers/provider";
 import { ProviderValidationWares } from "../../Users/middlewares/validations/provider";
 import { uploadHelper } from "../../utils/MulterHelper";
@@ -96,6 +100,23 @@ adminRouter
   );
 
 adminRouter.route("/statistics").get(AdminAuth, AdminsController.getStatistics);
+
+adminRouter
+  .route("/paymentType")
+  .post(
+    AdminAuth,
+    uploadHelper("Payments-Images/").single("imgURL"),
+    PaymentValidationWares.add,
+    PaymentTypeController.add
+  );
+
+adminRouter
+  .route("/paymentType/:id/toggle")
+  .post(AdminAuth, PaymentTypeController.switchPaymentWay);
+
+adminRouter
+  .route("/appBankAccount")
+  .post(AdminAuth, BankValidationWares.add, BankAccountController.add);
 
 // adminRouter
 //   .route("/questions/new")
