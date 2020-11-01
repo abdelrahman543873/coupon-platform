@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { CriditCardController } from "../controllers/criditCard";
-import { bankAccountRouter } from "./bankAccount";
-import { paymentRouter } from "./paymentType";
+import { bankAccountRouter } from "./route/bankAccount";
+import { paymentRouter } from "./route/paymentType";
 
 const purchasingRouter = Router();
 
