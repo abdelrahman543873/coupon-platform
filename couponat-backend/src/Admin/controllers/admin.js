@@ -426,13 +426,14 @@ const AdminsController = {
     let cardenality = req.body.email || req.body.mobile;
     let user =
       (await ClientModule.getByMobile(cardenality)) ||
-      ProviderModule.getByEmail(cardenality);
+      (await ProviderModule.getByEmail(cardenality));
 
     if (!user) {
       let errMsg =
         req.headers.lang == "en" ? "User not Found!" : "المستخدم غير مسجل";
       return next(boom.notFound(errMsg));
     }
+    console.log(user);
     let smsToken = getSMSToken(5);
     let addVerification = await VerificationsModule.add(smsToken, user._id);
     if (addVerification.err)

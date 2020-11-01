@@ -89,4 +89,72 @@ class Client {
   }
 }
 
-export { Provider, City, District, Category, Coupon, Client };
+class Bank {
+  constructor(bank) {
+    if (bank) {
+      this.id = bank._id;
+      this.accountNumber = bank.accountNumber;
+      this.bankName = bank.bankName;
+      this.agentName = bank.agentName;
+      this.city = bank.city;
+      this.country = bank.country;
+      bank.swiftCode ? (this.swiftCode = bank.swiftCode) : "";
+    }
+  }
+}
+
+class Payment {
+  constructor(payment) {
+    if (payment) {
+      this.id = payment._id;
+      this.name = payment.name;
+      this.key = payment.key;
+      this.imgURL = payment.imgURL;
+    }
+  }
+}
+
+class Cridit {
+  constructor(cridit) {
+    if (cridit) {
+      this.id = cridit._id;
+      this.merchantEmail = cridit.merchantEmail;
+      this.secretKey = cridit.secretKey;
+    }
+  }
+}
+
+class Subscription {
+  constructor(subscription) {
+    if (subscription) {
+      this.user = new Client(subscription.user);
+      this.paymentType = new Payment(subscription.paymentType);
+      this.coupon = new Coupon(subscription.coupon);
+      this.code = subscription.code;
+      this.isConfirmed = subscription.isConfirmed;
+      this.isUsed = subscription.isUsed;
+      this.total = subscription.total;
+      this.transactionId = subscription.transactionId;
+      this.account =
+        this.paymentType.key == "ONLINE_PAYMENT"
+          ? new Cridit(subscription.account)
+          : new Bank(subscription.account);
+      this.qrURL = subscription.qrURL;
+      subscription.imgURL ? (this.imgURL = subscription.imgURL) : "";
+      subscription.note ? (this.note = subscription.note) : "";
+    }
+  }
+}
+
+export {
+  Provider,
+  City,
+  District,
+  Category,
+  Coupon,
+  Client,
+  Bank,
+  Payment,
+  Cridit,
+  Subscription,
+};

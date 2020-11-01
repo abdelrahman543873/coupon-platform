@@ -11,7 +11,7 @@ let appBankSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    bankAgentName: {
+    agentName: {
       type: String,
       required: true,
     },

@@ -8,14 +8,7 @@ import { adminRouter } from "../Admin/routes/adminRouter";
 import { AdminsController } from "../Admin/controllers/admin";
 
 const router = Router();
-//router.use("/customers-management", customersRouter);
 
-//router.use("/chat", chatRouter);
-
-//router.use("/admins", adminRouter);
-//router.use("/QRCode", qrRouter);
-
-//router.use("/platform", platformSpecRouter);
 
 router.use("/providers-management", providersRouter);
 router.use("/customers-management", customersRouter);
@@ -27,10 +20,5 @@ router.use("/admin-management", adminRouter);
 router.route("/pass-reset").post(AdminsController.passReq);
 router.route("/pass-reset/codeValidation").post(AdminsController.checkResetCode);
 router.route("/pass-reset/newPassword").post(AdminsController.changePassword);
-
-//router.use("/products", productsRouter);
-
-//router.use("/purchasing-management", purchasingRouter);
-//router.use("/notifications", notificationRouter);
 
 export { router };
