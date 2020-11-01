@@ -434,41 +434,45 @@ const ClientControllers = {
     });
   },
 
-  async updateProfile(req, res, next) {
+  async changeMobile(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
-    let newData = req.body,
-      smsToken = null;
-    if (newData.mobile) {
-      newData.isVerified = false;
+    let { mobile } = req.body,
       smsToken = getSMSToken(5);
+    let user = await ClientModule.getById(id);
+    if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
+      return next(boom.notFound(errMsg));
     }
-    let update = await ClientModule.updateProfile(id, newData);
-    if (update.err)
+    if (user.mobile == mobile) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Same mobile number" : "نفس رقم الهاتف";
+      return next(boom.notFound(errMsg));
+    }
+    user.mobile = mobile;
+    user.isVerified = false;
+    user = await user.save();
+    user = new Client(user);
+    let addVerification = await VerificationsModule.add(smsToken, user.id);
+    if (addVerification.err)
       return next(
-        boom.badData(getErrorMessage(update.err, req.headers.lang || "ar"))
+        boom.badData(
+          getErrorMessage(addVerification.err, req.headers.lang || "ar")
+        )
       );
-    let client = new Client(update.doc);
-    if (smsToken) {
-      let addVerification = await VerificationsModule.add(smsToken, client.id);
-      if (addVerification.err)
-        return next(
-          boom.badData(
-            getErrorMessage(addVerification.err, req.headers.lang || "ar")
-          )
-        );
-      // let smsMessage =
-      //   req.headers.lang == "en"
-      //     ? "Bazaar app : welcome to bazaar your verification code is "
-      //     : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-      // // smsToken = await Messages.sendMessage(
-      // //   req.body.countryCode+req.body.mobile,
-      // //   smsMessage + smsToken
-      // // );
-    }
+    // let smsMessage =
+    //   req.headers.lang == "en"
+    //     ? "Bazaar app : welcome to bazaar your verification code is "
+    //     : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
+    // // smsToken = await Messages.sendMessage(
+    // //   req.body.countryCode+req.body.mobile,
+    // //   smsMessage + smsToken
+    // // );
     return res.status(200).send({
       isSuccessed: true,
-      data: client,
+      data: user,
       smsToken,
       error: null,
     });

@@ -117,26 +117,5 @@ const ClientModule = {
     user = await user.populate("favCoupons").execPopulate();
     return user.favCoupons;
   },
-
-  async updateProfile(id, clientData) {
-    return await ClientModel.findByIdAndUpdate(
-      id,
-      { $set: { ...clientData } },
-      { new: true }
-    )
-      .then((doc) => {
-        return {
-          doc,
-          err: null,
-        };
-      })
-      .catch((err) => {
-        console.log(err);
-        return {
-          doc: null,
-          err: err,
-        };
-      });
-  },
 };
 export { ClientModule };

@@ -47,11 +47,11 @@ customersRouter
   .get(checkUserAuth, ClientControllers.getFavCoupons);
 
 customersRouter
-  .route("/modification")
+  .route("/newMobile")
   .put(
     checkUserAuth,
-    ClientValidationWares.updateProfile,
-    ClientControllers.updateProfile
+    ClientValidationWares.changeMobile,
+    ClientControllers.changeMobile
   );
 
 customersRouter
