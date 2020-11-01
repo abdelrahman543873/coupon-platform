@@ -21,7 +21,7 @@ let BanksModule = {
   async getAll(isAdmin = null) {
     let queryOp = {};
     queryOp.isActive = true;
-    isAdmin == "true" || true ? delete queryOp.isActive : "";
+    isAdmin == "true" || isAdmin == true ? delete queryOp.isActive : "";
     return await AppBankModel.find({ ...queryOp });
   },
 };

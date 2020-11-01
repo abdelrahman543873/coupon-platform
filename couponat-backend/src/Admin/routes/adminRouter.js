@@ -118,6 +118,10 @@ adminRouter
   .route("/appBankAccount")
   .post(AdminAuth, BankValidationWares.add, BankAccountController.add);
 
+adminRouter
+  .route("/appBankAccount/:id/toggle")
+  .post(AdminAuth, BankAccountController.toggleBankAccount);
+
 // adminRouter
 //   .route("/questions/new")
 //   .post(

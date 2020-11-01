@@ -16,7 +16,7 @@ let BankAccountController = {
     saveAccount = new Bank(saveAccount.doc);
     return res.status(200).send({
       isSuccessed: true,
-      data: saveAccount.doc,
+      data: saveAccount,
       error: null,
     });
   },

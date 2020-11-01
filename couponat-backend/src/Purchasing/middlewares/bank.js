@@ -1,3 +1,4 @@
+import boom from "@hapi/boom";
 import { BankValidations } from "../utils/validations/bank";
 
 let BankValidationWares = {
