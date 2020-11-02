@@ -5,7 +5,7 @@ const ClientValidations = {
   addClient: Joi.object({
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
     password: Joi.string().min(8).required().error(errorsOverride),
-    mobile: Joi.string().min(8).required().error(errorsOverride),
+    mobile: Joi.string().min(10).required().error(errorsOverride),
     countryCode: Joi.string().min(3).required().error(errorsOverride),
   }),
 
