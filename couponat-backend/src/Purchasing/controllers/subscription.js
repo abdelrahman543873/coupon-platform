@@ -108,12 +108,19 @@ let subscriptionContoller = {
     let id = auth.id;
     let coupon = req.params.id;
     let subscription = await subscriptionModule.getUserSubscripe(id, coupon),
-      flag = true;
-    if (!subscription) flag = false;
-
+    if (!subscription) {
+      return res.status(404).send({
+        isSuccessed: false,
+        data: null,
+        error:req.headers.lang == "en"
+        ? "Subscription not Found"
+        : "غير مشترك في هذا الكوبون",
+      });
+    }
+    subscription = new Subscription(subscription);
     return res.status(201).send({
       isSuccessed: true,
-      data: flag,
+      data: subscription,
       error: null,
     });
   },
