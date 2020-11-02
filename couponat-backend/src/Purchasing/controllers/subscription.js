@@ -107,7 +107,7 @@ let subscriptionContoller = {
     let auth = await decodeToken(req.headers.authentication);
     let id = auth.id;
     let coupon = req.params.id;
-    let subscription = await subscriptionModule.getUserSubscripe(id, coupon),
+    let subscription = await subscriptionModule.getUserSubscripe(id, coupon);
     if (!subscription) {
       return res.status(404).send({
         isSuccessed: false,
