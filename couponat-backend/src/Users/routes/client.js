@@ -1,6 +1,7 @@
 import express from "express";
 import { CategoryController } from "../../Category/controllers";
 import { CouponController } from "../../Coupons/controllers";
+import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
 import { checkUserAuth } from "../../utils/auth";
 import { ClientControllers } from "../controllers/client";
 import { ProviderControllers } from "../controllers/provider";
@@ -33,6 +34,9 @@ customersRouter.route("/home").get(ClientControllers.home);
 customersRouter.route("/coupons/scan/:code").get(CouponController.scan);
 
 customersRouter.route("/coupons").get(CouponController.getAll);
+customersRouter
+  .route("/coupons/:id/subscription")
+  .get(checkUserAuth, subscriptionContoller.checkSubscription);
 
 customersRouter.route("/search").get(CouponController.search);
 

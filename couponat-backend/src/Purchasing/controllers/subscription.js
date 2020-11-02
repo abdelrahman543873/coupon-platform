@@ -103,9 +103,19 @@ let subscriptionContoller = {
     });
   },
 
-  async checkSubscription(req,res,next){
+  async checkSubscription(req, res, next) {
     let auth = await decodeToken(req.headers.authentication);
-    let id=auth.id
-  }
+    let id = auth.id;
+    let coupon = req.params.id;
+    let subscription = await subscriptionModule.getUserSubscripe(id, coupon),
+      flag = true;
+    if (!subscription) flag = false;
+
+    return res.status(201).send({
+      isSuccessed: true,
+      data: flag,
+      error: null,
+    });
+  },
 };
 export { subscriptionContoller };
