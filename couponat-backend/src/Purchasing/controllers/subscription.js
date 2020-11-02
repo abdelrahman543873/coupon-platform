@@ -102,5 +102,10 @@ let subscriptionContoller = {
       error: null,
     });
   },
+
+  async checkSubscription(req,res,next){
+    let auth = await decodeToken(req.headers.authentication);
+    let id=auth.id
+  }
 };
 export { subscriptionContoller };

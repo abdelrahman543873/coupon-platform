@@ -318,6 +318,16 @@ const CouponController = {
       id = auth ? auth.id : null;
     }
     let coupon = await CouponModule.scan(code);
+    if (!coupon) {
+      return res.status(404).send({
+        isSuccessed: false,
+        data: null,
+        error:
+          req.headers.lang == "en"
+            ? "Coupon not Found"
+            : "كوبون الخصم غير موجود",
+      });
+    }
     coupon = new Coupon(coupon);
     if (id) {
       subscription = await subscriptionModule.getUserSubscripe(id, coupon.id);
