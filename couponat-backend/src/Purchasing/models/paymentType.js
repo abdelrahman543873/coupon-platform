@@ -20,7 +20,7 @@ let paymentTypeSchema = mongoose.Schema(
     key: {
       type: String,
       required: true,
-      enum: ["ONLINE_PAYMENT", "BANK_TRANSFER", "SADAD"],
+      enum: ["ONLINE_PAYMENT", "BANK_TRANSFER", "CASH"],
     },
   },
   {

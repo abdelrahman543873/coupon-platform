@@ -9,6 +9,8 @@ services:
       - ./externalVolumes/Coupons-Images:/coupons/Coupons-Images
       - ./externalVolumes/Providers-Images:/coupons/Providers-Images
       - ./externalVolumes/Categories-Images:/coupons/Categories-Images
+      - ./externalVolumes/Payments-Images:/coupons/Payments-Images
+      - ./externalVolumes/Subscriptions-Images:/coupons/Subscriptions-Images
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:

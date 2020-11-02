@@ -20,6 +20,10 @@ let subscriptionSchema = mongoose.Schema(
       required: true,
       autopopulate: true,
     },
+    provider: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     code: {
       type: String,
       required: true,
@@ -47,6 +51,11 @@ let subscriptionSchema = mongoose.Schema(
     account: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     imgURL: String,
     qrURL: String,
     note: String,
@@ -57,6 +66,6 @@ let subscriptionSchema = mongoose.Schema(
   }
 );
 
-couponSchema.plugin(require("mongoose-autopopulate"));
+subscriptionSchema.plugin(require("mongoose-autopopulate"));
 let SubscripionModel = mongoose.model("Subscription", subscriptionSchema);
 export { SubscripionModel };

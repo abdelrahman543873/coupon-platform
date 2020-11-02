@@ -126,20 +126,26 @@ class Cridit {
 
 class Subscription {
   constructor(subscription) {
+    console.log(subscription);
     if (subscription) {
+      this.id = subscription._id;
       this.user = new Client(subscription.user);
       this.paymentType = new Payment(subscription.paymentType);
       this.coupon = new Coupon(subscription.coupon);
       this.code = subscription.code;
       this.isConfirmed = subscription.isConfirmed;
       this.isUsed = subscription.isUsed;
+      this.isPaid = subscription.isPaid;
       this.total = subscription.total;
       this.transactionId = subscription.transactionId;
-      this.account =
-        this.paymentType.key == "ONLINE_PAYMENT"
-          ? new Cridit(subscription.account)
-          : new Bank(subscription.account);
       this.qrURL = IP + subscription.qrURL;
+
+      subscription.account
+        ? (this.account =
+            this.paymentType.key == "ONLINE_PAYMENT"
+              ? new Cridit(subscription.account)
+              : new Bank(subscription.account))
+        : "";
       subscription.imgURL ? (this.imgURL = IP + subscription.imgURL) : "";
       subscription.note ? (this.note = subscription.note) : "";
     }

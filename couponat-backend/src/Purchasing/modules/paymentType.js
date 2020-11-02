@@ -27,8 +27,12 @@ let paymentTypeModule = {
   async getAll(isAdmin = null) {
     let queryOp = {};
     queryOp.isActive = true;
-    isAdmin == "true" ||isAdmin ==  true ? delete queryOp.isActive : "";
+    isAdmin == "true" || isAdmin == true ? delete queryOp.isActive : "";
     return await PeymentTypeModel.find({ ...queryOp });
+  },
+
+  async getById(id) {
+    return await PeymentTypeModel.findById(id);
   },
 };
 

@@ -10,7 +10,7 @@ let PaymentValidaions = {
   add: Joi.object({
     name: langNameSchema,
     key: Joi.string()
-      .valid("ONLINE_PAYMENT", "BANK_TRANSFER", "SADAD")
+      .valid("ONLINE_PAYMENT", "BANK_TRANSFER", "CASH")
       .required()
       .error(errorsOverride),
   }),
