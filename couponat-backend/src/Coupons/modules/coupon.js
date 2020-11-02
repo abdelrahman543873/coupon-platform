@@ -74,79 +74,6 @@ const CouponModule = {
       });
   },
 
-  // async getCouponsProviders() {
-  //   let coupons = await CouponModel.aggregate([
-  //     {
-  //       $match: { isDeleted: false },
-  //     },
-  //     {
-  //       $group: {
-  //         _id: "$bazar",
-  //         coupons: { $push: "$_id" },
-  //       },
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: "bazars",
-  //         localField: "_id",
-  //         foreignField: "_id",
-  //         as: "_id",
-  //       },
-  //     },
-
-  //     {
-  //       $lookup: {
-  //         from: "coupons",
-  //         localField: "coupons",
-  //         foreignField: "_id",
-  //         as: "coupons",
-  //       },
-  //     },
-
-  //     { $unwind: "$_id" },
-  //       {
-  //         $replaceRoot: {
-  //           newRoot: { $mergeObjects: [{ bazar: "$_id", coupons: "$coupons" }] },
-  //         },
-  //       },
-  //     {
-  //       $addFields: {
-  //         "bazar.coupons": "$coupons",
-  //       },
-  //     },
-  //       {
-  //       $project: {
-  //         bazar: 1,
-  //       },
-  //     },
-  //     { $replaceRoot: { newRoot: "$bazar" }},
-  //     {
-  //       $lookup: {
-  //         from: "banks",
-  //         localField: "bankAccount",
-  //         foreignField: "_id",
-  //         as: "bankAccount",
-  //       },
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: "credits",
-  //         localField: "creditCard",
-  //         foreignField: "_id",
-  //         as: "creditCard",
-  //       },
-  //     },
-  //   ]);
-
-  //   for (let i = 0; i < coupons.length; i++) {
-  //     console.log(coupons[i])
-  //     coupons[i].creditCard = coupons[i].creditCard[0];
-  //   }
-  //   coupons.sort(this.compare);
-  //   //console.log(coupons);
-  //   return coupons;
-  // },
-
   async updateCoupon(id, couponData) {
     return await CouponModel.findByIdAndUpdate(
       id,
@@ -167,28 +94,15 @@ const CouponModule = {
       });
   },
 
+  async scan(code) {
+    return await CouponModel.findOne({ code });
+  },
+
   async delete(id) {
     return await CouponModel.deleteOne({ _id: id })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));
   },
-
-  // async deleteCoupon(id) {
-  //   return await CouponModel.findByIdAndUpdate(
-  //     id,
-  //     {
-  //       $set: { isDeleted: true },
-  //     },
-  //     { new: true }
-  //   ).catch((err) => {
-  //     console.log(err);
-  //     return { err: err };
-  //   });
-  // },
-
-  // compare(a, b) {
-  //   return a.createdAt - b.createdAt;
-  // },
 };
 
 export { CouponModule };

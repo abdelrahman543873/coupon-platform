@@ -30,6 +30,8 @@ customersRouter
 
 customersRouter.route("/home").get(ClientControllers.home);
 
+customersRouter.route("/coupons/scan/:code").get(CouponController.scan);
+
 customersRouter.route("/coupons").get(CouponController.getAll);
 
 customersRouter.route("/search").get(CouponController.search);

@@ -3,13 +3,14 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { CouponModule } from "../modules/coupon";
 import { nanoid } from "nanoid";
 import QRCode from "qrcode";
-import { Coupon } from "../../middlewares/responsHandler";
+import { Coupon, Subscription } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
 import Jimp from "jimp";
 import PDFDocument from "pdfkit";
 import fs from "fs";
 import { IP } from "../../../serverIP";
 import { ClientModule } from "../../Users/modules/client";
+import { subscriptionModule } from "../../Purchasing/modules/subscription";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -304,6 +305,31 @@ const CouponController = {
     return res.status(200).send({
       isSuccessed: true,
       data: IP + "/coupons-management/coupons-images/" + name,
+      error: null,
+    });
+  },
+
+  async scan(req, res, next) {
+    let id = null;
+    let subscription = null;
+    let code = req.params.code;
+    if (req.headers.authentication) {
+      let auth = await decodeToken(req.headers.authentication);
+      id = auth ? auth.id : null;
+    }
+    let coupon = await CouponModule.scan(code);
+    coupon = new Coupon(coupon);
+    if (id) {
+      subscription = await subscriptionModule.getUserSubscripe(id, coupon.id);
+      subscription = new Subscription(subscription);
+    }
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: {
+        coupon,
+        subscription,
+      },
       error: null,
     });
   },

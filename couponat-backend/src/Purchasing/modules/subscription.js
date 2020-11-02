@@ -25,8 +25,6 @@ let subscriptionModule = {
       user,
       coupon,
       isUsed: false,
-      isConfirmed: true,
-      isPaid: true,
     });
   },
 
