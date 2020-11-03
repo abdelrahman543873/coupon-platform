@@ -109,7 +109,6 @@ class Payment {
       this.id = payment._id;
       this.name = payment.name;
       this.key = payment.key;
-      this.imgURL = IP + payment.imgURL;
     }
   }
 }

@@ -4,13 +4,6 @@ const { paymentTypeModule } = require("../modules/paymentType");
 let PaymentTypeController = {
   async add(req, res, next) {
     let payment = req.body;
-
-    if (req.file) {
-      console.log("imgURL: ", req.file);
-      let imgURL =
-        "/purchasing-management/payments-images/" + req.file.filename;
-      payment.imgURL = imgURL;
-    }
     let addPay = await paymentTypeModule.add(payment);
 
     if (addPay.err) {

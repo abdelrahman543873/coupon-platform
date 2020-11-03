@@ -6,8 +6,6 @@ import { Subscription } from "../../middlewares/responsHandler";
 import { ClientModule } from "../../Users/modules/client";
 import { ProviderModule } from "../../Users/modules/provider";
 import { decodeToken } from "../../utils/JWTHelper";
-import { AppBankModel } from "../models/appBanks";
-import { AppCreditModel } from "../models/appCridit";
 import { paymentTypeModule } from "../modules/paymentType";
 import { subscriptionModule } from "../modules/subscription";
 
