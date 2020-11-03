@@ -267,16 +267,18 @@ const CouponController = {
     pdfDoc.moveDown(25);
     pdfDoc
       .fillColor("red")
-      .font("Times-Bold")
+      .font("./assets/fonts/Tajawal-Bold.ttf")
       .fontSize(50) // the text and the position where the it should come
       .text("Couponat El Madina", { align: "center" });
 
     coupons.map((coupon) => {
       pdfDoc.addPage();
+      coupon.name.arabic = coupon.name.arabic.split(" ").reverse().join(" ");
       let segment_array = coupon.qrURL.split("/");
       let last_segment = segment_array.pop();
       pdfDoc
         .fillColor("blue")
+        .font("./assets/fonts/Tajawal-Bold.ttf")
         .fontSize(20)
         .text("Provider: ", {
           continued: true,
@@ -287,13 +289,17 @@ const CouponController = {
       pdfDoc.moveDown(0.5);
       pdfDoc
         .fillColor("blue")
+        .font("./assets/fonts/Tajawal-Bold.ttf")
         .fontSize(20)
         .text("Name: ", {
           continued: true,
         })
         .fillColor("black")
         .fontSize(20)
-        .text(coupon.name.english, { align: "left" });
+        .text(coupon.name.english + " - ", { align: "left", unicode: "U+202B" })
+        .fillColor("black")
+        .fontSize(20)
+        .text(coupon.name.arabic, { align: "right", unicode: "U+202B" });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
         width: 300,
