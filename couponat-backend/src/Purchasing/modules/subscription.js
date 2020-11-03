@@ -29,12 +29,12 @@ let subscriptionModule = {
   },
 
   async getSubscriptions(user, provider, isPaid, isConfirmed, isUsed) {
-    queryOp = {};
+    let queryOp = {};
     user ? (queryOp.user = user) : "";
     provider ? (queryOp.provider = provider) : "";
-    isPaid ? (queryOp.isPaid = isPaid) : "";
-    isConfirmed ? (queryOp.isConfirmed = isConfirmed) : "";
-    isUsed ? (queryOp.isUsed = isUsed) : "";
+    // isPaid ? (queryOp.isPaid = isPaid) : "";
+    // isConfirmed ? (queryOp.isConfirmed = isConfirmed) : "";
+    // isUsed ? (queryOp.isUsed = isUsed) : "";
 
     return await SubscripionModel.find({ ...queryOp });
   },

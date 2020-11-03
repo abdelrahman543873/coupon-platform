@@ -84,17 +84,17 @@ let subscriptionContoller = {
       coupon.doc.subCount += 1;
       coupon.doc = await coupon.doc.save();
     }
-    subscripe.doc = subscripe.doc.toObject();
-    paymentType.key == "ONLINE_PAYMENT"
-      ? (subscripe.doc.account = await AppCreditModel.findById(
-          subscripe.doc.account
-        ))
-      : "";
-    paymentType.key == "BANK_TRANSFER"
-      ? (subscripe.doc.account = await AppBankModel.findById(
-          subscripe.doc.account
-        ))
-      : "";
+    // subscripe.doc = subscripe.doc.toObject();
+    // paymentType.key == "ONLINE_PAYMENT"
+    //   ? (subscripe.doc.account = await AppCreditModel.findById(
+    //       subscripe.doc.account
+    //     ))
+    //   : "";
+    // paymentType.key == "BANK_TRANSFER"
+    //   ? (subscripe.doc.account = await AppBankModel.findById(
+    //       subscripe.doc.account
+    //     ))
+    //   : "";
     subscripe = new Subscription(subscripe.doc);
     return res.status(201).send({
       isSuccessed: true,
@@ -112,15 +112,63 @@ let subscriptionContoller = {
       return res.status(404).send({
         isSuccessed: false,
         data: null,
-        error:req.headers.lang == "en"
-        ? "Subscription not Found"
-        : "غير مشترك في هذا الكوبون",
+        error:
+          req.headers.lang == "en"
+            ? "Subscription not Found"
+            : "غير مشترك في هذا الكوبون",
       });
     }
+    // subscription = subscription.toObject();
+    // subscription.paymentType.key == "ONLINE_PAYMENT"
+    //   ? (subscription.account = await AppCreditModel.findById(
+    //       subscription.account
+    //     ))
+    //   : "";
+    // subscription.paymentType.key == "BANK_TRANSFER"
+    //   ? (subscription.account = await AppBankModel.findById(
+    //       subscription.account
+    //     ))
+    //   : "";
     subscription = new Subscription(subscription);
     return res.status(201).send({
       isSuccessed: true,
       data: subscription,
+      error: null,
+    });
+  },
+
+  async getAllSubscriptions(req, res, next) {
+    let auth = req.headers.authentication;
+    let id = auth.id,
+      user = null,
+      provider = null;
+    if (auth.type == "CLIENT") user = id;
+    else provider = id;
+    let subscriptions = await subscriptionModule.getSubscriptions(
+      user,
+      provider,
+      null,
+      null,
+      null
+    );
+
+    subscriptions = subscriptions.map((subscription) => {
+      // subscription = subscription.toObject();
+      // subscription.paymentType.key == "ONLINE_PAYMENT"
+      //   ? (subscription.account = await AppCreditModel.findById(
+      //       subscription.account
+      //     ))
+      //   : "";
+      // subscription.paymentType.key == "BANK_TRANSFER"
+      //   ? (subscription.account = await AppBankModel.findById(
+      //       subscription.account
+      //     ))
+      //   : "";
+      return new Subscription(subscription);
+    });
+    return res.status(201).send({
+      isSuccessed: true,
+      data: subscriptions,
       error: null,
     });
   },

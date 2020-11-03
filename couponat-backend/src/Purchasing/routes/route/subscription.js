@@ -15,4 +15,8 @@ subscriptionRouter
     subscriptionContoller.subscripe
   );
 
+subscriptionRouter
+  .route("/")
+  .get(checkUserAuth, subscriptionContoller.getAllSubscriptions);
+
 export { subscriptionRouter };

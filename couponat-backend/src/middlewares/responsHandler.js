@@ -125,11 +125,11 @@ class Cridit {
 }
 
 class Subscription {
-  constructor(subscription) {
+  constructor(subscription, type) {
     console.log(subscription);
     if (subscription) {
       this.id = subscription._id;
-      this.user = new Client(subscription.user);
+      type == "PROVIDER" ? (this.user = new Client(subscription.user)) : "";
       this.paymentType = new Payment(subscription.paymentType);
       this.coupon = new Coupon(subscription.coupon);
       this.code = subscription.code;
@@ -139,13 +139,6 @@ class Subscription {
       this.total = subscription.total;
       this.transactionId = subscription.transactionId;
       this.qrURL = IP + subscription.qrURL;
-
-      subscription.account
-        ? (this.account =
-            this.paymentType.key == "ONLINE_PAYMENT"
-              ? new Cridit(subscription.account)
-              : new Bank(subscription.account))
-        : "";
       subscription.imgURL ? (this.imgURL = IP + subscription.imgURL) : "";
       subscription.note ? (this.note = subscription.note) : "";
     }
