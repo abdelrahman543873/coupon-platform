@@ -23,11 +23,11 @@ const AdminsController = {
       auth = decodeToken(req.headers.authentication);
     let hashedPass = await hashPass(password);
     console.log(auth.type);
-    // if (auth && auth.type != "BOSS") {
-    //   let errMsg =
-    //     req.headers.lang == "en" ? "Not  Allowed!" : "ليس لديك الصلاحية";
-    //   return next(boom.unauthorized(errMsg));
-    // }
+    if (auth && auth.type != "BOSS") {
+      let errMsg =
+        req.headers.lang == "en" ? "Not  Allowed!" : "ليس لديك الصلاحية";
+      return next(boom.unauthorized(errMsg));
+    }
 
     let { user, err } = await AdminModule.add(email, name, hashedPass);
     if (err) {

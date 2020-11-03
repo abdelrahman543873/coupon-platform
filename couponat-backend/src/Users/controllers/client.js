@@ -78,8 +78,10 @@ const ClientControllers = {
 
     let user = await ClientModule.getById(id);
     console.log(providers);
-    if (user && user.favCoupons)
-      coupons = await addFavProp(coupons, user.favCoupons);
+    if (user && user.favCoupons) {
+      newest = await addFavProp(newest, user.favCoupons);
+      mostSeller = await addFavProp(mostSeller, user.favCoupons);
+    }
     res.status(201).send({
       isSuccessed: true,
       data: {
