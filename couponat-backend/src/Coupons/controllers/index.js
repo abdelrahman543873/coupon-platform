@@ -288,18 +288,12 @@ const CouponController = {
         .text(coupon.provider.name, { align: "left" });
       pdfDoc.moveDown(0.5);
       pdfDoc
-        .fillColor("blue")
-        .font("./assets/fonts/Tajawal-Bold.ttf")
-        .fontSize(20)
-        .text("Name: ", {
-          continued: true,
-        })
         .fillColor("black")
-        .fontSize(20)
-        .text(coupon.name.english + " - ", { align: "left", unicode: "U+202B" })
+        .fontSize(17)
+        .text(coupon.name.english + " - ", { continued: true })
         .fillColor("black")
-        .fontSize(20)
-        .text(coupon.name.arabic, { align: "right", unicode: "U+202B" });
+        .fontSize(17)
+        .text(coupon.name.arabic);
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Coupons-Images/" + last_segment, {
         width: 300,
