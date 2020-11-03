@@ -73,26 +73,8 @@ customersRouter
 //   .get(checkCustomerAuth, ClientControllers.getProfile);
 
 // customersRouter
-//   .route("/payment")
-//   .post(
-//     checkCustomerAuth,
-//     uploadHelper("Payments-Images/").single("imgURL"),
-//     PaymentValidationWare.addPayment,
-//     PaymentController.addPayment
-//   );
-
-// customersRouter
 //   .route("/customers/:id/orders/deliverd/verification")
 //   .post(isIdAuthMathces, OrderContoller.confirmDeliverdOrder);
-
-// customersRouter
-//   .route("/customers/:id/coupons/:couponId/consumption")
-//   .post(
-//     checkCustomerAuth,
-//     uploadHelper("Payments-Images/").single("imgURL"),
-//     CouponPayValidationWare.add,
-//     CouponPayController.add
-//   );
 
 // customersRouter
 //   .route("/customers/:id/coupons/counsumed")

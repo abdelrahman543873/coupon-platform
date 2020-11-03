@@ -12,7 +12,6 @@ purchasingRouter.use("/subscription", subscriptionRouter);
 
 purchasingRouter.use("/criditCard", CriditCardController.get);
 
-purchasingRouter.use("/payments-images/", express.static("Payments-Images"));
 purchasingRouter.use(
   "/subscriptions-images/",
   express.static("Subscriptions-Images")

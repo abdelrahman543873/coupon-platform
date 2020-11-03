@@ -103,12 +103,7 @@ adminRouter.route("/statistics").get(AdminAuth, AdminsController.getStatistics);
 
 adminRouter
   .route("/paymentType")
-  .post(
-    AdminAuth,
-    uploadHelper("Payments-Images/").single("imgURL"),
-    PaymentValidationWares.add,
-    PaymentTypeController.add
-  );
+  .post(AdminAuth, PaymentValidationWares.add, PaymentTypeController.add);
 
 adminRouter
   .route("/paymentType/:id/toggle")
@@ -173,9 +168,6 @@ adminRouter
 //   .route("/app/banks")
 //   .get(AdminsAuth.isEditorOrHigher, AdminsController.getBanks);
 
-// adminRouter.use(
-//   "/payments/adsPayments-images/",
-//   express.static("AdsPayments-Images")
-// );
+
 
 export { adminRouter };
