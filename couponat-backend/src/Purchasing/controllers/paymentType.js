@@ -1,5 +1,5 @@
-const { Payment } = require("../../middlewares/responsHandler");
-const { paymentTypeModule } = require("../modules/paymentType");
+import { Payment } from "../../middlewares/responsHandler";
+import { paymentTypeModule } from "../modules/paymentType";
 
 let PaymentTypeController = {
   async add(req, res, next) {
@@ -23,6 +23,19 @@ let PaymentTypeController = {
 
   async getAll(req, res, next) {
     let getPay = await paymentTypeModule.getAll();
+    getPay = getPay.map((pay) => {
+      return new Payment(pay);
+    });
+    return res.status(201).send({
+      isSuccessed: true,
+      data: getPay,
+      error: null,
+    });
+  },
+
+  async getAllForAdmin(req, res, next) {
+    let getPay = await paymentTypeModule.getAll(true);
+    console.log(getPay);
     getPay = getPay.map((pay) => {
       return new Payment(pay);
     });

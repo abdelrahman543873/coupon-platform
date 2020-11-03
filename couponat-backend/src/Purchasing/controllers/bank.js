@@ -33,6 +33,18 @@ let BankAccountController = {
     });
   },
 
+  async getAllForAdmin(req, res, next) {
+    let banks = await BanksModule.getAll(true);
+    banks = banks.map((bank) => {
+      return new Bank(bank);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: banks,
+      error: null,
+    });
+  },
+
   async toggleBankAccount(req, res, next) {
     let id = req.params.id;
     let bank = await AppBankModel.findById(id);

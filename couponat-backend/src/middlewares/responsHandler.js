@@ -1,4 +1,5 @@
 import { IP } from "../../serverIP";
+import { paymentRouter } from "../Purchasing/routes/route/paymentType";
 
 class Provider {
   constructor(provider) {
@@ -98,6 +99,7 @@ class Bank {
       this.agentName = bank.agentName;
       this.city = bank.city;
       this.country = bank.country;
+      this.isActive = bank.isActive;
       bank.swiftCode ? (this.swiftCode = bank.swiftCode) : "";
     }
   }
@@ -109,6 +111,7 @@ class Payment {
       this.id = payment._id;
       this.name = payment.name;
       this.key = payment.key;
+      this.isActive = payment.isActive;
     }
   }
 }

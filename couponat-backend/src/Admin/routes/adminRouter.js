@@ -106,12 +106,20 @@ adminRouter
   .post(AdminAuth, PaymentValidationWares.add, PaymentTypeController.add);
 
 adminRouter
+  .route("/paymentType")
+  .get(AdminAuth, PaymentTypeController.getAllForAdmin);
+
+adminRouter
   .route("/paymentType/:id/toggle")
   .post(AdminAuth, PaymentTypeController.switchPaymentWay);
 
 adminRouter
   .route("/appBankAccount")
   .post(AdminAuth, BankValidationWares.add, BankAccountController.add);
+
+adminRouter
+  .route("/appBankAccount")
+  .get(AdminAuth, BankAccountController.getAllForAdmin);
 
 adminRouter
   .route("/appBankAccount/:id/toggle")
@@ -167,7 +175,5 @@ adminRouter
 // adminRouter
 //   .route("/app/banks")
 //   .get(AdminsAuth.isEditorOrHigher, AdminsController.getBanks);
-
-
 
 export { adminRouter };
