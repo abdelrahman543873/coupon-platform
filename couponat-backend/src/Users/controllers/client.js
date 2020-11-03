@@ -59,11 +59,18 @@ const ClientControllers = {
       id = auth ? auth.id : null;
     let providers = await ProviderModule.getAll();
     let categories = await CategoryModule.getAll();
-    let coupons = await CouponModule.getAll(0, 30, null, null);
-    if (coupons.err) {
+    let newest = await CouponModule.getAll(0, 20, null, null, "newest");
+    if (newest.err) {
       return next(boom.unauthorized(coupons.err));
     }
-    coupons = coupons.map((cuopon) => {
+    let mostSeller = await CouponModule.getAll(0, 20, null, null, "bestSeller");
+    if (mostSeller.err) {
+      return next(boom.unauthorized(coupons.err));
+    }
+    newest = newest.map((cuopon) => {
+      return new Coupon(cuopon);
+    });
+    mostSeller = mostSeller.map((cuopon) => {
       return new Coupon(cuopon);
     });
 
@@ -80,8 +87,8 @@ const ClientControllers = {
         categories: categories.map((category) => {
           return new Category(category);
         }),
-        newest: coupons,
-        bestSeller: coupons,
+        newest: newest,
+        bestSeller: mostSeller,
       },
       error: null,
     });

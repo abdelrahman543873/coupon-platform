@@ -37,12 +37,20 @@ const CouponModule = {
   },
 
   async getAll(skip, limit, category, provider, section) {
-    let queryOp = {};
+    let queryOp = {},
+      sort = "";
     if (category) queryOp.category = category;
     if (provider) queryOp.provider = provider;
     console.log(queryOp);
+    if (section) {
+      if (section == "newest") sort = "-createdAt";
+      else if (section == "bestSeller") sort = "-subCount";
+      else {
+        return { err: "Section Must be newest or bestSeller" };
+      }
+    }
     return await CouponModel.find({ ...queryOp })
-      .sort("-createdAt")
+      .sort(sort)
       .skip(skip)
       .limit(limit)
       .catch((err) => {

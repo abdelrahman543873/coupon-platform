@@ -219,7 +219,7 @@ const CouponController = {
       limit,
       category,
       provider,
-      null
+      section
     );
     if (coupons.err) {
       return next(boom.unauthorized(coupons.err));

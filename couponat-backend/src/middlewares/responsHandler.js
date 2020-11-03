@@ -141,6 +141,7 @@ class Subscription {
       this.total = subscription.total;
       this.transactionId = subscription.transactionId;
       this.qrURL = IP + subscription.qrURL;
+      this.subDate = subscription.createdAt;
       subscription.imgURL ? (this.imgURL = IP + subscription.imgURL) : "";
       subscription.note ? (this.note = subscription.note) : "";
     }
