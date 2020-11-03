@@ -20,6 +20,11 @@ const adminValidationSchemas = {
     country: Joi.string().required().error(errorsOverride),
     swiftCode: Joi.string().optional().allow(null).allow(""),
   }),
+
+  mailReply: Joi.object({
+    email: Joi.string().email().required().error(errorsOverride),
+    reply: Joi.string().min(8).required().error(errorsOverride),
+  }),
 };
 
 export { adminValidationSchemas };

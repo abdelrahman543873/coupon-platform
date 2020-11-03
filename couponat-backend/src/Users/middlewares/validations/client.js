@@ -71,6 +71,15 @@ const ClientValidationWares = {
     }
     next();
   },
+
+  contactUs(req, res, next) {
+    console.log(req.body);
+    const { error } = ClientValidations.contactUs.validate(req.body);
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+    next();
+  },
 };
 
 export { ClientValidationWares };

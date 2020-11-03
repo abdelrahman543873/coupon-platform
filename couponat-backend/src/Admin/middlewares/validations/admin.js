@@ -12,9 +12,18 @@ const adminValidationwar = {
     if (error) return next(boom.badData(error.details[0].message));
     next();
   },
-  
+
   async addBank(req, res, next) {
     let { error } = adminValidationSchemas.addBank.validate(req.body);
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+
+    next();
+  },
+
+  async mailReply(req, res, next) {
+    let { error } = adminValidationSchemas.mailReply.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
     }

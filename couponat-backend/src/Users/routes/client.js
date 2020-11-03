@@ -68,6 +68,10 @@ customersRouter
     ClientControllers.changePassword
   );
 
+customersRouter
+  .route("/contact-us")
+  .post(ClientValidationWares.contactUs, ClientControllers.contactUs);
+
 // customersRouter
 //   .route("/customers/info")
 //   .get(checkCustomerAuth, ClientControllers.getProfile);

@@ -14,7 +14,8 @@ import { CouponModel } from "../../Coupons/models/coupon";
 import { ClientModule } from "../../Users/modules/client";
 import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../../Users/modules/verifications";
-import { resetPassMailer } from "../../utils/passReset";
+import { resetPassMailer, sendClientMail } from "../../utils/nodemailer";
+import { ContactModel } from "../../Users/models/contactUs";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -548,6 +549,25 @@ const AdminsController = {
     return res.status(200).send({
       isSuccessed: true,
       data: stat,
+      error: null,
+    });
+  },
+
+  async mails(req, res, next) {
+    return res.status(200).send({
+      isSuccessed: true,
+      data: await ContactModel.find({}, { _id: 0 }),
+      error: null,
+    });
+  },
+
+  async mailReply(req, res, next) {
+    let { email, reply } = req.body;
+    sendClientMail("Couponat El-Madena", reply, email);
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: "check email to show replay state",
       error: null,
     });
   },

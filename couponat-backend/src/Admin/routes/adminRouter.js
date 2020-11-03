@@ -125,6 +125,11 @@ adminRouter
   .route("/appBankAccount/:id/toggle")
   .post(AdminAuth, BankAccountController.toggleBankAccount);
 
+adminRouter.route("/mails").get(AdminAuth, AdminsController.mails);
+adminRouter
+  .route("/mails/reply")
+  .post(AdminAuth, adminValidationwar.mailReply, AdminsController.mailReply);
+
 // adminRouter
 //   .route("/questions/new")
 //   .post(

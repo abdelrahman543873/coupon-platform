@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-async function resetPassMailer(name, code, email) {
+async function sendClientMail(subject, message, email) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     port: 25,
@@ -11,10 +11,10 @@ async function resetPassMailer(name, code, email) {
   });
 
   const mailOptions = {
-    from: `"Bazar" <${process.env.EMAIL}>`,
+    from: `"Couponat" <${process.env.EMAIL}>`,
     to: email,
-    subject: "Bazar Password Resetting",
-    html: `<h2>${code}</h2>`,
+    subject: subject,
+    html: `<h2>${message}</h2>`,
   };
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
@@ -23,4 +23,4 @@ async function resetPassMailer(name, code, email) {
   });
 }
 
-export { resetPassMailer };
+export { sendClientMail };

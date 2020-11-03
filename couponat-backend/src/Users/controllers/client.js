@@ -14,6 +14,8 @@ import {
 import { ProviderModule } from "../modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModule } from "../../Coupons/modules/coupon";
+import { contactUs } from "../../utils/nodemailer";
+import { ContactModel } from "../models/contactUs";
 
 const ClientControllers = {
   async add(req, res, next) {
@@ -478,6 +480,25 @@ const ClientControllers = {
         user: user,
         smsToken,
       },
+      error: null,
+    });
+  },
+
+  async contactUs(req, res, next) {
+    let { email, description } = req.body;
+
+    let saveContact = await ContactModel({ email, description })
+      .save()
+      .catch((err) => {
+        return res.status(402).send({
+          isSuccessed: false,
+          data: null,
+          error: err,
+        });
+      });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: true,
       error: null,
     });
   },
