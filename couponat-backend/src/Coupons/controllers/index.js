@@ -233,7 +233,13 @@ const CouponController = {
     // console.log(user.favCoupons);
     if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
-      coupons = await addSubProp(coupons, user.id);
+      for (let i = 0; i < coupons.length; i++) {
+        let sub = await subscriptionModule.getUserSubscripe(
+          user.id,
+          coupons[i].id
+        );
+        coupons[i].isSubscribe = sub ? true : false;
+      }
     }
     return res.status(200).send({
       isSuccessed: true,
@@ -372,15 +378,15 @@ async function addFavProp(coupons, userFav) {
   });
 }
 
-async function addSubProp(coupons, id) {
-  for (let i = 0; i < coupons.length; i++) {
-    // coupons[i] = coupons[i].toObject();
-    coupons[i].isSubscribe = (await subscriptionModule.getUserSubscripe(
-      id,
-      coupons[i].id
-    ))
-      ? true
-      : false;
-  }
-}
+// async function addSubProp(coupons, id) {
+//   for (let i = 0; i < coupons.length; i++) {
+//     // coupons[i] = coupons[i].toObject();
+//     coupons[i].isSubscribe = (await subscriptionModule.getUserSubscripe(
+//       id,
+//       coupons[i].id
+//     ))
+//       ? true
+//       : false;
+//   }
+// }
 export { CouponController };
