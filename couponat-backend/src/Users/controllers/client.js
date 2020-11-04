@@ -81,9 +81,24 @@ const ClientControllers = {
     console.log(providers);
     if (user && user.favCoupons) {
       newest = await addFavProp(newest, user.favCoupons);
+
       mostSeller = await addFavProp(mostSeller, user.favCoupons);
-      newest = await addSubProp(newest, user.id);
-      mostSeller = await addSubProp(mostSeller, user.id);
+
+      for (let i = 0; i < mostSeller.length; i++) {
+        let sub = await subscriptionModule.getUserSubscripe(
+          user.id,
+          mostSeller[i].id
+        );
+        mostSeller[i].isSubscribe = sub ? true : false;
+      }
+
+      for (let i = 0; i < newest.length; i++) {
+        let sub = await subscriptionModule.getUserSubscripe(
+          user.id,
+          newest[i].id
+        );
+        newest[i].isSubscribe = sub ? true : false;
+      }
     }
     res.status(201).send({
       isSuccessed: true,
@@ -529,18 +544,6 @@ async function addFavProp(coupons, userFav) {
       }),
     });
   });
-}
-
-async function addSubProp(coupons, id) {
-  for (let i = 0; i < coupons.length; i++) {
-    coupons[i] = coupons[i].toObject();
-    coupons[i].isSubscribe = (await subscriptionModule.getUserSubscripe(
-      id,
-      coupon.id
-    ))
-      ? true
-      : false;
-  }
 }
 
 export { ClientControllers };
