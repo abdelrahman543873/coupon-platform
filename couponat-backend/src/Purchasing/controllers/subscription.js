@@ -68,7 +68,7 @@ let subscriptionContoller = {
             lang == "en" ? "account not found" : "حساب التحويل غير موجود";
         return next(boom.notFound(errMsg));
       }
-      if (!account.isActive) {
+      if (paymentType.key == "BANK_TRANSFER" && !account.isActive) {
         let lang = req.headers.lang || "ar",
           errMsg =
             lang == "en" ? "account not Active" : "حساب التحويل غير مفعل";
