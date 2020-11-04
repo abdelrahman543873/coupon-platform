@@ -399,8 +399,18 @@ const ClientControllers = {
       userId = auth.id;
     let coupons = await ClientModule.getFavCoupons(userId);
     coupons = coupons.map((coupon) => {
-      return new Coupon(coupon);
+      coupon = new Coupon(coupon);
+      coupon.isFav = true;
+      return coupon;
     });
+    for (let i = 0; i < coupons.length; i++) {
+      let sub = await subscriptionModule.getUserSubscripe(
+        userId,
+        coupons[i].id
+      );
+      coupons[i].isSubscribe = sub ? true : false;
+    }
+
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
