@@ -4,6 +4,7 @@ import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
+import { CityModule } from "../../Cities/modules/city";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -17,6 +18,22 @@ const ProviderControllers = {
     }
     let hashedPass = await hashPass(provider.password);
     provider.password = hashedPass;
+    for (let i = 0; i < req.body.cities.length; i++) {
+      let city = await CityModule.getById(req.body.cities[i]);
+      if (!city) {
+        return next(
+          boom.badData(`City with Id ${req.body.cities[i]} not found`)
+        );
+      }
+    }
+    for (let i = 0; i < req.body.districts.length; i++) {
+      let dist = await CityModule.getById(req.body.districts[i]);
+      if (!dist) {
+        return next(
+          boom.badData(`City with Id ${req.body.districts[i]} not found`)
+        );
+      }
+    }
     let { doc, err } = await ProviderModule.add(provider);
 
     if (err)
