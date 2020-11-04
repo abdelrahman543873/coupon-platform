@@ -85,8 +85,10 @@ const CouponController = {
 
     let user = await ClientModule.getById(id);
     ///console.log(user.favCoupons);
-    if (user && user.favCoupons)
+    if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
+      coupons = await addSubProp(coupons, user.id);
+    }
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
@@ -229,8 +231,10 @@ const CouponController = {
     });
     let user = await ClientModule.getById(id);
     // console.log(user.favCoupons);
-    if (user && user.favCoupons)
+    if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
+      coupons = await addSubProp(coupons, user.id);
+    }
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
@@ -364,6 +368,16 @@ async function addFavProp(coupons, userFav) {
         console.log(item == coupon.id);
         return item + "" == coupon.id + "";
       }),
+    });
+  });
+}
+
+async function addSubProp(coupons, id) {
+  return coupons.map(async (coupon) => {
+    return Object.assign(coupon, {
+      isSub: (await subscriptionModule.getUserSubscripe(id, coupon.id))
+        ? true
+        : false,
     });
   });
 }

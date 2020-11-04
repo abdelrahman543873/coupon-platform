@@ -81,6 +81,8 @@ const ClientControllers = {
     if (user && user.favCoupons) {
       newest = await addFavProp(newest, user.favCoupons);
       mostSeller = await addFavProp(mostSeller, user.favCoupons);
+      newest = await addSubProp(newest, user.id);
+      mostSeller = await addSubProp(mostSeller, user.id);
     }
     res.status(201).send({
       isSuccessed: true,
@@ -524,6 +526,16 @@ async function addFavProp(coupons, userFav) {
         console.log(item == coupon.id);
         return item + "" == coupon.id + "";
       }),
+    });
+  });
+}
+
+async function addSubProp(coupons, id) {
+  return coupons.map(async (coupon) => {
+    return Object.assign(coupon, {
+      isSub: (await subscriptionModule.getUserSubscripe(id, coupon.id))
+        ? true
+        : false,
     });
   });
 }
