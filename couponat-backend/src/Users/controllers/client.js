@@ -533,19 +533,14 @@ async function addFavProp(coupons, userFav) {
 
 async function addSubProp(coupons, id) {
   for (let i = 0; i < coupons.length; i++) {
-    Object.assign(coupons[i], {
-      isSub: (await subscriptionModule.getUserSubscripe(id, coupons[i].id))
-        ? true
-        : false,
-    });
+    coupons[i] = coupons[i].toObject();
+    coupons[i].isSubscribe = (await subscriptionModule.getUserSubscripe(
+      id,
+      coupon.id
+    ))
+      ? true
+      : false;
   }
-  // return coupons.map(async (coupon) => {
-  //   return Object.assign(coupon, {
-  //     isSub: (await subscriptionModule.getUserSubscripe(id, coupon.id))
-  //       ? true
-  //       : false,
-  //   });
-  // });
 }
 
 export { ClientControllers };
