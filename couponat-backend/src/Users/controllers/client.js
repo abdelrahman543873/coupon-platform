@@ -16,6 +16,7 @@ import { CategoryModule } from "../../Category/modules";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { contactUs } from "../../utils/nodemailer";
 import { ContactModel } from "../models/contactUs";
+import { subscriptionModule } from "../../Purchasing/modules/subscription";
 
 const ClientControllers = {
   async add(req, res, next) {
