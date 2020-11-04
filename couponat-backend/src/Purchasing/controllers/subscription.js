@@ -111,13 +111,14 @@ let subscriptionContoller = {
       coupon.doc.subCount += 1;
       coupon.doc = await coupon.doc.save();
     }
-    subscripe.account
-      ? (subscripe.account =
-          subscripe.paymentType.key == "ONLINE_PAYMENT"
-            ? await AppCreditModel.findById(subscripe.account)
-            : await AppBankModel.findById(subscripe.account))
+    subscripe.doc.coupon = coupon.doc;
+    subscripe.doc.account
+      ? (subscripe.doc.account =
+          subscripe.doc.paymentType.key == "ONLINE_PAYMENT"
+            ? await AppCreditModel.findById(subscripe.doc.account)
+            : await AppBankModel.findById(subscripe.doc.account))
       : "";
-    subscripe = new Subscription(subscripe);
+    subscripe = new Subscription(subscripe.doc);
     return res.status(201).send({
       isSuccessed: true,
       data: subscripe,
