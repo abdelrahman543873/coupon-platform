@@ -41,7 +41,7 @@ let subscriptionContoller = {
           lang == "en" ? "Payment Type not Found" : "طريقة الدفع غير موجودة";
       return next(boom.notFound(errMsg));
     }
-    if (payment.key == "ONLINE_PAYMENT" || payment.key == "BANK_TRANSFER") {
+    if (paymentType.key == "ONLINE_PAYMENT" || paymentType.key == "BANK_TRANSFER") {
       if (!req.body.account) {
         return next(boom.badData("Must add acount"));
       }
@@ -54,7 +54,7 @@ let subscriptionContoller = {
               : "يجب ادخال كود عملية الدفع";
         return next(boom.notFound(errMsg));
       }
-      if (payment.key == "ONLINE_PAYMENT")
+      if (paymentType.key == "ONLINE_PAYMENT")
         account = await AppCreditModel.findById(req.body.account);
       else account = await AppBankModel.findById(req.body.account);
 
