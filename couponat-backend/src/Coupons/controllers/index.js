@@ -87,7 +87,12 @@ const CouponController = {
     ///console.log(user.favCoupons);
     if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
-      coupons = await addSubProp(coupons, user.id);
+    } else coupons = await addFavProp(coupons, null);
+    for (let i = 0; i < coupons.length; i++) {
+      let sub = user
+        ? await subscriptionModule.getUserSubscripe(user.id, coupons[i].id)
+        : null;
+      coupons[i].isSubscribe = sub ? true : false;
     }
     return res.status(200).send({
       isSuccessed: true,
@@ -233,13 +238,12 @@ const CouponController = {
     // console.log(user.favCoupons);
     if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
-      for (let i = 0; i < coupons.length; i++) {
-        let sub = await subscriptionModule.getUserSubscripe(
-          user.id,
-          coupons[i].id
-        );
-        coupons[i].isSubscribe = sub ? true : false;
-      }
+    } else coupons = await addFavProp(coupons, null);
+    for (let i = 0; i < coupons.length; i++) {
+      let sub = user
+        ? await subscriptionModule.getUserSubscripe(user.id, coupons[i].id)
+        : null;
+      coupons[i].isSubscribe = sub ? true : false;
     }
     return res.status(200).send({
       isSuccessed: true,
@@ -367,6 +371,13 @@ const CouponController = {
 };
 
 async function addFavProp(coupons, userFav) {
+  if (!userFav) {
+    return coupons.map((coupon) => {
+      return Object.assign(coupon, {
+        isFav: false,
+      });
+    });
+  }
   return coupons.map((coupon) => {
     return Object.assign(coupon, {
       isFav: userFav.some((item) => {

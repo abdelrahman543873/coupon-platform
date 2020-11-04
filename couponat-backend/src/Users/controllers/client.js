@@ -81,24 +81,23 @@ const ClientControllers = {
     console.log(providers);
     if (user && user.favCoupons) {
       newest = await addFavProp(newest, user.favCoupons);
-
       mostSeller = await addFavProp(mostSeller, user.favCoupons);
+    } else {
+      newest = await addFavProp(newest, null);
+      mostSeller = await addFavProp(mostSeller, null);
+    }
+    for (let i = 0; i < mostSeller.length; i++) {
+      let sub = user
+        ? await subscriptionModule.getUserSubscripe(user.id, mostSeller[i].id)
+        : null;
+      mostSeller[i].isSubscribe = sub ? true : false;
+    }
 
-      for (let i = 0; i < mostSeller.length; i++) {
-        let sub = await subscriptionModule.getUserSubscripe(
-          user.id,
-          mostSeller[i].id
-        );
-        mostSeller[i].isSubscribe = sub ? true : false;
-      }
-
-      for (let i = 0; i < newest.length; i++) {
-        let sub = await subscriptionModule.getUserSubscripe(
-          user.id,
-          newest[i].id
-        );
-        newest[i].isSubscribe = sub ? true : false;
-      }
+    for (let i = 0; i < newest.length; i++) {
+      let sub = user
+        ? await subscriptionModule.getUserSubscripe(user.id, newest[i].id)
+        : null;
+      newest[i].isSubscribe = sub ? true : false;
     }
     res.status(201).send({
       isSuccessed: true,
@@ -535,6 +534,13 @@ const ClientControllers = {
 };
 
 async function addFavProp(coupons, userFav) {
+  if (!userFav) {
+    return coupons.map((coupon) => {
+      return Object.assign(coupon, {
+        isFav: false,
+      });
+    });
+  }
   return coupons.map((coupon) => {
     return Object.assign(coupon, {
       isFav: userFav.some((item) => {
