@@ -374,7 +374,7 @@ async function addFavProp(coupons, userFav) {
 
 async function addSubProp(coupons, id) {
   for (let i = 0; i < coupons.length; i++) {
-    coupons[i] = coupons[i].toObject();
+   // coupons[i] = coupons[i].toObject();
     coupons[i].isSubscribe = (await subscriptionModule.getUserSubscripe(
       id,
       coupon.id
