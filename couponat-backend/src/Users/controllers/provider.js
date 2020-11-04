@@ -5,6 +5,7 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
 import { CityModule } from "../../Cities/modules/city";
+import { DistrictModel } from "../../Cities/models/district";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -27,7 +28,7 @@ const ProviderControllers = {
       }
     }
     for (let i = 0; i < req.body.districts.length; i++) {
-      let dist = await CityModule.getById(req.body.districts[i]);
+      let dist = await DistrictModel.findById(req.body.districts[i]);
       if (!dist) {
         return next(
           boom.badData(`District with Id ${req.body.districts[i]} not found`)
