@@ -20,9 +20,9 @@ import { ContactModel } from "../../Users/models/contactUs";
 const AdminsController = {
   async add(req, res, next) {
     let { email, name, password } = req.body,
-      auth = decodeToken(req.headers.authentication);
+      auth = await decodeToken(req.headers.authentication);
     let hashedPass = await hashPass(password);
-    console.log(auth.type);
+    console.log(auth);
     if (auth && auth.type != "BOSS") {
       let errMsg =
         req.headers.lang == "en" ? "Not  Allowed!" : "ليس لديك الصلاحية";
@@ -60,7 +60,7 @@ const AdminsController = {
       let errMsg = lang == "en" ? "Wrong password" : "كلمة المرور غير صحيحه";
       return next(boom.badData(errMsg));
     }
-    email == "Boss@gmail.com" ? (type = "BOSS") : (type = "ADMIN");
+    type = email == "Boss@gmail.com" ? "BOSS" : "ADMIN";
     let authToken = generateToken(admin._id, type);
 
     return res.status(200).send({

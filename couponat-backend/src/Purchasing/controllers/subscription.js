@@ -8,6 +8,8 @@ import { ProviderModule } from "../../Users/modules/provider";
 import { decodeToken } from "../../utils/JWTHelper";
 import { paymentTypeModule } from "../modules/paymentType";
 import { subscriptionModule } from "../modules/subscription";
+import { AppBankModel } from "../../Purchasing/models/appBanks";
+import { AppCreditModel } from "../../Purchasing/models/appCridit";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -38,6 +40,30 @@ let subscriptionContoller = {
         errMsg =
           lang == "en" ? "Payment Type not Found" : "طريقة الدفع غير موجودة";
       return next(boom.notFound(errMsg));
+    }
+    if (payment.key == "ONLINE_PAYMENT" || payment.key == "BANK_TRANSFER") {
+      if (!req.body.account) {
+        return next(boom.badData("Must add acount"));
+      }
+      let account = "";
+      if (!req.body.transactionId) {
+        let lang = req.headers.lang || "ar",
+          errMsg =
+            lang == "en"
+              ? "Transaction Id must added"
+              : "يجب ادخال كود عملية الدفع";
+        return next(boom.notFound(errMsg));
+      }
+      if (payment.key == "ONLINE_PAYMENT")
+        account = await AppCreditModel.findById(req.body.account);
+      else account = await AppBankModel.findById(req.body.account);
+
+      if (!account) {
+        let lang = req.headers.lang || "ar",
+          errMsg =
+            lang == "en" ? "account not found" : "حساب التحويل غير موجود";
+        return next(boom.notFound(errMsg));
+      }
     }
     subscription.user = auth.id;
     if (paymentType.key == "BANK_TRANSFER" && !req.file) {
@@ -82,18 +108,13 @@ let subscriptionContoller = {
       coupon.doc.subCount += 1;
       coupon.doc = await coupon.doc.save();
     }
-    // subscripe.doc = subscripe.doc.toObject();
-    // paymentType.key == "ONLINE_PAYMENT"
-    //   ? (subscripe.doc.account = await AppCreditModel.findById(
-    //       subscripe.doc.account
-    //     ))
-    //   : "";
-    // paymentType.key == "BANK_TRANSFER"
-    //   ? (subscripe.doc.account = await AppBankModel.findById(
-    //       subscripe.doc.account
-    //     ))
-    //   : "";
-    subscripe = new Subscription(subscripe.doc);
+    subscription.account
+      ? (subscription.account =
+          subscription.paymentType.key == "ONLINE_PAYMENT"
+            ? await AppCreditModel.findById(subscription.account)
+            : await AppBankModel.findById(subscription.account))
+      : "";
+    subscription = new Subscription(subscription);
     return res.status(201).send({
       isSuccessed: true,
       data: subscripe,
@@ -116,17 +137,12 @@ let subscriptionContoller = {
             : "غير مشترك في هذا الكوبون",
       });
     }
-    // subscription = subscription.toObject();
-    // subscription.paymentType.key == "ONLINE_PAYMENT"
-    //   ? (subscription.account = await AppCreditModel.findById(
-    //       subscription.account
-    //     ))
-    //   : "";
-    // subscription.paymentType.key == "BANK_TRANSFER"
-    //   ? (subscription.account = await AppBankModel.findById(
-    //       subscription.account
-    //     ))
-    //   : "";
+    subscription.account
+      ? (subscription.account =
+          subscription.paymentType.key == "ONLINE_PAYMENT"
+            ? await AppCreditModel.findById(subscription.account)
+            : await AppBankModel.findById(subscription.account))
+      : "";
     subscription = new Subscription(subscription);
     return res.status(201).send({
       isSuccessed: true,
@@ -149,19 +165,17 @@ let subscriptionContoller = {
       null,
       null
     );
-
+    for (let i = 0; i < subscriptions.length; i++) {
+      subscriptions[i] = subscriptions[i].toObject();
+      subscriptions[i].account
+        ? (subscriptions[i].account =
+            subscriptions[i].paymentType.key == "ONLINE_PAYMENT"
+              ? await AppCreditModel.findById(subscriptions[i].account + "")
+              : await AppBankModel.findById(subscriptions[i].account + ""))
+        : "";
+      console.log("subbb:  ", subscriptions[i].account);
+    }
     subscriptions = subscriptions.map((subscription) => {
-      // subscription = subscription.toObject();
-      // subscription.paymentType.key == "ONLINE_PAYMENT"
-      //   ? (subscription.account = await AppCreditModel.findById(
-      //       subscription.account
-      //     ))
-      //   : "";
-      // subscription.paymentType.key == "BANK_TRANSFER"
-      //   ? (subscription.account = await AppBankModel.findById(
-      //       subscription.account
-      //     ))
-      //   : "";
       return new Subscription(subscription);
     });
     return res.status(201).send({

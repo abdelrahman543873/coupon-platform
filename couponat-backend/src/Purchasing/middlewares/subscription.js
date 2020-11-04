@@ -1,4 +1,5 @@
 import boom from "@hapi/boom";
+import { paymentTypeModule } from "../modules/paymentType";
 import { SubscriptionValidations } from "../utils/validations/subscription";
 
 let SubscriptionValidationWares = {
