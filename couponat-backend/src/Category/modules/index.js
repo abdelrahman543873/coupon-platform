@@ -1,4 +1,5 @@
 import { CategoryModel } from "../models/index";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 const CategoryModule = {
   async add(category) {
     return await CategoryModel({
@@ -19,6 +20,8 @@ const CategoryModule = {
       });
   },
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
+    console.log("here", checkAllMongooseId(id));
     return await CategoryModel.findById(id);
   },
   async getAll() {
@@ -38,6 +41,8 @@ const CategoryModule = {
   },
 
   async update(id, newData) {
+    if (!(await checkAllMongooseId(id))) return null;
+    console.log("here", checkAllMongooseId(id));
     return await CategoryModel.findByIdAndUpdate(
       id,
       { $set: { ...newData } },
@@ -58,6 +63,7 @@ const CategoryModule = {
   },
 
   async delete(id) {
+    if (!checkAllMongooseId(id)) return null;
     return await CategoryModel.deleteOne({ _id: id })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));

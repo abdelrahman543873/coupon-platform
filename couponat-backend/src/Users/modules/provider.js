@@ -1,3 +1,4 @@
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { ProviderModel } from "../models/provider";
 
 const ProviderModule = {
@@ -19,6 +20,8 @@ const ProviderModule = {
   },
 
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await ProviderModel.findById(id);
   },
 
@@ -27,12 +30,12 @@ const ProviderModule = {
   },
 
   async getAll() {
-    return ProviderModel.find({ isActive: true}).sort(
-      "-createdAt"
-    );
+    return ProviderModel.find({ isActive: true }).sort("-createdAt");
   },
 
   async updateProvider(id, providerData) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await ProviderModel.findByIdAndUpdate(
       id,
       { $set: { ...providerData } },
@@ -53,6 +56,8 @@ const ProviderModule = {
   },
 
   async changePassword(id, newPassword) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await ProviderModel.findByIdAndUpdate(
       id,
       { $set: { password: newPassword } },
@@ -73,6 +78,8 @@ const ProviderModule = {
   },
 
   async delete(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await ProviderModel.deleteOne({ _id: id })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));

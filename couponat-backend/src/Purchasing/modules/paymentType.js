@@ -1,3 +1,4 @@
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { PeymentTypeModel } from "../models/paymentType";
 
 let paymentTypeModule = {
@@ -19,6 +20,7 @@ let paymentTypeModule = {
       });
   },
   async switchPayment(id) {
+    if (!checkAllMongooseId(id)) return null;
     let payment = await PeymentTypeModel.findById(id);
     payment.isActive = !payment.isActive;
     payment = await payment.save();
@@ -32,6 +34,8 @@ let paymentTypeModule = {
   },
 
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await PeymentTypeModel.findById(id);
   },
 };

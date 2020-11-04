@@ -1,3 +1,4 @@
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { CouponModel } from "../models/coupon";
 
 const CouponModule = {
@@ -21,6 +22,7 @@ const CouponModule = {
   },
 
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
     return await CouponModel.findById(id)
       .then((doc) => {
         return {
@@ -37,6 +39,9 @@ const CouponModule = {
   },
 
   async getAll(skip, limit, category, provider, section) {
+    if (!checkAllMongooseId(category)) return null;
+    if (!checkAllMongooseId(provider)) return null;
+
     let queryOp = {},
       sort = "";
     queryOp.totalCount = {
@@ -86,6 +91,8 @@ const CouponModule = {
   },
 
   async updateCoupon(id, couponData) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await CouponModel.findByIdAndUpdate(
       id,
       { $set: { ...couponData } },
@@ -110,6 +117,8 @@ const CouponModule = {
   },
 
   async delete(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await CouponModel.deleteOne({ _id: id })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));

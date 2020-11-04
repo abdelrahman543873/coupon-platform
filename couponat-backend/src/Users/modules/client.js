@@ -1,7 +1,10 @@
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { ClientModel } from "../models/client";
 
 const ClientModule = {
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await ClientModel.findById(id).catch((err) => {
       console.log(err);
       return null;
@@ -78,6 +81,8 @@ const ClientModule = {
   },
 
   async verify(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     let user = await this.getById(id);
     user.isVerified = true;
     return await user.save();
@@ -93,6 +98,8 @@ const ClientModule = {
   },
 
   async toggleCouponInFavs(userId, couponId) {
+    if (!checkAllMongooseId(userId)) return null;
+    if (!checkAllMongooseId(couponId)) return null;
     let user = await this.getById(userId);
     if (!user) return null;
     if (!user.favCoupons) {
@@ -112,6 +119,8 @@ const ClientModule = {
   },
 
   async getFavCoupons(userId) {
+    if (!checkAllMongooseId(userId)) return null;
+
     let user = await this.getById(userId);
     if (!user || !user.favCoupons) return [];
     user = await user.populate("favCoupons").execPopulate();

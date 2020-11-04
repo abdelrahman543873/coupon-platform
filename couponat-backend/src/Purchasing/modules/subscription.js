@@ -1,3 +1,4 @@
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { SubscripionModel } from "../models/subscription";
 
 let subscriptionModule = {
@@ -21,6 +22,10 @@ let subscriptionModule = {
   },
 
   async getUserSubscripe(user, coupon) {
+    if (!checkAllMongooseId(user)) return null;
+
+    if (!checkAllMongooseId(coupon)) return null;
+
     return await SubscripionModel.findOne({
       user,
       coupon,
@@ -29,6 +34,10 @@ let subscriptionModule = {
   },
 
   async getSubscriptions(user, provider, isPaid, isConfirmed, isUsed) {
+    if (!checkAllMongooseId(user)) return null;
+
+    if (!checkAllMongooseId(provider)) return null;
+
     let queryOp = {};
     user ? (queryOp.user = user) : "";
     provider ? (queryOp.provider = provider) : "";
@@ -40,6 +49,8 @@ let subscriptionModule = {
   },
 
   async getById(id) {
+    if (!checkAllMongooseId(id)) return null;
+
     return await SubscripionModel.findById(id);
   },
 
