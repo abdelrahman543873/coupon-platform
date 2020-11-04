@@ -11,6 +11,7 @@ import { subscriptionModule } from "../modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
+import { id } from "pdfkit/js/reference";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -66,6 +67,12 @@ let subscriptionContoller = {
         let lang = req.headers.lang || "ar",
           errMsg =
             lang == "en" ? "account not found" : "حساب التحويل غير موجود";
+        return next(boom.notFound(errMsg));
+      }
+      if (!account.isActive) {
+        let lang = req.headers.lang || "ar",
+          errMsg =
+            lang == "en" ? "account not Active" : "حساب التحويل غير مفعل";
         return next(boom.notFound(errMsg));
       }
     }
