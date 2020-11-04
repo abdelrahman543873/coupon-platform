@@ -41,7 +41,10 @@ let subscriptionContoller = {
           lang == "en" ? "Payment Type not Found" : "طريقة الدفع غير موجودة";
       return next(boom.notFound(errMsg));
     }
-    if (paymentType.key == "ONLINE_PAYMENT" || paymentType.key == "BANK_TRANSFER") {
+    if (
+      paymentType.key == "ONLINE_PAYMENT" ||
+      paymentType.key == "BANK_TRANSFER"
+    ) {
       if (!req.body.account) {
         return next(boom.badData("Must add acount"));
       }
@@ -108,13 +111,13 @@ let subscriptionContoller = {
       coupon.doc.subCount += 1;
       coupon.doc = await coupon.doc.save();
     }
-    subscription.account
-      ? (subscription.account =
-          subscription.paymentType.key == "ONLINE_PAYMENT"
-            ? await AppCreditModel.findById(subscription.account)
-            : await AppBankModel.findById(subscription.account))
+    subscripe.account
+      ? (subscripe.account =
+          subscripe.paymentType.key == "ONLINE_PAYMENT"
+            ? await AppCreditModel.findById(subscripe.account)
+            : await AppBankModel.findById(subscripe.account))
       : "";
-    subscription = new Subscription(subscription);
+    subscripe = new Subscription(subscripe);
     return res.status(201).send({
       isSuccessed: true,
       data: subscripe,
