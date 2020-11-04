@@ -17,7 +17,7 @@ let subscriptionContoller = {
     let auth = await decodeToken(req.headers.authentication);
     let coupon = await CouponModule.getById(subscription.coupon);
     console.log("as: ", coupon);
-    if (coupon.err || !coupon.doc) {
+    if (coupon.err || !coupon.doc || coupon.doc.totalCount <= 0) {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "Coupon not Found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
@@ -98,7 +98,6 @@ let subscriptionContoller = {
         "/purchasing-management/subscriptions-images/" + req.file.filename;
       subscription.imgURL = imgURL;
     }
-
     let subscripe = await subscriptionModule.subscripe(subscription);
     if (subscripe.err) {
       console.log("error: ", subscripe.err);
@@ -114,7 +113,7 @@ let subscriptionContoller = {
     subscripe.doc.coupon = coupon.doc;
     subscripe.doc.account
       ? (subscripe.doc.account =
-          subscripe.doc.paymentType.key == "ONLINE_PAYMENT"
+          paymentType.key == "ONLINE_PAYMENT"
             ? await AppCreditModel.findById(subscripe.doc.account)
             : await AppBankModel.findById(subscripe.doc.account))
       : "";
