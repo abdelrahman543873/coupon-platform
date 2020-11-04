@@ -39,6 +39,9 @@ const CouponModule = {
   async getAll(skip, limit, category, provider, section) {
     let queryOp = {},
       sort = "";
+    queryOp.totalCount = {
+      $gte: 1,
+    };
     if (category) queryOp.category = category;
     if (provider) queryOp.provider = provider;
     console.log(queryOp);
