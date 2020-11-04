@@ -30,7 +30,7 @@ const ProviderControllers = {
       let dist = await CityModule.getById(req.body.districts[i]);
       if (!dist) {
         return next(
-          boom.badData(`City with Id ${req.body.districts[i]} not found`)
+          boom.badData(`District with Id ${req.body.districts[i]} not found`)
         );
       }
     }
