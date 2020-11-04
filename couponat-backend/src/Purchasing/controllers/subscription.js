@@ -11,7 +11,6 @@ import { subscriptionModule } from "../modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
-import { id } from "pdfkit/js/reference";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
