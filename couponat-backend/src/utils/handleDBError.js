@@ -15,7 +15,7 @@ function getErrorMessage(err, lang = "ar") {
     return lang == "ar"
       ? "البيانات غير مكتمله"
       : "Some data is missing or wrong!";
-  }
+  } else return err;
 }
 
 export { getErrorMessage };

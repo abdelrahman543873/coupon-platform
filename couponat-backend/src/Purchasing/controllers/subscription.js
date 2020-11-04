@@ -10,6 +10,7 @@ import { paymentTypeModule } from "../modules/paymentType";
 import { subscriptionModule } from "../modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
+import { getErrorMessage } from "../../utils/handleDBError";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -101,7 +102,9 @@ let subscriptionContoller = {
     let subscripe = await subscriptionModule.subscripe(subscription);
     if (subscripe.err) {
       console.log("error: ", subscripe.err);
-      return next(subscripe.err);
+      return next(
+        boom.badData(getErrorMessage(subscripe.err, req.headers.lang || "ar"))
+      );
     }
 
     if (paymentType.key == "ONLINE_PAYMENT") {
