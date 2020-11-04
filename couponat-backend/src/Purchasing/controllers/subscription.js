@@ -18,7 +18,7 @@ let subscriptionContoller = {
     let auth = await decodeToken(req.headers.authentication);
     let coupon = await CouponModule.getById(subscription.coupon);
     console.log("as: ", coupon);
-    if (coupon.err || !coupon.doc || coupon.doc.totalCount <= 0) {
+    if (!coupon|| coupon.doc.totalCount <= 0) {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "Coupon not Found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));

@@ -117,8 +117,8 @@ const CouponController = {
 
     let coupons = await CouponModule.getById(id);
     console.log(coupons);
-    console.log(coupons.err ? true : false);
-    if (!coupons.doc || coupons.err) {
+    console.log(coupons ? true : false);
+    if (!coupons) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
@@ -194,8 +194,8 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    let { doc, err } = await CouponModule.getById(id);
-    if (err) {
+    let doc = await CouponModule.getById(id);
+    if (!doc) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));

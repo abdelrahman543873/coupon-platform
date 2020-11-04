@@ -23,19 +23,7 @@ const CouponModule = {
 
   async getById(id) {
     if (!checkAllMongooseId(id)) return null;
-    return await CouponModel.findById(id)
-      .then((doc) => {
-        return {
-          doc,
-          err: null,
-        };
-      })
-      .catch((err) => {
-        return {
-          doc: null,
-          err: err,
-        };
-      });
+    return await CouponModel.findById(id);
   },
 
   async getAll(skip, limit, category, provider, section) {

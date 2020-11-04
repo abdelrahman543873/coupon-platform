@@ -367,8 +367,8 @@ const ClientControllers = {
       auth = await decodeToken(req.headers.authentication),
       userId = auth.id,
       lang = req.headers.lang || "ar";
-    let { doc, err } = await CouponModule.getById(couponId);
-    if (err || !doc) {
+    let doc = await CouponModule.getById(couponId);
+    if (!doc) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
       return next(boom.notFound(errMsg));
