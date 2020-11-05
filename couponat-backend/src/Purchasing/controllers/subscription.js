@@ -203,8 +203,8 @@ let subscriptionContoller = {
       null,
       null,
       null,
-      null,
-      "false"
+      false,
+      null
     );
     for (let i = 0; i < subscriptions.length; i++) {
       subscriptions[i] = subscriptions[i].toObject();
@@ -291,7 +291,7 @@ let subscriptionContoller = {
     });
   },
 
-  async confirmUsage(req,res,next) {
+  async confirmUsage(req, res, next) {
     let id = req.params.id;
     let subscribe = await subscriptionModule.getById(id);
     if (!subscribe || subscribe.isUsed == true) {
