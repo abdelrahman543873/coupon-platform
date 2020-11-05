@@ -21,11 +21,17 @@ const ClientControllers = {
   async add(req, res, next) {
     let { name, mobile, countryCode, password } = req.body,
       hashedPassword = await hashPass(password);
+    let imgURL = "";
+    if (req.file) {
+      imgURL =
+        "/customers-management/customers/customers-images/" + req.file.filename;
+    }
     let { doc, err } = await ClientModule.add(
       name,
       mobile,
       countryCode,
-      hashedPassword
+      hashedPassword,
+      imgURL
     );
 
     if (err)
@@ -528,6 +534,33 @@ const ClientControllers = {
     return res.status(200).send({
       isSuccessed: true,
       data: true,
+      error: null,
+    });
+  },
+
+  async changeProfile(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let user = await ClientModule.getById(id);
+    if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    let imgURL = "";
+    if (req.file) {
+      imgURL =
+        "/customers-management/customers/customers-images/" + req.file.filename;
+    }
+    user.imgURL = imgURL;
+    user = await user.save();
+    user = new Client(user);
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: user,
       error: null,
     });
   },

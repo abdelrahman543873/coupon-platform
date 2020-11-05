@@ -1,17 +1,20 @@
 import express from "express";
-import { CategoryController } from "../../Category/controllers";
 import { CouponController } from "../../Coupons/controllers";
 import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
 import { checkUserAuth } from "../../utils/auth";
+import { uploadHelper } from "../../utils/MulterHelper";
 import { ClientControllers } from "../controllers/client";
-import { ProviderControllers } from "../controllers/provider";
 import { ClientValidationWares } from "../middlewares/validations/client";
 
 const customersRouter = express.Router();
 
 customersRouter
   .route("/")
-  .post(ClientValidationWares.addClient, ClientControllers.add);
+  .post(
+    uploadHelper("Customers-Images/").single("imgURL"),
+    ClientValidationWares.addClient,
+    ClientControllers.add
+  );
 
 customersRouter
   .route("/auth")
@@ -72,6 +75,14 @@ customersRouter
   .route("/contact-us")
   .post(ClientValidationWares.contactUs, ClientControllers.contactUs);
 
+customersRouter
+  .route("/newPicture")
+  .post(
+    checkUserAuth,
+    uploadHelper("Customers-Images/").single("imgURL"),
+    ClientControllers.changeProfile
+  );
+
 // customersRouter
 //   .route("/customers/info")
 //   .get(checkCustomerAuth, ClientControllers.getProfile);
@@ -89,5 +100,10 @@ customersRouter
 //   .get(ClientControllers.getFamiliarQuestions);
 
 // customersRouter.use("/user-image", express.static("Users-Images"));
+
+customersRouter.use(
+  "/customers-management/customers/customers-images/",
+  express.static("Customers-Images")
+);
 
 export { customersRouter };

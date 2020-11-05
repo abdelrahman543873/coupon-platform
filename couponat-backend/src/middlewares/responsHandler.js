@@ -87,6 +87,7 @@ class Client {
       this.countryCode = client.countryCode;
       this.isVerified = client.isVerified;
       this.fcmToken = client.fcmToken;
+      this.imgURL = client.imgURL ? IP + client.imgURL : "";
     }
   }
 }

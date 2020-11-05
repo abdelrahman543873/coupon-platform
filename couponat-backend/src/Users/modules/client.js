@@ -28,12 +28,13 @@ const ClientModule = {
       });
   },
 
-  async add(name, mobile, countryCode, password) {
+  async add(name, mobile, countryCode, password, imgURL) {
     return await new ClientModel({
       name,
       mobile,
       countryCode,
       password,
+      imgURL,
     })
       .save()
       .then((doc) => {
@@ -56,6 +57,7 @@ const ClientModule = {
     socialMediaType,
     mobile,
     countryCode,
+    imgURL,
   }) {
     return await new ClientModel({
       name,
@@ -64,6 +66,7 @@ const ClientModule = {
       mobile,
       countryCode,
       isSocialMediaVerified: true,
+      imgURL,
     })
       .save()
       .then((doc) => {
