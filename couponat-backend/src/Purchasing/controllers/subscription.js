@@ -268,9 +268,9 @@ let subscriptionContoller = {
   async scan(req, res, next) {
     let code = req.params.code;
     let auth = await decodeToken(req.headers.authentication);
-    id = auth ? auth.id : null;
+    id = auth.id;
 
-    let subscribe = await subscriptionModule.scan(code);
+    let subscribe = await subscriptionModule.scan(id, code);
     if (!subscribe) {
       return res.status(404).send({
         isSuccessed: false,

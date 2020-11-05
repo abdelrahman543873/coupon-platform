@@ -55,7 +55,7 @@ providersRouter
   );
 
 providersRouter
-  .route("/subscriptions/scan/")
+  .route("/subscriptions/scan/:code")
   .get(checkUserAuth, subscriptionContoller.scan);
 
 providersRouter
