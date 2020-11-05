@@ -318,20 +318,19 @@ const AdminsController = {
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
-  
-      let coupons = await CouponModule.find({ provider: id }, { _id: 1 });
-      for (let i = 0; i < coupons.length; i++) {
-        coupons[i] = coupons[i]._id;
-      }
+    let coupons = await CouponModule.find({ provider: id }, { _id: 1 });
+    for (let i = 0; i < coupons.length; i++) {
+      coupons[i] = coupons[i]._id;
+    }
 
-      let updateCoupons = await CouponModel.updateMany(
-        {
-          _id: { $in: coupons },
-        },
-        { $set: { isActive: provider.isActive } }
-      ).catch((err) => {
-        return next(boom.unauthorized(err));
-      });
+    let updateCoupons = await CouponModel.updateMany(
+      {
+        _id: { $in: coupons },
+      },
+      { $set: { isActive: provider.isActive } }
+    ).catch((err) => {
+      return next(boom.unauthorized(err));
+    });
     provider = new Provider(provider);
     return res.status(200).send({
       isSuccessed: true,
