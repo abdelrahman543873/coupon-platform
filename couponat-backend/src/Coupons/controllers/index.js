@@ -359,7 +359,6 @@ const CouponController = {
           : "";
         subscription = new Subscription(subscription);
       }
-
     }
 
     return res.status(200).send({
