@@ -193,8 +193,9 @@ let subscriptionContoller = {
           user.favCoupons
         );
         subscriptions[i].coupon = subscriptions[i].coupon[0];
+        console.log("subbb:  ", subscriptions[i].coupon);
+        console.log("Fav:  ", user.favCoupons);
       }
-      console.log("subbb:  ", subscriptions[i].coupon);
     }
     subscriptions = subscriptions.map((subscription) => {
       return new Subscription(subscription, auth.type);
