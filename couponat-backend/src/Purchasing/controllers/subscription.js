@@ -204,7 +204,7 @@ let subscriptionContoller = {
       null,
       null,
       null,
-      false
+      "false"
     );
     for (let i = 0; i < subscriptions.length; i++) {
       subscriptions[i] = subscriptions[i].toObject();

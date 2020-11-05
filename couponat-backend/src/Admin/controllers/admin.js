@@ -16,6 +16,7 @@ import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../../Users/modules/verifications";
 import { resetPassMailer, sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
+import { SubscripionModel } from "../../Purchasing/models/subscription";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -291,6 +292,29 @@ const AdminsController = {
       data: categories,
       error: null,
     });
+  },
+
+  async toggleProviders(req, res, next) {
+    let id = req.params.is;
+    let provider = await ProviderModule.getById(id);
+    if (!provider) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Provider not found"
+          : "مقدم الخدمة غير موجود";
+      return next(boom.unauthorized(errMsg));
+    }
+
+    let subscriptions = await SubscripionModel.find({ provider: id });
+    if (provider.isActive && subscriptions.length > 0) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Cann't disactive this provider!"
+          : "لا يمكن تعطيل مزود الخدمة";
+      return next(boom.unauthorized(errMsg));
+    }
+
+    let coupons = await SubscripionModel.find({ provider: id });
   },
 
   // async addQustion(req, res, next) {
