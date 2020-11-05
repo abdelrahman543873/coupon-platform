@@ -186,8 +186,9 @@ let subscriptionContoller = {
               ? await AppCreditModel.findById(subscriptions[i].account + "")
               : await AppBankModel.findById(subscriptions[i].account + ""))
         : "";
-      if (user) {
-        user = await ClientModule.getById(user);
+
+      let userOb = await ClientModule.getById(user);
+      if (userOb) {
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
           user.favCoupons
