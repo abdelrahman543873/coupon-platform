@@ -83,13 +83,13 @@ const ProviderControllers = {
       return next(boom.badData(errMsg));
     }
 
-    if (user.isActive === false) {
-      errMsg =
-        req.headers.lang == "en"
-          ? "this account not active"
-          : "هذا الحساب غير مفعل";
-      return next(boom.unauthorized(errMsg));
-    }
+    // if (user.isActive === false) {
+    //   errMsg =
+    //     req.headers.lang == "en"
+    //       ? "this account not active"
+    //       : "هذا الحساب غير مفعل";
+    //   return next(boom.unauthorized(errMsg));
+    // }
     console.log(user);
     if (!(await bcryptCheckPass(password, user.password))) {
       return next(boom.badData(errMsg));
