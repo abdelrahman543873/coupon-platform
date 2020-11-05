@@ -291,7 +291,7 @@ let subscriptionContoller = {
     });
   },
 
-  async confirmUsage() {
+  async confirmUsage(req,res,next) {
     let id = req.params.id;
     let subscribe = await subscriptionModule.getById(id);
     if (!subscribe || subscribe.isUsed == true) {
