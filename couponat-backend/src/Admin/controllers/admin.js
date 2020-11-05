@@ -317,10 +317,13 @@ const AdminsController = {
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
-    let coupons = await CouponModel.find({}, { _id: 1 });
+    let coupons = await CouponModel.find(
+      { provider: id }, 
+      { _id: 1 });
     for (let i = 0; i < coupons.length; i++) {
       coupons[i] = coupons[i]._id;
     }
+
 
     let updateCoupons = await CouponModel.updateMany(
       {
