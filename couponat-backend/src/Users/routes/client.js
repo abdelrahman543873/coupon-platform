@@ -102,7 +102,7 @@ customersRouter
 // customersRouter.use("/user-image", express.static("Users-Images"));
 
 customersRouter.use(
-  "/customers-management/customers/customers-images/",
+  "/customers/customers-images/",
   express.static("Customers-Images")
 );
 
