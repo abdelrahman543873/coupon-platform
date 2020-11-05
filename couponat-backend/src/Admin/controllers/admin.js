@@ -16,7 +16,6 @@ import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../../Users/modules/verifications";
 import { resetPassMailer, sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
-import { SubscripionModel } from "../../Purchasing/models/subscription";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -318,7 +317,7 @@ const AdminsController = {
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
-    let coupons = await CouponModule.find({ provider: id }, { _id: 1 });
+    let coupons = await CouponModel.find({ provider: id }, { _id: 1 });
     for (let i = 0; i < coupons.length; i++) {
       coupons[i] = coupons[i]._id;
     }
