@@ -189,6 +189,7 @@ let subscriptionContoller = {
               : await AppBankModel.findById(subscriptions[i].account + ""))
         : "";
 
+      subscriptions[i] = new Subscription(subscriptions[i], auth.type);
       if (user) {
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
@@ -199,9 +200,6 @@ let subscriptionContoller = {
         console.log("Fav:  ", user.favCoupons);
       }
     }
-    subscriptions = subscriptions.map((subscription) => {
-      return new Subscription(subscription, auth.type);
-    });
     return res.status(201).send({
       isSuccessed: true,
       data: subscriptions,
@@ -342,9 +340,9 @@ async function addFavProp(coupons, userFav) {
   return coupons.map((coupon) => {
     return Object.assign(coupon, {
       isFav: userFav.some((item) => {
-        console.log(coupon._id, "---", item);
-        console.log(item + "" == coupon._id + "");
-        return item + "" == coupon._id + "";
+        console.log(coupon.id, "---", item);
+        console.log(item + "" == coupon.id + "");
+        return item + "" == coupon.id + "";
       }),
     });
   });
