@@ -24,6 +24,7 @@ class Provider {
       this.facebookLink = provider.facebookLink || "";
       this.instaLink = provider.instaLink || "";
       this.fcmToken = provider.fcmToken;
+      this.isActive = provider.isActive;
     }
   }
 }

@@ -32,6 +32,8 @@ const CouponModule = {
 
     let queryOp = {},
       sort = "";
+
+    queryOp.isActive = true;
     queryOp.totalCount = {
       $gte: 1,
     };
@@ -56,7 +58,7 @@ const CouponModule = {
 
   async search(skip = 1, limit = 1, name = "") {
     let queryOp = {};
-    queryOp.isDeleted = false;
+    queryOp.isActive = true;
     if (name !== "") {
       queryOp.$or = [
         {
@@ -101,7 +103,7 @@ const CouponModule = {
   },
 
   async scan(code) {
-    return await CouponModel.findOne({ code });
+    return await CouponModel.findOne({ code, isActive: true });
   },
 
   async delete(id) {

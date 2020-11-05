@@ -140,6 +140,10 @@ adminRouter
   .route("/subscriptions/:id/confirmation")
   .post(AdminAuth, subscriptionContoller.confirmPayment);
 
+adminRouter
+  .route("/providers/:id/toggle")
+  .post(AdminAuth, AdminsController.toggleProviders);
+
 // adminRouter
 //   .route("/questions/new")
 //   .post(

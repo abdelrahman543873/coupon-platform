@@ -41,7 +41,9 @@ let subscriptionModule = {
     let queryOp = {};
     user ? (queryOp.user = user) : "";
     provider ? (queryOp.provider = provider) : "";
-    isConfirmed==false || isConfirmed==true ? (queryOp.isConfirmed = isConfirmed) : "";
+    isConfirmed == false || isConfirmed == true
+      ? (queryOp.isConfirmed = isConfirmed)
+      : "";
     // isUsed ? (queryOp.isUsed = isUsed) : "";
     // isPaid ? (queryOp.isPaid = isPaid) : "";
 
