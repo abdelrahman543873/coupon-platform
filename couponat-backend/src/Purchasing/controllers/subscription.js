@@ -165,10 +165,9 @@ let subscriptionContoller = {
   },
 
   async getAllSubscriptions(req, res, next) {
-    let auth = req.headers.authentication;
-    let id = auth.id,
-      user = null,
-      provider = null;
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id;
+    (user = null), (provider = null);
     console.log("here naoe: ", auth);
     if (auth.type == "CLIENT") user = id;
     else provider = id;
@@ -188,9 +187,8 @@ let subscriptionContoller = {
               : await AppBankModel.findById(subscriptions[i].account + ""))
         : "";
 
-      let userOb = await ClientModule.getById(user);
-      console.log("here 2: ", userOb);
-      if (userOb) {
+      if (user) {
+        let user = await ClientModule.getById(user);
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
           user.favCoupons
