@@ -166,8 +166,9 @@ let subscriptionContoller = {
 
   async getAllSubscriptions(req, res, next) {
     let auth = await decodeToken(req.headers.authentication);
-    let id = auth.id;
-    (user = null), (provider = null);
+    let id = auth.id,
+      user = null,
+      provider = null;
     console.log("here naoe: ", auth);
     if (auth.type == "CLIENT") user = id;
     else provider = id;
