@@ -187,6 +187,15 @@ let subscriptionContoller = {
               : await AppBankModel.findById(subscriptions[i].account + ""))
         : "";
       console.log("subbb:  ", subscriptions[i].account);
+
+      if (user) {
+        user = await ClientModule.getById(user);
+        subscriptions[i].coupon = addFavProp(
+          [subscriptions[i].coupon],
+          user.favCoupons
+        );
+        subscriptions[i].coupon = subscriptions[i].coupon[0];
+      }
     }
     subscriptions = subscriptions.map((subscription) => {
       return new Subscription(subscription, auth.type);
@@ -319,4 +328,23 @@ let subscriptionContoller = {
     });
   },
 };
+
+async function addFavProp(coupons, userFav) {
+  if (!userFav) {
+    return coupons.map((coupon) => {
+      return Object.assign(coupon, {
+        isFav: false,
+      });
+    });
+  }
+  return coupons.map((coupon) => {
+    return Object.assign(coupon, {
+      isFav: userFav.some((item) => {
+        console.log(coupon.id, "---", item);
+        console.log(item == coupon.id);
+        return item + "" == coupon.id + "";
+      }),
+    });
+  });
+}
 export { subscriptionContoller };

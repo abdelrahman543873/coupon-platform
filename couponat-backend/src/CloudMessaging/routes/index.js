@@ -1,18 +1,19 @@
 import express from "express";
-// import { notificationsController } from "../controller/notification";
+import { checkUserAuth } from "../../utils/auth";
+import { notificationsController } from "../controller/notification";
 
 const notificationRouter = express.Router();
 
-// notificationRouter
-//   .route("/users/:id/addToken")
-//   .post(notificationsController.addTokenToUser);
+notificationRouter
+  .route("/addToken")
+  .post(checkUserAuth, notificationsController.addTokenToUser);
 
-// notificationRouter
-//   .route("/users/:id/logout")
-//   .post(notificationsController.removeUserToken);
+notificationRouter
+  .route("/logout")
+  .post(checkUserAuth, notificationsController.removeUserToken);
 
-// notificationRouter
-//   .route("/users/:id")
-//   .get(notificationsController.getNotifications);
+notificationRouter
+  .route("/notifications")
+  .get(checkUserAuth, notificationsController.getNotifications);
 
 export { notificationFileName, notificationRouter };
