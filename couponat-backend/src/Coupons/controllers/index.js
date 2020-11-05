@@ -11,6 +11,7 @@ import fs from "fs";
 import { IP } from "../../../serverIP";
 import { ClientModule } from "../../Users/modules/client";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
+import { ProviderModule } from "../../Users/modules/provider";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -19,6 +20,12 @@ const CouponController = {
       imgURL = "";
     console.log(auth);
     if (auth.type != "PROVIDER" && auth.type != "ADMIN") {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
+      return next(boom.unauthorized(errMsg));
+    }
+    let provider = await ProviderModule.getById(auth.id);
+    if (!provider.isActive) {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));
@@ -114,7 +121,12 @@ const CouponController = {
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));
     }
-
+    let provider = await ProviderModule.getById(auth.id);
+    if (!provider.isActive) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
+      return next(boom.unauthorized(errMsg));
+    }
     let coupons = await CouponModule.getById(id);
     console.log(coupons);
     console.log(coupons ? true : false);

@@ -305,20 +305,20 @@ const AdminsController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    if (provider.isActive) {
-      let subscriptions = await SubscripionModel.find({ provider: id });
-      if (subscriptions.length > 0) {
-        let errMsg =
-          req.headers.lang == "en"
-            ? "Cann't disactive this provider!"
-            : "لا يمكن تعطيل مزود الخدمة";
-        return next(boom.unauthorized(errMsg));
-      }
-    }
+    // if (provider.isActive) {
+    //   let subscriptions = await SubscripionModel.find({ provider: id });
+    //   if (subscriptions.length > 0) {
+    //     let errMsg =
+    //       req.headers.lang == "en"
+    //         ? "Cann't disactive this provider!"
+    //         : "لا يمكن تعطيل مزود الخدمة";
+    //     return next(boom.unauthorized(errMsg));
+    //   }
+    // }
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
-    if (!provider.isActive) {
+  
       let coupons = await CouponModule.find({ provider: id }, { _id: 1 });
       for (let i = 0; i < coupons.length; i++) {
         coupons[i] = coupons[i]._id;
@@ -328,11 +328,10 @@ const AdminsController = {
         {
           _id: { $in: coupons },
         },
-        { $set: { isActive: false } }
+        { $set: { isActive: provider.isActive } }
       ).catch((err) => {
         return next(boom.unauthorized(err));
       });
-    }
     provider = new Provider(provider);
     return res.status(200).send({
       isSuccessed: true,
