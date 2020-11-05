@@ -169,6 +169,7 @@ let subscriptionContoller = {
     let id = auth.id,
       user = null,
       provider = null;
+    console.log("here naoe: ", auth);
     if (auth.type == "CLIENT") user = id;
     else provider = id;
     let subscriptions = await subscriptionModule.getSubscriptions(
@@ -188,6 +189,7 @@ let subscriptionContoller = {
         : "";
 
       let userOb = await ClientModule.getById(user);
+      console.log("here 2: ", userOb);
       if (userOb) {
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
