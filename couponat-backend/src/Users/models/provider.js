@@ -29,7 +29,7 @@ let providerSchema = mongoose.Schema(
     isActive: {
       type: Boolean,
       required: true,
-      default: true,
+      default: false,
     },
     cities: [
       {

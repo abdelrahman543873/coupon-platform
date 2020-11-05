@@ -249,6 +249,10 @@ let subscriptionContoller = {
     if (decision == true || decision == "true") {
       subscribe.isConfirmed = decision;
       subscribe.isPaid = true;
+      let coupon = await CouponModule.getById(subscribe.coupon._id);
+      coupon.totalCount = coupon.totalCount - 1;
+      coupon.subCount = coupon.subCount + 1;
+      coupon = await coupon.save();
     } else subscribe.note = note;
 
     subscribe = await subscribe.save();
@@ -296,9 +300,16 @@ let subscriptionContoller = {
           lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
       return next(boom.notFound(errMsg));
     }
-
     subscribe.isUsed = true;
-    subscribe = subscribe.save();
+    subscribe = await subscribe.save();
+
+    if (subscribe.paymentType.key == "CASH") {
+      let coupon = await CouponModule.getById(subscribe.coupon._id);
+      coupon.totalCount = coupon.totalCount - 1;
+      coupon.subCount = coupon.subCount + 1;
+      coupon = await coupon.save();
+      subscribe.coupon = coupon;
+    }
 
     subscribe = new Subscription(subscribe, "PROVIDER");
     return res.status(200).send({

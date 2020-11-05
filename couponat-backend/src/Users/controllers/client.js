@@ -339,7 +339,8 @@ const ClientControllers = {
       id = auth.id;
     let user = await ClientModule.getById(id);
     if (!user) {
-      let errMsg = req.headers.lang == "en" ? "user not found" : "المستخدم غير موجود";
+      let errMsg =
+        req.headers.lang == "en" ? "user not found" : "المستخدم غير موجود";
       return next(boom.notFound(errMsg));
     }
 
