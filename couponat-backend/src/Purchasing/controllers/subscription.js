@@ -178,6 +178,8 @@ let subscriptionContoller = {
       null,
       null
     );
+    user = await ClientModule.getById(user);
+    console.log("User: ", user);
     for (let i = 0; i < subscriptions.length; i++) {
       subscriptions[i] = subscriptions[i].toObject();
       subscriptions[i].account
@@ -188,8 +190,6 @@ let subscriptionContoller = {
         : "";
 
       if (user) {
-        user = await ClientModule.getById(user);
-        console.log("User: ", user);
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
           user.favCoupons
