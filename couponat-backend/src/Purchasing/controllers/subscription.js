@@ -186,16 +186,15 @@ let subscriptionContoller = {
               ? await AppCreditModel.findById(subscriptions[i].account + "")
               : await AppBankModel.findById(subscriptions[i].account + ""))
         : "";
-      console.log("subbb:  ", subscriptions[i].account);
-
       if (user) {
         user = await ClientModule.getById(user);
-        subscriptions[i].coupon = addFavProp(
+        subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
           user.favCoupons
         );
         subscriptions[i].coupon = subscriptions[i].coupon[0];
       }
+      console.log("subbb:  ", subscriptions[i].coupon);
     }
     subscriptions = subscriptions.map((subscription) => {
       return new Subscription(subscription, auth.type);
