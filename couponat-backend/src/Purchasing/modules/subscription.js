@@ -60,6 +60,7 @@ let subscriptionModule = {
       code,
       isConfirmed: true,
       provider: id,
+      isUsed: false,
     });
   },
 };
