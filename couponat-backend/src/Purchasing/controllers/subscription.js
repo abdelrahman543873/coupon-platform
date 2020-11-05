@@ -189,6 +189,7 @@ let subscriptionContoller = {
 
       if (user) {
         let user = await ClientModule.getById(user);
+        console.log("User: ", user);
         subscriptions[i].coupon = await addFavProp(
           [subscriptions[i].coupon],
           user.favCoupons
