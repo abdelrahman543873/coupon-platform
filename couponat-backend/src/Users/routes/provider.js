@@ -60,7 +60,7 @@ providersRouter
 
 providersRouter
   .route("/subscriptions/:id/confirmation")
-  .get(checkUserAuth, subscriptionContoller.confirmUsage);
+  .post(checkUserAuth, subscriptionContoller.confirmUsage);
 
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
