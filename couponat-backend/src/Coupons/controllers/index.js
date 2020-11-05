@@ -345,18 +345,21 @@ const CouponController = {
     coupon = new Coupon(coupon);
     if (id) {
       subscription = await subscriptionModule.getUserSubscripe(id, coupon.id);
-      subscription = subscription.toObject();
-      subscription.paymentType.key == "ONLINE_PAYMENT"
-        ? (subscription.account = await AppCreditModel.findById(
-            subscription.account
-          ))
-        : "";
-      subscription.paymentType.key == "BANK_TRANSFER"
-        ? (subscription.account = await AppBankModel.findById(
-            subscription.account
-          ))
-        : "";
-      subscription = new Subscription(subscription);
+      if (subscription) {
+        subscription = subscription.toObject();
+        subscription.paymentType.key == "ONLINE_PAYMENT"
+          ? (subscription.account = await AppCreditModel.findById(
+              subscription.account
+            ))
+          : "";
+        subscription.paymentType.key == "BANK_TRANSFER"
+          ? (subscription.account = await AppBankModel.findById(
+              subscription.account
+            ))
+          : "";
+        subscription = new Subscription(subscription);
+      }
+
     }
 
     return res.status(200).send({
