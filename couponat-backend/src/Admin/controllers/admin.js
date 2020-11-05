@@ -295,7 +295,7 @@ const AdminsController = {
   },
 
   async toggleProviders(req, res, next) {
-    let id = req.params.is;
+    let id = req.params.id;
     let provider = await ProviderModule.getById(id);
     if (!provider) {
       let errMsg =
