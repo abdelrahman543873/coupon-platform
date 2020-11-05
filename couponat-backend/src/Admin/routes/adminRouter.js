@@ -6,6 +6,7 @@ import { cityValidationware } from "../../Cities/middlewares/validations/city";
 import { CouponValidationWares } from "../../Coupons/middlewares/validation/coupon";
 import { BankAccountController } from "../../Purchasing/controllers/bank";
 import { PaymentTypeController } from "../../Purchasing/controllers/paymentType";
+import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
 import { BankValidationWares } from "../../Purchasing/middlewares/bank";
 import { PaymentValidationWares } from "../../Purchasing/middlewares/paymentTypes";
 import { ProviderControllers } from "../../Users/controllers/provider";
@@ -126,9 +127,18 @@ adminRouter
   .post(AdminAuth, BankAccountController.toggleBankAccount);
 
 adminRouter.route("/mails").get(AdminAuth, AdminsController.mails);
+
 adminRouter
   .route("/mails/reply")
   .post(AdminAuth, adminValidationwar.mailReply, AdminsController.mailReply);
+
+adminRouter
+  .route("/subscriptions/unconfirmed")
+  .get(AdminAuth, subscriptionContoller.getUnconfirmed);
+
+adminRouter
+  .route("/subscriptions/:id/confirmation")
+  .post(AdminAuth, subscriptionContoller.confirmPayment);
 
 // adminRouter
 //   .route("/questions/new")

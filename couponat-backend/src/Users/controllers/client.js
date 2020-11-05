@@ -14,7 +14,6 @@ import {
 import { ProviderModule } from "../modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModule } from "../../Coupons/modules/coupon";
-import { contactUs } from "../../utils/nodemailer";
 import { ContactModel } from "../models/contactUs";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 
@@ -340,7 +339,7 @@ const ClientControllers = {
       id = auth.id;
     let user = await ClientModule.getById(id);
     if (!user) {
-      let errMsg = lang == "en" ? "user not found" : "المستخدم غير موجود";
+      let errMsg = req.headers.lang == "en" ? "user not found" : "المستخدم غير موجود";
       return next(boom.notFound(errMsg));
     }
 

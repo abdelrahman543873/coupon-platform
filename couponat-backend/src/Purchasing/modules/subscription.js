@@ -41,9 +41,9 @@ let subscriptionModule = {
     let queryOp = {};
     user ? (queryOp.user = user) : "";
     provider ? (queryOp.provider = provider) : "";
-    // isPaid ? (queryOp.isPaid = isPaid) : "";
-    // isConfirmed ? (queryOp.isConfirmed = isConfirmed) : "";
+    isConfirmed ? (queryOp.isConfirmed = isConfirmed) : "";
     // isUsed ? (queryOp.isUsed = isUsed) : "";
+    // isPaid ? (queryOp.isPaid = isPaid) : "";
 
     return await SubscripionModel.find({ ...queryOp });
   },
@@ -54,8 +54,13 @@ let subscriptionModule = {
     return await SubscripionModel.findById(id);
   },
 
-  async scan(code) {
-    return await SubscripionModel.findOne({ code });
+  async scan(id, code) {
+    if (!checkAllMongooseId(id)) return null;
+    return await SubscripionModel.findOne({
+      code,
+      isConfirmed: true,
+      provider: id,
+    });
   },
 };
 

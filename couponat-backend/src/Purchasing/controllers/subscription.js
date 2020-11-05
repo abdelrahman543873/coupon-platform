@@ -11,6 +11,7 @@ import { subscriptionModule } from "../modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
+import { not } from "joi";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -188,11 +189,121 @@ let subscriptionContoller = {
       console.log("subbb:  ", subscriptions[i].account);
     }
     subscriptions = subscriptions.map((subscription) => {
-      return new Subscription(subscription);
+      return new Subscription(subscription, auth.type);
     });
     return res.status(201).send({
       isSuccessed: true,
       data: subscriptions,
+      error: null,
+    });
+  },
+
+  async getUnconfirmed(req, res, next) {
+    let subscriptions = await subscriptionModule.getSubscriptions(
+      null,
+      null,
+      null,
+      null,
+      false
+    );
+    for (let i = 0; i < subscriptions.length; i++) {
+      subscriptions[i] = subscriptions[i].toObject();
+      subscriptions[i].account
+        ? (subscriptions[i].account =
+            subscriptions[i].paymentType.key == "ONLINE_PAYMENT"
+              ? await AppCreditModel.findById(subscriptions[i].account + "")
+              : await AppBankModel.findById(subscriptions[i].account + ""))
+        : "";
+      console.log("subbb:  ", subscriptions[i].account);
+    }
+    subscriptions = subscriptions.map((subscription) => {
+      return new Subscription(subscription, "PROVIDER");
+    });
+    return res.status(201).send({
+      isSuccessed: true,
+      data: subscriptions,
+      error: null,
+    });
+  },
+
+  async confirmPayment(req, res, next) {
+    let subscribeId = req.params.id;
+    let { decision, note } = req.body;
+    let subscribe = await subscriptionModule.getById(subscribeId);
+    if (!subscribe || subscribe.isUsed == true) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
+      return next(boom.notFound(errMsg));
+    }
+
+    if ((decision == "false" || decision == false) && !note) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "Must to send note to Client"
+            : "يجب إرسال ملاحظة توضيح سبب الرفض";
+      return next(boom.notFound(errMsg));
+    }
+
+    if (decision == true || decision == "true") {
+      subscribe.isConfirmed = decision;
+      subscribe.isPaid = true;
+    } else subscribe.note = note;
+
+    subscribe = await subscribe.save();
+    subscribe = new Subscription(subscribe, "PROVIDER");
+
+    return res.status(201).send({
+      isSuccessed: true,
+      data: subscribe,
+      error: null,
+    });
+  },
+
+  async scan(req, res, next) {
+    let code = req.params.code;
+    let auth = await decodeToken(req.headers.authentication);
+    id = auth ? auth.id : null;
+
+    let subscribe = await subscriptionModule.scan(code);
+    if (!subscribe) {
+      return res.status(404).send({
+        isSuccessed: false,
+        data: null,
+        error:
+          req.headers.lang == "en"
+            ? "Subscribtion not Found"
+            : "عملية الاشتراك غير موجودة",
+      });
+    }
+
+    subscribe = new Subscription(subscribe, "PROVIDER");
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: subscribe,
+      error: null,
+    });
+  },
+
+  async confirmUsage() {
+    let id = req.params.id;
+    let subscribe = await subscriptionModule.getById(id);
+    if (!subscribe || subscribe.isUsed == true) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
+      return next(boom.notFound(errMsg));
+    }
+
+    subscribe.isUsed = true;
+    subscribe = subscribe.save();
+
+    subscribe = new Subscription(subscribe, "PROVIDER");
+    return res.status(200).send({
+      isSuccessed: true,
+      data: subscribe,
       error: null,
     });
   },

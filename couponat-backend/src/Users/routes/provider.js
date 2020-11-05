@@ -3,6 +3,7 @@ import { ProviderControllers } from "../controllers/provider";
 import { ProviderValidationWares } from "../middlewares/validations/provider";
 import { uploadHelper } from "../../utils/MulterHelper";
 import { checkUserAuth } from "../../utils/auth";
+import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
 
 const providersRouter = express.Router();
 
@@ -52,6 +53,14 @@ providersRouter
     ProviderValidationWares.changePassword,
     ProviderControllers.changePassword
   );
+
+providersRouter
+  .route("/subscriptions/scan/")
+  .get(checkUserAuth, subscriptionContoller.scan);
+
+providersRouter
+  .route("/subscriptions/:id/confirmation")
+  .get(checkUserAuth, subscriptionContoller.confirmUsage);
 
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
