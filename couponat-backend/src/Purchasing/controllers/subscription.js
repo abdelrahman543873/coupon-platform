@@ -343,7 +343,7 @@ async function addFavProp(coupons, userFav) {
     return Object.assign(coupon, {
       isFav: userFav.some((item) => {
         console.log(coupon._id, "---", item);
-        console.log(item == coupon.id);
+        console.log(item+"" == coupon.id+"");
         return item + "" == coupon.id + "";
       }),
     });
