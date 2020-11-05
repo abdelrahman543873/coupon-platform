@@ -89,7 +89,12 @@ const AdminsController = {
     coupon.provider = req.params.id;
     coupon.code = nanoid(6);
     let fileName = coupon.code + Date.now() + ".png";
-    let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code);
+    let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code, {
+      color: {
+        dark: "#00F", // Blue dots
+        light: "#0000", // Transparent background
+      },
+    });
     coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
@@ -317,13 +322,10 @@ const AdminsController = {
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
-    let coupons = await CouponModel.find(
-      { provider: id }, 
-      { _id: 1 });
+    let coupons = await CouponModel.find({ provider: id }, { _id: 1 });
     for (let i = 0; i < coupons.length; i++) {
       coupons[i] = coupons[i]._id;
     }
-
 
     let updateCoupons = await CouponModel.updateMany(
       {
