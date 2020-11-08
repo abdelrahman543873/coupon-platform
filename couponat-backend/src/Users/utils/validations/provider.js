@@ -10,7 +10,7 @@ const ProviderValidations = {
 
     password: Joi.string().min(8).required().error(errorsOverride),
 
-    slogan: Joi.string().min(3).max(30).required().error(errorsOverride),
+    slogan: Joi.string().min(10).required().error(errorsOverride),
 
     cities: Joi.array().items(
       Joi.custom(checkMongooseId, "custom validation")
@@ -53,7 +53,7 @@ const ProviderValidations = {
 
     password: Joi.string().min(8).optional().error(errorsOverride),
 
-    slogan: Joi.string().min(3).max(30).optional().error(errorsOverride),
+    slogan: Joi.string().min(10).optional().error(errorsOverride),
 
     cities: Joi.array().items(
       Joi.custom(checkMongooseId, "custom validation")
