@@ -95,7 +95,13 @@ let subscriptionContoller = {
     let fileName = subscription.code + Date.now() + ".png";
     let qrURL = QRCode.toFile(
       "./Subscriptions-Images/" + fileName,
-      subscription.code
+      subscription.code,
+      {
+        color: {
+          dark: "#00F", // Blue dots
+          light: "#0000", // Transparent background
+        },
+      }
     );
     subscription.qrURL =
       "/purchasing-management/subscriptions-images/" + fileName;

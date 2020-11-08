@@ -37,9 +37,9 @@ connectDB(dbUrl)
         "Couponat platform is running on port: " + process.env.COUPONAT_N_PORT
       );
     });
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("59 23 * * *", async () => {
       console.log("Here now");
-      let date = new Date(new Date().setDate(new Date().getDate() - 0));
+      let date = new Date(new Date().setDate(new Date().getDate() - 1));
       let subscriptions = await SubscripionModel.find(
         {
           isConfirmed: true,
