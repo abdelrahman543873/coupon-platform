@@ -50,6 +50,7 @@ connectDB(dbUrl)
         { _id: 1 }
       );
 
+      console.log("data: ", subscriptions);
       let subscriptionsId = [];
       for (let i = 0; i < subscriptions; i++) {
         subscriptionsId.push(subscriptions[i]._id);
