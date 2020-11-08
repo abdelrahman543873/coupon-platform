@@ -8,8 +8,8 @@ import { decodeToken } from "../../utils/JWTHelper";
 let notificationsController = {
   async addTokenToUser(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
-      userId = auth.id,
-      type = auth.type;
+      userId = auth ? auth.id : "",
+      type = auth ? auth.type : "";
     let registrationToken = req.body.fcmToken,
       user;
     if (!auth) {
