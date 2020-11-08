@@ -316,6 +316,7 @@ let subscriptionContoller = {
       let coupon = await CouponModule.getById(subscribe.coupon._id);
       coupon.totalCount = coupon.totalCount - 1;
       coupon.subCount = coupon.subCount + 1;
+      coupon.isPaid = true;
       coupon = await coupon.save();
       subscribe.coupon = coupon;
     }
