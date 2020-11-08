@@ -17,7 +17,7 @@ router.use("/cities-management", citiesRouter);
 router.use("/categories-management", categoryRouter);
 router.use("/coupons-management", couponRouter);
 router.use("/admin-management", adminRouter);
-router.use("/notification-management", notificationRouter);
+router.use("/cloud-messaging", notificationRouter);
 router.use("/purchasing-management/", purchasingRouter);
 
 router.route("/pass-reset").post(AdminsController.passReq);
