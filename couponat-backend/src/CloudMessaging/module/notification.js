@@ -102,7 +102,7 @@ let NotificationModule = {
         title:
           lang == "en"
             ? `new Coupon from ${provider} 🥳🥳`
-            : "كوبون خصم جديد من " + bazarName + "🥳🥳",
+            : `كوبون خصم جديد من ${bazarName}  "🥳🥳`,
         body:
           lang == "en"
             ? "click to see the offer details"
@@ -137,8 +137,8 @@ let NotificationModule = {
     let saveNotificaion = await NotificationModel({
       user: "ALL",
       title: {
-        arabic: "عرض جديد من " + bazarName + "🥳🥳",
-        english: `new offer from ${bazarName} 🥳🥳`,
+        arabic: `كوبون خصم جديد من ${bazarName}  "🥳🥳`,
+        english: `new Coupon from ${provider} 🥳🥳`,
       },
       body: {
         english: "click to see the offer details",
