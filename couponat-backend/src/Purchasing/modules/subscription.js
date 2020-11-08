@@ -65,6 +65,13 @@ let subscriptionModule = {
       isUsed: false,
     });
   },
+
+  async delete(ids) {
+    //if (!checkAllMongooseId(ids)) return null;
+    return await SubscripionModel.deleteMany({ _id: { $in: ids } })
+      .then((doc) => ({ doc, err: null }))
+      .catch((err) => ({ err, doc: null }));
+  },
 };
 
 export { subscriptionModule };

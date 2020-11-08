@@ -125,7 +125,8 @@ const ClientControllers = {
     socialMediaId,
     socialMediaType,
     mobile,
-    countryCode
+    countryCode,
+    imgURL
   ) {
     let { doc, err } = await ClientModule.addViaSocialMedia({
       name,
@@ -133,6 +134,7 @@ const ClientControllers = {
       socialMediaType,
       mobile,
       countryCode,
+      imgURL,
     });
 
     if (err)
@@ -140,7 +142,6 @@ const ClientControllers = {
         user: null,
         err,
       };
-    //let client = new Client(doc);
     return {
       user: doc,
       err: null,
