@@ -39,7 +39,7 @@ connectDB(dbUrl)
     });
     cron.schedule("* * * * *", async () => {
       console.log("Here now");
-      let date = new Date(new Date().setDate(new Date().getDate() - 1));
+      let date = new Date(new Date().setDate(new Date().getDate() - 0));
       let subscriptions = await SubscripionModel.find(
         {
           isConfirmed: true,
