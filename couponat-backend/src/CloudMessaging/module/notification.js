@@ -96,6 +96,7 @@ let NotificationModule = {
       tokenArray.push(others[i].fcmToken);
     }
     tokenArray = Array.from(new Set(tokenArray));
+    if (tokenArray.length <= 0) return;
     let message = {
       notification: {
         title:

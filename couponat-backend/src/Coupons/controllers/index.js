@@ -12,6 +12,7 @@ import { IP } from "../../../serverIP";
 import { ClientModule } from "../../Users/modules/client";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { ProviderModule } from "../../Users/modules/provider";
+import { NotificationModule } from "../../CloudMessaging/module/notification";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -76,6 +77,11 @@ const CouponController = {
         boom.badData(getErrorMessage(savedCoupon.err, req.headers.lang || "ar"))
       );
     savedCoupon = new Coupon(savedCoupon.doc);
+    await NotificationModule.newCouponNotification(
+      savedCoupon.id,
+      req.headers.lang,
+      savedCoupon.provider.name
+    );
     return res.status(201).send({
       isSuccessed: true,
       data: savedCoupon,

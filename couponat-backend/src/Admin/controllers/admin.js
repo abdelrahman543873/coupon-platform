@@ -16,6 +16,7 @@ import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../../Users/modules/verifications";
 import { resetPassMailer, sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
+import { NotificationModule } from "../../CloudMessaging/module/notification";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -126,6 +127,11 @@ const AdminsController = {
         boom.badData(getErrorMessage(savedCoupon.err, req.headers.lang || "ar"))
       );
     savedCoupon = new Coupon(savedCoupon.doc);
+    await NotificationModule.newCouponNotification(
+      savedCoupon.id,
+      req.headers.lang,
+      savedCoupon.provider.name
+    );
     return res.status(201).send({
       isSuccessed: true,
       data: savedCoupon,
