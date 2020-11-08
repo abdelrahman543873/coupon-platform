@@ -50,11 +50,11 @@ connectDB(dbUrl)
         { _id: 1 }
       );
 
-      console.log("data: ", subscriptions);
       let subscriptionsId = [];
       for (let i = 0; i < subscriptions; i++) {
-        subscriptionsId.push(subscriptions[i]._id);
+        subscriptionsId.push(subscriptions[i]._id + "");
       }
+      console.log("data: ", subscriptionsId);
       let deleteSub = await subscriptionModule.delete(subscriptionsId);
       if (deleteSub.err) {
         console.log(err);
