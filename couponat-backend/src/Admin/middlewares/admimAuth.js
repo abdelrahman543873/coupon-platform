@@ -2,7 +2,6 @@ import boom from "@hapi/boom";
 import { decodeToken } from "../../utils/JWTHelper";
 
 async function AdminAuth(req, res, next) {
-  console.log("3213", req.body);
   let lang = req.headers.lang || "ar",
     auth = req.headers.authentication;
 
