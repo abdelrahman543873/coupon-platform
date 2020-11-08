@@ -3,7 +3,7 @@ import { ClientModel } from "../../Users/models/client";
 import { AdminModel } from "../../Admin/models/admin";
 import { NotificationModule } from "../module/notification";
 import { decodeToken } from "../../utils/JWTHelper";
-// import { TokensModel } from "../model/tokens";
+import { TokensModel } from "../model/tokens";
 
 let notificationsController = {
   async addTokenToUser(req, res, next) {
