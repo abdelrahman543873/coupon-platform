@@ -114,7 +114,7 @@ let NotificationModule = {
             : "اضغط هنا للمزيد من التفاصيل",
       },
       data: {
-        offer: JSON.stringify(coupon),
+        coupon: JSON.stringify(coupon),
       },
       android: {
         notification: {
