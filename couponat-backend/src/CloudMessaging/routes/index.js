@@ -6,7 +6,7 @@ const notificationRouter = express.Router();
 
 notificationRouter
   .route("/addToken")
-  .post(checkUserAuth, notificationsController.addTokenToUser);
+  .post(notificationsController.addTokenToUser);
 
 notificationRouter
   .route("/logout")
