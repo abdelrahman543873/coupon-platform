@@ -3,24 +3,28 @@ import mongoose from "mongoose";
 let notificationSchema = mongoose.Schema(
   {
     user: {
-      type:String,
-      required: true,
-    },
-    titleEn: {
       type: String,
       required: true,
     },
-    titleAr: {
-      type: String,
-      required: true,
+    title: {
+      arabic: {
+        type: String,
+        required: true,
+      },
+      english: {
+        type: String,
+        required: true,
+      },
     },
-    bodyAr: {
-      type: String,
-      required: true,
-    },
-    bodyEn: {
-      type: String,
-      required: true,
+    body: {
+      arabic: {
+        type: String,
+        required: true,
+      },
+      english: {
+        type: String,
+        required: true,
+      },
     },
     data: {
       type: String,

@@ -16,4 +16,4 @@ notificationRouter
   .route("/notifications")
   .get(checkUserAuth, notificationsController.getNotifications);
 
-export { notificationFileName, notificationRouter };
+export { notificationRouter };

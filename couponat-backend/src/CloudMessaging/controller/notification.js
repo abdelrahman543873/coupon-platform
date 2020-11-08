@@ -12,34 +12,35 @@ let notificationsController = {
       type = auth.type;
     let registrationToken = req.body.fcmToken,
       user;
-    // if (userId == "ANY") {
-    //   let addToken = await TokensModel({ fcmToken: registrationToken }).save();
-    //   return await res.status(201).send({
-    //     isSuccessed: true,
-    //     data: addToken,
-    //     error: null,
-    //   });
-    // } else {
-    if (type == "ADMIN") user = await AdminModel.findById(userId);
-    else if (type == "CLIENT") user = await ClientModel.findById(userId);
-    else if (type == "PROVIDER") user = await ProviderModel.findById(userId);
-    console.log("userId : ", userId);
-    console.log("type : ", type);
-    console.log("users : ", user);
-    if (!user) {
-      return await res.status(401).send({
-        isSuccessed: false,
-        data: null,
-        error: "user not fount",
+    if (!auth) {
+      let addToken = await TokensModel({ fcmToken: registrationToken }).save();
+      return await res.status(201).send({
+        isSuccessed: true,
+        data: addToken,
+        error: null,
+      });
+    } else {
+      if (type == "ADMIN") user = await AdminModel.findById(userId);
+      else if (type == "CLIENT") user = await ClientModel.findById(userId);
+      else if (type == "PROVIDER") user = await ProviderModel.findById(userId);
+      console.log("userId : ", userId);
+      console.log("type : ", type);
+      console.log("users : ", user);
+      if (!user) {
+        return await res.status(401).send({
+          isSuccessed: false,
+          data: null,
+          error: "user not found",
+        });
+      }
+      user.fcmToken = registrationToken;
+      user = await user.save();
+      return await res.status(201).send({
+        isSuccessed: true,
+        data: user,
+        error: null,
       });
     }
-    user.fcmToken = registrationToken;
-    user = await user.save();
-    return await res.status(201).send({
-      isSuccessed: true,
-      data: user,
-      error: null,
-    });
   },
 
   async removeUserToken(req, res, next) {
