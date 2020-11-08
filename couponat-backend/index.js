@@ -51,7 +51,7 @@ connectDB(dbUrl)
       );
 
       let subscriptionsId = [];
-      for (let i = 0; i < subscriptions; i++) {
+      for (let i = 0; i < subscriptions.length; i++) {
         console.log(subscriptions[i]._id);
         subscriptionsId.push(subscriptions[i]._id + "");
       }
