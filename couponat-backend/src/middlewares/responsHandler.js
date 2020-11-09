@@ -8,9 +8,7 @@ class Provider {
       this.name = provider.name;
       this.email = provider.email;
       this.slogan = provider.slogan;
-      this.logoURL = provider.logoURL
-        ? IP + provider.logoURL
-        : provider.logoURL;
+      this.logoURL = provider.logoURL ? IP + provider.logoURL : "";
       this.cities = provider.cities.map((city) => {
         return new City(city);
       });

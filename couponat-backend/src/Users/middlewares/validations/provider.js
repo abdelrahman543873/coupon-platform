@@ -9,9 +9,16 @@ const ProviderValidationWares = {
     typeof req.body.districts == "string"
       ? (req.body.districts = [req.body.districts])
       : "";
+
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
+    }
+    if (!req.file) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "Please select logo to upload!" : "صورة الشعار مطلوبة";
+      return next(boom.badData(errMsg));
     }
     next();
   },
@@ -37,7 +44,7 @@ const ProviderValidationWares = {
   },
 
   updateProvider(req, res, next) {
-    console.log(req.body)
+    console.log(req.body);
     req.body.cities && typeof req.body.cities == "string"
       ? (req.body.cities = [req.body.cities])
       : "";
