@@ -32,9 +32,6 @@ const adminValidationwar = {
   },
 
   async resetPass(req, res, next) {
-    if (!req.body.email && !req.body.mobile) {
-      return next("bad data");
-    }
     let { error } = adminValidationSchemas.resetPass.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));

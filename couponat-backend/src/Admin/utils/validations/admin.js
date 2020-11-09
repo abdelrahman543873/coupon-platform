@@ -27,8 +27,7 @@ const adminValidationSchemas = {
   }),
 
   resetPass: Joi.object({
-    email: Joi.string().email().optional().error(errorsOverride),
-    mobile: Joi.string().min(10).optional().error(errorsOverride),
+    cardenality: Joi.string().required().error(errorsOverride),
   }),
 };
 

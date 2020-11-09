@@ -480,7 +480,7 @@ const AdminsController = {
   // },
 
   async passReq(req, res, next) {
-    let cardenality = req.body.email || req.body.mobile;
+    let cardenality = req.body.cardenality;
     let user = cardenality.includes("@")
       ? await ProviderModule.getByEmail(cardenality)
       : await ClientModule.getByMobile(cardenality);
