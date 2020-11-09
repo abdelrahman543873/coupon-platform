@@ -147,8 +147,8 @@ let NotificationModule = {
         title: lang == "en" ? `New Purchase` : `عملية شراء جديدة`,
         body:
           lang == "en"
-            ? `Coupon ${couponName} has been Purchased newly`
-            : `الكوبون ${couponName} تم شراءه حديثا`,
+            ? `Coupon ${couponName.english} has been Purchased newly`
+            : `الكوبون ${couponName.arabic} تم شراءه حديثا`,
       },
       data: {
         id: JSON.stringify(subscription),
@@ -183,8 +183,8 @@ let NotificationModule = {
         arabic: `عملية شراء جديدة`,
       },
       body: {
-        english: `Coupon ${couponName} has been Purchased newly`,
-        arabic: `الكوبون ${couponName} تم شراءه حديثا`,
+        english: `Coupon ${couponName.english} has been Purchased newly`,
+        arabic: `الكوبون ${couponName.arabic} تم شراءه حديثا`,
       },
       data: subscription,
       action: "view_subscription",
@@ -197,8 +197,8 @@ let NotificationModule = {
         arabic: `عملية شراء جديدة`,
       },
       body: {
-        english: `Coupon ${couponName} has been Purchased newly`,
-        arabic: `الكوبون ${couponName} تم شراءه حديثا`,
+        english: `Coupon ${couponName.english} has been Purchased newly`,
+        arabic: `الكوبون ${couponName.arabic} تم شراءه حديثا`,
       },
       data: subscription,
       action: "view_subscription",
@@ -340,8 +340,8 @@ let NotificationModule = {
         title: lang == "en" ? `Subscription Tracking` : `الاشتراكات`,
         body:
           lang == "en"
-            ? `Coupon ${couponName} has been used`
-            : `تم إستخدام الكوبون ${couponName}`,
+            ? `Coupon ${couponName.english} has been used`
+            : `تم إستخدام الكوبون ${couponName.arabic}`,
       },
       data: {
         id: JSON.stringify(subscription),
@@ -376,8 +376,8 @@ let NotificationModule = {
         arabic: `الاشتراكات`,
       },
       body: {
-        english: `Coupon ${couponName} has been used`,
-        arabic: `تم إستخدام الكوبون ${couponName}`,
+        english: `Coupon ${couponName.english} has been used`,
+        arabic: `تم إستخدام الكوبون ${couponName.arabic}`,
       },
       data: subscription,
       action: "view_subscription",
@@ -390,8 +390,8 @@ let NotificationModule = {
         arabic: `الاشتراكات`,
       },
       body: {
-        english: `Coupon ${couponName} has been used`,
-        arabic: `تم إستخدام الكوبون ${couponName}`,
+        english: `Coupon ${couponName.english} has been used`,
+        arabic: `تم إستخدام الكوبون ${couponName.arabic}`,
       },
       data: subscription,
       action: "view_subscription",
