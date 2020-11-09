@@ -417,7 +417,9 @@ const CouponController = {
       coupon = await addFavProp([coupon], user.favCoupons);
     } else coupon = await addFavProp([coupon], null);
     coupon = coupon[0];
-    let sub = await subscriptionModule.getUserSubscripe(user.id, coupons.id);
+    let sub = user
+      ? await subscriptionModule.getUserSubscripe(user.id, coupons.id)
+      : null;
     coupon.isSubscribe = sub ? true : false;
 
     return res.status(200).send({
