@@ -371,7 +371,8 @@ let subscriptionContoller = {
         id: subscribe.user.id,
         fcmToken: subscribe.user.fcmToken || "",
       },
-      subscribe.coupon.name
+      subscribe.coupon.name,
+      subscribe.id
     );
     return res.status(200).send({
       isSuccessed: true,
