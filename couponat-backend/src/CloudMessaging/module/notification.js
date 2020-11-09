@@ -176,6 +176,9 @@ function sendToMultiple(message) {
       if (response.failureCount > 0) {
         const failedTokens = [];
         response.responses.forEach((resp, idx) => {
+          if (resp.success) {
+            console.log(message.tokens[idx]);
+          }
           if (!resp.success) {
             console.log(resp.error);
             failedTokens.push(message.tokens[idx]);
