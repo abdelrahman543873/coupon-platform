@@ -490,7 +490,7 @@ const AdminsController = {
         req.headers.lang == "en" ? "User not Found!" : "المستخدم غير مسجل";
       return next(boom.notFound(errMsg));
     }
-    console.log(user);
+
     let smsToken = getSMSToken(5);
     let addVerification = await VerificationsModule.add(smsToken, user._id);
     if (addVerification.err)
@@ -505,6 +505,8 @@ const AdminsController = {
           ? "Enter this code to reset password: "
           : "ادخل هذا الرمز لاعادة تعين كلمة السر: ",
       msg = "";
+
+    console.log(addVerification);
     if (cardenality.includes("@")) {
       sendClientMail(
         "Reset Password Code",
@@ -515,13 +517,13 @@ const AdminsController = {
         (req.headers.lang == "en"
           ? "email sent to you, follow it to change your password."
           : "تم ارسال التعليمات الى بريدك الالكترونى من فضلك قم بأتباعها") +
-        addVerification.doc.code;
+        smsToken;
       return res.status(200).send({
         isSuccessed: true,
         data: msg,
         error: null,
       });
-    } else if (req.body.mobile) {
+    } else {
       console.log("done");
       return res.status(201).send({
         isSuccessed: true,
