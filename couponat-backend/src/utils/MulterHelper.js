@@ -17,15 +17,18 @@ function uploadHelper(dest) {
     ".JPEG 2000",
     ".PDF",
     ".SVG",
-    ".JPEG"
+    ".JPEG",
   ];
   let storage = multer.diskStorage({
       destination: dest,
       filename: function (req, file, cb) {
+        console.log("file: ", file);
+        console.log("req: ", req.body);
         cb(
           null,
           file.fieldname + "-" + Date.now() + path.extname(file.originalname)
         );
+        console.log("cb: ", cb);
       },
     }),
     upload = multer({

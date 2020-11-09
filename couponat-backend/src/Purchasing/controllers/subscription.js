@@ -11,6 +11,7 @@ import { subscriptionModule } from "../modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
+import { NotificationModule } from "../../CloudMessaging/module/notification";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -133,6 +134,23 @@ let subscriptionContoller = {
             : await AppBankModel.findById(subscripe.doc.account))
       : "";
     subscripe = new Subscription(subscripe.doc);
+
+    if (paymentType.key == "ONLINE_PAYMENT" || paymentType.key == "CASH") {
+      await NotificationModule.newSubscriptionNotification(
+        req.headers.lang,
+        {
+          id: subscripe.coupon.provider.id,
+          fcmToken: subscripe.coupon.provider.fcmToken || "",
+        },
+        subscripe.coupon.name,
+        subscripe.id
+      );
+    } else if (paymentType.key == "BANK_TRANSFER") {
+      await NotificationModule.bankTransferNotification(
+        req.headers.lang,
+        subscripe.id
+      );
+    }
     return res.status(201).send({
       isSuccessed: true,
       data: subscripe,
@@ -278,6 +296,18 @@ let subscriptionContoller = {
     subscribe = await subscribe.save();
     subscribe = new Subscription(subscribe, "PROVIDER");
 
+    await NotificationModule.confirmNotification(
+      req.headers.lang,
+      {
+        id: subscribe.user.id,
+        fcmToken: subscribe.user.fcmToken||"",
+      },
+      {
+        id: subscribe.id,
+        decision: decision == true || decision == "true" ? true : false,
+      }
+    );
+
     return res.status(201).send({
       isSuccessed: true,
       data: subscribe,
@@ -333,6 +363,15 @@ let subscriptionContoller = {
     }
 
     subscribe = new Subscription(subscribe, "PROVIDER");
+
+    await NotificationModule.couponUsedNotification(
+      req.headers.lang,
+      {
+        id: subscribe.user.id,
+        fcmToken: subscribe.user.fcmToken || "",
+      },
+      subscribe.coupon.name
+    );
     return res.status(200).send({
       isSuccessed: true,
       data: subscribe,

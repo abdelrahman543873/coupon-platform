@@ -6,6 +6,7 @@ import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
 import { CityModule } from "../../Cities/modules/city";
 import { DistrictModel } from "../../Cities/models/district";
+import { NotificationModule } from "../../CloudMessaging/module/notification";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -42,6 +43,11 @@ const ProviderControllers = {
     provider = doc.toObject();
     let authToken = generateToken(provider._id, "PROVIDER");
     provider = new Provider(provider);
+
+    await NotificationModule.newProviderNotification(req.headers.lang, {
+      name: provider.name,
+      id: provider.id,
+    });
     return res.status(201).send({
       isSuccessed: true,
       data: {
