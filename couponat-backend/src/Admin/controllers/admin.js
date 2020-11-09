@@ -522,6 +522,7 @@ const AdminsController = {
         error: null,
       });
     } else if (req.body.mobile) {
+      console.log("done");
       return res.status(201).send({
         isSuccessed: true,
         data: smsToken,
