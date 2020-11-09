@@ -206,7 +206,7 @@ let subscriptionContoller = {
         console.log("Fav:  ", user.favCoupons);
         let sub = await subscriptionModule.getUserSubscripe(
           user._id,
-          coupon.id
+          subscriptions[i].coupon.id
         );
         subscriptions[i].coupon.isSubscribe = sub ? true : false;
       }
