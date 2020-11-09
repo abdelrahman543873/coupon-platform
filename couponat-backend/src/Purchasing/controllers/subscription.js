@@ -146,6 +146,7 @@ let subscriptionContoller = {
         subscripe.id
       );
     } else if (paymentType.key == "BANK_TRANSFER") {
+      console.log("Here nowwwwwwwwwww");
       await NotificationModule.bankTransferNotification(
         req.headers.lang,
         subscripe.id
@@ -300,7 +301,7 @@ let subscriptionContoller = {
       req.headers.lang,
       {
         id: subscribe.user.id,
-        fcmToken: subscribe.user.fcmToken||"",
+        fcmToken: subscribe.user.fcmToken || "",
       },
       {
         id: subscribe.id,

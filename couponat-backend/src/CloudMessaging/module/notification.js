@@ -213,7 +213,6 @@ let NotificationModule = {
         tokenArray.push(admins[i].fcmToken);
     }
     tokenArray = Array.from(new Set(tokenArray));
-    if (tokenArray.length <= 0) return;
     let message = {
       notification: {
         title:
