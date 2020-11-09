@@ -534,11 +534,11 @@ const AdminsController = {
   },
 
   async checkResetCode(req, res, next) {
-    let cardenality = req.body.email || req.body.mobile;
+    let cardenality = req.body.cardenality;
     let code = req.body.code;
-    let user =
-      (await ClientModule.getByMobile(cardenality)) ||
-      ProviderModule.getByEmail(cardenality);
+    let user = cardenality.includes("@")
+      ? await ProviderModule.getByEmail(cardenality)
+      : await ClientModule.getByMobile(cardenality);
 
     if (!user) {
       let errMsg =
