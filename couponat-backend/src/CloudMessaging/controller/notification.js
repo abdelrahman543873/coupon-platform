@@ -72,8 +72,8 @@ let notificationsController = {
 
   async getNotifications(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
-      userId = auth.id,
-      type = auth.type;
+      userId = auth ? auth.id : null,
+      type = auth ? auth.type : "CUSTOMER";
     let notifications = await NotificationModule.getNotifications(userId, type);
 
     return await res.status(201).send({

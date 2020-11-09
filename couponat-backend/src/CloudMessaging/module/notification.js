@@ -5,85 +5,6 @@ import { ClientModel } from "../../Users/models/client";
 import { TokensModel } from "../model/tokens";
 
 let NotificationModule = {
-  //   async sendOrderNotification(registrationToken, message) {
-  //     console.log("data: ", message.data);
-  //     let messageNotification = {
-  //       notification: {
-  //         title: message.lang == "ar" ? message.titleAr : message.titleEn,
-  //         body: message.lang == "ar" ? message.bodyAr : message.bodyEn,
-  //       },
-  //       data: {
-  //         order: message.data.toString(),
-  //       },
-  //       token: registrationToken,
-
-  //       android: {
-  //         notification: {
-  //           click_action: message.action,
-  //           sound: "default",
-  //         },
-  //       },
-
-  //       apns: {
-  //         payload: {
-  //           aps: {
-  //             category: message.action,
-  //             sound: "default",
-  //             badge: 1,
-  //           },
-  //         },
-  //       },
-  //     };
-  //     return await admin
-  //       .messaging()
-  //       .send(messageNotification)
-  //       .then(async () => {
-  //         delete message.lang;
-  //         let saveNotificaion = await NotificationModel({ ...message }).save();
-  //         return saveNotificaion;
-  //       })
-  //       .catch((err) => {
-  //         return err;
-  //       });
-  //   },
-
-  // async sendCouponNotification(tokenArray, message) {
-  //   console.log("data: ", message.data);
-  //   let messageNotification = {
-  //     notification: {
-  //       title: message.title.arabic || message.title.english,
-  //       body: message.body.arabic || message.body.english,
-  //     },
-  //     data: {
-  //       coupon: message.data.toString(),
-  //     },
-  //     android: {
-  //       notification: {
-  //         click_action: message.action,
-  //         sound: "default",
-  //       },
-  //     },
-
-  //     apns: {
-  //       payload: {
-  //         aps: {
-  //           category: message.action,
-  //           sound: "default",
-  //           badge: 1,
-  //         },
-  //       },
-  //     },
-  //   };
-  //   for (let i = 0; i < tokenArray.length; i += 500) {
-  //     let tokens = tokenArray.slice(i, i + 499);
-  //     let newMessage = Object.assign({}, messageNotification);
-  //     newMessage.tokens = tokens;
-  //     sendToMultiple(newMessage);
-  //   }
-  //   let saveNotificaion = await NotificationModel({ ...message }).save();
-  //   return saveNotificaion;
-  // },
-
   async newCouponNotification(coupon, lang, provider) {
     let tokenArray = [];
     let users = await ClientModel.find({}, { fcmToken: 1 });
@@ -150,7 +71,66 @@ let NotificationModule = {
         arabic: "اضغط هنا للمزيد من التفاصيل",
       },
       data: coupon,
-      action: "view_offer",
+      action: "view_coupon",
+    }).save();
+    return saveNotificaion;
+  },
+
+  async newProviderNotification(lang, provider) {
+    let tokenArray = [];
+    let admins = await AdminModel.find({}, { fcmToken: 1 });
+    for (let i = 0; i < admins.length; i++) {
+      if (admins[i].fcmToken && admins[i].fcmToken != "")
+        tokenArray.push(admins[i].fcmToken);
+    }
+    tokenArray = Array.from(new Set(tokenArray));
+    if (tokenArray.length <= 0) return;
+    let message = {
+      notification: {
+        title: lang == "en" ? `New Registeration` : `تسجيل جديد`,
+        body:
+          lang == "en"
+            ? `${provider.name} has Registerd recently`
+            : `${provider.name} سجل حديثا`,
+      },
+      data: {
+        coupon: JSON.stringify(provider.id),
+      },
+      android: {
+        notification: {
+          click_action: "view_provider",
+          sound: "default",
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            category: "view_provider",
+            sound: "default",
+            badge: 1,
+          },
+        },
+      },
+    };
+
+    for (let i = 0; i < tokenArray.length; i += 500) {
+      let tokens = tokenArray.slice(i, i + 499);
+      let newMessage = Object.assign({}, message);
+      newMessage.tokens = tokens;
+      sendToMultiple(newMessage);
+    }
+    let saveNotificaion = await NotificationModel({
+      user: "ADMIN",
+      title: {
+        english: `New Registeration`,
+        arabic: `تسجيل جديد`,
+      },
+      body: {
+        english: `${provider.name} has Registerd recently`,
+        arabic: `${provider.name} سجل حديثا`,
+      },
+      data: coupon,
+      action: "view_provider",
     }).save();
     return saveNotificaion;
   },
