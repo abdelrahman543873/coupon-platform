@@ -204,6 +204,11 @@ let subscriptionContoller = {
         subscriptions[i].coupon = subscriptions[i].coupon[0];
         console.log("subbb:  ", subscriptions[i].coupon);
         console.log("Fav:  ", user.favCoupons);
+        let sub =await subscriptionModule.getUserSubscripe(
+            user._id,
+            coupon.id
+          )
+        subscriptions[i].coupon.isSubscribe=sub ? true : false;
       }
     }
     return res.status(201).send({
