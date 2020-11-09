@@ -398,6 +398,34 @@ const CouponController = {
       error: null,
     });
   },
+
+  async getById(req, res, next) {
+    let couponId = req.params.id;
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth ? auth.id : null;
+
+    let coupon = await CouponModule.getById(couponId);
+    if (!coupon) {
+      let errMsg =
+        req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    coupon = new Coupon(coupon);
+    let user = await ClientModule.getById(id);
+    if (user && user.favCoupons) {
+      coupon = await addFavProp([coupon], user.favCoupons);
+    } else coupon = await addFavProp([coupon], null);
+    coupon = coupon[0];
+    let sub = await subscriptionModule.getUserSubscripe(user.id, coupons.id);
+    coupon.isSubscribe = sub ? true : false;
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: coupon,
+      error: null,
+    });
+  },
 };
 
 async function addFavProp(coupons, userFav) {
