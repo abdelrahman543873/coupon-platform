@@ -92,7 +92,7 @@ const AdminsController = {
     let fileName = coupon.code + Date.now() + ".png";
     let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code, {
       color: {
-        dark: "#707070", // Blue dots
+        dark: "#575757", // Blue dots
         light: "#0000", // Transparent background
       },
     });

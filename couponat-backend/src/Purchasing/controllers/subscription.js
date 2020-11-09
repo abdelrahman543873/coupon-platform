@@ -98,7 +98,7 @@ let subscriptionContoller = {
       subscription.code,
       {
         color: {
-          dark: "#707070", // Blue dots
+          dark: "#575757", // Blue dots
           light: "#0000", // Transparent background
         },
       }
