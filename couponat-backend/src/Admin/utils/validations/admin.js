@@ -25,6 +25,11 @@ const adminValidationSchemas = {
     email: Joi.string().email().required().error(errorsOverride),
     reply: Joi.string().min(8).required().error(errorsOverride),
   }),
+
+  resetPass: Joi.object({
+    email: Joi.string().email().optional().error(errorsOverride),
+    mobile: Joi.string().min(10).optional().error(errorsOverride),
+  }),
 };
 
 export { adminValidationSchemas };

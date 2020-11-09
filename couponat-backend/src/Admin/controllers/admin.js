@@ -14,7 +14,7 @@ import { CouponModel } from "../../Coupons/models/coupon";
 import { ClientModule } from "../../Users/modules/client";
 import { getSMSToken } from "../../utils/SMSToken";
 import { VerificationsModule } from "../../Users/modules/verifications";
-import { resetPassMailer, sendClientMail } from "../../utils/nodemailer";
+import { sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 
@@ -92,7 +92,7 @@ const AdminsController = {
     let fileName = coupon.code + Date.now() + ".png";
     let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code, {
       color: {
-        dark: "#00F", // Blue dots
+        dark: "#707070", // Blue dots
         light: "#0000", // Transparent background
       },
     });
@@ -481,9 +481,9 @@ const AdminsController = {
 
   async passReq(req, res, next) {
     let cardenality = req.body.email || req.body.mobile;
-    let user =
-      (await ClientModule.getByMobile(cardenality)) ||
-      (await ProviderModule.getByEmail(cardenality));
+    let user = cardenality.includes("@")
+      ? await ProviderModule.getByEmail(cardenality)
+      : await ClientModule.getByMobile(cardenality);
 
     if (!user) {
       let errMsg =
@@ -505,13 +505,17 @@ const AdminsController = {
           ? "Enter this code to reset password: "
           : "ادخل هذا الرمز لاعادة تعين كلمة السر: ",
       msg = "";
-    if (req.body.email) {
-      resetPassMailer(user.name, mailMessage + smsToken, cardenality);
+    if (cardenality.includes("@")) {
+      sendClientMail(
+        "Reset Password Code",
+        mailMessage + smsToken,
+        cardenality
+      );
       msg =
         (req.headers.lang == "en"
           ? "email sent to you, follow it to change your password."
           : "تم ارسال التعليمات الى بريدك الالكترونى من فضلك قم بأتباعها") +
-        doc.code;
+        addVerification.doc.code;
       return res.status(200).send({
         isSuccessed: true,
         data: msg,

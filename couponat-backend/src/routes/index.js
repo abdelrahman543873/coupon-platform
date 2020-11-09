@@ -8,6 +8,7 @@ import { adminRouter } from "../Admin/routes/adminRouter";
 import { AdminsController } from "../Admin/controllers/admin";
 import { purchasingRouter } from "../Purchasing/routes";
 import { notificationRouter } from "../CloudMessaging/routes";
+import { adminValidationwar } from "../Admin/middlewares/validations/admin";
 
 const router = Router();
 
@@ -20,7 +21,9 @@ router.use("/admin-management", adminRouter);
 router.use("/cloud-messaging", notificationRouter);
 router.use("/purchasing-management/", purchasingRouter);
 
-router.route("/pass-reset").post(AdminsController.passReq);
+router
+  .route("/pass-reset")
+  .post(adminValidationwar.resetPass, AdminsController.passReq);
 router
   .route("/pass-reset/codeValidation")
   .post(AdminsController.checkResetCode);
