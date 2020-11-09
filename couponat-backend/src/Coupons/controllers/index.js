@@ -26,7 +26,12 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
     let provider = await ProviderModule.getById(auth.id);
-    if (!provider.isActive) {
+    if (!provider) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? " provider not found" : "مقدم الخدمة غير موجود";
+      return next(boom.unauthorized(errMsg));
+    }
+    if (provider && !provider.isActive) {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));
