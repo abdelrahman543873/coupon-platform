@@ -62,6 +62,8 @@ const CouponValidationWares = {
     req.body.descAr || req.body.descEn
       ? (req.body.description = description)
       : "";
+    console.log(req.body.name)
+    console.log(req.body.description)
     const { error } = CouponValidations.updateCoupon.validate(req.body);
 
     if (error) {
