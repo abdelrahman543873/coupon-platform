@@ -5,6 +5,15 @@ import { CouponValidations } from "../../utils/validations/coupon";
 const CouponValidationWares = {
   async addCoupon(req, res, next) {
     console.log("here now");
+
+    let name = {
+      arabic: req.body.arabic,
+      english: req.body.arabic,
+    };
+    delete req.body.arabic;
+    delete req.body.english;
+    req.body.name = name;
+
     let lang = req.headers.lang || "ar",
       errMsg =
         lang == "en"
