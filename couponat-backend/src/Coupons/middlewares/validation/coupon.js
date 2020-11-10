@@ -7,13 +7,20 @@ const CouponValidationWares = {
     console.log("here now");
 
     let name = {
-      arabic: req.body.arabic,
-      english: req.body.arabic,
+      arabic: req.body.nameAr,
+      english: req.body.nameEn,
     };
-    delete req.body.arabic;
-    delete req.body.english;
-    req.body.name = name;
 
+    let description = {
+      arabic: req.body.descAr,
+      english: req.body.descEn,
+    };
+    delete req.body.nameAr;
+    delete req.body.nameEn;
+    delete req.body.descAr;
+    delete req.body.descEn;
+    req.body.name = name;
+    req.body.description = description;
     let lang = req.headers.lang || "ar",
       errMsg =
         lang == "en"
