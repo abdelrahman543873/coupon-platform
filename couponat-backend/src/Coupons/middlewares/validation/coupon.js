@@ -54,14 +54,15 @@ const CouponValidationWares = {
       arabic: req.body.descAr || null,
       english: req.body.descEn || null,
     };
-    req.body.nameAr ? delete req.body.nameAr : "";
-    req.body.nameEn ? delete req.body.nameEn : "";
-    req.body.descAr ? delete req.body.descAr : "";
-    req.body.descEn ? delete req.body.descEn : "";
     req.body.nameAr || req.body.nameEn ? (req.body.name = name) : "";
     req.body.descAr || req.body.descEn
       ? (req.body.description = description)
       : "";
+    req.body.nameAr ? delete req.body.nameAr : "";
+    req.body.nameEn ? delete req.body.nameEn : "";
+    req.body.descAr ? delete req.body.descAr : "";
+    req.body.descEn ? delete req.body.descEn : "";
+
     console.log(req.body.name);
     console.log(req.body.description);
     const { error } = CouponValidations.updateCoupon.validate(req.body);
