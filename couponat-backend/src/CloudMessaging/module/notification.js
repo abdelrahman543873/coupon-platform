@@ -400,7 +400,7 @@ let NotificationModule = {
 
   async getNotifications(userId, type) {
     console.log(type, "--", userId);
-    if (type && type == "CUSTOMER")
+    if (type && type == "CLIENT")
       return await NotificationModel.find({ user: { $in: [userId, "ALL"] } })
         .sort("-createdAt")
         .limit(10);
