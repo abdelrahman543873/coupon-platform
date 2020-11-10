@@ -5,6 +5,14 @@ const ProviderValidationWares = {
   add(req, res, next) {
     console.log("midille");
 
+    if (req.body.cities.length != req.body.location.length) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "Evry City Must have specific location!"
+            : "يجب اختيار موقع لكل مدينه";
+      return next(boom.badData(errMsg));
+    }
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
