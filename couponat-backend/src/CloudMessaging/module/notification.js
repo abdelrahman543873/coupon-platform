@@ -348,14 +348,14 @@ let NotificationModule = {
       },
       android: {
         notification: {
-          click_action: "view_subscription",
+          click_action: "coupon_used",
           sound: "default",
         },
       },
       apns: {
         payload: {
           aps: {
-            category: "view_subscription",
+            category: "coupon_used",
             sound: "default",
             badge: 1,
           },
@@ -380,7 +380,7 @@ let NotificationModule = {
         arabic: `تم إستخدام الكوبون ${couponName.arabic}`,
       },
       data: subscription,
-      action: "view_subscription",
+      action: "coupon_used",
     }).save();
 
     let saveClientNotificaion = await NotificationModel({
@@ -394,7 +394,7 @@ let NotificationModule = {
         arabic: `تم إستخدام الكوبون ${couponName.arabic}`,
       },
       data: subscription,
-      action: "view_subscription",
+      action: "coupon_used",
     }).save();
   },
 
