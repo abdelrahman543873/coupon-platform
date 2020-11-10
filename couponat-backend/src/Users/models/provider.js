@@ -39,19 +39,19 @@ let providerSchema = mongoose.Schema(
         autopopulate: true,
       },
     ],
-
-    districts: [
+    location: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "Districts",
-        autopopulate: true,
+        _id: false,
+        lat: {
+          type: String,
+          required: true,
+        },
+        long: {
+          type: String,
+          required: true,
+        },
       },
     ],
-
-    lat: String,
-    lng: String,
-
     officeTele: {
       type: String,
       required: true,
@@ -61,6 +61,7 @@ let providerSchema = mongoose.Schema(
     websiteLink: String,
     facebookLink: String,
     instaLink: String,
+    twittwerLink: String,
     fcmToken: String,
   },
   {

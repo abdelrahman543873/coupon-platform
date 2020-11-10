@@ -12,11 +12,7 @@ class Provider {
       this.cities = provider.cities.map((city) => {
         return new City(city);
       });
-      this.districts = provider.districts.map((dist) => {
-        return new District(dist);
-      });
-      this.lat = provider.lat || "";
-      this.lng = provider.lng || "";
+      this.location = provider.location;
       this.officeTele = provider.officeTele;
       this.websiteLink = provider.websiteLink || "";
       this.facebookLink = provider.facebookLink || "";
@@ -32,15 +28,7 @@ class City {
     if (city) {
       this.id = city._id;
       this.name = city.name;
-    }
-  }
-}
-
-class District {
-  constructor(district) {
-    if (district) {
-      this.id = district._id;
-      this.name = district.name;
+      this.location = city.location;
     }
   }
 }
@@ -156,7 +144,6 @@ class Subscription {
 export {
   Provider,
   City,
-  District,
   Category,
   Coupon,
   Client,

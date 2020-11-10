@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import { CategoryController } from "../../Category/controllers";
 import { CategoryalidationWares } from "../../Category/middlewares/validation";
 import { CityController } from "../../Cities/controllers/city";
@@ -91,14 +91,6 @@ adminRouter.route("/providers").get(AdminAuth, AdminsController.getProviders);
 adminRouter
   .route("/providers/:id/deletion")
   .delete(AdminAuth, AdminsController.deleteProvider);
-
-adminRouter
-  .route("/cities/:id/districts")
-  .post(
-    AdminAuth,
-    cityValidationware.addDistricts,
-    CityController.addDistricts
-  );
 
 adminRouter.route("/statistics").get(AdminAuth, AdminsController.getStatistics);
 

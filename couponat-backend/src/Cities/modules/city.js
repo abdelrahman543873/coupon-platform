@@ -1,5 +1,4 @@
 import { CityModel } from "../models/city";
-import { DistrictModel } from "../models/district";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 
 const CityModule = {
@@ -16,18 +15,10 @@ const CityModule = {
     return await CityModel.findById(id);
   },
 
-  async getDistricts(city) {
-    if (!checkAllMongooseId(city)) return null;
-    return await DistrictModel.find({ city })
-      .lean()
-      .then(async (districts) => {
-        return districts;
-      });
-  },
-
-  async addCity(name) {
+  async addCity(name, location) {
     return await CityModel({
       name,
+      location,
     })
       .save()
       .then((docs) => {
@@ -37,25 +28,6 @@ const CityModule = {
         return { docs: null, err };
       });
   },
-
-  async addDistricts(name, city) {
-    if (!checkAllMongooseId(city)) return null;
-    return await DistrictModel({ name, city })
-      .save()
-      .then((docs) => {
-        return { docs, err: null };
-      })
-      .catch((err) => {
-        return { docs: null, err };
-      });
-  },
-
-  // async deleteCity(cityId) {
-  //   return await CityModel.deleteOne({ _id: cityId }).catch((err) => {
-  //     console.log(err);
-  //     return null;
-  //   });
-  // },
 };
 
 export { CityModule };

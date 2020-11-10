@@ -2,6 +2,18 @@ import Joi from "joi";
 import { errorsOverride } from "../../../utils/JoiErrorOverriding";
 import { checkMongooseId } from "../../../utils/mongooseIdHelper";
 
+const locationSchema = Joi.object()
+  .keys({
+    lat: Joi.string().required().error(errorsOverride),
+    long: Joi.string().required().error(errorsOverride),
+  })
+  .required()
+  .error(errorsOverride);
+
+const locationSchemaUpdate = Joi.object().keys({
+  lat: Joi.string().optional().error(errorsOverride),
+  long: Joi.string().optional().error(errorsOverride),
+});
 const ProviderValidations = {
   add: Joi.object({
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
@@ -12,17 +24,19 @@ const ProviderValidations = {
 
     slogan: Joi.string().min(10).required().error(errorsOverride),
 
-    cities: Joi.array().items(
-      Joi.custom(checkMongooseId, "custom validation")
-        .required()
-        .error(errorsOverride)
-    ),
+    cities: Joi.array()
+      .items(
+        Joi.custom(checkMongooseId, "custom validation")
+          .required()
+          .error(errorsOverride)
+      )
+      .required()
+      .error(errorsOverride),
 
-    districts: Joi.array().items(
-      Joi.custom(checkMongooseId, "custom validation")
-        .required()
-        .error(errorsOverride)
-    ),
+    location: Joi.array()
+      .items(locationSchema)
+      .required()
+      .error(errorsOverride),
 
     officeTele: Joi.string().min(3).required().error(errorsOverride),
 
@@ -35,6 +49,8 @@ const ProviderValidations = {
     facebookLink: Joi.string().min(3).optional().error(errorsOverride),
 
     instaLink: Joi.string().min(3).optional().error(errorsOverride),
+
+    twittwerLink: Joi.string().min(3).optional().error(errorsOverride),
   }),
 
   login: Joi.object({
@@ -61,11 +77,7 @@ const ProviderValidations = {
         .error(errorsOverride)
     ),
 
-    districts: Joi.array().items(
-      Joi.custom(checkMongooseId, "custom validation")
-        .optional()
-        .error(errorsOverride)
-    ),
+    location: Joi.array().items(locationSchemaUpdate),
 
     officeTele: Joi.string().min(3).optional().error(errorsOverride),
 

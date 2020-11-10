@@ -5,10 +5,10 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { Provider } from "../../middlewares/responsHandler";
 import { CityModule } from "../../Cities/modules/city";
-import { DistrictModel } from "../../Cities/models/district";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 const ProviderControllers = {
   async addProvider(req, res, next) {
+    console.log("controller");
     let provider = req.body;
     let logoURL = "";
     provider.email = provider.email.toLowerCase();
@@ -25,14 +25,6 @@ const ProviderControllers = {
       if (!city) {
         return next(
           boom.badData(`City with Id ${req.body.cities[i]} not found`)
-        );
-      }
-    }
-    for (let i = 0; i < req.body.districts.length; i++) {
-      let dist = await DistrictModel.findById(req.body.districts[i]);
-      if (!dist) {
-        return next(
-          boom.badData(`District with Id ${req.body.districts[i]} not found`)
         );
       }
     }
@@ -88,14 +80,6 @@ const ProviderControllers = {
     if (!user) {
       return next(boom.badData(errMsg));
     }
-
-    // if (user.isActive === false) {
-    //   errMsg =
-    //     req.headers.lang == "en"
-    //       ? "this account not active"
-    //       : "هذا الحساب غير مفعل";
-    //   return next(boom.unauthorized(errMsg));
-    // }
     console.log(user);
     if (!(await bcryptCheckPass(password, user.password))) {
       return next(boom.badData(errMsg));

@@ -14,6 +14,10 @@ let citySchema = mongoose.Schema(
         trim: true,
       },
     },
+    location: {
+      lat: { type: String, required: true },
+      long: { type: String, required: true },
+    },
     isDeleted: {
       type: Boolean,
       required: true,

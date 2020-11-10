@@ -7,25 +7,6 @@ let dbUrl = process.env.COUPONAT_N_PORT;
 import cron from "node-cron";
 import { SubscripionModel } from "./src/Purchasing/models/subscription";
 import { subscriptionModule } from "./src/Purchasing/modules/subscription";
-// let deleteSubscriptions = cron.schedule("59 23 * * *", async () => {
-//   let date = new Date(new Date().setDate(new Date().getDate() - 1));
-//   let subscriptions = await SubscripionModel.find(
-//     {
-//       isConfirmed: true,
-//       isPaid: false,
-//       isUsed: false,
-//       createdAt: { $lte: date },
-//     },
-//     { _id: 1 }
-//   );
-
-//   let subscriptionsId = [];
-//   for (let i = 0; i < subscriptions; i++) {
-//     subscriptionsId.push(subscriptions[i]._id);
-//   }
-
-//   await subscriptionModule.delete(subscriptionsId);
-// });
 if (process.env.RUN_INSIDE_DOCKER) {
   dbUrl = process.env.COUPONAT_DB_URL_COMPOSE;
 }

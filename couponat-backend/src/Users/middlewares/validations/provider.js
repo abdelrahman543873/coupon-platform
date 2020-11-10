@@ -3,12 +3,7 @@ import { ProviderValidations } from "../../utils/validations/provider";
 
 const ProviderValidationWares = {
   add(req, res, next) {
-    typeof req.body.cities == "string"
-      ? (req.body.cities = [req.body.cities])
-      : "";
-    typeof req.body.districts == "string"
-      ? (req.body.districts = [req.body.districts])
-      : "";
+    console.log("midille");
 
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
@@ -45,12 +40,6 @@ const ProviderValidationWares = {
 
   updateProvider(req, res, next) {
     console.log(req.body);
-    req.body.cities && typeof req.body.cities == "string"
-      ? (req.body.cities = [req.body.cities])
-      : "";
-    req.body.districts && typeof req.body.districts == "string"
-      ? (req.body.districts = [req.body.districts])
-      : "";
     const { error } = ProviderValidations.updateProvider.validate(req.body);
 
     if (error) {
