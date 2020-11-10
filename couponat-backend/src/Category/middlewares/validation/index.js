@@ -3,12 +3,10 @@ import { CategoryValidations } from "../../utils/validations";
 
 const CategoryalidationWares = {
   async add(req, res, next) {
-    console.log(req.file);
+    console.log("req: ", req.file);
+    console.log("req2: ", req);
     let lang = req.headers.lang || "ar",
       errMsg = lang == "en" ? "Please Images to upload!" : "صور التصنيف مطلوبة";
-    typeof req.body.name == "string"
-      ? (req.body.name = JSON.parse(req.body.name))
-      : "";
     console.log(req.body);
     let { error } = CategoryValidations.add.validate(req.body);
 
