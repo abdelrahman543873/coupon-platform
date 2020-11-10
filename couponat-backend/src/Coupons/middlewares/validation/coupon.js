@@ -45,6 +45,23 @@ const CouponValidationWares = {
   },
 
   async updateCoupon(req, res, next) {
+    let name = {
+      arabic: req.body.nameAr || null,
+      english: req.body.nameEn || null,
+    };
+
+    let description = {
+      arabic: req.body.descAr || null,
+      english: req.body.descEn || null,
+    };
+    req.body.nameAr ? delete req.body.nameAr : "";
+    req.body.nameEn ? delete req.body.nameEn : "";
+    req.body.descAr ? delete req.body.descAr : "";
+    req.body.descEn ? delete req.body.descEn : "";
+    req.body.nameAr || req.body.nameEn ? (req.body.name = name) : "";
+    req.body.descAr || req.body.descEn
+      ? (req.body.description = description)
+      : "";
     const { error } = CouponValidations.updateCoupon.validate(req.body);
 
     if (error) {

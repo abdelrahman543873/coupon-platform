@@ -6,7 +6,7 @@ const CategoryalidationWares = {
     console.log("req: ", req.files);
     let name = {
       arabic: req.body.arabic,
-      english: req.body.arabic,
+      english: req.body.english,
     };
     delete req.body.arabic;
     delete req.body.english;
@@ -31,7 +31,13 @@ const CategoryalidationWares = {
 
   async update(req, res, next) {
     console.log("Hereeee");
-
+    let name = {
+      arabic: req.body.arabic || null,
+      english: req.body.english || null,
+    };
+    req.body.arabic ? delete req.body.arabic : "";
+    req.body.english ? delete req.body.english : "";
+    req.body.english || req.body.arabic ? (req.body.name = name) : "";
     let { error } = CategoryValidations.edit.validate(req.body);
 
     if (error) {
