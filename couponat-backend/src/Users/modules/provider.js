@@ -98,7 +98,6 @@ const ProviderModule = {
         },
       },
     ]);
-
     console.log(totalCoupons);
     return await totalCoupons;
   },

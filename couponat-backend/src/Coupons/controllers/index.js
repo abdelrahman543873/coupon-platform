@@ -357,7 +357,6 @@ const CouponController = {
 
   async scan(req, res, next) {
     let id = null;
-    let subscription = null;
     let code = req.params.code;
     if (req.headers.authentication) {
       let auth = await decodeToken(req.headers.authentication);
@@ -375,23 +374,15 @@ const CouponController = {
       });
     }
     coupon = new Coupon(coupon);
-    if (id) {
-      subscription = await subscriptionModule.getUserSubscripe(id, coupon.id);
-      if (subscription) {
-        subscription = subscription.toObject();
-        subscription.paymentType.key == "ONLINE_PAYMENT"
-          ? (subscription.account = await AppCreditModel.findById(
-              subscription.account
-            ))
-          : "";
-        subscription.paymentType.key == "BANK_TRANSFER"
-          ? (subscription.account = await AppBankModel.findById(
-              subscription.account
-            ))
-          : "";
-        subscription = new Subscription(subscription);
-      }
-    }
+    let user = await ClientModule.getById(id);
+    if (user && user.favCoupons) {
+      coupon = await addFavProp([coupon], user.favCoupons);
+    } else coupon = await addFavProp([coupon], null);
+    coupon = coupon[0];
+    let sub = user
+      ? await subscriptionModule.getUserSubscripe(user.id, coupon.id)
+      : null;
+    coupon.isSubscribe = sub ? true : false;
 
     return res.status(200).send({
       isSuccessed: true,
