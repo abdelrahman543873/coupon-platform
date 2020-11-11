@@ -99,7 +99,7 @@ const ProviderModule = {
       },
       {
         $replaceRoot: {
-          newRoot: { $arrayToObject: "$counts" },
+          newRoot: { $arrayToObject: "$totalCoupons" },
         },
       },
     ]);
