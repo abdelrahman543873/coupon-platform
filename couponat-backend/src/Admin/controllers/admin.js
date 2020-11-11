@@ -161,7 +161,7 @@ const AdminsController = {
   },
 
   async getProviders(req, res, next) {
-    let providers = await ProviderModule.getAll();
+    let providers = await ProviderModule.getAll("true");
     providers = providers.map((provider) => {
       return new Provider(provider);
     });
