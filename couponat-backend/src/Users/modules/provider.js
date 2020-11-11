@@ -88,6 +88,7 @@ const ProviderModule = {
   },
 
   async getStatistics(id) {
+    console.log(id);
     let totalCoupons = await CouponModel.aggregate([
       {
         $match: { provider: id },
