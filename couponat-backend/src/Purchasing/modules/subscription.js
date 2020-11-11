@@ -47,7 +47,7 @@ let subscriptionModule = {
     // isUsed ? (queryOp.isUsed = isUsed) : "";
     // isPaid ? (queryOp.isPaid = isPaid) : "";
 
-    return await SubscripionModel.find({ ...queryOp });
+    return await SubscripionModel.find({ ...queryOp }).sort("-createdAt");
   },
 
   async getById(id) {
