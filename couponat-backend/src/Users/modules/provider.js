@@ -1,3 +1,4 @@
+import { CouponModel } from "../../Coupons/models/coupon";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { ProviderModel } from "../models/provider";
 
@@ -83,6 +84,25 @@ const ProviderModule = {
     return await ProviderModel.deleteOne({ _id: id })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));
+  },
+
+  async getStatistics(id) {
+    let totalCoupons = CouponModel.aggregate([
+      {
+        $match: { $_id: id },
+      },
+      {
+        $group: {
+          _id: null,
+          totalCoupons: {
+            $sum: "$totalCount",
+          },
+        },
+      },
+    ]);
+
+    console.log(totalCoupons);
+    return await totalCoupons;
   },
 };
 

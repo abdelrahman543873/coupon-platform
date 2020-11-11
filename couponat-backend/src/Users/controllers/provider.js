@@ -157,7 +157,9 @@ const ProviderControllers = {
   async getAll(req, res, next) {
     let providers = await ProviderModule.getAll();
     providers = providers.map((provider) => {
-      return new Provider(provider);
+      provider = new Provider(provider);
+      let totalCount=await ProviderModule.getStatistics(provider.id)
+      return{provider,totalCount}
     });
 
     return res.status(200).send({
@@ -166,6 +168,17 @@ const ProviderControllers = {
       error: null,
     });
   },
+
+  // async getStatistics(req, res, next) {
+  //   let auth = await decodeToken(req.headers.authentication);
+  //   let id = auth.id;
+
+  //   return res.status(200).send({
+  //     isSuccessed: true,
+  //     data: await ProviderModule.getStatistics(id),
+  //     error: null,
+  //   });
+  // },
 };
 
 export { ProviderControllers };
