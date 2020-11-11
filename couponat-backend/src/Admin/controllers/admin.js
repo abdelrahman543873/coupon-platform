@@ -626,7 +626,7 @@ const AdminsController = {
   },
 
   async mailReply(req, res, next) {
-    let id = req.body.id;
+    let id = req.params.id;
     let mail = checkAllMongooseId(id) ? ContactModel.findById(id) : null;
     if (!mail) {
       let errMsg =
