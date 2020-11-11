@@ -206,7 +206,7 @@ const ProviderControllers = {
       return next(boom.badData("Provider not found"));
     }
 
-    let stat = await ProviderModule.getStatistics(provider.id);
+    let stat = await ProviderModule.getStatistics(provider._id);
 
     return res.status(200).send({
       isSuccessed: true,
