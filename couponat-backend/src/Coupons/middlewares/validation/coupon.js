@@ -45,18 +45,22 @@ const CouponValidationWares = {
   },
 
   async updateCoupon(req, res, next) {
+    req.body.name = null;
+    req.body.description = null;
     req.body.nameAr ? (req.body.name.arabic = req.body.nameAr) : "";
 
     req.body.nameEn ? (req.body.name.english = req.body.nameEn) : "";
 
-    req.body.descAr?(req.body.description.arabic = req.body.descAr):""
+    req.body.descAr ? (req.body.description.arabic = req.body.descAr) : "";
 
-    req.body.descEn?(req.body.description.english = req.body.descEn):""
+    req.body.descEn ? (req.body.description.english = req.body.descEn) : "";
 
     req.body.nameAr ? delete req.body.nameAr : "";
     req.body.nameEn ? delete req.body.nameEn : "";
     req.body.descAr ? delete req.body.descAr : "";
     req.body.descEn ? delete req.body.descEn : "";
+    !req.body.name ? delete req.body.name : "";
+    !req.body.description ? delete req.body.description : "";
 
     console.log(req.body.name);
     console.log(req.body.description);
