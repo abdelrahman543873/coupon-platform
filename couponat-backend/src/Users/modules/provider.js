@@ -97,6 +97,11 @@ const ProviderModule = {
           totalCoupons: { $sum: "$totalCount" },
         },
       },
+      {
+        $replaceRoot: {
+          newRoot: { $arrayToObject: "$counts" },
+        },
+      },
     ]);
 
     console.log(totalCoupons);
