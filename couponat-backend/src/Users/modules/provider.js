@@ -91,7 +91,7 @@ const ProviderModule = {
     console.log(id);
     let totalCoupons = await CouponModel.aggregate([
       {
-        $match: { provider: id },
+        $match: { provider: id + "" },
       },
       {
         $group: {
@@ -103,7 +103,7 @@ const ProviderModule = {
 
     let residualCoupons = await CouponModel.aggregate([
       {
-        $match: { provider: id },
+        $match: { provider: id + "" },
       },
       {
         $group: {
