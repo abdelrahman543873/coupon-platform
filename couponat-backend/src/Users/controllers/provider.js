@@ -201,7 +201,7 @@ const ProviderControllers = {
     let auth = await decodeToken(req.headers.authentication);
     let id = auth.id;
 
-    let provider = ProviderModule.getById(id);
+    let provider = await ProviderModule.getById(id);
     if (!provider) {
       return next(boom.badData("Provider not found"));
     }
