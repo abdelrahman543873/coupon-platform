@@ -110,6 +110,11 @@ const ProviderModule = {
           residualCoupons: { $sum: "$totalCount" },
         },
       },
+      {
+        $project: {
+          residualCoupons: "$residualCoupons",
+        },
+      },
     ]);
 
     let totalSubscriptions = await SubscripionModel.countDocuments({
