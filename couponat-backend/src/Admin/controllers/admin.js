@@ -162,14 +162,9 @@ const AdminsController = {
 
   async getProviders(req, res, next) {
     let providers = await ProviderModule.getAll();
-    for (let i = 0; i < providers.length; i++) {
-      providers[i] = new Provider(providers[i]);
-      let totalCount = await ProviderModule.getStatistics(providers[i].id);
-      providers[i] = {
-        provider: providers[i],
-        totalCount,
-      };
-    }
+    providers = providers.map((provider) => {
+      return new Provider(provider);
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: providers,
