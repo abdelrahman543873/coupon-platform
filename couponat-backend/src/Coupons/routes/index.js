@@ -24,7 +24,7 @@ couponRouter
     CouponController.updateCoupon
   );
 
-couponRouter.route("/:id").get(CouponController.getById);
+couponRouter.route("/coupons/:id").get(CouponController.getById);
 
 couponRouter
   .route("/:id/deletion")
