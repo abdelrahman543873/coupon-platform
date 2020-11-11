@@ -642,6 +642,7 @@ const AdminsController = {
       message: reply,
       date: new Date(),
     };
+    console.log(mail);
     mail = await mail.save();
 
     return res.status(200).send({
