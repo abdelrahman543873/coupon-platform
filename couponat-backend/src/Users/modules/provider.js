@@ -106,6 +106,7 @@ const ProviderModule = {
       },
       {
         $group: {
+          _id: null,
           residualCoupons: { $sum: "$totalCount" },
         },
       },
@@ -124,9 +125,9 @@ const ProviderModule = {
     console.log(totalSubscriptions);
     console.log(residualCoupons);
     return {
-      totalCoupons,
+      totalCoupons: totalCoupons[0].totalCoupons,
       totalSubscriptions,
-      residualCoupons,
+      residualCoupons: residualCoupons[0].residualCoupons,
     };
   },
 };

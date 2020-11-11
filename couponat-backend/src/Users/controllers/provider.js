@@ -197,16 +197,21 @@ const ProviderControllers = {
     });
   },
 
-  // async getStatistics(req, res, next) {
-  //   let auth = await decodeToken(req.headers.authentication);
-  //   let id = auth.id;
+  async getStatistics(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id;
 
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: await ProviderModule.getStatistics(id),
-  //     error: null,
-  //   });
-  // },
+    let provider = ProviderModule.getById(id);
+    if (!provider) {
+      return next(boom.badData("Provider not found"));
+    }
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: await ProviderModule.getStatistics(id),
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };

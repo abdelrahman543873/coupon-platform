@@ -66,6 +66,10 @@ providersRouter
   .route("/coupons")
   .get(checkUserAuth, ProviderControllers.getAllCoupons);
 
+providersRouter
+  .route("/home")
+  .get(checkUserAuth, ProviderControllers.getStatistics);
+
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
 // providersRouter
