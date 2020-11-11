@@ -1,4 +1,5 @@
 import { CouponModel } from "../../Coupons/models/coupon";
+import { SubscripionModel } from "../../Purchasing/models/subscription";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { ProviderModel } from "../models/provider";
 
@@ -87,17 +88,32 @@ const ProviderModule = {
   },
 
   async getStatistics(id) {
-    let totalCoupons = CouponModel.aggregate([
+    let totalCoupons = await CouponModel.aggregate([
       {
         $match: { provider: id },
       },
       {
         $group: {
           _id: null,
-          totalCoupons: { $sum: "$totalCount" },
+          totalCoupons: { $sum: { $sum: ["$totalCount", "$subCount"] } },
         },
       },
     ]);
+
+    let residualCoupons = await CouponModel.aggregate([
+      {
+        $match: { provider: id },
+      },
+      {
+        $group: {
+          _id: null,
+          residualCoupons: { $sum: "$totalCount" },
+        },
+      },
+    ]);
+
+    let totalSubscriptions =await SubscripionModel.find({provider:id}).countDocuments
+
     console.log(totalCoupons);
     return await totalCoupons;
   },

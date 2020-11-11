@@ -63,10 +63,14 @@ const CouponValidationWares = {
     req.body.descAr ? delete req.body.descAr : "";
     req.body.descEn ? delete req.body.descEn : "";
 
-    !req.body.name.arabic ? delete req.body.name.arabic : "";
-    !req.body.name.english ? delete req.body.name.english : "";
-    !req.body.description.arabic ? delete req.body.description.arabic : "";
-    !req.body.description.english ? deletereq.body.description.english : "";
+    req.body.name && !req.body.name.arabic ? delete req.body.name.arabic : "";
+    req.body.name && !req.body.name.english ? delete req.body.name.english : "";
+    req.body.description && !req.body.description.arabic
+      ? delete req.body.description.arabic
+      : "";
+    req.body.description && !req.body.description.english
+      ? deletereq.body.description.english
+      : "";
 
     console.log(req.body.name);
     console.log(req.body.description);
