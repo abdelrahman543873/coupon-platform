@@ -180,12 +180,13 @@ const ProviderControllers = {
   async getAllCoupons(req, res, next) {
     let auth = await decodeToken(req.headers.authentication);
     let id = auth.id;
+    let sold = req.query.sold || null;
     let provider = ProviderModule.getById(id);
     if (!provider) {
       return next(boom.badData("Provider not found"));
     }
 
-    let coupons = await CouponModule.getAll(null, null, null, id, null);
+    let coupons = await CouponModule.getAll(null, null, null, id, null, sold);
 
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);

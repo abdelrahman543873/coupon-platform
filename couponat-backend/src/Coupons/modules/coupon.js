@@ -26,7 +26,7 @@ const CouponModule = {
     return await CouponModel.findById(id);
   },
 
-  async getAll(skip, limit, category, provider, section) {
+  async getAll(skip, limit, category, provider, section, sold = null) {
     if (!checkAllMongooseId(category)) return null;
     if (!checkAllMongooseId(provider)) return null;
 
@@ -47,6 +47,8 @@ const CouponModule = {
         return { err: "Section Must be newest or bestSeller" };
       }
     }
+    if (sold && sold == "false") queryOp.totalCount = { $gt: 0 };
+    if (sold && sold == "true") queryOp.totalCount = 0;
     return await CouponModel.find({ ...queryOp })
       .sort(sort)
       .skip(skip)
