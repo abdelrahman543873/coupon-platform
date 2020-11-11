@@ -137,12 +137,16 @@ const CouponController = {
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));
     }
-    let provider = await ProviderModule.getById(auth.id);
-    if (!provider.isActive) {
-      let lang = req.headers.lang || "ar",
-        errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
-      return next(boom.unauthorized(errMsg));
+
+    if (auth.type == "PROVIDER") {
+      let provider = await ProviderModule.getById(auth.id);
+      if (!provider.isActive) {
+        let lang = req.headers.lang || "ar",
+          errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
+        return next(boom.unauthorized(errMsg));
+      }
     }
+
     let coupons = await CouponModule.getById(id);
     console.log(coupons);
     console.log(coupons ? true : false);
