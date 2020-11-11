@@ -626,7 +626,7 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.body.id;
-
+    let mail = ContactModel.findById(id);
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"
@@ -637,10 +637,9 @@ const AdminsController = {
     let { email, reply } = req.body;
     sendClientMail("Couponat El-Madena", reply, email);
 
-    let mail = ContactModel.findById(id);
-
     mail.reply.message = reply;
     mail.reply.date = new Date();
+    mail = await mail.save();
 
     return res.status(200).send({
       isSuccessed: true,
