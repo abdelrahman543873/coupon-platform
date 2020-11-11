@@ -32,7 +32,7 @@ const ProviderModule = {
   },
 
   async getAll(isAdmin) {
-    queryOp = {};
+    let queryOp = {};
     !isAdmin ? (queryOp.isActive = true) : "";
     return ProviderModel.find({ ...queryOp }).sort("-createdAt");
   },
