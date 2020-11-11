@@ -638,8 +638,10 @@ const AdminsController = {
     let { email, reply } = req.body;
     sendClientMail("Couponat El-Madena", reply, email);
 
-    mail.reply.message = reply;
-    mail.reply.date = new Date();
+    mail.reply = {
+      message: reply,
+      date: new Date(),
+    };
     mail = await mail.save();
 
     return res.status(200).send({
