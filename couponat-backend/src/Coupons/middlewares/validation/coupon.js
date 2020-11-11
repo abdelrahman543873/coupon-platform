@@ -45,22 +45,28 @@ const CouponValidationWares = {
   },
 
   async updateCoupon(req, res, next) {
-    req.body.name = null;
-    req.body.description = null;
-    req.body.nameAr ? (req.body.name.arabic = req.body.nameAr) : "";
+    let name = {
+      arabic: req.body.nameAr || null,
+      english: req.body.nameEn || null,
+    };
 
-    req.body.nameEn ? (req.body.name.english = req.body.nameEn) : "";
-
-    req.body.descAr ? (req.body.description.arabic = req.body.descAr) : "";
-
-    req.body.descEn ? (req.body.description.english = req.body.descEn) : "";
-
+    let description = {
+      arabic: req.body.descAr || null,
+      english: req.body.descEn || null,
+    };
+    req.body.nameAr || req.body.nameEn ? (req.body.name = name) : "";
+    req.body.descAr || req.body.descEn
+      ? (req.body.description = description)
+      : "";
     req.body.nameAr ? delete req.body.nameAr : "";
     req.body.nameEn ? delete req.body.nameEn : "";
     req.body.descAr ? delete req.body.descAr : "";
     req.body.descEn ? delete req.body.descEn : "";
-    !req.body.name ? delete req.body.name : "";
-    !req.body.description ? delete req.body.description : "";
+
+    !req.body.name.arabic ? delete req.body.name.arabic : "";
+    !req.body.name.english ? deletereq.body.name.english : "";
+    !req.body.description.arabic ? delete req.body.description.arabic : "";
+    !req.body.description.english ? deletereq.body.description.english : "";
 
     console.log(req.body.name);
     console.log(req.body.description);
