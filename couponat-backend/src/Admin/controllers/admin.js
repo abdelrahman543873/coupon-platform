@@ -17,6 +17,7 @@ import { VerificationsModule } from "../../Users/modules/verifications";
 import { sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -626,7 +627,7 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.body.id;
-    let mail = ContactModel.findById(id);
+    let mail = checkAllMongooseId(id) ? ContactModel.findById(id) : null;
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"
