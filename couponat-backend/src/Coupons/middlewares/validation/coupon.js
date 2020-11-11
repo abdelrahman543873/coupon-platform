@@ -64,7 +64,7 @@ const CouponValidationWares = {
     req.body.descEn ? delete req.body.descEn : "";
 
     !req.body.name.arabic ? delete req.body.name.arabic : "";
-    !req.body.name.english ? deletereq.body.name.english : "";
+    !req.body.name.english ? delete req.body.name.english : "";
     !req.body.description.arabic ? delete req.body.description.arabic : "";
     !req.body.description.english ? deletereq.body.description.english : "";
 
