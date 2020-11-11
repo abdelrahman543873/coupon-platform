@@ -116,6 +116,8 @@ const ProviderModule = {
       .countDocuments;
 
     console.log(totalCoupons);
+    console.log(totalSubscriptions);
+    console.log(residualCoupons);
     return {
       totalCoupons,
       totalSubscriptions,
