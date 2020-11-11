@@ -3,9 +3,10 @@ import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
-import { Provider } from "../../middlewares/responsHandler";
+import { Coupon, Provider } from "../../middlewares/responsHandler";
 import { CityModule } from "../../Cities/modules/city";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
+import { CouponModule } from "../../Coupons/modules/coupon";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     console.log("controller");
@@ -172,6 +173,26 @@ const ProviderControllers = {
     return res.status(200).send({
       isSuccessed: true,
       data: providers,
+      error: null,
+    });
+  },
+
+  async getAllCoupons(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id;
+    let provider = ProviderModule.getById(id);
+    if (!provider) {
+      return next(boom.badData("Provider not found"));
+    }
+
+    let coupons = await CouponModule.getAll(null, null, null, id, null);
+
+    coupons = coupons.map((coupon) => {
+      return new Coupon(coupon);
+    });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: coupons,
       error: null,
     });
   },

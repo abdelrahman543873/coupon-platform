@@ -62,6 +62,10 @@ providersRouter
   .route("/subscriptions/:id/confirmation")
   .post(checkUserAuth, subscriptionContoller.confirmUsage);
 
+providersRouter
+  .route("/coupons")
+  .get(checkUserAuth, ProviderControllers.getAllCoupons);
+
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
 // providersRouter
