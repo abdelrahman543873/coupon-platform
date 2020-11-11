@@ -386,10 +386,7 @@ const CouponController = {
 
     return res.status(200).send({
       isSuccessed: true,
-      data: {
-        coupon,
-        subscription,
-      },
+      data: coupon,
       error: null,
     });
   },
