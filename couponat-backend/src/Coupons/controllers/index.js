@@ -157,19 +157,19 @@ const CouponController = {
     }
     let body = req.body;
     body.name && !body.name.arabic
-      ? (body.name.arabic = coupon.name.arabic)
+      ? (body.name.arabic = coupons.name.arabic)
       : "";
 
     body.name && !body.name.english
-      ? (body.name.english = coupon.name.english)
+      ? (body.name.english = coupons.name.english)
       : "";
 
     body.description && !body.description.arabic
-      ? (body.description.arabic = coupon.description.arabic)
+      ? (body.description.arabic = coupons.description.arabic)
       : "";
 
     body.description && !body.description.english
-      ? (body.description.english = coupon.description.english)
+      ? (body.description.english = coupons.description.english)
       : "";
     if (req.file) {
       let diffHight = 0,
