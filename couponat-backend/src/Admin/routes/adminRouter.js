@@ -121,7 +121,7 @@ adminRouter
 adminRouter.route("/mails").get(AdminAuth, AdminsController.mails);
 
 adminRouter
-  .route("/mails/reply")
+  .route("/mails/:id/reply")
   .post(AdminAuth, adminValidationwar.mailReply, AdminsController.mailReply);
 
 adminRouter

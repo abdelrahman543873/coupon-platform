@@ -619,14 +619,28 @@ const AdminsController = {
   async mails(req, res, next) {
     return res.status(200).send({
       isSuccessed: true,
-      data: await ContactModel.find({}, { _id: 0 }),
+      data: await ContactModel.find({}, { _id: 0 }).sort("-createdAt"),
       error: null,
     });
   },
 
   async mailReply(req, res, next) {
+    let id = req.body.id;
+
+    if (!mail) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "No Mail to reply it"
+          : "لا يوجد رساله للرد عليها";
+      return next(boom.notFound(errMsg));
+    }
     let { email, reply } = req.body;
     sendClientMail("Couponat El-Madena", reply, email);
+
+    let mail = ContactModel.findById(id);
+
+    mail.reply.message = reply;
+    mail.reply.date = new Date();
 
     return res.status(200).send({
       isSuccessed: true,

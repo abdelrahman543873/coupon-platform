@@ -10,6 +10,10 @@ let contactSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    reply: {
+      message: String,
+      date: Date,
+    },
   },
   {
     timestamps: true,
