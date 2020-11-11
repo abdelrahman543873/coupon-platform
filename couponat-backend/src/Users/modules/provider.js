@@ -92,14 +92,8 @@ const ProviderModule = {
         $match: { provider: id },
       },
       {
-        $group: {
-          _id: null,
+        $project: {
           totalCoupons: { $sum: "$totalCount" },
-        },
-      },
-      {
-        $replaceRoot: {
-          newRoot: { $arrayToObject: "$totalCoupons" },
         },
       },
     ]);
