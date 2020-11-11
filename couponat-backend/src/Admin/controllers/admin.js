@@ -627,7 +627,7 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.params.id;
-    let mail = checkAllMongooseId(id) ? ContactModel.findById(id) : null;
+    let mail = checkAllMongooseId(id) ?await ContactModel.findById(id) : null;
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"
