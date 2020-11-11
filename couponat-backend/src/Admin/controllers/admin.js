@@ -620,7 +620,7 @@ const AdminsController = {
   async mails(req, res, next) {
     return res.status(200).send({
       isSuccessed: true,
-      data: await ContactModel.find({}, { _id: 0 }).sort("-createdAt"),
+      data: await ContactModel.find().sort("-createdAt"),
       error: null,
     });
   },
