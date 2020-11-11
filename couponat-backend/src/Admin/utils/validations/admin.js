@@ -22,7 +22,6 @@ const adminValidationSchemas = {
   }),
 
   mailReply: Joi.object({
-    email: Joi.string().email().required().error(errorsOverride),
     reply: Joi.string().min(8).required().error(errorsOverride),
   }),
 

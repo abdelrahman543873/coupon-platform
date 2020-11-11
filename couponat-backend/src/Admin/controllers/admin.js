@@ -627,7 +627,7 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.params.id;
-    let mail = checkAllMongooseId(id) ?await ContactModel.findById(id) : null;
+    let mail = checkAllMongooseId(id) ? await ContactModel.findById(id) : null;
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"
@@ -635,8 +635,8 @@ const AdminsController = {
           : "لا يوجد رساله للرد عليها";
       return next(boom.notFound(errMsg));
     }
-    let { email, reply } = req.body;
-    sendClientMail("Couponat El-Madena", reply, email);
+    let reply = req.body.reply;
+    sendClientMail("Couponat El-Madena", reply, mail.email);
 
     mail.reply = {
       message: reply,
