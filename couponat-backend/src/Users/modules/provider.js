@@ -120,9 +120,7 @@ const ProviderModule = {
       },
     ]);
 
-    let totalSubscriptions = await SubscripionModel.countDocuments({
-      provider: id,
-    });
+    let totalSubscriptions = await SubscripionModel.countDocuments();
 
     console.log(totalCoupons);
     console.log(totalSubscriptions);
