@@ -120,14 +120,24 @@ const ClientControllers = {
     });
   },
 
-  async addViaSocialMedia(
-    name,
-    socialMediaId,
-    socialMediaType,
-    mobile,
-    countryCode,
-    imgURL
-  ) {
+  async socialMediaRegister(req, res, next) {
+    let {
+      name,
+      socialMediaId,
+      socialMediaType,
+      mobile,
+      countryCode,
+      imgURL,
+    } = req.body;
+
+    let user = await ClientModule.getByMobile(mobile);
+    if (user) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Mobile Used befor"
+          : "رقم مستخدم من حساب أخر";
+      return next(boom.notFound(errMsg));
+    }
     let { doc, err } = await ClientModule.addViaSocialMedia({
       name,
       socialMediaId,
@@ -136,16 +146,25 @@ const ClientControllers = {
       countryCode,
       imgURL,
     });
-
     if (err)
-      return {
-        user: null,
-        err,
-      };
-    return {
-      user: doc,
-      err: null,
-    };
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    let client = new Client(doc.toObject());
+    let smsToken = getSMSToken(5);
+    let addVerification = await VerificationsModule.add(smsToken, client.id);
+    if (addVerification.err)
+      return next(
+        boom.badData(
+          getErrorMessage(addVerification.err, req.headers.lang || "ar")
+        )
+      );
+    res.status(201).send({
+      isSuccessed: true,
+      data: {
+        user: client,
+        smsToken,
+      },
+      error: null,
+    });
   },
 
   async auth(req, res, next) {
@@ -282,62 +301,13 @@ const ClientControllers = {
           error: null,
         });
       }
-    } else {
-      let { name, socialMediaType, mobile, countryCode } = req.body;
-
-      user = await ClientModule.getByMobile(mobile);
-      if (user) {
-        user = await ClientModule.fillSocialMediaData(
-          user,
-          socialMediaId,
-          socialMediaType
-        );
-        if (!user)
-          return next(boom.internal("Error filling social media data"));
-        let authToken = generateToken(user._id, "CLIENT");
-        user = new Client(user);
-        return res.status(200).send({
-          isSuccessed: true,
-          data: {
-            user: user,
-            authToken,
-          },
-          error: null,
-        });
-      } else {
-        let registerationRes = await ClientControllers.addViaSocialMedia(
-          name,
-          socialMediaId,
-          socialMediaType,
-          mobile,
-          countryCode
-        );
-        if (registerationRes.err) {
-          return next(
-            boom.badData(
-              getErrorMessage(registerationRes.err, req.headers.lang || "ar")
-            )
-          );
-        }
-        user = new Client(registerationRes.user);
-        let smsToken = getSMSToken(5);
-        let addVerification = await VerificationsModule.add(smsToken, user.id);
-        if (addVerification.err)
-          return next(
-            boom.badData(
-              getErrorMessage(addVerification.err, req.headers.lang || "ar")
-            )
-          );
-        return res.status(201).send({
-          isSuccessed: true,
-          data: {
-            user,
-            smsToken,
-          },
-          error: null,
-        });
-      }
     }
+
+    return res.status(404).send({
+      isSuccessed: false,
+      data: null,
+      error: "user not found",
+    });
   },
 
   async asyncFavCoupons(req, res, next) {

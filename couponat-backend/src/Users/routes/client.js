@@ -22,7 +22,14 @@ customersRouter
 
 customersRouter
   .route("/social-auth")
-  .post(ClientValidationWares.socialAuth, ClientControllers.socialAuth);
+  .post(ClientValidationWares.socialLogin, ClientControllers.socialAuth);
+
+customersRouter
+  .route("/social-register")
+  .post(
+    ClientValidationWares.socialRegister,
+    ClientControllers.socialMediaRegister
+  );
 
 customersRouter
   .route("/:id/mobile/verification")

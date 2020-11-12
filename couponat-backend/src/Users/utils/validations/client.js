@@ -24,7 +24,7 @@ const ClientValidations = {
     socialMediaId: Joi.string().required().error(errorsOverride),
   }),
 
-  socialAuth: Joi.object({
+  socialRegister: Joi.object({
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
     socialMediaId: Joi.string().required().error(errorsOverride),
     socialMediaType: Joi.string()
@@ -33,6 +33,7 @@ const ClientValidations = {
       .error(errorsOverride),
     mobile: Joi.string().min(8).required().error(errorsOverride),
     countryCode: Joi.string().min(3).required().error(errorsOverride),
+    imgURL: Joi.string().uri().optional().error(errorsOverride),
   }),
 
   login: Joi.object({

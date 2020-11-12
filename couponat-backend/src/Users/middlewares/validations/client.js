@@ -12,10 +12,8 @@ const ClientValidationWares = {
     next();
   },
 
-  addClientViaSocialMedia(req, res, next) {
-    const { error } = ClientValidations.addClientViaSocialMedia.validate(
-      req.body
-    );
+  socialLogin(req, res, next) {
+    const { error } = ClientValidations.socialLogin.validate(req.body);
 
     if (error) {
       return next(boom.badData(error.details[0].message));
@@ -34,8 +32,8 @@ const ClientValidationWares = {
     next();
   },
 
-  socialAuth(req, res, next) {
-    const { error } = ClientValidations.socialAuth.validate(req.body);
+  socialRegister(req, res, next) {
+    const { error } = ClientValidations.socialRegister.validate(req.body);
 
     if (error) {
       return next(boom.badData(error.details[0].message));
