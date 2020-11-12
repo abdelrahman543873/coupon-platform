@@ -104,12 +104,16 @@ const AdminsController = {
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
         return Jimp.read("assets/images/logo.png")
           .then((logoTpl) => {
-            logoTpl.opacity(1.0);
+            logoTpl.opacity(0.4);
+            let logoH = tpl.bitmap.height * 0.15;
+            let logoW = tpl.bitmap.width * 0.15;
+            let diffHight = parseInt((tpl.bitmap.height - logoH) / 2),
+              diffWidth = parseInt((tpl.bitmap.width - logoW) / 2);
             console.log(logoTpl.bitmap.height);
             return tpl.composite(
-              logoTpl.resize(30, 30),
-              tpl.bitmap.width - logoTpl.bitmap.width - 5,
-              tpl.bitmap.height - logoTpl.bitmap.height,
+              logoTpl.resize(logoW, logoH),
+              tpl.bitmap.width - logoW - diffWidth,
+              tpl.bitmap.height - logoH - diffHight,
               [Jimp.BLEND_DESTINATION_OVER]
             );
           })
