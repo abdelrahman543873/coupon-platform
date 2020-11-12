@@ -56,6 +56,7 @@ class Coupon {
       this.servicePrice = coupon.servicePrice;
       this.offerPrice = coupon.offerPrice;
       this.totalCount = coupon.totalCount;
+      this.subCount = coupon.subCount;
       this.category = new Category(coupon.category);
       this.code = coupon.code;
       this.imgURL = IP + coupon.imgURL;
