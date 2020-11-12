@@ -26,7 +26,11 @@ let clientSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    socialMediaId: String,
+    socialMediaId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     socialMediaType: {
       type: String,
       enum: ["GOOGLE", "FACEBOOK", "TWITTER"],
