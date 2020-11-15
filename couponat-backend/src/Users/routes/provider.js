@@ -70,7 +70,7 @@ providersRouter
   .route("/home")
   .get(checkUserAuth, ProviderControllers.getStatistics);
 
-customersRouter
+providersRouter
   .route("/contact-us")
   .post(
     checkUserAuth,
