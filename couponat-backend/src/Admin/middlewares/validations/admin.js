@@ -39,6 +39,18 @@ const adminValidationwar = {
 
     next();
   },
+
+  async editCriditCard(req, res, next) {
+    if (!req.body) {
+      return next(boom.badData("No Data to Update"));
+    }
+    let { error } = adminValidationSchemas.editCriditCard.validate(req.body);
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+
+    next();
+  },
 };
 
 export { adminValidationwar };

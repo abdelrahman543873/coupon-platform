@@ -7,7 +7,12 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { AdminModule } from "../modules/admin";
 import QRCode from "qrcode";
-import { Category, Coupon, Provider } from "../../middlewares/responsHandler";
+import {
+  Category,
+  Coupon,
+  Cridit,
+  Provider,
+} from "../../middlewares/responsHandler";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModel } from "../../Coupons/models/coupon";
@@ -18,6 +23,7 @@ import { sendClientMail } from "../../utils/nodemailer";
 import { ContactModel } from "../../Users/models/contactUs";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
+import { AppCreditModel } from "../../Purchasing/models/appCridit";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -384,65 +390,43 @@ const AdminsController = {
   //   });
   // },
 
-  // async getPackages(req, res, next) {
-  //   let packages = await AdsPackagesModule.getPackages(null);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: packages,
-  //     error: null,
-  //   });
-  // },
+  async getCriditAcount(req, res, next) {
+    let cridit = await AppCreditModel.findOne();
+    cridit = new Cridit(cridit);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: cridit,
+      error: null,
+    });
+  },
 
-  // async setPackagesOff(req, res, next) {
-  //   let id = req.params.id;
-  //   let packages = await AdsPackagesModule.getById(id);
-  //   if (!packages) {
-  //     let errMsg = lang == "en" ? "Package Not found" : "الحزمة غير موجودة";
-  //     return next(boom.notFound(errMsg));
-  //   }
-  //   packages.isActive = !packages.isActive;
-  //   packages = await packages.save();
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: packages,
-  //     error: null,
-  //   });
-  // },
-
-  // async getCriditAcount(req, res, next) {
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: await AppCreditModel.findOne(),
-  //     error: null,
-  //   });
-  // },
-
-  // async updateCriditAcount(req, res, next) {
-  //   let { merchantEmail, secretKey } = req.body;
-  //   let cridit = await AppCreditModel.findOne();
-  //   if (!cridit) {
-  //     return res.status(401).send({
-  //       isSuccessed: false,
-  //       data: null,
-  //       error: "Not Found",
-  //     });
-  //   }
-  //   cridit.merchantEmail = merchantEmail;
-  //   cridit.secretKey = secretKey;
-  //   cridit = await cridit.save().catch((err) => {
-  //     return res.status(401).send({
-  //       isSuccessed: false,
-  //       data: null,
-  //       error: err,
-  //     });
-  //   });
-
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: await AppCreditModel.findOne(),
-  //     error: null,
-  //   });
-  // },
+  async updateCriditAcount(req, res, next) {
+    let merchantEmail = req.body.merchantEmail || null;
+    let secretKey = req.body.secretKey || null;
+    let cridit = await AppCreditModel.findOne();
+    if (!cridit) {
+      return res.status(401).send({
+        isSuccessed: false,
+        data: null,
+        error: "Not Found",
+      });
+    }
+    merchantEmail ? (cridit.merchantEmail = merchantEmail) : "";
+    secretKey ? (cridit.secretKey = secretKey) : "";
+    cridit = await cridit.save().catch((err) => {
+      return res.status(401).send({
+        isSuccessed: false,
+        data: null,
+        error: err,
+      });
+    });
+    cridit = new Cridit(cridit);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: cridit,
+      error: null,
+    });
+  },
 
   // async addBanckAccount(req, res, next) {
   //   let account = req.body;

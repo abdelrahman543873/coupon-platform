@@ -28,6 +28,11 @@ const adminValidationSchemas = {
   resetPass: Joi.object({
     cardenality: Joi.string().required().error(errorsOverride),
   }),
+
+  editCriditCard: Joi.object({
+    merchantEmail: Joi.string().email().optional().error(errorsOverride),
+    secretKey: Joi.string().optional().error(errorsOverride),
+  }),
 };
 
 export { adminValidationSchemas };

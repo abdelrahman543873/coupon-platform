@@ -136,6 +136,15 @@ adminRouter
   .route("/providers/:id/toggle")
   .post(AdminAuth, AdminsController.toggleProviders);
 
+adminRouter
+  .route("/appCridit")
+  .get(AdminAuth, AdminsController.getCriditAcount)
+  .post(
+    AdminAuth,
+    adminValidationwar.editCriditCard,
+    AdminsController.editCriditCard
+  );
+
 // adminRouter
 //   .route("/questions/new")
 //   .post(
@@ -149,42 +158,7 @@ adminRouter
 //   .get(AdminsAuth.isEditorOrHigher, AdminsController.getFamiliarQuestions);
 
 // adminRouter
-//   .route("/adsPackages/new")
-//   .post(
-//     AdminsAuth.isEditorOrHigher,
-//     packageValidationnwar.addPackage,
-//     AdminsController.addPackage
-//   );
-
-// adminRouter
-//   .route("/adsPackages")
-//   .get(AdminsAuth.isEditorOrHigher, AdminsController.getPackages);
-
-// adminRouter
-//   .route("/adsPackages/:id/switch")
-//   .post(AdminsAuth.isEditorOrHigher, AdminsController.setPackagesOff);
-
-// adminRouter
 //   .route("/app/cridit/modification")
 //   .put(AdminsAuth.isEditorOrHigher, AdminsController.updateCriditAcount);
-
-// adminRouter.use("/cities", AdminsAuth.isEditorOrHigher, citiesRouter);
-// adminRouter.use("/bazars", AdminsAuth.isEditorOrHigher, bazarsRouter);
-
-// adminRouter
-//   .route("/app/banks")
-//   .post(
-//     AdminsAuth.isEditorOrHigher,
-//     adminValidationwar.addBank,
-//     AdminsController.addBanckAccount
-//   );
-
-// adminRouter
-//   .route("/app/banks/:id/switch")
-//   .post(AdminsAuth.isEditorOrHigher, AdminsController.toggleBankAccount);
-
-// adminRouter
-//   .route("/app/banks")
-//   .get(AdminsAuth.isEditorOrHigher, AdminsController.getBanks);
 
 export { adminRouter };
