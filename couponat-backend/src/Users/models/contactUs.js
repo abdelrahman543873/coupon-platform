@@ -14,6 +14,10 @@ let contactSchema = mongoose.Schema(
       message: String,
       date: Date,
     },
+    type: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

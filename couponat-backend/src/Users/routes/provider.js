@@ -70,6 +70,14 @@ providersRouter
   .route("/home")
   .get(checkUserAuth, ProviderControllers.getStatistics);
 
+customersRouter
+  .route("/contact-us")
+  .post(
+    checkUserAuth,
+    ProviderValidationWares.contactUs,
+    ProviderControllers.contactUs
+  );
+
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
 // providersRouter

@@ -7,6 +7,7 @@ import { Coupon, Provider } from "../../middlewares/responsHandler";
 import { CityModule } from "../../Cities/modules/city";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { CouponModule } from "../../Coupons/modules/coupon";
+import { ContactModel } from "../models/contactUs";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     console.log("controller");
@@ -212,6 +213,29 @@ const ProviderControllers = {
     return res.status(200).send({
       isSuccessed: true,
       data: stat,
+      error: null,
+    });
+  },
+
+  async contactUs(req, res, next) {
+    let { email, description } = req.body;
+
+    let saveContact = await ContactModel({
+      email,
+      description,
+      type: "PROVIDER",
+    })
+      .save()
+      .catch((err) => {
+        return res.status(402).send({
+          isSuccessed: false,
+          data: null,
+          error: err,
+        });
+      });
+    return res.status(200).send({
+      isSuccessed: true,
+      data: true,
       error: null,
     });
   },

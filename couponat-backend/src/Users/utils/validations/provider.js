@@ -96,6 +96,11 @@ const ProviderValidations = {
     currentPassword: Joi.string().required().error(errorsOverride),
     newPassword: Joi.string().min(8).required().error(errorsOverride),
   }),
+
+  contactUs: Joi.object({
+    email: Joi.string().email().required().error(errorsOverride),
+    description: Joi.string().min(8).required().error(errorsOverride),
+  }),
 };
 
 export { ProviderValidations };
