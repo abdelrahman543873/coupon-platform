@@ -41,7 +41,8 @@ const adminValidationwar = {
   },
 
   async editCriditCard(req, res, next) {
-    if (!req.body) {
+    console.log(req.body);
+    if (!req.body.merchantEmail && !req.body.secretKey) {
       return next(boom.badData("No Data to Update"));
     }
     let { error } = adminValidationSchemas.editCriditCard.validate(req.body);

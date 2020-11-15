@@ -142,7 +142,7 @@ adminRouter
   .post(
     AdminAuth,
     adminValidationwar.editCriditCard,
-    AdminsController.editCriditCard
+    AdminsController.updateCriditAcount
   );
 
 // adminRouter
