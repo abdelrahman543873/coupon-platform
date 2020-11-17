@@ -139,7 +139,7 @@ const ClientControllers = {
           : "رقم مستخدم من حساب أخر";
       return next(boom.notFound(errMsg));
     }
-    let user = email ? await ClientModule.getByEmail(email) : null;
+    user = email ? await ClientModule.getByEmail(email) : null;
     if (user) {
       let errMsg =
         req.headers.lang == "en"
