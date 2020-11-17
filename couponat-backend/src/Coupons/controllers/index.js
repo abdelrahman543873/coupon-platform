@@ -48,8 +48,6 @@ const CouponController = {
     coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
-      let diffHight = 0,
-        diffWidth = 0;
       console.log("1111");
       Jimp.read("Coupons-Images/" + req.file.filename).then((tpl) => {
         return Jimp.read("assets/images/logo.png")

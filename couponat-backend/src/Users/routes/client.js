@@ -14,7 +14,8 @@ customersRouter
     uploadHelper("Customers-Images/").single("imgURL"),
     ClientValidationWares.addClient,
     ClientControllers.add
-  );
+  )
+  .get(checkUserAuth, ClientControllers.getProfileInfo);
 
 customersRouter
   .route("/auth")

@@ -536,6 +536,26 @@ const ClientControllers = {
     });
   },
 
+  async getProfileInfo(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id,
+      client = await ClientModule.getById(id);
+
+    if (!client) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "not found!" : "المستخدم غير موجود";
+      return next(boom.badData(errMsg));
+    }
+
+    client = new Client(client);
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: client,
+      error: null,
+    });
+  },
+
   // async getFamiliarQuestions(req, res, next) {
   //   let lang = req.headers.lang || "ar";
   //   let questions = await QuestionModule.getQuestions("CLIENT", lang);

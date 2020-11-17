@@ -13,7 +13,8 @@ providersRouter
     uploadHelper("Providers-Images/").single("logoURL"),
     ProviderValidationWares.add,
     ProviderControllers.addProvider
-  );
+  )
+  .get(checkUserAuth, ProviderControllers.getProfileInfo);
 
 // providersRouter
 //   .route("/emails/verification")

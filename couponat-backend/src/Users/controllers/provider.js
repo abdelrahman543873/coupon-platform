@@ -239,6 +239,26 @@ const ProviderControllers = {
       error: null,
     });
   },
+
+  async getProfileInfo(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id,
+      provider = await ProviderModule.getById(id);
+
+    if (!provider) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "not found!" : "المستخدم غير موجود";
+      return next(boom.badData(errMsg));
+    }
+
+    provider = new Provider(provider);
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: provider,
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };
