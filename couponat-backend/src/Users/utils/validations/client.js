@@ -9,18 +9,6 @@ const ClientValidations = {
     countryCode: Joi.string().min(3).required().error(errorsOverride),
   }),
 
-  addClientViaSocialMedia: Joi.object({
-    name: Joi.string().min(3).max(30).required().error(errorsOverride),
-    socialMediaId: Joi.string().required().error(errorsOverride),
-    socialMediaType: Joi.string()
-      .valid("GOOGLE", "FACEBOOK", "TWITTER")
-      .required()
-      .error(errorsOverride),
-    mobile: Joi.string().min(8).optional().error(errorsOverride),
-    countryCode: Joi.string().min(3).optional().error(errorsOverride),
-    email: Joi.string().email().optional().error(errorsOverride),
-  }),
-
   socialLogin: Joi.object({
     socialMediaId: Joi.string().required().error(errorsOverride),
   }),
@@ -32,8 +20,9 @@ const ClientValidations = {
       .valid("GOOGLE", "FACEBOOK", "TWITTER")
       .required()
       .error(errorsOverride),
-    mobile: Joi.string().min(8).required().error(errorsOverride),
-    countryCode: Joi.string().min(3).required().error(errorsOverride),
+    mobile: Joi.string().min(8).optional().error(errorsOverride),
+    countryCode: Joi.string().min(3).optional().error(errorsOverride),
+    email: Joi.string().email().optional().error(errorsOverride),
     imgURL: Joi.string().uri().optional().error(errorsOverride),
   }),
 
