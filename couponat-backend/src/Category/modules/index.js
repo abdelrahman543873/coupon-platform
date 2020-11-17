@@ -41,8 +41,8 @@ const CategoryModule = {
   },
 
   async update(id, newData) {
-    if (!(await checkAllMongooseId(id))) return null;
-    console.log("here", checkAllMongooseId(id));
+    if (!checkAllMongooseId(id)) return null;
+    console.log("here", newData);
     return await CategoryModel.findByIdAndUpdate(
       id,
       { $set: { ...newData } },
