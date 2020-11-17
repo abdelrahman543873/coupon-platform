@@ -35,9 +35,10 @@ const CategoryalidationWares = {
       arabic: req.body.arabic || null,
       english: req.body.english || null,
     };
+    req.body.english || req.body.arabic ? (req.body.name = name) : "";
     req.body.arabic ? delete req.body.arabic : "";
     req.body.english ? delete req.body.english : "";
-    req.body.english || req.body.arabic ? (req.body.name = name) : "";
+
     console.log(req.body);
     let { error } = CategoryValidations.edit.validate(req.body);
 
