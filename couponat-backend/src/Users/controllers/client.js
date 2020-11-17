@@ -181,7 +181,7 @@ const ClientControllers = {
       return next(boom.notFound(errMsg));
     }
     console.log(password);
-    console.log(user.password);
+    console.log(user);
 
     if (!(await bcryptCheckPass(password, user.password))) {
       return next(boom.unauthorized(errMsg));
