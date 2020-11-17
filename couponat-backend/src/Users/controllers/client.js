@@ -146,7 +146,7 @@ const ClientControllers = {
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
 
     client = new Client(doc.toObject());
-    let authToken = generateToken(user.id, "CLIENT");
+    let authToken = generateToken(client.id, "CLIENT");
     res.status(201).send({
       isSuccessed: true,
       data: {
