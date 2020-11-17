@@ -67,6 +67,7 @@ const ClientModule = {
       countryCode,
       isSocialMediaVerified: true,
       imgURL,
+      isVerified: true,
     })
       .save()
       .then((doc) => {
