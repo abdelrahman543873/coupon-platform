@@ -16,8 +16,9 @@ const ClientValidations = {
       .valid("GOOGLE", "FACEBOOK", "TWITTER")
       .required()
       .error(errorsOverride),
-    mobile: Joi.string().min(8).required().error(errorsOverride),
-    countryCode: Joi.string().min(3).required().error(errorsOverride),
+    mobile: Joi.string().min(8).optional().error(errorsOverride),
+    countryCode: Joi.string().min(3).optional().error(errorsOverride),
+    email: Joi.string().email.optional().error(errorsOverride),
   }),
 
   socialLogin: Joi.object({

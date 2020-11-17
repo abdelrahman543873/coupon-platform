@@ -18,6 +18,10 @@ const ClientModule = {
     return await ClientModel.findOne({ mobile });
   },
 
+  async getByEmail(email) {
+    return await ClientModel.findOne({ email });
+  },
+
   async getByMobileNotVerified(mobile) {
     return await ClientModel.findOne({ mobile, isVerified: false })
       .then((doc) => {
@@ -57,6 +61,7 @@ const ClientModule = {
     socialMediaType,
     mobile,
     countryCode,
+    email,
     imgURL,
   }) {
     return await new ClientModel({
@@ -65,6 +70,7 @@ const ClientModule = {
       socialMediaType,
       mobile,
       countryCode,
+      email,
       isSocialMediaVerified: true,
       imgURL,
       isVerified: true,

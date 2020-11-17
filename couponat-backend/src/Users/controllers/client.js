@@ -127,15 +127,24 @@ const ClientControllers = {
       socialMediaType,
       mobile,
       countryCode,
+      email,
       imgURL,
     } = req.body;
 
-    let user = await ClientModule.getByMobile(mobile);
+    let user = mobile ? await ClientModule.getByMobile(mobile) : null;
     if (user) {
       let errMsg =
         req.headers.lang == "en"
           ? "Mobile Used befor"
           : "رقم مستخدم من حساب أخر";
+      return next(boom.notFound(errMsg));
+    }
+    let user = email ? await ClientModule.getByEmail(email) : null;
+    if (user) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Email Used befor"
+          : "البريد الالكتروني مستخدم من حساب أخر";
       return next(boom.notFound(errMsg));
     }
     let { doc, err } = await ClientModule.addViaSocialMedia({
@@ -144,6 +153,7 @@ const ClientControllers = {
       socialMediaType,
       mobile,
       countryCode,
+      email,
       imgURL,
     });
     if (err)

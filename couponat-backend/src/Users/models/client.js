@@ -9,11 +9,15 @@ let clientSchema = mongoose.Schema(
     password: String,
     countryCode: {
       type: String,
-      required: true,
     },
     mobile: {
       type: String,
-      required: true,
+      sparse: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      sparse: true,
       unique: true,
     },
     isVerified: {
