@@ -4,7 +4,7 @@ import { ProviderValidations } from "../../utils/validations/provider";
 const ProviderValidationWares = {
   add(req, res, next) {
     console.log("midille");
-
+    console.log(JSON.stringify(req.body));
     if (req.body.cities.length != req.body.location.length) {
       let lang = req.headers.lang || "ar",
         errMsg =
