@@ -30,10 +30,11 @@ let subscriptionModule = {
       user,
       coupon,
       isUsed: false,
+      note: "",
     });
   },
 
-  async getSubscriptions(user, provider, isPaid, isConfirmed, isUsed) {
+  async getSubscriptions(user, provider, isPaid, isConfirmed, isUsed, note) {
     if (!checkAllMongooseId(user)) return null;
 
     if (!checkAllMongooseId(provider)) return null;
@@ -44,6 +45,7 @@ let subscriptionModule = {
     isConfirmed == false || isConfirmed == true
       ? (queryOp.isConfirmed = isConfirmed)
       : "";
+    note ? (queryOp.note = "") : "";
     // isUsed ? (queryOp.isUsed = isUsed) : "";
     // isPaid ? (queryOp.isPaid = isPaid) : "";
 

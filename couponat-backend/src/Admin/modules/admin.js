@@ -2,6 +2,7 @@ import { AdminModel } from "../models/admin";
 import { ProviderModel } from "../../Users/models/provider";
 import { CouponModel } from "../../Coupons/models/coupon";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
+import { SubscripionModel } from "../../Purchasing/models/subscription";
 const AdminModule = {
   async add(email, name, password) {
     return await AdminModel({
@@ -34,7 +35,7 @@ const AdminModule = {
 
   async getStatistics() {
     let selectionDate = new Date(new Date().setDate(new Date().getDate() - 10));
-    let providers = await ProviderModel.countDocuments({ isActive: true });
+    let providers = await ProviderModel.countDocuments();
     let coupons = await CouponModel.countDocuments({ totalCount: { $gt: 0 } });
     let newProviders = await ProviderModel.countDocuments({
       createdAt: { $gte: selectionDate },
@@ -42,12 +43,20 @@ const AdminModule = {
     let newCoupons = await CouponModel.countDocuments({
       createdAt: { $gte: selectionDate },
     });
-
+    let subscriptions = await SubscripionModel.countDocuments({
+      note: "",
+    });
+    let newSubscriptions = await SubscripionModel.countDocuments({
+      createdAt: { $gte: selectionDate },
+      note: "",
+    });
     return {
       providers,
       newProviders,
       coupons,
       newCoupons,
+      subscriptions,
+      newSubscriptions,
     };
   },
 };
