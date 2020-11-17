@@ -144,8 +144,9 @@ const ClientControllers = {
     let { doc, err } = await ClientModule.addViaSocialMedia(client);
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
-    let authToken = generateToken(user.id, "CLIENT");
+
     client = new Client(doc.toObject());
+    let authToken = generateToken(user.id, "CLIENT");
     res.status(201).send({
       isSuccessed: true,
       data: {
