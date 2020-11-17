@@ -121,17 +121,11 @@ const ClientControllers = {
   },
 
   async socialMediaRegister(req, res, next) {
-    let {
-      name,
-      socialMediaId,
-      socialMediaType,
-      mobile,
-      countryCode,
-      email,
-      imgURL,
-    } = req.body;
+    let client = req.body;
 
-    let user = mobile ? await ClientModule.getByMobile(mobile) : null;
+    let user = client.mobile
+      ? await ClientModule.getByMobile(client.mobile)
+      : null;
     if (user) {
       let errMsg =
         req.headers.lang == "en"
@@ -139,7 +133,7 @@ const ClientControllers = {
           : "رقم مستخدم من حساب أخر";
       return next(boom.notFound(errMsg));
     }
-    user = email ? await ClientModule.getByEmail(email) : null;
+    user = client.email ? await ClientModule.getByEmail(client.email) : null;
     if (user) {
       let errMsg =
         req.headers.lang == "en"
@@ -147,18 +141,10 @@ const ClientControllers = {
           : "البريد الالكتروني مستخدم من حساب أخر";
       return next(boom.notFound(errMsg));
     }
-    let { doc, err } = await ClientModule.addViaSocialMedia({
-      name,
-      socialMediaId,
-      socialMediaType,
-      mobile,
-      countryCode,
-      email,
-      imgURL,
-    });
+    let { doc, err } = await ClientModule.addViaSocialMedia(client);
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
-    let client = new Client(doc.toObject());
+    client = new Client(doc.toObject());
     res.status(201).send({
       isSuccessed: true,
       data: client,

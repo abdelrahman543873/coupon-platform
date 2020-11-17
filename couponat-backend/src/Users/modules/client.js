@@ -55,26 +55,10 @@ const ClientModule = {
       });
   },
 
-  async addViaSocialMedia({
-    name,
-    socialMediaId,
-    socialMediaType,
-    mobile,
-    countryCode,
-    email,
-    imgURL,
-  }) {
-    return await new ClientModel({
-      name,
-      socialMediaId,
-      socialMediaType,
-      mobile,
-      countryCode,
-      email,
-      isSocialMediaVerified: true,
-      imgURL,
-      isVerified: true,
-    })
+  async addViaSocialMedia(client) {
+    client.isSocialMediaVerified = true;
+    client.isVerified = true;
+    return await new ClientModel({ ...client })
       .save()
       .then((doc) => {
         return {
