@@ -177,7 +177,7 @@ const ClientControllers = {
           : "احداثيات المرور غير صحيحه",
       authToken = "";
 
-    if (!user) {
+    if (!user || !user.password) {
       return next(boom.notFound(errMsg));
     }
     console.log(password);
