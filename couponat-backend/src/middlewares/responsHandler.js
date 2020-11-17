@@ -71,6 +71,7 @@ class Client {
       this.id = client._id;
       this.name = client.name;
       this.mobile = client.mobile;
+      this.email = client.mobile;
       this.countryCode = client.countryCode;
       this.isVerified = client.isVerified;
       this.fcmToken = client.fcmToken;
