@@ -61,8 +61,8 @@ let NotificationModule = {
     let saveNotificaion = await NotificationModel({
       user: "ALL",
       title: {
-        arabic: `new Coupon🥳🥳`,
-        english: `كوبون خصم جديد 🥳🥳`,
+        english: `new Coupon🥳🥳`,
+        arabic: `كوبون خصم جديد 🥳🥳`,
       },
       body: {
         english: `${providerName} add new Coupon , View it `,
