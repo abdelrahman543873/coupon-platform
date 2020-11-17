@@ -58,6 +58,7 @@ const ClientModule = {
   async addViaSocialMedia(client) {
     client.isSocialMediaVerified = true;
     client.isVerified = true;
+    console.log(client);
     return await new ClientModel({ ...client })
       .save()
       .then((doc) => {
