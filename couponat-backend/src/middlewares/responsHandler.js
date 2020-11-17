@@ -74,7 +74,11 @@ class Client {
       this.countryCode = client.countryCode;
       this.isVerified = client.isVerified;
       this.fcmToken = client.fcmToken;
-      this.imgURL = client.imgURL ? IP + client.imgURL : "";
+      this.imgURL = client.imgURL
+        ? client.isSocialMediaVerified
+          ? client.imgURL
+          : IP + client.imgURL
+        : "";
     }
   }
 }
