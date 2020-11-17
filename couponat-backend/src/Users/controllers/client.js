@@ -149,20 +149,9 @@ const ClientControllers = {
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
     let client = new Client(doc.toObject());
-    let smsToken = getSMSToken(5);
-    let addVerification = await VerificationsModule.add(smsToken, client.id);
-    if (addVerification.err)
-      return next(
-        boom.badData(
-          getErrorMessage(addVerification.err, req.headers.lang || "ar")
-        )
-      );
     res.status(201).send({
       isSuccessed: true,
-      data: {
-        user: client,
-        smsToken,
-      },
+      data: client,
       error: null,
     });
   },
