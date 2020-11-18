@@ -30,9 +30,7 @@ server.all("*", (req, res, next) => {
   res.status(404).send("not found!!");
 });
 
-appRouter.get("/api/v1/PrivacyPolicy", (req, res, next) => {
-  res.sendFile(path.join(__dirname + "/../assets/public/index.html"));
-});
+
 
 // Error handler middleware.
 server.use(errorHandling);
