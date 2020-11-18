@@ -411,7 +411,7 @@ const ClientControllers = {
       id = auth.id;
     let { currentPassword, newPassword } = req.body;
     let user = await ClientModule.getById(id);
-    if (!user) {
+    if (!user || !user.password) {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
