@@ -75,6 +75,7 @@ class Client {
       this.countryCode = client.countryCode;
       this.isVerified = client.isVerified;
       this.fcmToken = client.fcmToken;
+      this.isSocialMediaVerified = client.isSocialMediaVerified;
       this.imgURL = client.imgURL
         ? client.isSocialMediaVerified
           ? client.imgURL
