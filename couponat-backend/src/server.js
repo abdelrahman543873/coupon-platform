@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 require("express-async-errors"); // wrap async errors within the app.
 import cors from "cors";
 import { errorHandling } from "./middlewares/errorHandler";
@@ -11,6 +11,8 @@ let server = express(),
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   };
 
+const appRouter = Router();
+
 server.use(cors(corsOptions));
 
 // for application/x-www-form-urlencoded requests
@@ -21,15 +23,18 @@ server.use(express.json());
 
 server.use("/api/v1", router);
 
-server.use("/api/v1/chat/chat-images", express.static("Chat-Images"));
+server.use("/api/v1/PrivacyPolicy", express.static("assets/puplic"));
 
 // route not found fallback
 server.all("*", (req, res, next) => {
   res.status(404).send("not found!!");
 });
 
+appRouter.get("/api/v1/PrivacyPolicy", (req, res, next) => {
+  res.sendFile(path.join(__dirname + "/../assets/public/index.html"));
+});
+
 // Error handler middleware.
 server.use(errorHandling);
-
 
 export { server };
