@@ -124,13 +124,16 @@ const ProviderModule = {
       provider: id,
     });
 
+    totalCoupons = totalCoupons.length > 0 ? totalCoupons[0].totalCoupons : 0;
+    residualCoupons =
+      residualCoupons > 0 ? residualCoupons[0].residualCoupons : 0;
     console.log(totalCoupons);
     console.log(totalSubscriptions);
     console.log(residualCoupons);
     return {
-      totalCoupons: totalCoupons[0].totalCoupons,
+      totalCoupons: totalCoupons,
       totalSubscriptions,
-      residualCoupons: residualCoupons[0].residualCoupons,
+      residualCoupons: residualCoupons,
     };
   },
 
