@@ -5,7 +5,6 @@ let providerSchema = mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
 
     email: {
@@ -55,7 +54,6 @@ let providerSchema = mongoose.Schema(
     officeTele: {
       type: String,
       required: true,
-      unique: true,
     },
 
     websiteLink: String,
