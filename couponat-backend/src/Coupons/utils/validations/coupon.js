@@ -29,7 +29,11 @@ const CouponValidations = {
     description: updatelangNameSchema,
     servicePrice: Joi.number().optional().positive().error(errorsOverride),
     offerPrice: Joi.number().optional().positive().error(errorsOverride),
-    totalCount: Joi.number().optional().positive().error(errorsOverride),
+    totalCount: Joi.number()
+      .optional()
+      .positive()
+      .allow(0)
+      .error(errorsOverride),
     category: Joi.custom(checkMongooseId, "custom validation")
       .optional()
       .error(errorsOverride),
