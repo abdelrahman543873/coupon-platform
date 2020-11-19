@@ -262,7 +262,7 @@ const ProviderControllers = {
   },
 
   async emailVerification(req, res, next) {
-    let email = req.bady.email;
+    let email = req.body.email;
     let isFound = await ProviderModule.emailVerification(email);
     return res.status(200).send({
       isSuccessed: true,
