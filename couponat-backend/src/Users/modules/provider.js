@@ -133,6 +133,12 @@ const ProviderModule = {
       residualCoupons: residualCoupons[0].residualCoupons,
     };
   },
+
+  async emailVerification(email) {
+    let provider = await this.getByEmail(email);
+    if (provider) return false;
+    else return true;
+  },
 };
 
 export { ProviderModule };

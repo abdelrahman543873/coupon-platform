@@ -8,6 +8,7 @@ import { CityModule } from "../../Cities/modules/city";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { ContactModel } from "../models/contactUs";
+import { ProviderModel } from "../models/provider";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     console.log("controller");
@@ -256,6 +257,16 @@ const ProviderControllers = {
     return res.status(200).send({
       isSuccessed: true,
       data: provider,
+      error: null,
+    });
+  },
+
+  async emailVerification(req, res, next) {
+    let email = req.bady.email;
+    let isFound = await ProviderModule.emailVerification(email);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: isFound,
       error: null,
     });
   },

@@ -79,6 +79,10 @@ providersRouter
     ProviderControllers.contactUs
   );
 
+providersRouter
+  .route("/emailVerification")
+  .post(ProviderControllers.emailVerification);
+
 // providersRouter.use("/providers-images", express.static("Providers-Images"));
 
 // providersRouter
