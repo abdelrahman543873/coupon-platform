@@ -13,6 +13,7 @@ import { ClientModule } from "../../Users/modules/client";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { ProviderModule } from "../../Users/modules/provider";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
+import { SubscripionModel } from "../../Purchasing/models/subscription";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -228,6 +229,15 @@ const CouponController = {
     if (!doc) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    let subscriptions = await SubscripionModel.find({ coupon: id });
+    if (subscriptions.length > 0) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Can't delete coupon"
+          : "لا يمكن مسح هذا الكوبون";
       return next(boom.notFound(errMsg));
     }
 
