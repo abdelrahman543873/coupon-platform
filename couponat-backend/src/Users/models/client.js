@@ -37,7 +37,7 @@ let clientSchema = mongoose.Schema(
     },
     socialMediaType: {
       type: String,
-      enum: ["GOOGLE", "FACEBOOK", "TWITTER"],
+      enum: ["GOOGLE", "FACEBOOK", "TWITTER","APPLE"],
     },
     favCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupon" }],
     fcmToken: String,

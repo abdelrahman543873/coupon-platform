@@ -17,7 +17,7 @@ const ClientValidations = {
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
     socialMediaId: Joi.string().required().error(errorsOverride),
     socialMediaType: Joi.string()
-      .valid("GOOGLE", "FACEBOOK", "TWITTER")
+      .valid("GOOGLE", "FACEBOOK", "TWITTER","APPLE")
       .required()
       .error(errorsOverride),
     mobile: Joi.string().min(8).optional().error(errorsOverride),
