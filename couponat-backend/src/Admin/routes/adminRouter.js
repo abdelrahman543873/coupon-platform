@@ -3,6 +3,7 @@ import { CategoryController } from "../../Category/controllers";
 import { CategoryalidationWares } from "../../Category/middlewares/validation";
 import { CityController } from "../../Cities/controllers/city";
 import { cityValidationware } from "../../Cities/middlewares/validations/city";
+import { CouponController } from "../../Coupons/controllers";
 import { CouponValidationWares } from "../../Coupons/middlewares/validation/coupon";
 import { BankAccountController } from "../../Purchasing/controllers/bank";
 import { PaymentTypeController } from "../../Purchasing/controllers/paymentType";
@@ -144,6 +145,10 @@ adminRouter
     adminValidationwar.editCriditCard,
     AdminsController.updateCriditAcount
   );
+
+adminRouter
+  .route("/coupons")
+  .get(AdminAuth,CouponController.getAll);
 
 // adminRouter
 //   .route("/questions/new")
