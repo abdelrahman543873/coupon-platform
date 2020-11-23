@@ -47,6 +47,8 @@ const ProviderValidationWares = {
   },
 
   updateProvider(req, res, next) {
+    console.log("midille");
+    console.log(JSON.stringify(req.body));
     console.log(req.body);
     const { error } = ProviderValidations.updateProvider.validate(req.body);
 
