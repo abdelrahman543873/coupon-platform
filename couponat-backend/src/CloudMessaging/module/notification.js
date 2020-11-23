@@ -20,7 +20,7 @@ let NotificationModule = {
         tokenArray.push(admins[i].fcmToken);
     }
     for (let i = 0; i < others.length; i++) {
-      tokenArray.push(others[i].fcmToken);
+      if (others[i].fcmToken != "") tokenArray.push(others[i].fcmToken);
     }
     tokenArray = Array.from(new Set(tokenArray));
     console.log("tokenArr: ", tokenArray);
