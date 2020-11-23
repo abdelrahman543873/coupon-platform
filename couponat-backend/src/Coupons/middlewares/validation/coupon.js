@@ -21,6 +21,9 @@ const CouponValidationWares = {
     delete req.body.descEn;
     req.body.name = name;
 
+    console.log(req.body);
+    console.log(typeof req.body.offerPrice);
+    console.log(typeof req.body.servicePrice);
     if (req.body.servicePrice <= req.body.offerPrice) {
       let errMsg =
         lang == "en"
