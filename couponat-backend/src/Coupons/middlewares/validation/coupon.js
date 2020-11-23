@@ -20,6 +20,14 @@ const CouponValidationWares = {
     delete req.body.descAr;
     delete req.body.descEn;
     req.body.name = name;
+
+    if (req.body.servicePrice <= req.body.offerPrice) {
+      let errMsg =
+        lang == "en"
+          ? "offer price must be less than service price"
+          : "السعر بعد الخصم يجب ان يكون اقل من السعر بقبل الخصم";
+      return next(boom.notFound(errMsg));
+    }
     req.body.description = description;
     let lang = req.headers.lang || "ar",
       errMsg =
