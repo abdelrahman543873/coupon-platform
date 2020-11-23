@@ -47,7 +47,7 @@ const ProviderModule = {
     )
       .then((doc) => {
         return {
-          doc: doc,
+          doc,
           err: null,
         };
       })
