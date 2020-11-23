@@ -14,7 +14,7 @@ const ProviderValidationWares = {
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
     }
-    for (let i = 0; h < req.body.lat.length; i++) {
+    for (let i = 0; i < req.body.lat.length; i++) {
       location.push({
         lat: req.body.lat[i],
         long: req.body.long[i],
