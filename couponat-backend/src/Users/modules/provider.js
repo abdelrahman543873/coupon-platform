@@ -39,7 +39,7 @@ const ProviderModule = {
 
   async updateProvider(id, providerData) {
     if (!checkAllMongooseId(id)) return null;
-
+    console.log(providerData);
     return await ProviderModel.findByIdAndUpdate(
       id,
       { $set: { ...providerData } },

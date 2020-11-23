@@ -107,7 +107,7 @@ const ProviderValidationWares = {
     if (error) {
       return next(boom.badData(error.details[0].message));
     }
-    console.log(req.body)
+    console.log(req.body);
     next();
   },
 
