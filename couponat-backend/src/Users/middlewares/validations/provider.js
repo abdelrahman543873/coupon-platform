@@ -5,7 +5,7 @@ const ProviderValidationWares = {
   add(req, res, next) {
     console.log("midille");
     console.log(JSON.stringify(req.body));
-    req.body.location = JSON.parse(req.parse.location);
+    req.body.location = JSON.parse(req.body.location);
     if (!req.body.location) {
       let lang = req.headers.lang || "ar",
         errMsg =
