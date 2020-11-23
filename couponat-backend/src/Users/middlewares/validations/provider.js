@@ -10,7 +10,7 @@ const ProviderValidationWares = {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en"
-            ? "Evry City Must have specific location!"
+            ? "Every City Must have specific location!"
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
     }
@@ -23,14 +23,6 @@ const ProviderValidationWares = {
     req.body.location = location;
     delete req.body.lat;
     delete req.body.long;
-    // if (!req.body.location) {
-    //   let lang = req.headers.lang || "ar",
-    //     errMsg =
-    //       lang == "en"
-    //         ? "Evry City Must have specific location!"
-    //         : "يجب اختيار موقع لكل مدينه";
-    //   return next(boom.badData(errMsg));
-    // }
     if (req.body.cities.length != req.body.location.length) {
       let lang = req.headers.lang || "ar",
         errMsg =
@@ -85,21 +77,13 @@ const ProviderValidationWares = {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en"
-            ? "Evry City Must have specific location!"
+            ? "Every City Must have specific location!"
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
     }
 
-    if(req.body.cities){
+    if (req.body.cities) {
       let location = [];
-      if (req.body.lat.length != req.body.long.length) {
-        let lang = req.headers.lang || "ar",
-          errMsg =
-            lang == "en"
-              ? "Evry City Must have specific location!"
-              : "يجب اختيار موقع لكل مدينه";
-        return next(boom.badData(errMsg));
-      }
       for (let i = 0; i < req.body.lat.length; i++) {
         location.push({
           lat: req.body.lat[i],
