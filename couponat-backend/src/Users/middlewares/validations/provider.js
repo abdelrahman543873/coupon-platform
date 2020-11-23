@@ -79,7 +79,8 @@ const ProviderValidationWares = {
 
     if (
       req.body.cities &&
-      (!req.body.location || req.body.cities.length != req.body.location.length)
+      ((!req.body.lat && !req.body.long) ||
+        (req.body.cities.length != req.body.lat.length) != req.body.long)
     ) {
       let lang = req.headers.lang || "ar",
         errMsg =
@@ -87,6 +88,27 @@ const ProviderValidationWares = {
             ? "Evry City Must have specific location!"
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
+    }
+
+    if(req.body.cities){
+      let location = [];
+      if (req.body.lat.length != req.body.long.length) {
+        let lang = req.headers.lang || "ar",
+          errMsg =
+            lang == "en"
+              ? "Evry City Must have specific location!"
+              : "يجب اختيار موقع لكل مدينه";
+        return next(boom.badData(errMsg));
+      }
+      for (let i = 0; i < req.body.lat.length; i++) {
+        location.push({
+          lat: req.body.lat[i],
+          long: req.body.long[i],
+        });
+      }
+      req.body.location = location;
+      delete req.body.lat;
+      delete req.body.long;
     }
 
     const { error } = ProviderValidations.updateProvider.validate(req.body);
