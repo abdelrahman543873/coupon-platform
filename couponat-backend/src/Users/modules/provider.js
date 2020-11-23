@@ -46,6 +46,7 @@ const ProviderModule = {
       { new: true }
     )
       .then((doc) => {
+        console.log(doc);
         return {
           doc,
           err: null,
