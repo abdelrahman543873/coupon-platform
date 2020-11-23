@@ -54,7 +54,7 @@ const ProviderModule = {
       .catch((err) => {
         return {
           doc: null,
-          err: err,
+          err,
         };
       });
   },
