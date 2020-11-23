@@ -23,6 +23,7 @@ let NotificationModule = {
       tokenArray.push(others[i].fcmToken);
     }
     tokenArray = Array.from(new Set(tokenArray));
+    console.log("tokenArr: ", tokenArray);
     if (tokenArray.length <= 0) return;
     let message = {
       notification: {
@@ -55,6 +56,7 @@ let NotificationModule = {
     for (let i = 0; i < tokenArray.length; i += 500) {
       let tokens = tokenArray.slice(i, i + 499);
       let newMessage = Object.assign({}, message);
+      console.log("tokens: ", tokens);
       newMessage.tokens = tokens;
       sendToMultiple(newMessage);
     }
