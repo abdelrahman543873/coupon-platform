@@ -133,7 +133,7 @@ const ProviderModule = {
       },
       {
         $project: {
-          totalSubscriptions: "$residualCoupons",
+          totalSubscriptions: "$totalSubscriptions",
         },
       },
     ]);
