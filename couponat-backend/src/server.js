@@ -24,12 +24,13 @@ server.use(express.json());
 server.use("/share", (req, res, next) => {
   let agent = req.headers["user-agent"];
   console.log(agent);
-  if (agent.includes("iPhone"))
+  if (agent.includes("iPhone") || agent.includes("Safari"))
     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
   else if (agent.includes("Android"))
     res.redirect(
       "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
     );
+  else next();
 });
 
 server.use("/api/v1", router);
