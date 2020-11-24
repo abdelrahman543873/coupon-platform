@@ -23,14 +23,22 @@ server.use(express.json());
 
 server.use("/api/v1", router);
 
+appRouter.route("/").get((req, res, next) => {
+  let agent = req.headers.user - agent;
+  if (agent.includes("iPhone"))
+    res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
+  else if (agent.includes("Android"))
+    res.redirect(
+      "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
+    );
+});
+
 server.use("/api/v1/PrivacyPolicy", express.static("assets/puplic"));
 
 // route not found fallback
 server.all("*", (req, res, next) => {
   res.status(404).send("not found!!");
 });
-
-
 
 // Error handler middleware.
 server.use(errorHandling);
