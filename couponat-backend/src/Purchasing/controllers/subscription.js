@@ -12,6 +12,7 @@ import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
+import { SubscripionModel } from "../models/subscription";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -378,6 +379,25 @@ let subscriptionContoller = {
     return res.status(200).send({
       isSuccessed: true,
       data: subscribe,
+      error: null,
+    });
+  },
+
+  async getById(req, res, next) {
+    let id = req.params.id;
+    let subscription = await subscriptionModule.getById(id);
+
+    if (!subscription) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
+      return next(boom.notFound(errMsg));
+    }
+
+    subscription = new Subscription(subscription);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: subscription,
       error: null,
     });
   },

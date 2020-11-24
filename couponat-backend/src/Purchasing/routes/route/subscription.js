@@ -19,4 +19,7 @@ subscriptionRouter
   .route("/")
   .get(checkUserAuth, subscriptionContoller.getAllSubscriptions);
 
+subscriptionRouter
+  .route("/:id")
+  .get(checkUserAuth, subscriptionContoller.getById);
 export { subscriptionRouter };
