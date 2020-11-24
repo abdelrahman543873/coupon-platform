@@ -24,7 +24,7 @@ server.use(express.json());
 server.use("/api/v1", router);
 
 appRouter.use("/", (req, res, next) => {
-  let agent = req.headers.user - agent;
+  let agent = req.headers["user-agent"];
   console.log(agent);
   if (agent.includes("iPhone"))
     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
