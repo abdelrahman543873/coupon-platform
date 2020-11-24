@@ -63,6 +63,7 @@ const ClientControllers = {
   },
 
   async home(req, res, next) {
+    console.log(req.headers);
     let auth = await decodeToken(req.headers.authentication),
       id = auth ? auth.id : null;
     let providers = await ProviderModule.getAll();
