@@ -25,6 +25,7 @@ server.use("/api/v1", router);
 
 appRouter.route("/").get((req, res, next) => {
   let agent = req.headers.user - agent;
+  console.log(agent);
   if (agent.includes("iPhone"))
     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
   else if (agent.includes("Android"))
