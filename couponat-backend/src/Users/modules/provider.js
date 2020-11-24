@@ -125,9 +125,9 @@ const ProviderModule = {
       provider: id,
     });
 
-    // totalCoupons = totalCoupons.length > 0 ? totalCoupons[0].totalCoupons : 0;
-    // residualCoupons =
-    //   residualCoupons > 0 ? residualCoupons[0].residualCoupons : 0;
+    totalCoupons = totalCoupons.length > 0 ? totalCoupons[0].totalCoupons : 0;
+    residualCoupons =
+      residualCoupons.length > 0 ? residualCoupons[0].residualCoupons : 0;
     console.log(totalCoupons);
     console.log(totalSubscriptions);
     console.log(residualCoupons);
