@@ -149,7 +149,7 @@ const ProviderModule = {
     console.log(residualCoupons);
     return {
       totalCoupons: totalCoupons,
-      totalSubscriptions,
+      totalSubscriptions: totalSubscriptions,
       residualCoupons: residualCoupons,
     };
   },
