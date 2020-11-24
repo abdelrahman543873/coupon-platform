@@ -23,7 +23,7 @@ server.use(express.json());
 
 server.use("/api/v1", router);
 
-appRouter.route("/").get((req, res, next) => {
+appRouter.use("/", (req, res, next) => {
   let agent = req.headers.user - agent;
   console.log(agent);
   if (agent.includes("iPhone"))
