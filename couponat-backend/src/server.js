@@ -21,9 +21,7 @@ server.use(express.urlencoded({ extended: true }));
 // for application/json requests
 server.use(express.json());
 
-server.use("/api/v1", router);
-
-appRouter.use("/", (req, res, next) => {
+server.use("/share", (req, res, next) => {
   let agent = req.headers["user-agent"];
   console.log(agent);
   if (agent.includes("iPhone"))
@@ -33,6 +31,8 @@ appRouter.use("/", (req, res, next) => {
       "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
     );
 });
+
+server.use("/api/v1", router);
 
 server.use("/api/v1/PrivacyPolicy", express.static("assets/puplic"));
 
