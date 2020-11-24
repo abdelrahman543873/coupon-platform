@@ -121,13 +121,29 @@ const ProviderModule = {
       },
     ]);
 
-    let totalSubscriptions = await SubscripionModel.countDocuments({
-      provider: id,
-    });
-
+    let totalSubscriptions = await CouponModel.aggregate([
+      {
+        $match: { provider: id },
+      },
+      {
+        $group: {
+          _id: null,
+          totalSubscriptions: { $sum: "$subCount" },
+        },
+      },
+      {
+        $project: {
+          totalSubscriptions: "$residualCoupons",
+        },
+      },
+    ]);
     totalCoupons = totalCoupons.length > 0 ? totalCoupons[0].totalCoupons : 0;
     residualCoupons =
       residualCoupons.length > 0 ? residualCoupons[0].residualCoupons : 0;
+    totalSubscriptions =
+      totalSubscriptions.length > 0
+        ? totalSubscriptions[0].totalSubscriptions
+        : 0;
     console.log(totalCoupons);
     console.log(totalSubscriptions);
     console.log(residualCoupons);
