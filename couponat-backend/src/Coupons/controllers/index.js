@@ -69,7 +69,7 @@ const CouponController = {
           .then((tpl) => {
             return tpl.write("Coupons-Images/" + req.file.filename);
           });
-      })
+      });
       // .catch(err=>{
 
       // });
