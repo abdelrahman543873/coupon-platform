@@ -90,6 +90,7 @@ const ProviderValidations = {
     facebookLink: Joi.string().min(3).optional().error(errorsOverride),
 
     instaLink: Joi.string().min(3).optional().error(errorsOverride),
+    twittwerLink: Joi.string().min(3).optional().error(errorsOverride),
   }),
 
   changePassword: Joi.object({

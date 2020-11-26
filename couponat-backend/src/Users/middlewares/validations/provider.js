@@ -69,10 +69,11 @@ const ProviderValidationWares = {
     console.log(JSON.stringify(req.body));
     console.log(req.body);
 
-    if (req.body.cities && (!req.body.lat || !req.body.long)||(
+    if (
+      (req.body.cities && (!req.body.lat || !req.body.long)) ||
       req.body.lat.length != req.body.long.length ||
       req.body.lat.length != req.body.cities.length
-    )) {
+    ) {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en"
@@ -80,16 +81,18 @@ const ProviderValidationWares = {
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
     }
-    // if (
-    //   req.body.lat.length != req.body.long.length ||
-    //   req.body.lat.length != req.body.cities.length
-    // ) {
-    //   let lang = req.headers.lang || "ar",
-    //     errMsg =
-    //       lang == "en"
-    //         ? "Every City Must have specific location!"
-    //         : "يجب اختيار موقع لكل مدينه";
-    //   return next(boom.badData(errMsg));
+    // if (r) {
+    //   if (
+    //     req.body.lat.length != req.body.long.length ||
+    //     req.body.lat.length != req.body.cities.length
+    //   ) {
+    //     let lang = req.headers.lang || "ar",
+    //       errMsg =
+    //         lang == "en"
+    //           ? "Every City Must have specific location!"
+    //           : "يجب اختيار موقع لكل مدينه";
+    //     return next(boom.badData(errMsg));
+    //   }
     // }
 
     if (req.body.cities) {
