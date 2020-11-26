@@ -31,10 +31,13 @@ const ProviderModule = {
     return await ProviderModel.findOne({ email });
   },
 
-  async getAll(isAdmin) {
+  async getAll(isAdmin, limit = null, skip = null) {
     let queryOp = {};
     !isAdmin ? (queryOp.isActive = true) : "";
-    return ProviderModel.find({ ...queryOp }).sort("-createdAt");
+    return ProviderModel.find({ ...queryOp })
+      .limit(limit)
+      .skip(skip)
+      .sort("-createdAt");
   },
 
   async updateProvider(id, providerData) {

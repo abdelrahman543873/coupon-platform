@@ -172,7 +172,9 @@ const AdminsController = {
   },
 
   async getProviders(req, res, next) {
-    let providers = await ProviderModule.getAll("true");
+    let limit = parseInt(req.query.limit) || null;
+    let skip = parseInt(req.query.skip) || null;
+    let providers = await ProviderModule.getAll("true",limit,skip);
     providers = providers.map((provider) => {
       return new Provider(provider);
     });
