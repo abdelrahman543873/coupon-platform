@@ -31,7 +31,7 @@ const CouponModule = {
     if (!checkAllMongooseId(provider)) return null;
 
     let queryOp = {},
-      sort = "";
+      sort = "-createdAt";
 
     queryOp.isActive = true;
     queryOp.totalCount = {

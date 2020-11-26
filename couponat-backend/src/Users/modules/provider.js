@@ -35,9 +35,9 @@ const ProviderModule = {
     let queryOp = {};
     !isAdmin ? (queryOp.isActive = true) : "";
     return ProviderModel.find({ ...queryOp })
+      .sort("-createdAt")
       .limit(limit)
-      .skip(skip)
-      .sort("-createdAt");
+      .skip(skip);
   },
 
   async updateProvider(id, providerData) {
