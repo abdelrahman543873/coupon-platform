@@ -17,6 +17,7 @@ class Provider {
       this.websiteLink = provider.websiteLink || "";
       this.facebookLink = provider.facebookLink || "";
       this.instaLink = provider.instaLink || "";
+      this.twittwerLink = provider.twittwerLink || "";
       this.fcmToken = provider.fcmToken;
       this.isActive = provider.isActive;
     }
