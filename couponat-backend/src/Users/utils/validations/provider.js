@@ -81,7 +81,10 @@ const ProviderValidations = {
         .error(errorsOverride)
     ),
 
-    location: Joi.array().items(locationSchemaUpdate).optional().error(errorsOverride),
+    location: Joi.array()
+      .items(locationSchemaUpdate)
+      .optional()
+      .error(errorsOverride),
 
     officeTele: Joi.string().min(3).optional().error(errorsOverride),
 
