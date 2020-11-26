@@ -11,8 +11,8 @@ const locationSchema = Joi.object()
   .error(errorsOverride);
 
 const locationSchemaUpdate = Joi.object().keys({
-  lat: Joi.string().optional().error(errorsOverride),
-  long: Joi.string().optional().error(errorsOverride),
+  lat: Joi.string().required().error(errorsOverride),
+  long: Joi.string().required().error(errorsOverride),
 });
 const ProviderValidations = {
   add: Joi.object({
@@ -40,17 +40,21 @@ const ProviderValidations = {
 
     officeTele: Joi.string().min(3).required().error(errorsOverride),
 
-    lat: Joi.string().min(3).optional().error(errorsOverride),
+    websiteLink: Joi.string().allow("").min(3).optional().error(errorsOverride),
 
-    lng: Joi.string().min(3).optional().error(errorsOverride),
+    facebookLink: Joi.string()
+      .allow("")
+      .min(3)
+      .optional()
+      .error(errorsOverride),
 
-    websiteLink: Joi.string().min(3).optional().error(errorsOverride),
+    instaLink: Joi.string().min(3).allow("").optional().error(errorsOverride),
 
-    facebookLink: Joi.string().min(3).optional().error(errorsOverride),
-
-    instaLink: Joi.string().min(3).optional().error(errorsOverride),
-
-    twittwerLink: Joi.string().min(3).optional().error(errorsOverride),
+    twittwerLink: Joi.string()
+      .min(3)
+      .allow("")
+      .optional()
+      .error(errorsOverride),
   }),
 
   login: Joi.object({
@@ -77,7 +81,7 @@ const ProviderValidations = {
         .error(errorsOverride)
     ),
 
-    location: Joi.array().items(locationSchemaUpdate),
+    location: Joi.array().items(locationSchemaUpdate).optional().error(errorsOverride),
 
     officeTele: Joi.string().min(3).optional().error(errorsOverride),
 
@@ -85,12 +89,20 @@ const ProviderValidations = {
 
     lng: Joi.string().min(3).optional().error(errorsOverride),
 
-    websiteLink: Joi.string().min(3).optional().error(errorsOverride),
+    websiteLink: Joi.string().min(3).optional().allow("").error(errorsOverride),
 
-    facebookLink: Joi.string().min(3).optional().error(errorsOverride),
+    facebookLink: Joi.string()
+      .min(3)
+      .optional()
+      .allow("")
+      .error(errorsOverride),
 
-    instaLink: Joi.string().min(3).optional().error(errorsOverride),
-    twittwerLink: Joi.string().min(3).optional().error(errorsOverride),
+    instaLink: Joi.string().min(3).optional().allow("").error(errorsOverride),
+    twittwerLink: Joi.string()
+      .min(3)
+      .optional()
+      .allow("")
+      .error(errorsOverride),
   }),
 
   changePassword: Joi.object({
