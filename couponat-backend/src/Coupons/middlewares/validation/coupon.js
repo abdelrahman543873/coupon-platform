@@ -24,11 +24,11 @@ const CouponValidationWares = {
     console.log(req.body);
     console.log(typeof req.body.offerPrice);
     console.log(typeof req.body.servicePrice);
-    if (req.body.servicePrice <= req.body.offerPrice) {
+    if (parseInt(req.body.servicePrice) <= parseInt(req.body.offerPrice)) {
       let errMsg =
         lang == "en"
           ? "offer price must be less than service price"
-          : "السعر بعد الخصم يجب ان يكون اقل من السعر بقبل الخصم";
+          : "السعر بعد الخصم يجب ان يكون اقل من السعر قبل الخصم";
       return next(boom.notFound(errMsg));
     }
     req.body.description = description;

@@ -24,7 +24,7 @@ const CategoryModule = {
     console.log("here", checkAllMongooseId(id));
     return await CategoryModel.findById(id);
   },
-  async getAll() {
+  async getAll(type = "") {
     let categories = await CategoryModel.find().sort("-createdAt");
     let all = {
       name: {
@@ -36,8 +36,10 @@ const CategoryModule = {
         unSelected: "/categories-management/categories-images/unselected.png",
       },
     };
-    let newCategories = [all].concat(categories);
-    return newCategories;
+
+    //let newCategories = [];
+    if (type == "CLIENT") return [all].concat(categories);
+    return categories;
   },
 
   async update(id, newData) {

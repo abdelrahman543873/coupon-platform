@@ -67,7 +67,7 @@ const ClientControllers = {
     let auth = await decodeToken(req.headers.authentication),
       id = auth ? auth.id : null;
     let providers = await ProviderModule.getAll();
-    let categories = await CategoryModule.getAll();
+    let categories = await CategoryModule.getAll("CLIENT");
     let newest = await CouponModule.getAll(0, 20, null, null, "newest");
     if (newest.err) {
       return next(boom.unauthorized(coupons.err));
