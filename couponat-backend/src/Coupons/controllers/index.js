@@ -121,6 +121,7 @@ const CouponController = {
       coupons[i].isSubscribe = sub ? true : false;
     }
     let dataCounter = await CouponModel.countDocuments({
+      isActive: true,
       totalCount: { $gt: 0 },
       $or: [
         { "name.english": new RegExp(name, "i") },
