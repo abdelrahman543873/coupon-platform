@@ -32,14 +32,14 @@ const AdminModule = {
     return await AdminModel.findByIdAndUpdate(id, { ...newData }, { new: true })
       .then((doc) => {
         return {
-          user: doc,
+          doc,
           err: null,
         };
       })
       .catch((err) => {
         console.log(err);
         return {
-          user: null,
+          doc: null,
           err: err,
         };
       });
