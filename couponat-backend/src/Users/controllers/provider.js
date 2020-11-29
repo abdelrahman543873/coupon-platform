@@ -280,10 +280,13 @@ const ProviderControllers = {
     providers = providers.map((provider) => {
       return new Provider(provider);
     });
-
+    let dataCounter = await ProviderModel.countDocuments({
+      name: new RegExp(name, "i"),
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: providers,
+      dataCounter,
       error: null,
     });
   },

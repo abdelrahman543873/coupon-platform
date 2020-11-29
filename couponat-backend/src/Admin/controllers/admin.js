@@ -24,6 +24,7 @@ import { ContactModel } from "../../Users/models/contactUs";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
+import { ProviderModel } from "../../Users/models/provider";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -176,6 +177,7 @@ const AdminsController = {
   async getProviders(req, res, next) {
     let limit = parseInt(req.query.limit) || null;
     let skip = parseInt(req.query.skip) || null;
+    let dataCounter = await ProviderModel.countDocuments();
     let providers = await ProviderModule.getAll("true", limit, skip);
     providers = providers.map((provider) => {
       return new Provider(provider);
@@ -183,6 +185,7 @@ const AdminsController = {
     return res.status(200).send({
       isSuccessed: true,
       data: providers,
+      dataCounter,
       error: null,
     });
   },

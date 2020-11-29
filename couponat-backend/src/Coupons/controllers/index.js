@@ -14,6 +14,7 @@ import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { ProviderModule } from "../../Users/modules/provider";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { SubscripionModel } from "../../Purchasing/models/subscription";
+import { CouponModel } from "../models/coupon";
 
 const CouponController = {
   async addCoupon(req, res, next) {
@@ -119,9 +120,17 @@ const CouponController = {
         : null;
       coupons[i].isSubscribe = sub ? true : false;
     }
+    let dataCounter = await CouponModel.countDocuments({
+      totalCount: { $gt: 0 },
+      $or: [
+        { "name.english": new RegExp(name, "i") },
+        { "name.arabic": new RegExp(name, "i") },
+      ],
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
+      dataCounter,
       error: null,
     });
   },
@@ -278,7 +287,6 @@ const CouponController = {
       return new Coupon(coupon);
     });
     let user = await ClientModule.getById(id);
-    // console.log(user.favCoupons);
     if (user && user.favCoupons) {
       coupons = await addFavProp(coupons, user.favCoupons);
     } else coupons = await addFavProp(coupons, null);
@@ -288,9 +296,13 @@ const CouponController = {
         : null;
       coupons[i].isSubscribe = sub ? true : false;
     }
+    let dataCounter = await CouponModel.countDocuments({
+      totalCount: { $gt: 0 },
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: coupons,
+      dataCounter,
       error: null,
     });
   },
