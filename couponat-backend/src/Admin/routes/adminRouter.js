@@ -127,7 +127,7 @@ adminRouter
 
 adminRouter
   .route("/mails/:id/deletion")
-  .post(AdminAuth, AdminsController.deleteMail);
+  .delete(AdminAuth, AdminsController.deleteMail);
 
 adminRouter
   .route("/subscriptions/unconfirmed")
