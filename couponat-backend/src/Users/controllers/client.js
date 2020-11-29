@@ -370,10 +370,17 @@ const ClientControllers = {
       userId = auth.id;
     let coupons = await ClientModule.getFavCoupons(userId);
     coupons = coupons.map((coupon) => {
+      if (coupon.totalCount < 1) return;
       coupon = new Coupon(coupon);
       coupon.isFav = true;
       return coupon;
     });
+
+    // for (let i = 0; i < coupons; i++) {
+    //   if (coupons[i].totalCount < 1) {
+    //     coupons.slice(i, 1);
+    //   }
+    // }
     for (let i = 0; i < coupons.length; i++) {
       let sub = await subscriptionModule.getUserSubscripe(
         userId,

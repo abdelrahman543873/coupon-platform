@@ -117,8 +117,8 @@ const ClientModule = {
     if (!checkAllMongooseId(userId)) return null;
 
     let user = await this.getById(userId);
-    if (!user || !user.favCoupons) return [];
-    user = await user.populate("favCoupons").execPopulate();
+    if (!user) return null;
+    //user = await user.populate("favCoupons").execPopulate();
     return user.favCoupons;
   },
 };
