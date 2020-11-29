@@ -126,6 +126,10 @@ adminRouter
   .post(AdminAuth, adminValidationwar.mailReply, AdminsController.mailReply);
 
 adminRouter
+  .route("/mails/:id/deletion")
+  .post(AdminAuth, AdminsController.deleteMail);
+
+adminRouter
   .route("/subscriptions/unconfirmed")
   .get(AdminAuth, subscriptionContoller.getUnconfirmed);
 
@@ -146,9 +150,25 @@ adminRouter
     AdminsController.updateCriditAcount
   );
 
+adminRouter.route("/changeName").post(AdminAuth, AdminsController.changeName);
+
 adminRouter
-  .route("/coupons")
-  .get(AdminAuth,CouponController.getAll);
+  .route("/changePassword")
+  .post(
+    AdminAuth,
+    adminValidationwar.changePassword,
+    AdminsController.changeName
+  );
+
+adminRouter
+  .route("/changeMailReq")
+  .post(AdminAuth, AdminsController.changeMailReq);
+
+adminRouter
+  .route("/changeMail")
+  .post(AdminAuth, adminValidationwar.changeEmail, AdminsController.changeMail);
+
+adminRouter.route("/coupons").get(AdminAuth, CouponController.getAll);
 
 // adminRouter
 //   .route("/questions/new")

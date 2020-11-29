@@ -174,7 +174,7 @@ const AdminsController = {
   async getProviders(req, res, next) {
     let limit = parseInt(req.query.limit) || null;
     let skip = parseInt(req.query.skip) || null;
-    let providers = await ProviderModule.getAll("true",limit,skip);
+    let providers = await ProviderModule.getAll("true", limit, skip);
     providers = providers.map((provider) => {
       return new Provider(provider);
     });
@@ -328,16 +328,6 @@ const AdminsController = {
       return next(boom.unauthorized(errMsg));
     }
 
-    // if (provider.isActive) {
-    //   let subscriptions = await SubscripionModel.find({ provider: id });
-    //   if (subscriptions.length > 0) {
-    //     let errMsg =
-    //       req.headers.lang == "en"
-    //         ? "Cann't disactive this provider!"
-    //         : "لا يمكن تعطيل مزود الخدمة";
-    //     return next(boom.unauthorized(errMsg));
-    //   }
-    // }
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 
@@ -361,36 +351,6 @@ const AdminsController = {
       error: null,
     });
   },
-
-  // async addQustion(req, res, next) {
-  //   let question = req.body;
-  //   let addQuest = await QuestionModule.addQuestion(question);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: addQuest,
-  //     error: null,
-  //   });
-  // },
-
-  // async addPackage(req, res, next) {
-  //   let packages = req.body;
-  //   let addPackage = await AdsPackagesModule.addPackage(packages);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: addPackage,
-  //     error: null,
-  //   });
-  // },
-
-  // async getFamiliarQuestions(req, res, next) {
-  //   let type = req.query.type || null;
-  //   let questions = await QuestionModule.getQuestions(type);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: questions,
-  //     error: null,
-  //   });
-  // },
 
   async getCriditAcount(req, res, next) {
     let cridit = await AppCreditModel.findOne();
@@ -429,46 +389,6 @@ const AdminsController = {
       error: null,
     });
   },
-
-  // async addBanckAccount(req, res, next) {
-  //   let account = req.body;
-  //   let saveAccount = await AdminModule.addBankAccount(account);
-  //   if (saveAccount.err) {
-  //     return res.send({
-  //       isSuccessed: false,
-  //       data: null,
-  //       error: saveAccount.err,
-  //     });
-  //   }
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: saveAccount.bank,
-  //     error: null,
-  //   });
-  // },
-
-  // async toggleBankAccount(req, res, next) {
-  //   let bankId = req.params.id;
-
-  //   let bank = await AppBankModel.findById(bankId);
-  //   bank.isActive = !bank.isActive;
-  //   bank = await bank.save();
-
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: bank,
-  //     error: null,
-  //   });
-  // },
-
-  // async getBanks(req, res, next) {
-  //   let banks = await AdminModule.getBanks(null);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: banks,
-  //     error: null,
-  //   });
-  // },
 
   async passReq(req, res, next) {
     let cardenality = req.body.cardenality;
@@ -608,9 +528,14 @@ const AdminsController = {
   },
 
   async mails(req, res, next) {
+    let skip = req.query.skip || null,
+      limit = req.query.limit || null;
     return res.status(200).send({
       isSuccessed: true,
-      data: await ContactModel.find().sort("-createdAt"),
+      data: await ContactModel.find()
+        .sort("-createdAt")
+        .skip(skip)
+        .limit(limit),
       error: null,
     });
   },
@@ -638,6 +563,152 @@ const AdminsController = {
     return res.status(200).send({
       isSuccessed: true,
       data: "check email to show replay state",
+      error: null,
+    });
+  },
+
+  async deleteMail(req, res, next) {
+    let id = req.params.id;
+    let { doc, err } = await AdminModule.deleteMail(id);
+    if (err) {
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: doc,
+      error: null,
+    });
+  },
+
+  async changeName(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let name = req.body.name;
+    let { doc, err } = await AdminModule.update(id, { name: name });
+    if (err) {
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: doc,
+      error: null,
+    });
+  },
+
+  async changePassword(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let { currentPassword, newPassword } = req.body;
+
+    let user = await AdminModule.getById(id);
+    if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    if (!(await bcryptCheckPass(currentPassword, user.password))) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Wrong Password!" : "كلمة السر غير صحيحة";
+      return next(boom.badData(errMsg));
+    }
+
+    if (currentPassword == newPassword) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Same Password!" : "لا يوجد تغير في كلمة السر";
+      return next(boom.badData(errMsg));
+    }
+
+    user.password = await hashPass(newPassword);
+    user = await user.save();
+    return res.status(200).send({
+      isSuccessed: true,
+      data: user,
+      error: null,
+    });
+  },
+
+  async changeMailReq(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let user = await AdminModule.getById(id);
+    if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    let smsToken = getSMSToken(5);
+    let addVerification = await VerificationsModule.add(smsToken, user._id);
+    if (addVerification.err)
+      return next(
+        boom.badData(
+          getErrorMessage(addVerification.err, req.headers.lang || "ar")
+        )
+      );
+
+    let mailMessage =
+        req.headers.lang == "en"
+          ? "Enter this code to reset password: "
+          : "ادخل هذا الرمز لاعادة تعين كلمة السر: ",
+      msg = "";
+    sendClientMail("Reset Password Code", mailMessage + smsToken, user.email);
+    msg =
+      (req.headers.lang == "en"
+        ? "email sent to you, follow it to change your password."
+        : "تم ارسال التعليمات الى بريدك الالكترونى من فضلك قم بأتباعها") +
+      smsToken;
+    return res.status(200).send({
+      isSuccessed: true,
+      data: msg,
+      error: null,
+    });
+  },
+
+  async changeMail(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication),
+      id = auth.id;
+    let user = await AdminModule.getById(id);
+    if (!user) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en" ? "this account not found" : "هذا الحساب غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    let { email, code } = req.body;
+
+    let verification = await VerificationsModule.get(user._id, code);
+    if (verification.err)
+      return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
+
+    if (!verification.doc) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "No previous record for this token!, add phone number or check the token please"
+          : "لا يوجد بيانات سابقه لهذا الرمز فى التحقيقات";
+      return next(boom.notFound(errMsg));
+    }
+
+    let nowDate = new Date();
+    let diffInMilliSeconds = (nowDate - verification.doc.createdAt) / 1000;
+    let diffInMinuts = Math.floor(diffInMilliSeconds / 60) % 60;
+    if (diffInMinuts > 1) {
+      let deleteCode = await VerificationsModule.delete(user._id);
+      let errMsg =
+        req.headers.lang == "en"
+          ? "This token has exceeded the verification time of 1 minut please resend it"
+          : "رمز التحقيق قد تعدى الوقت المسموح به ( دقيقه واحده ) قم بأعدة ارساله";
+      return next(boom.notFound(errMsg));
+    }
+
+    user.email = email;
+    user = user.save();
+    return res.status(200).send({
+      isSuccessed: true,
+      data: user,
       error: null,
     });
   },

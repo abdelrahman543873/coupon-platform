@@ -33,6 +33,16 @@ const adminValidationSchemas = {
     merchantEmail: Joi.string().email().optional().error(errorsOverride),
     secretKey: Joi.string().optional().error(errorsOverride),
   }),
+
+  changePassword: Joi.object({
+    currentPassword: Joi.string().required().error(errorsOverride),
+    newPassword: Joi.string().min(8).required().error(errorsOverride),
+  }),
+
+  changeEmail: Joi.object({
+    email: Joi.string().email().required().error(errorsOverride),
+    code: Joi.string().length(5).required().error(errorsOverride),
+  }),
 };
 
 export { adminValidationSchemas };
