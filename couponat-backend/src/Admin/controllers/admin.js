@@ -595,7 +595,7 @@ const AdminsController = {
     });
   },
 
-  async changePassword(req, res, next) {
+  async AdminchangePassword(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
     let { currentPassword, newPassword } = req.body;

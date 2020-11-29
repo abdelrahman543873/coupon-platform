@@ -157,7 +157,7 @@ adminRouter
   .post(
     AdminAuth,
     adminValidationwar.changePassword,
-    AdminsController.changeName
+    AdminsController.AdminchangePassword
   );
 
 adminRouter
