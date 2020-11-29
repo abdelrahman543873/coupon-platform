@@ -712,7 +712,7 @@ const AdminsController = {
     }
 
     user.email = email;
-    user = user.save();
+    user = await user.save();
     user = user.toObject();
     delete user.password;
 
