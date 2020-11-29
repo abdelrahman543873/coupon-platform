@@ -71,6 +71,9 @@ const CouponModule = {
         },
       ];
     }
+    queryOp.totalCount = {
+      $gte: 1,
+    };
     return await CouponModel.find({
       ...queryOp,
     })
