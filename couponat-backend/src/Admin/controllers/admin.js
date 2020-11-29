@@ -70,7 +70,7 @@ const AdminsController = {
     }
     type = email == "Boss@gmail.com" ? "BOSS" : "ADMIN";
     let authToken = generateToken(admin._id, type);
-
+    delete admin.password;
     return res.status(200).send({
       isSuccessed: true,
       data: {
@@ -622,6 +622,8 @@ const AdminsController = {
 
     user.password = await hashPass(newPassword);
     user = await user.save();
+    delete user.password;
+
     return res.status(200).send({
       isSuccessed: true,
       data: user,
@@ -706,6 +708,8 @@ const AdminsController = {
 
     user.email = email;
     user = user.save();
+    delete user.password;
+
     return res.status(200).send({
       isSuccessed: true,
       data: user,
