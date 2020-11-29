@@ -375,11 +375,14 @@ const ClientControllers = {
       return coupon;
     });
 
-    for (let i = 0; i < coupons; i++) {
-      if (coupons[i].totalCount < 1) {
-        coupons.splice(i, 1);
-      }
-    }
+    coupons = coupons.filter((coupon) => {
+     return coupon.totalCount!=0;
+    });
+    // for (let i = 0; i < coupons; i++) {
+    //   if (coupons[i].totalCount < 1) {
+    //     coupons.slice(i, 1);
+    //   }
+    // }
     for (let i = 0; i < coupons.length; i++) {
       let sub = await subscriptionModule.getUserSubscripe(
         userId,
