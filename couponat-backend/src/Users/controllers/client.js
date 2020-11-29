@@ -375,8 +375,8 @@ const ClientControllers = {
       return coupon;
     });
 
-    coupons = coupons.filter((coupon) => {
-     return coupon.totalCount!=0;
+    coupons = await coupons.filter((coupon) => {
+      return coupon.totalCount != 0;
     });
     // for (let i = 0; i < coupons; i++) {
     //   if (coupons[i].totalCount < 1) {
