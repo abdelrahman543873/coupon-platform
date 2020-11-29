@@ -170,6 +170,12 @@ adminRouter
 
 adminRouter.route("/coupons").get(AdminAuth, CouponController.getAll);
 
+adminRouter.route("/coupons/search").get(AdminAuth, CouponController.search);
+
+adminRouter
+  .route("/providers/search")
+  .get(AdminAuth, ProviderControllers.search);
+
 // adminRouter
 //   .route("/questions/new")
 //   .post(

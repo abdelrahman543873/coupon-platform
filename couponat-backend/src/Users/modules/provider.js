@@ -40,6 +40,22 @@ const ProviderModule = {
       .skip(skip);
   },
 
+  async search(skip = 1, limit = 1, name = "") {
+    let queryOp = {};
+    if (name !== "") {
+      queryOp.name = new RegExp(name, "i");
+    }
+    return await ProviderModel.find({
+      ...queryOp,
+    })
+      .skip(skip)
+      .limit(limit)
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
+  },
+
   async updateProvider(id, providerData) {
     if (!checkAllMongooseId(id)) return null;
     console.log(providerData);

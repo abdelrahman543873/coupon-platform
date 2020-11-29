@@ -270,6 +270,23 @@ const ProviderControllers = {
       error: null,
     });
   },
+
+  async search(req, res, next) {
+    let name = req.query.name,
+      skip = parseInt(req.query.skip) || 0,
+      limit = parseInt(req.query.limit) || 0;
+
+    let providers = await ProviderModule.search(skip, limit, name);
+    providers = providers.map((provider) => {
+      return new Provider(provider);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: providers,
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };
