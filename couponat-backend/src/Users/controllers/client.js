@@ -377,7 +377,7 @@ const ClientControllers = {
 
     for (let i = 0; i < coupons; i++) {
       if (coupons[i].totalCount < 1) {
-        coupons.slice(i, 1);
+        coupons.splice(i, 1);
       }
     }
     for (let i = 0; i < coupons.length; i++) {
