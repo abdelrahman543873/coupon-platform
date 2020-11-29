@@ -590,6 +590,8 @@ const AdminsController = {
     if (err) {
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
     }
+    doc = doc.toObject();
+    delete doc.password;
     return res.status(200).send({
       isSuccessed: true,
       data: doc,
