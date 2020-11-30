@@ -34,7 +34,15 @@ let subscriptionModule = {
     });
   },
 
-  async getSubscriptions(user, provider, isPaid, isConfirmed, isUsed, note) {
+  async getSubscriptions(
+    user,
+    provider,
+    isPaid,
+    isConfirmed,
+    note,
+    skip = null,
+    limit = null
+  ) {
     if (!checkAllMongooseId(user)) return null;
 
     if (!checkAllMongooseId(provider)) return null;
@@ -42,6 +50,7 @@ let subscriptionModule = {
     let queryOp = {};
     user ? (queryOp.user = user) : "";
     provider ? (queryOp.provider = provider) : "";
+    isPaid ? (queryOp.isPaid = true) : "";
     isConfirmed == false || isConfirmed == true
       ? (queryOp.isConfirmed = isConfirmed)
       : "";
@@ -49,7 +58,10 @@ let subscriptionModule = {
     // isUsed ? (queryOp.isUsed = isUsed) : "";
     // isPaid ? (queryOp.isPaid = isPaid) : "";
 
-    return await SubscripionModel.find({ ...queryOp }).sort("-createdAt");
+    return await SubscripionModel.find({ ...queryOp })
+      .sort("-createdAt")
+      .skip(skip)
+      .limit(limit);
   },
 
   async getById(id) {

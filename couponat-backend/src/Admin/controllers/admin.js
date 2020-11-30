@@ -12,6 +12,7 @@ import {
   Coupon,
   Cridit,
   Provider,
+  Subscription,
 } from "../../middlewares/responsHandler";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
@@ -25,6 +26,7 @@ import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { ProviderModel } from "../../Users/models/provider";
+import { subscriptionModule } from "../../Purchasing/modules/subscription";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -533,8 +535,8 @@ const AdminsController = {
   },
 
   async mails(req, res, next) {
-    let skip = req.query.skip || null,
-      limit = req.query.limit || null;
+    let skip = parseInt(req.query.skip) || null,
+      limit = parseInt(req.query.limit) || null;
     return res.status(200).send({
       isSuccessed: true,
       data: await ContactModel.find()
@@ -722,6 +724,30 @@ const AdminsController = {
     return res.status(200).send({
       isSuccessed: true,
       data: user,
+      error: null,
+    });
+  },
+
+  async getAllSubscriptions(req, res, next) {
+    let skip = parseInt(req.query.skip) || null,
+      limit = parseInt(req.query.limit) || null;
+    let subscriptions = await subscriptionModule.getSubscriptions(
+      null,
+      null,
+      true,
+      true,
+      null,
+      null,
+      skip,
+      limit
+    );
+    subscriptions = subscriptions.map((subscripe) => {
+      return new Subscription(subscripe);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: subscriptions,
       error: null,
     });
   },
