@@ -764,8 +764,11 @@ const AdminsController = {
       limit
     );
     subscriptions = subscriptions.filter((subscripe) => {
-      if (subscripe.paymentType.key == "CASH")
-        return new Subscription(subscripe);
+      if (subscripe.paymentType.key == "CASH") return subscripe;
+    });
+
+    subscriptions = subscriptions.map((subscripe) => {
+      return new Subscription(subscripe);
     });
 
     return res.status(200).send({
