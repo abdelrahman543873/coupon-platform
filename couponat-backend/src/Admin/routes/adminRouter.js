@@ -174,6 +174,10 @@ adminRouter
   .route("/subscriptions")
   .get(AdminAuth, AdminsController.getAllSubscriptions);
 
+adminRouter
+  .route("/cashSubscriptions")
+  .get(AdminAuth, AdminsController.getAllCashSubscriptions);
+
 adminRouter.route("/coupons/search").get(AdminAuth, CouponController.search);
 
 adminRouter

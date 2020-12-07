@@ -737,12 +737,35 @@ const AdminsController = {
       true,
       true,
       null,
-      null,
       skip,
       limit
     );
     subscriptions = subscriptions.map((subscripe) => {
       return new Subscription(subscripe);
+    });
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: subscriptions,
+      error: null,
+    });
+  },
+
+  async getAllCashSubscriptions(req, res, next) {
+    let skip = parseInt(req.query.skip) || null,
+      limit = parseInt(req.query.limit) || null;
+    let subscriptions = await subscriptionModule.getSubscriptions(
+      null,
+      null,
+      true,
+      true,
+      null,
+      skip,
+      limit
+    );
+    subscriptions = subscriptions.map((subscripe) => {
+      if (subscripe.paymentType.key == "CASH")
+        return new Subscription(subscripe);
     });
 
     return res.status(200).send({
