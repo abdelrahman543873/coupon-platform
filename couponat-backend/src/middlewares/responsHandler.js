@@ -126,7 +126,7 @@ class Subscription {
   constructor(subscription, type) {
     if (subscription) {
       this.id = subscription._id;
-      type == "PROVIDER" ? (this.user = new Client(subscription.user)) : "";
+      type != "CLIENT" ? (this.user = new Client(subscription.user)) : "";
       this.paymentType = new Payment(subscription.paymentType);
       this.coupon = new Coupon(subscription.coupon);
       this.code = subscription.code;
