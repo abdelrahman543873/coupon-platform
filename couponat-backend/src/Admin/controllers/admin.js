@@ -740,6 +740,16 @@ const AdminsController = {
       skip,
       limit
     );
+    for (let i = 0; i < subscriptions.length; i++) {
+      subscriptions[i] = subscriptions[i].toObject();
+      subscriptions[i].account
+        ? (subscriptions[i].account =
+            subscriptions[i].paymentType.key == "ONLINE_PAYMENT"
+              ? await AppCreditModel.findById(subscriptions[i].account + "")
+              : await AppBankModel.findById(subscriptions[i].account + ""))
+        : "";
+      console.log("subbb:  ", subscriptions[i].account);
+    }
     subscriptions = subscriptions.map((subscripe) => {
       return new Subscription(subscripe);
     });
