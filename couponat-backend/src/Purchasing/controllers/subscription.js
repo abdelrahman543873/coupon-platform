@@ -394,6 +394,14 @@ let subscriptionContoller = {
           lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
       return next(boom.notFound(errMsg));
     }
+    subscription = subscription.toObject();
+    subscription.account
+      ? (subscription.account =
+          subscription.paymentType.key == "ONLINE_PAYMENT"
+            ? await AppCreditModel.findById(subscription.account + "")
+            : await AppBankModel.findById(subscription.account + ""))
+      : "";
+    console.log("subbb:  ", subscription.account);
 
     subscription = new Subscription(subscription);
     return res.status(200).send({
