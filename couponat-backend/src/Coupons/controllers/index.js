@@ -421,6 +421,10 @@ const CouponController = {
       id = auth ? auth.id : null;
 
     let coupon = await CouponModule.getById(couponId);
+    console.log({
+      couponId,
+      coupon,
+    });
     if (!coupon) {
       let errMsg =
         req.headers.lang == "en" ? "Coupon not found" : "كوبون الخصم غير موجود";
