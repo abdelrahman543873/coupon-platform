@@ -64,7 +64,10 @@ const AdminModule = {
   async getStatistics() {
     let selectionDate = new Date(new Date().setDate(new Date().getDate() - 10));
     let providers = await ProviderModel.countDocuments();
-    let coupons = await CouponModel.countDocuments({ totalCount: { $gt: 0 } });
+    let coupons = await CouponModel.countDocuments({
+      totalCount: { $gt: 0 },
+      isActive: true,
+    });
     let newProviders = await ProviderModel.countDocuments({
       createdAt: { $gte: selectionDate },
     });

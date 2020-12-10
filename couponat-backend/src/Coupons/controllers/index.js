@@ -299,6 +299,7 @@ const CouponController = {
     }
     let dataCounter = await CouponModel.countDocuments({
       totalCount: { $gt: 0 },
+      isActive:true
     });
     return res.status(200).send({
       isSuccessed: true,
