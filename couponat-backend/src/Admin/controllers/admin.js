@@ -787,6 +787,27 @@ const AdminsController = {
       error: null,
     });
   },
+
+  async getProvider(req, res, next) {
+    let id = req.params.id;
+    let provider = await ProviderModule.getById(id);
+
+    if (!provider) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "Provider not found"
+          : "مقدم الخدمة غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
+    provider = new Provider(provider);
+
+    return res.status(200).send({
+      isSuccessed: true,
+      data: provider,
+      error: null,
+    });
+  },
 };
 
 export { AdminsController };

@@ -70,6 +70,10 @@ adminRouter
   );
 
 adminRouter
+  .route("/providers/:id")
+  .get(AdminAuth, AdminsController.getProvider);
+
+adminRouter
   .route("/providers/:id/coupons")
   .post(
     AdminAuth,
