@@ -70,7 +70,7 @@ adminRouter
   );
 
 adminRouter
-  .route("/providers/:id")
+  .route("/provider/:id")
   .get(AdminAuth, AdminsController.getProvider);
 
 adminRouter
