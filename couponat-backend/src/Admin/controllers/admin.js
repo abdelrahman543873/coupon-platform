@@ -27,6 +27,7 @@ import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { ProviderModel } from "../../Users/models/provider";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
+import { AppBankModel } from "../../Purchasing/models/appBanks";
 
 const AdminsController = {
   async add(req, res, next) {
