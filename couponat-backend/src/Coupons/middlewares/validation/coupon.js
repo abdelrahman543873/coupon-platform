@@ -21,7 +21,7 @@ const CouponValidationWares = {
     delete req.body.descEn;
     req.body.name = name;
 
-    console.log(req.body);
+    console.log("here now2: ", JSON.stringify(req.body));
     console.log(typeof req.body.offerPrice);
     console.log(typeof req.body.servicePrice);
     if (parseInt(req.body.servicePrice) <= parseInt(req.body.offerPrice)) {
