@@ -16,6 +16,7 @@ import { CategoryModule } from "../../Category/modules";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { ContactModel } from "../models/contactUs";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
+import { Messages } from "../../utils/twilloHelper";
 
 const ClientControllers = {
   async add(req, res, next) {
@@ -47,11 +48,14 @@ const ClientControllers = {
           getErrorMessage(addVerification.err, req.headers.lang || "ar")
         )
       );
-    // let smsMessage =
-    //   req.headers.lang == "en"
-    //     ? "Bazaar app : welcome to bazaar your verification code is "
-    //     : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-    // smsToken = await Messages.sendMessage(countryCode+mobile, smsMessage + smsToken);
+    let smsMessage =
+      req.headers.lang == "en"
+        ? "Couponat El-Madena app : welcome to  Couponat El-Madena  your verification code is "
+        : "تطبيق  كوبونات المدينة : مرحبا بك في تطبيق  كوبونات المدينة الرمز التاكيدي لحسابك هو ";
+    let sendMess = await Messages.sendMessage(
+      countryCode + mobile,
+      smsMessage + smsToken
+    );
     res.status(201).send({
       isSuccessed: true,
       data: {
@@ -258,11 +262,14 @@ const ClientControllers = {
           getErrorMessage(addToVerificationRes.err, req.headers.lang || "ar")
         )
       );
-    // let smsMessage =
-    //   req.headers.lang == "en"
-    //     ? "Bazaar app : welcome to bazaar your verification code is "
-    //     : "تطبيق بازار : مرحبا بك في تطبيق بازار الرمز التاكيدي لحسابك هو ";
-    //  smsToken = await Messages.sendMessage(countryCode+mobile, smsMessage + smsToken);
+    let smsMessage =
+      req.headers.lang == "en"
+        ? "Couponat El-Madena app : welcome to  Couponat El-Madena  your verification code is "
+        : "تطبيق  كوبونات المدينة : مرحبا بك في تطبيق  كوبونات المدينة الرمز التاكيدي لحسابك هو ";
+    let sendMess = await Messages.sendMessage(
+      client.countryCode + client.mobile,
+      smsMessage + smsToken
+    );
     return res.status(200).send({
       isSuccessed: true,
       data: smsToken,

@@ -28,6 +28,7 @@ import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { ProviderModel } from "../../Users/models/provider";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
+import { Messages } from "../../utils/twilloHelper";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -459,6 +460,14 @@ const AdminsController = {
         error: null,
       });
     } else {
+      let smsMessage =
+        req.headers.lang == "en"
+          ? "Couponat El-Madena app : welcome to  Couponat El-Madena  your verification code is "
+          : "تطبيق  كوبونات المدينة : مرحبا بك في تطبيق  كوبونات المدينة الرمز التاكيدي لحسابك هو ";
+      let sendMess = await Messages.sendMessage(
+        user.countryCode + user.mobile,
+        smsMessage + smsToken
+      );
       console.log("done");
       return res.status(201).send({
         isSuccessed: true,
