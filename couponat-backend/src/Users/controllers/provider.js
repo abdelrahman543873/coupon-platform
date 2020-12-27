@@ -12,7 +12,7 @@ import { CouponModule } from "../../Coupons/modules/coupon";
 import { ContactModel } from "../models/contactUs";
 import { ProviderModel } from "../models/provider";
 import { IP } from "../../../serverIP";
-import nanoid from "nanoid";
+import { nanoid } from "nanoid";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {
