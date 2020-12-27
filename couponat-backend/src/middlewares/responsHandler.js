@@ -1,5 +1,4 @@
 import { IP } from "../../serverIP";
-import { paymentRouter } from "../Purchasing/routes/route/paymentType";
 
 class Provider {
   constructor(provider) {
@@ -20,8 +19,8 @@ class Provider {
       this.twittwerLink = provider.twittwerLink || "";
       this.fcmToken = provider.fcmToken;
       this.isActive = provider.isActive;
-      this.qrURL = IP + provider.qrURL;
-      this.code = provider.code;
+      this.qrURL = provider.qrURL ? IP + provider.qrURL : "";
+      this.code = provider.code ? provider.code : "";
     }
   }
 }

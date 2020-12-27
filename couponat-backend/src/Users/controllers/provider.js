@@ -1,4 +1,6 @@
 import boom from "@hapi/boom";
+import PDFDocument from "pdfkit";
+import fs from "fs";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
@@ -9,6 +11,8 @@ import { NotificationModule } from "../../CloudMessaging/module/notification";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { ContactModel } from "../models/contactUs";
 import { ProviderModel } from "../models/provider";
+import { IP } from "../../../serverIP";
+
 const ProviderControllers = {
   async addProvider(req, res, next) {
     console.log("controller");
@@ -287,6 +291,61 @@ const ProviderControllers = {
       isSuccessed: true,
       data: providers,
       dataCounter,
+      error: null,
+    });
+  },
+
+  async generatePDF(req, res, next) {
+    let id = req.query.id || null;
+    let providers = await ProviderModule.getAll(true, null, null, id);
+    if (providers.length < 1) {
+      let error =
+        req.headers.lang == "en"
+          ? "No Providers"
+          : "لا يوجود مقدمي خدمات حاليا";
+      return next(boom.unauthorized(error));
+    }
+
+    providers = providers.map((provider) => {
+      return new Provider(provider);
+    });
+
+    let pdfDoc = new PDFDocument();
+    let name = "AllProviders.pdf";
+    name = name.trim();
+    pdfDoc.pipe(fs.createWriteStream("./Providers-Images/" + name));
+    pdfDoc.moveDown(25);
+    pdfDoc
+      .fillColor("red")
+      .font("./assets/fonts/Tajawal-Bold.ttf")
+      .fontSize(50) // the text and the position where the it should come
+      .text("Couponat El Madina", { align: "center" });
+
+    providers.map((provider) => {
+      pdfDoc.addPage();
+      let segment_array = provider.qrURL.split("/");
+      let last_segment = segment_array.pop();
+      pdfDoc
+        .fillColor("blue")
+        .font("./assets/fonts/Tajawal-Bold.ttf")
+        .fontSize(20)
+        .text("Provider: ", {
+          continued: true,
+        })
+        .fillColor("black")
+        .fontSize(20)
+        .text(provider.name, { align: "left" });
+      pdfDoc.moveDown(0.5);
+      pdfDoc.image("./Providers-Images/" + last_segment, {
+        width: 300,
+        height: 300,
+        align: "cebnter",
+      });
+    });
+    pdfDoc.end();
+    return res.status(200).send({
+      isSuccessed: true,
+      data: IP + "/providers-management/providers/providers-images/" + name,
       error: null,
     });
   },

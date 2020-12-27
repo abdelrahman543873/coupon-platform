@@ -42,9 +42,16 @@ customersRouter
 
 customersRouter.route("/home").get(ClientControllers.home);
 
-customersRouter.route("/coupons/scan/:code").get(CouponController.scan);
+customersRouter
+  .route("/scan/:code")
+  .get(checkUserAuth, subscriptionContoller.scan);
+
+customersRouter
+  .route("/subscriptions/:id/confirmation")
+  .post(checkUserAuth, subscriptionContoller.confirmUsage);
 
 customersRouter.route("/coupons").get(CouponController.getAll);
+
 customersRouter
   .route("/coupons/:id/subscription")
   .get(checkUserAuth, subscriptionContoller.checkSubscription);

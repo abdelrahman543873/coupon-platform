@@ -376,7 +376,7 @@ const ClientControllers = {
     });
 
     coupons = coupons.filter((coupon) => {
-     return coupon.totalCount!=0;
+      return coupon.totalCount != 0;
     });
     // for (let i = 0; i < coupons; i++) {
     //   if (coupons[i].totalCount < 1) {
@@ -564,16 +564,6 @@ const ClientControllers = {
       error: null,
     });
   },
-
-  // async getFamiliarQuestions(req, res, next) {
-  //   let lang = req.headers.lang || "ar";
-  //   let questions = await QuestionModule.getQuestions("CLIENT", lang);
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: questions,
-  //     error: null,
-  //   });
-  // },
 };
 
 async function addFavProp(coupons, userFav) {

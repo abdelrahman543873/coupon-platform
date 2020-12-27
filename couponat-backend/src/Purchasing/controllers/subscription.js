@@ -322,23 +322,31 @@ let subscriptionContoller = {
     let auth = await decodeToken(req.headers.authentication),
       id = auth.id;
 
-    let subscribe = await subscriptionModule.scan(id, code);
-    if (!subscribe) {
-      return res.status(404).send({
-        isSuccessed: false,
-        data: null,
-        error:
-          req.headers.lang == "en"
-            ? "Subscribtion not Found"
-            : "عملية الاشتراك غير موجودة",
-      });
+    let provider = await ProviderModule.getByCode(code);
+
+    // let subscribe = await subscriptionModule.scan(id, code);
+    if (!provider) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Provider not found" : "مقدم الخدمة غير موجود";
+      return next(boom.notFound(errMsg));
     }
 
-    subscribe = new Subscription(subscribe, "PROVIDER");
+    let subscribtions = await subscriptionModule.scan(id, provider._id);
+    if (subscribtions.length < 1) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "You don't have any subscriptions yet"
+            : "أنت غير مشترك في اي كوبون حالياا";
+      return next(boom.notFound(errMsg));
+    }
+    subscribtions = subscribtions.map((subscribe) => {
+      return new Subscription(subscribe, "CLIENT");
+    });
 
     return res.status(200).send({
       isSuccessed: true,
-      data: subscribe,
+      data: subscribtions,
       error: null,
     });
   },
@@ -364,7 +372,7 @@ let subscriptionContoller = {
       subscribe.coupon = coupon;
     }
 
-    subscribe = new Subscription(subscribe, "PROVIDER");
+    subscribe = new Subscription(subscribe);
 
     await NotificationModule.couponUsedNotification(
       req.headers.lang,

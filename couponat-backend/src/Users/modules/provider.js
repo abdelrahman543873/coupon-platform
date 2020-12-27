@@ -31,8 +31,13 @@ const ProviderModule = {
     return await ProviderModel.findOne({ email });
   },
 
-  async getAll(isAdmin, limit = null, skip = null) {
+  async getByCode(code) {
+    return await ProviderModel.findOne({ code });
+  },
+
+  async getAll(isAdmin, limit = null, skip = null, id) {
     let queryOp = {};
+    if (id) queryOp._id = id;
     !isAdmin ? (queryOp.isActive = true) : "";
     return ProviderModel.find({ ...queryOp })
       .sort("-createdAt")

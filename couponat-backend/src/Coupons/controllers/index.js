@@ -2,13 +2,9 @@ import boom from "@hapi/boom";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { CouponModule } from "../modules/coupon";
 import { nanoid } from "nanoid";
-import QRCode from "qrcode";
 import { Coupon, Subscription } from "../../middlewares/responsHandler";
 import { decodeToken } from "../../utils/JWTHelper";
 import Jimp from "jimp";
-import PDFDocument from "pdfkit";
-import fs from "fs";
-import { IP } from "../../../serverIP";
 import { ClientModule } from "../../Users/modules/client";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { ProviderModule } from "../../Users/modules/provider";
@@ -305,113 +301,6 @@ const CouponController = {
       isSuccessed: true,
       data: coupons,
       dataCounter,
-      error: null,
-    });
-  },
-
-  async generatePDF(req, res, next) {
-    let id = req.query.id || null;
-    let coupons = await CouponModule.getAll(null, null, null, id, null);
-    if (coupons.err) {
-      return next(boom.unauthorized(coupons.err));
-    }
-    if (coupons.length < 1) {
-      return res.status(200).send({
-        isSuccessed: true,
-        data: null,
-        error:
-          req.headers.lang == "en"
-            ? "there is no coupons now"
-            : "لا يوجود كوبونات خصم حاليا",
-      });
-    }
-
-    coupons = coupons.map((coupon) => {
-      return new Coupon(coupon);
-    });
-
-    let pdfDoc = new PDFDocument();
-    let name = "AllCoupons.pdf";
-    if (id) name = coupons[0].provider.name + ".pdf";
-    name = name.trim();
-    pdfDoc.pipe(fs.createWriteStream("./Coupons-Images/" + name));
-    pdfDoc.moveDown(25);
-    pdfDoc
-      .fillColor("red")
-      .font("./assets/fonts/Tajawal-Bold.ttf")
-      .fontSize(50) // the text and the position where the it should come
-      .text("Couponat El Madina", { align: "center" });
-
-    coupons.map((coupon) => {
-      pdfDoc.addPage();
-      coupon.name.arabic = coupon.name.arabic.split(" ").reverse().join(" ");
-      let segment_array = coupon.qrURL.split("/");
-      let last_segment = segment_array.pop();
-      pdfDoc
-        .fillColor("blue")
-        .font("./assets/fonts/Tajawal-Bold.ttf")
-        .fontSize(20)
-        .text("Provider: ", {
-          continued: true,
-        })
-        .fillColor("black")
-        .fontSize(20)
-        .text(coupon.provider.name, { align: "left" });
-      pdfDoc.moveDown(0.5);
-      pdfDoc
-        .fillColor("black")
-        .fontSize(17)
-        .text(coupon.name.english + " - ", { continued: true })
-        .fillColor("black")
-        .fontSize(17)
-        .text(coupon.name.arabic);
-      pdfDoc.moveDown(0.5);
-      pdfDoc.image("./Coupons-Images/" + last_segment, {
-        width: 300,
-        height: 300,
-        align: "cebnter",
-      });
-    });
-    pdfDoc.end();
-    return res.status(200).send({
-      isSuccessed: true,
-      data: IP + "/coupons-management/coupons-images/" + name,
-      error: null,
-    });
-  },
-
-  async scan(req, res, next) {
-    let id = null;
-    let code = req.params.code;
-    if (req.headers.authentication) {
-      let auth = await decodeToken(req.headers.authentication);
-      id = auth ? auth.id : null;
-    }
-    let coupon = await CouponModule.scan(code);
-    if (!coupon) {
-      return res.status(404).send({
-        isSuccessed: false,
-        data: null,
-        error:
-          req.headers.lang == "en"
-            ? "Coupon not Found"
-            : "كوبون الخصم غير موجود",
-      });
-    }
-    coupon = new Coupon(coupon);
-    let user = await ClientModule.getById(id);
-    if (user && user.favCoupons) {
-      coupon = await addFavProp([coupon], user.favCoupons);
-    } else coupon = await addFavProp([coupon], null);
-    coupon = coupon[0];
-    let sub = user
-      ? await subscriptionModule.getUserSubscripe(user.id, coupon.id)
-      : null;
-    coupon.isSubscribe = sub ? true : false;
-
-    return res.status(200).send({
-      isSuccessed: true,
-      data: coupon,
       error: null,
     });
   },

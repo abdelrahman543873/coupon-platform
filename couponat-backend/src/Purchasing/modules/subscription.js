@@ -70,12 +70,14 @@ let subscriptionModule = {
     return await SubscripionModel.findById(id);
   },
 
-  async scan(id, code) {
-    if (!checkAllMongooseId(id)) return null;
-    return await SubscripionModel.findOne({
-      code,
+  async scan(user, provider) {
+    if (!checkAllMongooseId(user)) return [];
+    if (!checkAllMongooseId(provider)) return [];
+
+    return await SubscripionModel.find({
+      user,
+      provider,
       isConfirmed: true,
-      provider: id,
       isUsed: false,
     });
   },

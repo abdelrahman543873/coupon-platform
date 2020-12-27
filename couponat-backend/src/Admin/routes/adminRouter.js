@@ -69,9 +69,7 @@ adminRouter
     ProviderControllers.addProvider
   );
 
-adminRouter
-  .route("/provider/:id")
-  .get(AdminAuth, AdminsController.getProvider);
+adminRouter.route("/provider/:id").get(AdminAuth, AdminsController.getProvider);
 
 adminRouter
   .route("/providers/:id/coupons")
@@ -187,6 +185,10 @@ adminRouter.route("/coupons/search").get(AdminAuth, CouponController.search);
 adminRouter
   .route("/providers/search")
   .get(AdminAuth, ProviderControllers.search);
+
+adminRouter
+  .route("/providers/pdf-generation")
+  .post(AdminAuth, ProviderControllers.generatePDF);
 
 // adminRouter
 //   .route("/questions/new")

@@ -55,13 +55,13 @@ providersRouter
     ProviderControllers.changePassword
   );
 
-providersRouter
-  .route("/subscriptions/scan/:code")
-  .get(checkUserAuth, subscriptionContoller.scan);
+// providersRouter
+//   .route("/subscriptions/scan/:code")
+//   .get(checkUserAuth, subscriptionContoller.scan);
 
-providersRouter
-  .route("/subscriptions/:id/confirmation")
-  .post(checkUserAuth, subscriptionContoller.confirmUsage);
+// providersRouter
+//   .route("/subscriptions/:id/confirmation")
+//   .post(checkUserAuth, subscriptionContoller.confirmUsage);
 
 providersRouter
   .route("/coupons")
