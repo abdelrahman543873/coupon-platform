@@ -337,7 +337,6 @@ const AdminsController = {
     }
 
     if (!provider.isActive && !provider.qrURL) {
-      provider.code = nanoid(6);
       let fileName = provider.code + Date.now() + ".png";
       let qrURL = QRCode.toFile(
         "./Providers-Images/" + fileName,

@@ -35,9 +35,10 @@ const ProviderModule = {
     return await ProviderModel.findOne({ code });
   },
 
-  async getAll(isAdmin, limit = null, skip = null, id) {
+  async getAll(isAdmin, limit = null, skip = null, id = null, qr = null) {
     let queryOp = {};
     if (id) queryOp._id = id;
+    if (qr) queryOp.qrURL = { $exists: true, $ne: "" };
     !isAdmin ? (queryOp.isActive = true) : "";
     return ProviderModel.find({ ...queryOp })
       .sort("-createdAt")

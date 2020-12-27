@@ -12,6 +12,7 @@ import { CouponModule } from "../../Coupons/modules/coupon";
 import { ContactModel } from "../models/contactUs";
 import { ProviderModel } from "../models/provider";
 import { IP } from "../../../serverIP";
+import nanoid from "nanoid";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {
@@ -35,6 +36,7 @@ const ProviderControllers = {
         );
       }
     }
+    provider.code = nanoid(6);
     let { doc, err } = await ProviderModule.add(provider);
 
     if (err)
@@ -297,7 +299,7 @@ const ProviderControllers = {
 
   async generatePDF(req, res, next) {
     let id = req.query.id || null;
-    let providers = await ProviderModule.getAll(true, null, null, id);
+    let providers = await ProviderModule.getAll(true, null, null, id, true);
     if (providers.length < 1) {
       let error =
         req.headers.lang == "en"
