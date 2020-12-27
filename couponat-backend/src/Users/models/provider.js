@@ -51,6 +51,11 @@ let providerSchema = mongoose.Schema(
         },
       },
     ],
+    code: {
+      type: String,
+      // required: true,
+      unique: true,
+    },
     officeTele: {
       type: String,
       required: true,
@@ -61,6 +66,7 @@ let providerSchema = mongoose.Schema(
     instaLink: String,
     twittwerLink: String,
     fcmToken: String,
+    qrURL: String,
   },
   {
     timestamps: true,

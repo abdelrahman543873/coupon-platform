@@ -66,7 +66,6 @@ let couponSchema = mongoose.Schema(
       default: true,
     },
     imgURL: String,
-    qrURL: String,
   },
   {
     timestamps: true,

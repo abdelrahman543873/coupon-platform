@@ -1,6 +1,5 @@
 import boom from "@hapi/boom";
 import { nanoid } from "nanoid";
-import QRCode from "qrcode";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { Subscription } from "../../middlewares/responsHandler";
 import { ClientModule } from "../../Users/modules/client";
@@ -12,7 +11,6 @@ import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { AppCreditModel } from "../../Purchasing/models/appCridit";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { NotificationModule } from "../../CloudMessaging/module/notification";
-import { SubscripionModel } from "../models/subscription";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {
@@ -94,19 +92,19 @@ let subscriptionContoller = {
       : "";
 
     subscription.code = nanoid(6);
-    let fileName = subscription.code + Date.now() + ".png";
-    let qrURL = QRCode.toFile(
-      "./Subscriptions-Images/" + fileName,
-      subscription.code,
-      {
-        color: {
-          dark: "#575757", // Blue dots
-          light: "#0000", // Transparent background
-        },
-      }
-    );
-    subscription.qrURL =
-      "/purchasing-management/subscriptions-images/" + fileName;
+    // let fileName = subscription.code + Date.now() + ".png";
+    // let qrURL = QRCode.toFile(
+    //   "./Subscriptions-Images/" + fileName,
+    //   subscription.code,
+    //   {
+    //     color: {
+    //       dark: "#575757", // Blue dots
+    //       light: "#0000", // Transparent background
+    //     },
+    //   }
+    // );
+    // subscription.qrURL =
+    //   "/purchasing-management/subscriptions-images/" + fileName;
 
     if (req.file) {
       let imgURL =

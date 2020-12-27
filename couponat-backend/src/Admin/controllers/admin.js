@@ -336,6 +336,23 @@ const AdminsController = {
       return next(boom.unauthorized(errMsg));
     }
 
+    if (!provider.isActive && !provider.qrURL) {
+      provider.code = nanoid(6);
+      let fileName = provider.code + Date.now() + ".png";
+      let qrURL = QRCode.toFile(
+        "./Providers-Images/" + fileName,
+        provider.code,
+        {
+          color: {
+            dark: "#575757", // Blue dots
+            light: "#0000", // Transparent background
+          },
+        }
+      );
+      provider.qrURL =
+        "/providers-management/providers/providers-images/" + fileName;
+    }
+
     provider.isActive = !provider.isActive;
     provider = await provider.save();
 

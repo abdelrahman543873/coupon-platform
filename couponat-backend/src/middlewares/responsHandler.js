@@ -20,6 +20,8 @@ class Provider {
       this.twittwerLink = provider.twittwerLink || "";
       this.fcmToken = provider.fcmToken;
       this.isActive = provider.isActive;
+      this.qrURL = IP + provider.qrURL;
+      this.code = provider.code;
     }
   }
 }
@@ -61,7 +63,6 @@ class Coupon {
       this.category = new Category(coupon.category);
       this.code = coupon.code;
       this.imgURL = IP + coupon.imgURL;
-      this.qrURL = IP + coupon.qrURL;
     }
   }
 }
@@ -141,7 +142,6 @@ class Subscription {
               ? new Cridit(subscription.account)
               : new Bank(subscription.account))
         : "";
-      this.qrURL = IP + subscription.qrURL;
       this.subDate = subscription.createdAt;
       subscription.imgURL ? (this.imgURL = IP + subscription.imgURL) : "";
       subscription.note ? (this.note = subscription.note) : "";

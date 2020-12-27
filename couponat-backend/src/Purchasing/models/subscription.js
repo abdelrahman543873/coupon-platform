@@ -61,7 +61,6 @@ let subscriptionSchema = mongoose.Schema(
       default: "",
     },
     imgURL: String,
-    qrURL: String,
   },
   {
     timestamps: true,
