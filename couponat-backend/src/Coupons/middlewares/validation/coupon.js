@@ -4,7 +4,7 @@ import { CouponValidations } from "../../utils/validations/coupon";
 
 const CouponValidationWares = {
   async addCoupon(req, res, next) {
-    console.log("here now: ", req.body);
+    console.log("here now: ", JSON.stringify(req.body));
 
     let name = {
       arabic: req.body.nameAr,
