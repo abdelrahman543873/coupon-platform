@@ -36,6 +36,7 @@ const ProviderModule = {
   },
 
   async getAll(isAdmin, limit = null, skip = null, id = null, qr = null) {
+    if (id && !checkAllMongooseId(id)) return [];
     let queryOp = {};
     if (id) queryOp._id = id;
     if (qr) queryOp.qrURL = { $exists: true, $ne: "" };
