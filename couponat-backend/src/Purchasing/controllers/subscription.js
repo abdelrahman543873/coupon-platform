@@ -341,12 +341,15 @@ let subscriptionContoller = {
       return next(boom.notFound(errMsg));
     }
     subscribtions = subscribtions.map((subscribe) => {
-      return new Subscription(subscribe, "CLIENT");
+      return new Subscription(subscribe, "CLIENT", true);
     });
 
     return res.status(200).send({
       isSuccessed: true,
-      data: subscribtions,
+      data: {
+        subscribtions,
+        provider,
+      },
       error: null,
     });
   },

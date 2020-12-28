@@ -49,12 +49,14 @@ class Category {
 }
 
 class Coupon {
-  constructor(coupon) {
+  constructor(coupon, insideSubscription = null) {
     if (coupon) {
       this.id = coupon._id;
       this.name = coupon.name;
       this.description = coupon.description;
-      this.provider = new Provider(coupon.provider);
+      !insideSubscription
+        ? (this.provider = new Provider(coupon.provider))
+        : "";
       this.servicePrice = coupon.servicePrice;
       this.offerPrice = coupon.offerPrice;
       this.totalCount = coupon.totalCount;
@@ -123,12 +125,12 @@ class Cridit {
 }
 
 class Subscription {
-  constructor(subscription, type) {
+  constructor(subscription, type, insideSubscription = null) {
     if (subscription) {
       this.id = subscription._id;
       type != "CLIENT" ? (this.user = new Client(subscription.user)) : "";
       this.paymentType = new Payment(subscription.paymentType);
-      this.coupon = new Coupon(subscription.coupon);
+      this.coupon = new Coupon(subscription.coupon,insideSubscription);
       this.code = subscription.code;
       this.isConfirmed = subscription.isConfirmed;
       this.isUsed = subscription.isUsed;
