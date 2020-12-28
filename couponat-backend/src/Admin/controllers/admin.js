@@ -7,13 +7,6 @@ import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { AdminModule } from "../modules/admin";
 import QRCode from "qrcode";
-import {
-  Category,
-  Coupon,
-  Cridit,
-  Provider,
-  Subscription,
-} from "../../middlewares/responsHandler";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModel } from "../../Coupons/models/coupon";
@@ -29,6 +22,13 @@ import { ProviderModel } from "../../Users/models/provider";
 import { subscriptionModule } from "../../Purchasing/modules/subscription";
 import { AppBankModel } from "../../Purchasing/models/appBanks";
 import { Messages } from "../../utils/twilloHelper";
+import {
+  Category,
+  Coupon,
+  Cridit,
+  Provider,
+  Subscription,
+} from "../../middlewares/responsHandler";
 
 const AdminsController = {
   async add(req, res, next) {
