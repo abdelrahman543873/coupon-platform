@@ -315,7 +315,7 @@ const ProviderControllers = {
 
     let pdfDoc = new PDFDocument();
     let name = id ? stringHash(id) : "AllProviders.pdf";
-    name = name.trim();
+    //name = name.trim();
     pdfDoc.pipe(fs.createWriteStream("./Providers-Images/" + name));
     pdfDoc.moveDown(25);
     pdfDoc
