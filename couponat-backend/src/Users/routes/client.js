@@ -47,7 +47,7 @@ customersRouter
   .get(checkUserAuth, subscriptionContoller.scan);
 
 customersRouter
-  .route("/subscriptions/:id/confirmation")
+  .route("/subscriptions/:id/mark-use")
   .post(checkUserAuth, subscriptionContoller.confirmUsage);
 
 customersRouter.route("/coupons").get(CouponController.getAll);
