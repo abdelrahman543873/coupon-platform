@@ -130,7 +130,7 @@ class Subscription {
       this.id = subscription._id;
       type != "CLIENT" ? (this.user = new Client(subscription.user)) : "";
       this.paymentType = new Payment(subscription.paymentType);
-      this.coupon = new Coupon(subscription.coupon,insideSubscription);
+      this.coupon = new Coupon(subscription.coupon, insideSubscription);
       this.code = subscription.code;
       this.isConfirmed = subscription.isConfirmed;
       this.isUsed = subscription.isUsed;

@@ -1,7 +1,7 @@
 import boom from "@hapi/boom";
 import { nanoid } from "nanoid";
 import { CouponModule } from "../../Coupons/modules/coupon";
-import { Subscription } from "../../middlewares/responsHandler";
+import { Provider, Subscription } from "../../middlewares/responsHandler";
 import { ClientModule } from "../../Users/modules/client";
 import { ProviderModule } from "../../Users/modules/provider";
 import { decodeToken } from "../../utils/JWTHelper";
@@ -348,7 +348,7 @@ let subscriptionContoller = {
       isSuccessed: true,
       data: {
         subscribtions,
-        provider,
+        provider: new Provider(provider),
       },
       error: null,
     });
