@@ -1,12 +1,12 @@
 import boom from "@hapi/boom";
 import Jimp from "jimp";
+import QRCode from "qrcode";
 import { nanoid } from "nanoid";
 import { CouponModule } from "../../Coupons/modules/coupon";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { getErrorMessage } from "../../utils/handleDBError";
 import { decodeToken, generateToken } from "../../utils/JWTHelper";
 import { AdminModule } from "../modules/admin";
-import QRCode from "qrcode";
 import { ProviderModule } from "../../Users/modules/provider";
 import { CategoryModule } from "../../Category/modules";
 import { CouponModel } from "../../Coupons/models/coupon";
