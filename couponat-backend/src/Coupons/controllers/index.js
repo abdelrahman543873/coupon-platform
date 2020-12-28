@@ -136,11 +136,7 @@ const CouponController = {
     let id = req.params.id;
     let auth = await decodeToken(req.headers.authentication),
       imgURL = "";
-    if (
-      auth != "Just for development" &&
-      auth.type != "PROVIDER" &&
-      auth.type != "ADMIN"
-    ) {
+    if (auth.type != "PROVIDER" && auth.type != "ADMIN") {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));
@@ -224,11 +220,7 @@ const CouponController = {
     let id = req.params.id;
     let auth = await decodeToken(req.headers.authentication);
     console.log(auth);
-    if (
-      auth != "Just for development" &&
-      auth.type != "PROVIDER" &&
-      auth.type != "ADMIN"
-    ) {
+    if (auth.type != "PROVIDER" && auth.type != "ADMIN") {
       let lang = req.headers.lang || "ar",
         errMsg = lang == "en" ? "you didn't have access" : "ليس لديك صلاحيات";
       return next(boom.unauthorized(errMsg));

@@ -12,7 +12,6 @@ function generateToken(id, type = "") {
 
 async function decodeToken(auth) {
   try {
-    if (auth == "Just for development") return { type: "ADMIN" };
     let token = auth.replace("Bearer ", ""),
       decoded = jwt.verify(token, "<Hey,Thi$i$CoUpOnAtTokeNSecret/>");
     if (decoded && decoded.id) {
