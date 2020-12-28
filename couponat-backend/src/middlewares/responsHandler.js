@@ -11,7 +11,7 @@ class Provider {
       this.cities = provider.cities.map((city) => {
         return new City(city);
       });
-      this.location = provider.location;
+      // this.location = provider.location;
       this.officeTele = provider.officeTele;
       this.websiteLink = provider.websiteLink || "";
       this.facebookLink = provider.facebookLink || "";
