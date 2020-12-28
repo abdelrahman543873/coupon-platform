@@ -421,7 +421,7 @@ const AdminsController = {
       ? await ProviderModule.getByEmail(cardenality)
       : await ClientModule.getByMobile(cardenality);
 
-    if (!user) {
+    if (!user || user.isSocialMediaVerified) {
       let errMsg =
         req.headers.lang == "en" ? "User not Found!" : "المستخدم غير مسجل";
       return next(boom.notFound(errMsg));
