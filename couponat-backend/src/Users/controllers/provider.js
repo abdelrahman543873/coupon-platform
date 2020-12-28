@@ -1,6 +1,7 @@
 import boom from "@hapi/boom";
 import PDFDocument from "pdfkit";
 import fs from "fs";
+import stringHash from "string-hash";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
 import { ProviderModule } from "../modules/provider";
 import { getErrorMessage } from "../../utils/handleDBError";
@@ -313,7 +314,7 @@ const ProviderControllers = {
     });
 
     let pdfDoc = new PDFDocument();
-    let name = id ? await hashPass(id) : "AllProviders.pdf";
+    let name = id ? stringHash(id) : "AllProviders.pdf";
     name = name.trim();
     pdfDoc.pipe(fs.createWriteStream("./Providers-Images/" + name));
     pdfDoc.moveDown(25);
