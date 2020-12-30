@@ -42,8 +42,10 @@ const CouponModule = {
     console.log(queryOp);
     if (section) {
       if (section == "newest") sort = "-createdAt";
-      else if (section == "bestSeller") sort = "-subCount";
-      else {
+      else if (section == "bestSeller") {
+        queryOp.subCount = { $gt: 0 };
+        sort = "-subCount";
+      } else {
         return { err: "Section Must be newest or bestSeller" };
       }
     }
@@ -106,8 +108,6 @@ const CouponModule = {
         };
       });
   },
-
-
 
   async delete(id) {
     if (!checkAllMongooseId(id)) return null;
