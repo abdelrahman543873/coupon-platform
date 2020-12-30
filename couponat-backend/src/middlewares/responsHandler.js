@@ -62,7 +62,6 @@ class Coupon {
       this.totalCount = coupon.totalCount;
       this.subCount = coupon.subCount;
       this.category = new Category(coupon.category);
-      // this.code = coupon.code;
       this.imgURL = IP + coupon.imgURL;
     }
   }
@@ -131,7 +130,6 @@ class Subscription {
       type != "CLIENT" ? (this.user = new Client(subscription.user)) : "";
       this.paymentType = new Payment(subscription.paymentType);
       this.coupon = new Coupon(subscription.coupon, insideSubscription);
-      // this.code = subscription.code;
       this.isConfirmed = subscription.isConfirmed;
       this.isUsed = subscription.isUsed;
       this.isPaid = subscription.isPaid;

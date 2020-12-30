@@ -102,15 +102,6 @@ const AdminsController = {
     }
 
     coupon.provider = req.params.id;
-    coupon.code = nanoid(6);
-    let fileName = coupon.code + Date.now() + ".png";
-    let qrURL = QRCode.toFile("./Coupons-Images/" + fileName, coupon.code, {
-      color: {
-        dark: "#575757", // Blue dots
-        light: "#0000", // Transparent background
-      },
-    });
-    coupon.qrURL = "/coupons-management/coupons-images/" + fileName;
 
     if (req.file) {
       console.log("1111");

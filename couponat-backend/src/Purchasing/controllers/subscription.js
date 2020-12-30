@@ -91,21 +91,6 @@ let subscriptionContoller = {
       ? (subscription.isPaid = true)
       : "";
 
-    subscription.code = nanoid(6);
-    // let fileName = subscription.code + Date.now() + ".png";
-    // let qrURL = QRCode.toFile(
-    //   "./Subscriptions-Images/" + fileName,
-    //   subscription.code,
-    //   {
-    //     color: {
-    //       dark: "#575757", // Blue dots
-    //       light: "#0000", // Transparent background
-    //     },
-    //   }
-    // );
-    // subscription.qrURL =
-    //   "/purchasing-management/subscriptions-images/" + fileName;
-
     if (req.file) {
       let imgURL =
         "/purchasing-management/subscriptions-images/" + req.file.filename;
