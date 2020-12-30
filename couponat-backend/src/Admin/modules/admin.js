@@ -56,7 +56,6 @@ const AdminModule = {
     if (!checkAllMongooseId(id)) return null;
 
     return await AdminModel.findById(id).catch((err) => {
-      console.log(err);
       return null;
     });
   },

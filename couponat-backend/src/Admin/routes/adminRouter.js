@@ -14,7 +14,7 @@ import { ProviderControllers } from "../../Users/controllers/provider";
 import { ProviderValidationWares } from "../../Users/middlewares/validations/provider";
 import { uploadHelper } from "../../utils/MulterHelper";
 import { AdminsController } from "../controllers/admin";
-import { AdminAuth } from "../middlewares/admimAuth";
+import { AdminAuth, ValidateAuth } from "../middlewares/admimAuth";
 import { adminValidationwar } from "../middlewares/validations/admin";
 
 const adminRouter = Router();
@@ -26,6 +26,8 @@ adminRouter
 adminRouter
   .route("/auth")
   .post(adminValidationwar.login, AdminsController.login);
+
+adminRouter.route("/token-validate").get(ValidateAuth);
 
 adminRouter
   .route("/cities")
