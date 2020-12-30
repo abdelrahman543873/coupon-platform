@@ -30,8 +30,8 @@ let NotificationModule = {
         title: lang == "en" ? `new Coupon🥳🥳` : `كوبون خصم جديد 🥳🥳`,
         body:
           lang == "en"
-            ? `${providerName} add new Coupon , View it `
-            : `${providerName} اضاف كوبون خصم جديد , قم بمشاهدته`,
+            ? `new Coupon from ${providerName}  , View it `
+            : `كوبون خصم جديد من ${providerName} , قم بمشاهدته`,
       },
       data: {
         id: JSON.stringify(coupon),
@@ -51,6 +51,11 @@ let NotificationModule = {
           },
         },
       },
+      webpush: {
+        headers: {
+          Urgency: "high",
+        },
+      },
     };
 
     for (let i = 0; i < tokenArray.length; i += 500) {
@@ -67,8 +72,8 @@ let NotificationModule = {
         arabic: `كوبون خصم جديد 🥳🥳`,
       },
       body: {
-        english: `${providerName} add new Coupon , View it `,
-        arabic: `${providerName} اضاف كوبون خصم جديد , قم بمشاهدته`,
+        english: `new Coupon from ${providerName}  , View it `,
+        arabic: `كوبون خصم جديد من ${providerName} , قم بمشاهدته`,
       },
       data: coupon,
       action: "view_coupon",
@@ -90,8 +95,8 @@ let NotificationModule = {
         title: lang == "en" ? `New Registeration` : `تسجيل جديد`,
         body:
           lang == "en"
-            ? `${provider.name} has Registerd newly`
-            : `${provider.name} سجل حديثا`,
+            ? `the Provider ${provider.name} has Registerd newly`
+            : `قام ${provider.name} بالتسجيل كمقدم خدمة`,
       },
       data: {
         id: JSON.stringify(provider.id),
@@ -111,6 +116,11 @@ let NotificationModule = {
           },
         },
       },
+      webpush: {
+        headers: {
+          Urgency: "high",
+        },
+      },
     };
 
     for (let i = 0; i < tokenArray.length; i += 500) {
@@ -126,8 +136,8 @@ let NotificationModule = {
         arabic: `تسجيل جديد`,
       },
       body: {
-        english: `${provider.name} has Registerd newly`,
-        arabic: `${provider.name} سجل حديثا`,
+        english: `the Provider ${provider.name} has Registerd newly`,
+        arabic: `قام ${provider.name} بالتسجيل كمقدم خدمة`,
       },
       data: provider.id,
       action: "view_provider",
@@ -168,6 +178,11 @@ let NotificationModule = {
             sound: "default",
             badge: 1,
           },
+        },
+      },
+      webpush: {
+        headers: {
+          Urgency: "high",
         },
       },
     };
@@ -229,19 +244,9 @@ let NotificationModule = {
       data: {
         id: JSON.stringify(subscription),
       },
-      android: {
-        notification: {
-          click_action: "view_subscription",
-          sound: "default",
-        },
-      },
-      apns: {
-        payload: {
-          aps: {
-            category: "view_subscription",
-            sound: "default",
-            badge: 1,
-          },
+      webpush: {
+        headers: {
+          Urgency: "high",
         },
       },
     };
@@ -343,7 +348,7 @@ let NotificationModule = {
         body:
           lang == "en"
             ? `Coupon ${couponName.english} has been used`
-            : `تم إستخدام الكوبون ${couponName.arabic}`,
+            : `الكوبون ${couponName.arabic} تم استخدامه حديثا`,
       },
       data: {
         id: JSON.stringify(subscription),
@@ -361,6 +366,11 @@ let NotificationModule = {
             sound: "default",
             badge: 1,
           },
+        },
+      },
+      webpush: {
+        headers: {
+          Urgency: "high",
         },
       },
     };
@@ -400,7 +410,7 @@ let NotificationModule = {
     }).save();
   },
 
-  async getNotifications(userId, type) {
+  async getNotifications(userId, type, skip = null) {
     console.log(type, "--", userId);
     if (type && type == "CLIENT")
       return await NotificationModel.find({ user: { $in: [userId, "ALL"] } })
@@ -409,7 +419,8 @@ let NotificationModule = {
     else if (type && type == "ADMIN")
       return await NotificationModel.find({ user: { $in: ["ADMIN", "ALL"] } })
         .sort("-createdAt")
-        .limit(10);
+        .limit(10)
+        .skip(skip);
     else
       return await NotificationModel.find({ user: userId })
         .sort("-createdAt")

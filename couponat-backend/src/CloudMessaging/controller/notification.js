@@ -23,9 +23,6 @@ let notificationsController = {
       if (type == "ADMIN") user = await AdminModel.findById(userId);
       else if (type == "CLIENT") user = await ClientModel.findById(userId);
       else if (type == "PROVIDER") user = await ProviderModel.findById(userId);
-      console.log("userId : ", userId);
-      console.log("type : ", type);
-      console.log("users : ", user);
       if (!user) {
         return await res.status(401).send({
           isSuccessed: false,
@@ -73,9 +70,14 @@ let notificationsController = {
   async getNotifications(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),
       userId = auth ? auth.id : "",
-      type = auth ? auth.type : "CLIENT";
+      type = auth ? auth.type : "CLIENT",
+      skip = req.query.skip || null;
     console.log(auth);
-    let notifications = await NotificationModule.getNotifications(userId, type);
+    let notifications = await NotificationModule.getNotifications(
+      userId,
+      type,
+      skip
+    );
 
     return await res.status(201).send({
       isSuccessed: true,
