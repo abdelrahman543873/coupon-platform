@@ -107,10 +107,6 @@ const CouponModule = {
       });
   },
 
-  async scan(code) {
-    return await CouponModel.findOne({ code, isActive: true });
-  },
-
   async delete(id) {
     if (!checkAllMongooseId(id)) return null;
 
