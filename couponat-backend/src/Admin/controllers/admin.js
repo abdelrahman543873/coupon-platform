@@ -102,6 +102,7 @@ const AdminsController = {
     }
 
     coupon.provider = req.params.id;
+    coupon.code = nanoid(6);
 
     if (req.file) {
       console.log("1111");

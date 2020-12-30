@@ -24,6 +24,11 @@ let subscriptionSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     isConfirmed: {
       type: Boolean,
       default: true,

@@ -91,6 +91,8 @@ let subscriptionContoller = {
       ? (subscription.isPaid = true)
       : "";
 
+    subscription.code = nanoid(6);
+
     if (req.file) {
       let imgURL =
         "/purchasing-management/subscriptions-images/" + req.file.filename;

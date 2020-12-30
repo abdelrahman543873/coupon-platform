@@ -35,6 +35,7 @@ const CouponController = {
       return next(boom.unauthorized(errMsg));
     }
     coupon.provider = auth.id;
+    coupon.code = nanoid(6);
 
     if (req.file) {
       console.log("1111");
