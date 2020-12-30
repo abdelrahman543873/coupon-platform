@@ -336,8 +336,8 @@ let subscriptionContoller = {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en"
-            ? "You don't have any subscriptions yet"
-            : "أنت غير مشترك في اي كوبون حالياا";
+            ? `You don't have any subscription for${provider.name} for now`
+            : `أنت غير مشترك في اي كوبون لدى ${provider.name} حالياا`;
       return next(boom.notFound(errMsg));
     }
     subscribtions = subscribtions.map((subscribe) => {
