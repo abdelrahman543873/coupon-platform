@@ -71,7 +71,7 @@ let notificationsController = {
     let auth = await decodeToken(req.headers.authentication),
       userId = auth ? auth.id : "",
       type = auth ? auth.type : "CLIENT",
-      skip = req.query.skip || null;
+      skip = parseInt(req.query.skip) || null;
     console.log(auth);
     let notifications = await NotificationModule.getNotifications(
       userId,
