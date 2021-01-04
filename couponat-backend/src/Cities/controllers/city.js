@@ -30,7 +30,7 @@ const CityController = {
 
     let cityPromise = new Promise((resolve, reject) => {
       resolve(CityModel.find());
-    }).then((docs) => {
+    }).then(async(docs) => {
       docs.map((doc) => {
         doc.isActive = true;
           delete doc.isDeleted;
