@@ -23,7 +23,7 @@ const CityController = {
     let cities = await CityModule.getAll(isAdmin);
 
 
-    cities = fire.map((city) => {
+    cities = cities.map((city) => {
       return new City(city);
     });
     return res.status(200).send({
