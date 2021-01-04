@@ -11,6 +11,15 @@ const cityValidationware = {
 
     next();
   },
+
+  async update(req, res, next) {
+    let { error } = CityValidation.editCity.validate(req.body);
+
+    if (error) {
+      return next(boom.badData(error.details[0].message));
+    }
+    next();
+  },
 };
 
 export { cityValidationware };

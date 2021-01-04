@@ -31,7 +31,16 @@ adminRouter.route("/token-validate").get(ValidateAuth);
 
 adminRouter
   .route("/cities")
-  .post(AdminAuth, cityValidationware.addCity, CityController.addCity);
+  .post(AdminAuth, cityValidationware.addCity, CityController.addCity)
+  .get(AdminAuth, CityController.getCities);
+
+adminRouter
+  .route("/cities/:id/modification")
+  .put(AdminAuth, cityValidationware.update, CityController.updateCity);
+
+adminRouter
+  .route("/cities/:id/toggle")
+  .put(AdminAuth, CityController.toggleCity);
 
 adminRouter
   .route("/categories")
