@@ -31,6 +31,7 @@ class City {
       this.id = city._id;
       this.name = city.name;
       this.location = city.location;
+      this.isActive = city.isActive;
     }
   }
 }
