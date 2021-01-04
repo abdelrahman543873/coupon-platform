@@ -28,21 +28,21 @@ const CityController = {
     //   cities[i] = await cities[i].save();
     // }
 
-    let cityPromise = new Promise((resolve, reject) => {
-      resolve(CityModel.find());
-    }).then(async (docs) => {
-      return await docs.map(async (doc) => {
-        doc.isActive = true;
-        delete doc.isDeleted;
-        doc = await doc.save();
-      });
-    });
+    // let cityPromise = new Promise((resolve, reject) => {
+    //   resolve(CityModel.find());
+    // }).then(async (docs) => {
+    //   return await docs.map(async (doc) => {
+    //     doc.isActive = true;
+    //     delete doc.isDeleted;
+    //     doc = await doc.save();
+    //   });
+    // });
 
-    cityPromise = [cityPromise];
-    let fire = await Promise.all(cityPromise);
-    cities = fire.map((city) => {
-      return new City(city);
-    });
+    // cityPromise = [cityPromise];
+    // let fire = await Promise.all(cityPromise);
+    // cities = fire.map((city) => {
+    //   return new City(city);
+    // });
     return res.status(200).send({
       isSuccessed: true,
       data: cities,
