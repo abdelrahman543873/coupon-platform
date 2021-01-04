@@ -22,27 +22,10 @@ const CityController = {
       isAdmin = auth && auth.type == "ADMIN" ? true : null;
     let cities = await CityModule.getAll(isAdmin);
 
-    // for (let i = 0; i < cities.length; i++) {
-    //   cities[i].isActive = true;
-    //   delete cities[i].isDeleted;
-    //   cities[i] = await cities[i].save();
-    // }
 
-    // let cityPromise = new Promise((resolve, reject) => {
-    //   resolve(CityModel.find());
-    // }).then(async (docs) => {
-    //   return await docs.map(async (doc) => {
-    //     doc.isActive = true;
-    //     delete doc.isDeleted;
-    //     doc = await doc.save();
-    //   });
-    // });
-
-    // cityPromise = [cityPromise];
-    // let fire = await Promise.all(cityPromise);
-    // cities = fire.map((city) => {
-    //   return new City(city);
-    // });
+    cities = fire.map((city) => {
+      return new City(city);
+    });
     return res.status(200).send({
       isSuccessed: true,
       data: cities,
