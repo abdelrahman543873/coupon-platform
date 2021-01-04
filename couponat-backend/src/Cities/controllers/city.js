@@ -30,16 +30,16 @@ const CityController = {
 
     let cityPromise = new Promise((resolve, reject) => {
       resolve(CityModel.find());
-    }).then(async(docs) => {
-      docs.map((doc) => {
+    }).then(async (docs) => {
+      return await docs.map(async (doc) => {
         doc.isActive = true;
-          delete doc.isDeleted;
-          doc = await doc.save();
+        delete doc.isDeleted;
+        doc = await doc.save();
       });
     });
 
-    cityPromise=[cityPromise];
-    let fire=await Promise.all(cityPromise);
+    cityPromise = [cityPromise];
+    let fire = await Promise.all(cityPromise);
     cities = fire.map((city) => {
       return new City(city);
     });
