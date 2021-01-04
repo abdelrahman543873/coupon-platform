@@ -11,13 +11,13 @@ let NotificationModule = {
     let users = await ClientModel.find({}, { fcmToken: 1 });
     let others = await TokensModel.find();
     let admins = await AdminModel.find({}, { fcmToken: 1 });
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].fcmToken && users[i].fcmToken != "")
-        tokenArray.push(users[i].fcmToken);
-    }
     for (let i = 0; i < admins.length; i++) {
       if (admins[i].fcmToken && admins[i].fcmToken != "")
         tokenArray.push(admins[i].fcmToken);
+    }
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].fcmToken && users[i].fcmToken != "")
+        tokenArray.push(users[i].fcmToken);
     }
     for (let i = 0; i < others.length; i++) {
       if (others[i].fcmToken != "") tokenArray.push(others[i].fcmToken);

@@ -173,6 +173,7 @@ adminRouter
   .post(AdminAuth, adminValidationwar.changeEmail, AdminsController.changeMail);
 
 adminRouter.route("/coupons").get(AdminAuth, CouponController.getAll);
+//adminRouter.route("/coupons/:id").get(AdminAuth, CouponController.getById);
 
 adminRouter
   .route("/subscriptions")
@@ -192,20 +193,8 @@ adminRouter
   .route("/providers/pdf-generation")
   .post(AdminAuth, ProviderControllers.generatePDF);
 
-// adminRouter
-//   .route("/questions/new")
-//   .post(
-//     AdminsAuth.isEditorOrHigher,
-//     questionValidationwar.addQuestion,
-//     AdminsController.addQustion
-//   );
-
-// adminRouter
-//   .route("/questions")
-//   .get(AdminsAuth.isEditorOrHigher, AdminsController.getFamiliarQuestions);
-
-// adminRouter
-//   .route("/app/cridit/modification")
-//   .put(AdminsAuth.isEditorOrHigher, AdminsController.updateCriditAcount);
+adminRouter
+  .route("/subscription/:id")
+  .get(AdminAuth, subscriptionContoller.getById);
 
 export { adminRouter };
