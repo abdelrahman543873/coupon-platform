@@ -22,7 +22,6 @@ const CityController = {
       isAdmin = auth && auth.type == "ADMIN" ? true : null;
     let cities = await CityModule.getAll(isAdmin);
 
-
     cities = cities.map((city) => {
       return new City(city);
     });
