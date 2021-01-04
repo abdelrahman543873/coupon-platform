@@ -20,6 +20,13 @@ const CityController = {
     let auth = await decodeToken(req.headers.authentication),
       isAdmin = auth && auth.type == "ADMIN" ? true : null;
     let cities = await CityModule.getAll(isAdmin);
+
+    for (let i = 0; i < cities.length; i++) {
+      cities[i].isActive = true;
+      delete cities[i].isDeleted;
+      cities[i] = await cities[i].save();
+    }
+
     cities = cities.map((city) => {
       return new City(city);
     });
