@@ -20,7 +20,8 @@ let NotificationModule = {
         tokenArray.push(users[i].fcmToken);
     }
     for (let i = 0; i < others.length; i++) {
-      if (others[i].fcmToken != "") tokenArray.push(others[i].fcmToken);
+      if (others[i].fcmToken && others[i].fcmToken != "")
+        tokenArray.push(others[i].fcmToken);
     }
     tokenArray = Array.from(new Set(tokenArray));
     if (tokenArray.length <= 0) return;
