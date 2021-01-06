@@ -54,6 +54,8 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+        },
+        fcm_options: {
           link: this.domain + "Dashboard/coupons",
         },
       },
@@ -120,6 +122,8 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+        },
+        fcm_options: {
           link: this.domain + "Dashboard/serviceProvider/view/" + provider.id,
         },
       },
@@ -185,6 +189,8 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+        },
+        fcm_options: {
           link: this.domain + "Dashboard/subscriptions/" + subscription,
         },
       },
