@@ -3,9 +3,9 @@ import { NotificationModel } from "../model/notification";
 import { AdminModel } from "../../Admin/models/admin";
 import { ClientModel } from "../../Users/models/client";
 import { TokensModel } from "../model/tokens";
-import { Provider } from "../../middlewares/responsHandler";
 
 let NotificationModule = {
+  domain: "http://couponat.alefsoftware.com/",
   async newCouponNotification(coupon, lang, providerName) {
     let tokenArray = [];
     let users = await ClientModel.find({}, { fcmToken: 1 });
@@ -54,6 +54,7 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+          link: this.domain + "Dashboard/coupons",
         },
       },
     };
@@ -119,6 +120,7 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+          link: this.domain + "Dashboard/serviceProvider/view/" + provider.id,
         },
       },
     };
@@ -183,6 +185,7 @@ let NotificationModule = {
       webpush: {
         headers: {
           Urgency: "high",
+          link: this.domain + "Dashboard/subscriptions/" + subscription,
         },
       },
     };
