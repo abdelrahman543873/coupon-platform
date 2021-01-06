@@ -350,6 +350,8 @@ let subscriptionContoller = {
           lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
       return next(boom.notFound(errMsg));
     }
+
+    console.log("Idddddddddddd: ", id);
     subscribe.isUsed = true;
     subscribe.isPaid = true;
     subscribe = await subscribe.save();
