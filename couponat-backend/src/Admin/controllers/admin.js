@@ -158,7 +158,33 @@ const AdminsController = {
         "/providers-management/providers/providers-images/" + req.file.filename;
       newData.logoURL = logoURL;
     }
-    console.log(id);
+    if (newData.location) {
+      for (let i = 0; i < newData.location.length; i++) {
+        let geoInfoAr = await GeoInfoAr.reverseLocation(
+          newData.location[i].lat,
+          newData.location[i].long
+        );
+        let geoInfoEn = await GeoInfoEn.reverseLocation(
+          newData.location[i].lat,
+          newData.location[i].long
+        );
+        if (geoInfoAr.err || geoInfoEn.err) {
+          let errMes =
+            req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
+          return next(boom.badData(errMes));
+        }
+
+        let geo = {
+          formattedAddressAr: geoInfoAr.formattedAddress,
+          formattedAddressEn: geoInfoEn.formattedAddress,
+          level2longAr: geoInfoAr.level2long,
+          level2longEn: geoInfoEn.level2long,
+          googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+        };
+
+        newData.location[i] = Object.assign(newData.location[i], geo);
+      }
+    }
     let { doc, err } = await ProviderModule.updateProvider(id, newData);
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));
