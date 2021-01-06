@@ -1,12 +1,12 @@
-import bcrypt from 'bcrypt'
+import bcrypt from "bcryptjs";
 
 function hashPass(password) {
-    
-    return bcrypt.hash(password, 10)
+  let salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
 }
 
 function bcryptCheckPass(userPassword, hashedPass) {
-    return bcrypt.compare(userPassword, hashedPass)
+  return bcrypt.compareSync(userPassword, hashedPass);
 }
 
-export { hashPass, bcryptCheckPass }
+export { hashPass, bcryptCheckPass };

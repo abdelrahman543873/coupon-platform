@@ -23,7 +23,7 @@ const ProviderValidationWares = {
     req.body.location = location;
     delete req.body.lat;
     delete req.body.long;
-    if (req.body.cities.length != req.body.location.length) {
+    if (req.body.cities.length > req.body.location.length) {
       let lang = req.headers.lang || "ar",
         errMsg =
           lang == "en"

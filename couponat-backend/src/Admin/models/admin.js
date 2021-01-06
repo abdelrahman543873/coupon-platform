@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { hashPass } from "../../utils/bcryptHelper";
 
-
 let adminSchema = mongoose.Schema(
   {
     name: {

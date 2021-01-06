@@ -49,6 +49,11 @@ let providerSchema = mongoose.Schema(
           type: String,
           required: true,
         },
+        formattedAddressAr: String,
+        formattedAddressEn: String,
+        level2longAr: String,
+        level2longEn: String,
+        googlePlaceId: String,
       },
     ],
     code: {

@@ -14,6 +14,7 @@ import { ContactModel } from "../models/contactUs";
 import { ProviderModel } from "../models/provider";
 import { IP } from "../../../serverIP";
 import { nanoid } from "nanoid";
+import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {
@@ -27,6 +28,7 @@ const ProviderControllers = {
         "/providers-management/providers/providers-images/" + req.file.filename;
       provider.logoURL = logoURL;
     }
+
     let hashedPass = await hashPass(provider.password);
     provider.password = hashedPass;
     for (let i = 0; i < req.body.cities.length; i++) {
@@ -37,7 +39,34 @@ const ProviderControllers = {
         );
       }
     }
+
     provider.code = nanoid(6);
+
+    for (let i = 0; i < provider.location.length; i++) {
+      let geoInfoAr = await GeoInfoAr.reverseLocation(
+        provider.location[i].lat,
+        provider.location[i].long
+      );
+      let geoInfoEn = await GeoInfoEn.reverseLocation(
+        provider.location[i].lat,
+        provider.location[i].long
+      );
+      if (geoInfoAr.err || geoInfoEn.err) {
+        let errMes =
+          req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
+        return next(boom.badData(errMes));
+      }
+
+      let geo = {
+        formattedAddressAr: geoInfoAr.formattedAddress,
+        formattedAddressEn: geoInfoEn.formattedAddress,
+        level2longAr: geoInfoAr.level2long,
+        level2longEn: geoInfoEn.level2long,
+        googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+      };
+
+      provider.location[i] = Object.assign(provider.location[i], geo);
+    }
     let { doc, err } = await ProviderModule.add(provider);
 
     if (err)
