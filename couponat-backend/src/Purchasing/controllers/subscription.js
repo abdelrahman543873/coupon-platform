@@ -344,6 +344,8 @@ let subscriptionContoller = {
   async confirmUsage(req, res, next) {
     let id = req.params.id;
     let subscribe = await subscriptionModule.getById(id);
+    console.log("Idddddddddddd: ", id);
+
     if (!subscribe || subscribe.isUsed == true) {
       let lang = req.headers.lang || "ar",
         errMsg =
@@ -351,7 +353,6 @@ let subscriptionContoller = {
       return next(boom.notFound(errMsg));
     }
 
-    console.log("Idddddddddddd: ", id);
     subscribe.isUsed = true;
     subscribe.isPaid = true;
     subscribe = await subscribe.save();
