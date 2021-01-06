@@ -124,7 +124,7 @@ let NotificationModule = {
           Urgency: "high",
         },
         fcm_options: {
-          link: this.domain + "Dashboard/serviceProvider/view/" + provider.id,
+          link: this.domain + "Dashboard/service-provider/view/" + provider.id,
         },
       },
     };
