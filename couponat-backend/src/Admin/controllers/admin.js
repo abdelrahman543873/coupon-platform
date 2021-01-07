@@ -158,7 +158,7 @@ const AdminsController = {
         "/providers-management/providers/providers-images/" + req.file.filename;
       newData.logoURL = logoURL;
     }
-    if (newData.location) {
+    if (newData.cities) {
       for (let i = 0; i < newData.cities.length; i++) {
         for (let j = 0; j < newData.cities[i].locations.length; j++) {
           let geoInfoAr = await GeoInfoAr.reverseLocation(
