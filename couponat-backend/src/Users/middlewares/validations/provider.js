@@ -81,7 +81,7 @@ const ProviderValidationWares = {
     if (req.body.cities && req.body.lat && req.body.long) {
       if (
         req.body.lat.length != req.body.long.length ||
-        req.body.lat.length != req.body.cities.length
+        req.body.lat.length < req.body.cities.length
       ) {
         let lang = req.headers.lang || "ar",
           errMsg =
