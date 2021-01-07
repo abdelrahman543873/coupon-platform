@@ -456,6 +456,7 @@ const ProviderControllers = {
 
   async updateIm(req, res, next) {
     let providers = await ProviderModel.find();
+    console.log(providers);
     for (let i = 0; i < providers.length; i++) {
       providers[i].cities = [
         {
