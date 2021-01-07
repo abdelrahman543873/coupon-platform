@@ -122,7 +122,7 @@ const ProviderControllers = {
     provider = new Provider(provider);
     return res.status(200).send({
       isSuccessed: true,
-      data: new Provider(doc),
+      data: provider,
       error: null,
     });
   },
