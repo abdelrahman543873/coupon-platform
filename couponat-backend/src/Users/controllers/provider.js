@@ -453,6 +453,23 @@ const ProviderControllers = {
       error: null,
     });
   },
+
+  async updateIm(req, res, next) {
+    let providers = await ProviderModel.find();
+    for (let i = 0; i < providers.length; i++) {
+      providers[i].cities = {
+        id: "5ff70597eff3770032f1393e",
+        locations: [{ lat: "123", long: "123" }],
+      };
+      providers[i].location ? delete providers[i].location : "";
+      providers[i] = await providers[i].save();
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: providers,
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };
