@@ -11,7 +11,7 @@ const ProviderValidationWares = {
       return next(boom.badData(error.details[0].message));
     }
 
-    req.body.cities.filter(
+    req.body.cities = req.body.cities.filter(
       (v, i, a) => a.findIndex((t) => t.id === v.id) === i
     );
 
