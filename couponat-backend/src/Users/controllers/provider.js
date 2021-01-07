@@ -465,7 +465,7 @@ const ProviderControllers = {
           locations: [{ lat: "123", long: "123" }],
         },
       ];
-      providers[i].location ? delete providers[i].location : "";
+       delete providers[i].location;
       providers[i] = await providers[i].save();
     }
     return res.status(200).send({
