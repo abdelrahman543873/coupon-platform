@@ -98,7 +98,8 @@ const ProviderControllers = {
 
   async updateImage(req, res, next) {
     let auth = await decodeToken(req.headers.authentication);
-    let id = auth.id || req.params.id || null;
+    let id =
+      (auth.id && auth.type == "PROVIDER" ? auth.id : req.params.id) || null;
     let provider = await ProviderModule.getById(id);
     if (!provider) {
       let errMsg =
