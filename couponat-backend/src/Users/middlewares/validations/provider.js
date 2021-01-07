@@ -31,6 +31,7 @@ const ProviderValidationWares = {
             : "يجب اختيار موقع لكل مدينه";
       return next(boom.badData(errMsg));
     }
+    req.body.cities = Array.from(new Set(req.body.cities));
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
@@ -102,6 +103,7 @@ const ProviderValidationWares = {
       req.body.location = location;
       delete req.body.lat;
       delete req.body.long;
+      req.body.cities = Array.from(new Set(req.body.cities));
     }
 
     const { error } = ProviderValidations.updateProvider.validate(req.body);
