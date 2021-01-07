@@ -185,7 +185,7 @@ const AdminsController = {
             googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
           };
 
-          newData.cities[i].location[j] = Object.assign(
+          newData.cities[i].locations[j] = Object.assign(
             newData.cities[i].locations[j],
             geo
           );
