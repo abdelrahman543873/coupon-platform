@@ -455,6 +455,7 @@ const ProviderControllers = {
   },
 
   async updateIm(req, res, next) {
+    console.log("hete");
     let providers = await ProviderModel.find();
     console.log(providers);
     for (let i = 0; i < providers.length; i++) {
