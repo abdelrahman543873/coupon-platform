@@ -5,39 +5,19 @@ const ProviderValidationWares = {
   add(req, res, next) {
     console.log("midille");
     console.log(JSON.stringify(req.body));
-    // let location = [];
-    // if (req.body.lat.length != req.body.long.length) {
-    //   let lang = req.headers.lang || "ar",
-    //     errMsg =
-    //       lang == "en"
-    //         ? "Every City Must have specific location!"
-    //         : "يجب اختيار موقع لكل مدينه";
-    //   return next(boom.badData(errMsg));
-    // }
-    // for (let i = 0; i < req.body.lat.length; i++) {
-    //   location.push({
-    //     lat: req.body.lat[i],
-    //     long: req.body.long[i],
-    //   });
-    // }
-    // req.body.location = location;
-    // delete req.body.lat;
-    // delete req.body.long;
-    // if (req.body.cities.length > req.body.location.length) {
-    //   let lang = req.headers.lang || "ar",
-    //     errMsg =
-    //       lang == "en"
-    //         ? "Evry City Must have specific location!"
-    //         : "يجب اختيار موقع لكل مدينه";
-    //   return next(boom.badData(errMsg));
-    // }
-    //req.body.cities = Array.from(new Set(req.body.cities));
 
-    
     let { error } = ProviderValidations.add.validate(req.body);
     if (error) {
       return next(boom.badData(error.details[0].message));
     }
+
+    req.body.cities.filter(
+      (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+    );
+
+    // for(let i=0;i<req.body.cities.length;i++){
+
+    // }
     next();
   },
 
@@ -65,42 +45,6 @@ const ProviderValidationWares = {
     console.log("midille");
     console.log(JSON.stringify(req.body));
     console.log(req.body);
-
-    // if (req.body.cities && (!req.body.lat || !req.body.long)) {
-    //   let lang = req.headers.lang || "ar",
-    //     errMsg =
-    //       lang == "en"
-    //         ? "Every City Must have specific location!"
-    //         : "يجب اختيار موقع لكل مدينه";
-    //   return next(boom.badData(errMsg));
-    // }
-    // if (req.body.cities && req.body.lat && req.body.long) {
-    //   if (
-    //     req.body.lat.length != req.body.long.length ||
-    //     req.body.lat.length < req.body.cities.length
-    //   ) {
-    //     let lang = req.headers.lang || "ar",
-    //       errMsg =
-    //         lang == "en"
-    //           ? "Every City Must have specific location!"
-    //           : "يجب اختيار موقع لكل مدينه";
-    //     return next(boom.badData(errMsg));
-    //   }
-    // }
-
-    // if (req.body.cities) {
-    //   let location = [];
-    //   for (let i = 0; i < req.body.lat.length; i++) {
-    //     location.push({
-    //       lat: req.body.lat[i],
-    //       long: req.body.long[i],
-    //     });
-    //   }
-    //   req.body.location = location;
-    //   delete req.body.lat;
-    //   delete req.body.long;
-    //   req.body.cities = Array.from(new Set(req.body.cities));
-    // }
 
     const { error } = ProviderValidations.updateProvider.validate(req.body);
 

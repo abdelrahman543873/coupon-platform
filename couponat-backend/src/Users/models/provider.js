@@ -37,7 +37,7 @@ let providerSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "City",
-          // autopopulate: true,
+          autopopulate: true,
         },
         locations: [
           {

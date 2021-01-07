@@ -75,9 +75,16 @@ adminRouter
   .route("/providers")
   .post(
     AdminAuth,
-    uploadHelper("Providers-Images/").single("logoURL"),
     ProviderValidationWares.add,
     ProviderControllers.addProvider
+  );
+
+adminRouter
+  .route("/providers/:id/logo")
+  .put(
+    AdminAuth,
+    uploadHelper("Providers-Images/").single("logoURL"),
+    ProviderControllers.updateImage
   );
 
 adminRouter.route("/provider/:id").get(AdminAuth, AdminsController.getProvider);

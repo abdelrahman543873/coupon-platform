@@ -48,6 +48,14 @@ providersRouter
   );
 
 providersRouter
+  .route("/logo")
+  .put(
+    checkUserAuth,
+    uploadHelper("Providers-Images/").single("logoURL"),
+    ProviderControllers.updateImage
+  );
+
+providersRouter
   .route("/newPassword/")
   .put(
     checkUserAuth,
