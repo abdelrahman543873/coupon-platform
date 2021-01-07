@@ -159,30 +159,37 @@ const AdminsController = {
       newData.logoURL = logoURL;
     }
     if (newData.location) {
-      for (let i = 0; i < newData.location.length; i++) {
-        let geoInfoAr = await GeoInfoAr.reverseLocation(
-          newData.location[i].lat,
-          newData.location[i].long
-        );
-        let geoInfoEn = await GeoInfoEn.reverseLocation(
-          newData.location[i].lat,
-          newData.location[i].long
-        );
-        if (geoInfoAr.err || geoInfoEn.err) {
-          let errMes =
-            req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
-          return next(boom.badData(errMes));
+      for (let i = 0; i < newData.cities.length; i++) {
+        for (let j = 0; j < newData.cities[i].locations.length; j++) {
+          let geoInfoAr = await GeoInfoAr.reverseLocation(
+            newData.cities[i].locations[j].lat,
+            newData.cities[i].locations[j].long
+          );
+          let geoInfoEn = await GeoInfoEn.reverseLocation(
+            newData.cities[i].locations[j].lat,
+            newData.cities[i].locations[j].long
+          );
+          if (geoInfoAr.err || geoInfoEn.err) {
+            let errMes =
+              req.headers.lang == "en"
+                ? "Invalide Location"
+                : "الموقع غير صحيح";
+            return next(boom.badData(errMes));
+          }
+
+          let geo = {
+            formattedAddressAr: geoInfoAr.formattedAddress,
+            formattedAddressEn: geoInfoEn.formattedAddress,
+            level2longAr: geoInfoAr.level2long,
+            level2longEn: geoInfoEn.level2long,
+            googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+          };
+
+          newData.cities[i].location[j] = Object.assign(
+            newData.cities[i].locations[j],
+            geo
+          );
         }
-
-        let geo = {
-          formattedAddressAr: geoInfoAr.formattedAddress,
-          formattedAddressEn: geoInfoEn.formattedAddress,
-          level2longAr: geoInfoAr.level2long,
-          level2longEn: geoInfoEn.level2long,
-          googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
-        };
-
-        newData.location[i] = Object.assign(newData.location[i], geo);
       }
     }
     let { doc, err } = await ProviderModule.updateProvider(id, newData);

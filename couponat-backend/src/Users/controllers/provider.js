@@ -23,49 +23,56 @@ const ProviderControllers = {
     let logoURL = "";
     provider.email = provider.email.toLowerCase();
 
-    if (req.file) {
-      logoURL =
-        "/providers-management/providers/providers-images/" + req.file.filename;
-      provider.logoURL = logoURL;
-    }
+    // if (req.file) {
+    //   logoURL =
+    //     "/providers-management/providers/providers-images/" + req.file.filename;
+    //   provider.logoURL = logoURL;
+    // }
 
     let hashedPass = await hashPass(provider.password);
     provider.password = hashedPass;
-    for (let i = 0; i < req.body.cities.length; i++) {
-      let city = await CityModule.getById(req.body.cities[i]);
+    //provider.cities = [...new Set(provider.cities.map((city) => city.id))];
+
+    for (let i = 0; i < provider.cities.length; i++) {
+      let city = await CityModule.getById(provider.cities[i].id);
       if (!city) {
         return next(
-          boom.badData(`City with Id ${req.body.cities[i]} not found`)
+          boom.badData(`City with Id ${provider.cities[i].id} not found`)
         );
       }
     }
 
     provider.code = nanoid(6);
 
-    for (let i = 0; i < provider.location.length; i++) {
-      let geoInfoAr = await GeoInfoAr.reverseLocation(
-        provider.location[i].lat,
-        provider.location[i].long
-      );
-      let geoInfoEn = await GeoInfoEn.reverseLocation(
-        provider.location[i].lat,
-        provider.location[i].long
-      );
-      if (geoInfoAr.err || geoInfoEn.err) {
-        let errMes =
-          req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
-        return next(boom.badData(errMes));
+    for (let i = 0; i < provider.cities.length; i++) {
+      for (let j = 0; j < provider.cities[i].locations.length; j++) {
+        let geoInfoAr = await GeoInfoAr.reverseLocation(
+          provider.cities[i].locations[j].lat,
+          provider.cities[i].locations[j].long
+        );
+        let geoInfoEn = await GeoInfoEn.reverseLocation(
+          provider.cities[i].locations[j].lat,
+          provider.cities[i].locations[j].long
+        );
+        if (geoInfoAr.err || geoInfoEn.err) {
+          let errMes =
+            req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
+          return next(boom.badData(errMes));
+        }
+
+        let geo = {
+          formattedAddressAr: geoInfoAr.formattedAddress,
+          formattedAddressEn: geoInfoEn.formattedAddress,
+          level2longAr: geoInfoAr.level2long,
+          level2longEn: geoInfoEn.level2long,
+          googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+        };
+
+        provider.cities[i].locations[j] = Object.assign(
+          provider.cities[i].locations[j],
+          geo
+        );
       }
-
-      let geo = {
-        formattedAddressAr: geoInfoAr.formattedAddress,
-        formattedAddressEn: geoInfoEn.formattedAddress,
-        level2longAr: geoInfoAr.level2long,
-        level2longEn: geoInfoEn.level2long,
-        googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
-      };
-
-      provider.location[i] = Object.assign(provider.location[i], geo);
     }
     let { doc, err } = await ProviderModule.add(provider);
 
@@ -86,6 +93,36 @@ const ProviderControllers = {
         authToken,
       },
       error: false,
+    });
+  },
+
+  async updateImage(req, res, next) {
+    let auth = await decodeToken(req.headers.authentication);
+    let id = auth.id || req.params.id || null;
+    let provider = await ProviderModule.getById(id);
+    if (!provider) {
+      let errMsg =
+        req.headers.lang == "en"
+          ? "provider not found"
+          : " مقدم الخدمة غير موجود";
+      return next(boom.badData(errMsg));
+    }
+    if (req.file) {
+      let logoURL =
+        "/providers-management/providers/providers-images/" + req.file.filename;
+      provider.logoURL = logoURL;
+    } else {
+      let errMsg =
+        req.headers.lang == "en" ? "must add logo" : "يجب اختيار صورة";
+      return next(boom.badData(errMsg));
+    }
+
+    provider = await provider.save();
+    provider = new Provider(provider);
+    return res.status(200).send({
+      isSuccessed: true,
+      data: new Provider(doc),
+      error: null,
     });
   },
 
@@ -139,37 +176,44 @@ const ProviderControllers = {
     let auth = await decodeToken(req.headers.authentication);
     let id = auth.id;
     let newData = req.body;
-    if (req.file) {
-      let logoURL =
-        "/providers-management/providers/providers-images/" + req.file.filename;
-      newData.logoURL = logoURL;
-    }
+    // if (req.file) {
+    //   let logoURL =
+    //     "/providers-management/providers/providers-images/" + req.file.filename;
+    //   newData.logoURL = logoURL;
+    // }
 
     if (newData.location) {
-      for (let i = 0; i < newData.location.length; i++) {
-        let geoInfoAr = await GeoInfoAr.reverseLocation(
-          newData.location[i].lat,
-          newData.location[i].long
-        );
-        let geoInfoEn = await GeoInfoEn.reverseLocation(
-          newData.location[i].lat,
-          newData.location[i].long
-        );
-        if (geoInfoAr.err || geoInfoEn.err) {
-          let errMes =
-            req.headers.lang == "en" ? "Invalide Location" : "الموقع غير صحيح";
-          return next(boom.badData(errMes));
+      for (let i = 0; i < newData.cities.length; i++) {
+        for (let j = 0; j < newData.cities[i].locations.length; j++) {
+          let geoInfoAr = await GeoInfoAr.reverseLocation(
+            newData.cities[i].locations[j].lat,
+            newData.cities[i].locations[j].long
+          );
+          let geoInfoEn = await GeoInfoEn.reverseLocation(
+            newData.cities[i].locations[j].lat,
+            newData.cities[i].locations[j].long
+          );
+          if (geoInfoAr.err || geoInfoEn.err) {
+            let errMes =
+              req.headers.lang == "en"
+                ? "Invalide Location"
+                : "الموقع غير صحيح";
+            return next(boom.badData(errMes));
+          }
+
+          let geo = {
+            formattedAddressAr: geoInfoAr.formattedAddress,
+            formattedAddressEn: geoInfoEn.formattedAddress,
+            level2longAr: geoInfoAr.level2long,
+            level2longEn: geoInfoEn.level2long,
+            googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+          };
+
+          newData.cities[i].location[j] = Object.assign(
+            newData.cities[i].locations[j],
+            geo
+          );
         }
-
-        let geo = {
-          formattedAddressAr: geoInfoAr.formattedAddress,
-          formattedAddressEn: geoInfoEn.formattedAddress,
-          level2longAr: geoInfoAr.level2long,
-          level2longEn: geoInfoEn.level2long,
-          googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
-        };
-
-        newData.location[i] = Object.assign(newData.location[i], geo);
       }
     }
 

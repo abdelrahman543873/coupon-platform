@@ -2,18 +2,11 @@ import Joi from "joi";
 import { errorsOverride } from "../../../utils/JoiErrorOverriding";
 import { checkMongooseId } from "../../../utils/mongooseIdHelper";
 
-const locationSchema = Joi.object()
-  .keys({
-    lat: Joi.string().required().error(errorsOverride),
-    long: Joi.string().required().error(errorsOverride),
-  })
-  .required()
-  .error(errorsOverride);
-
-const locationSchemaUpdate = Joi.object().keys({
+const locationSchema = Joi.object().keys({
   lat: Joi.string().required().error(errorsOverride),
   long: Joi.string().required().error(errorsOverride),
 });
+
 const ProviderValidations = {
   add: Joi.object({
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
@@ -25,16 +18,15 @@ const ProviderValidations = {
     slogan: Joi.string().min(10).required().error(errorsOverride),
 
     cities: Joi.array()
-      .items(
-        Joi.custom(checkMongooseId, "custom validation")
+      .items({
+        id: Joi.custom(checkMongooseId, "custom validation")
           .required()
-          .error(errorsOverride)
-      )
-      .required()
-      .error(errorsOverride),
-
-    location: Joi.array()
-      .items(locationSchema)
+          .error(errorsOverride),
+        locations: Joi.array()
+          .items(locationSchema)
+          .required()
+          .error(errorsOverride),
+      })
       .required()
       .error(errorsOverride),
 
@@ -75,17 +67,18 @@ const ProviderValidations = {
 
     slogan: Joi.string().min(10).optional().error(errorsOverride),
 
-    cities: Joi.array().items(
-      Joi.custom(checkMongooseId, "custom validation")
-        .optional()
-        .error(errorsOverride)
-    ),
-
-    location: Joi.array()
-      .items(locationSchemaUpdate)
+    cities: Joi.array()
+      .items({
+        id: Joi.custom(checkMongooseId, "custom validation")
+          .required()
+          .error(errorsOverride),
+        locations: Joi.array()
+          .items(locationSchema)
+          .required()
+          .error(errorsOverride),
+      })
       .optional()
       .error(errorsOverride),
-
     officeTele: Joi.string().min(3).optional().error(errorsOverride),
 
     lat: Joi.string().min(3).optional().error(errorsOverride),

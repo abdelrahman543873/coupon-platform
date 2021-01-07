@@ -32,28 +32,31 @@ let providerSchema = mongoose.Schema(
     },
     cities: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "City",
-        autopopulate: true,
-      },
-    ],
-    location: [
-      {
         _id: false,
-        lat: {
-          type: String,
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
           required: true,
+          ref: "City",
+          autopopulate: true,
         },
-        long: {
-          type: String,
-          required: true,
-        },
-        formattedAddressAr: String,
-        formattedAddressEn: String,
-        level2longAr: String,
-        level2longEn: String,
-        googlePlaceId: String,
+        locations: [
+          {
+            _id: false,
+            lat: {
+              type: String,
+              required: true,
+            },
+            long: {
+              type: String,
+              required: true,
+            },
+            formattedAddressAr: String,
+            formattedAddressEn: String,
+            level2longAr: String,
+            level2longEn: String,
+            googlePlaceId: String,
+          },
+        ],
       },
     ],
     code: {

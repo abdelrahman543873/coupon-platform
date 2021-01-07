@@ -9,9 +9,12 @@ class Provider {
       this.slogan = provider.slogan;
       this.logoURL = provider.logoURL ? IP + provider.logoURL : "";
       this.cities = provider.cities.map((city) => {
-        return new City(city);
+        return {
+          city: new City(city.id),
+          locations: city.locations,
+        };
       });
-      this.location = provider.location;
+      // this.location = provider.location;
       this.officeTele = provider.officeTele;
       this.websiteLink = provider.websiteLink || "";
       this.facebookLink = provider.facebookLink || "";
