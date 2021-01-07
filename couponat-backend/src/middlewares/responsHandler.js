@@ -30,7 +30,7 @@ class City {
     if (city) {
       this.id = city._id;
       this.name = city.name;
-      //this.location = city.location;
+      this.location = city.location;
       this.isActive = city.isActive;
     }
   }
