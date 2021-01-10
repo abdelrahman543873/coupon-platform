@@ -455,26 +455,29 @@ const ProviderControllers = {
     });
   },
 
-  // async updateIm(req, res, next) {
-  //   console.log("hete");
-  //   let providers = await ProviderModel.find();
-  //   console.log(providers);
-  //   for (let i = 0; i < providers.length; i++) {
-  //     providers[i].cities = [
-  //       {
-  //         id: "5ff70597eff3770032f1393e",
-  //         locations: [{ lat: "123", long: "123" }],
-  //       },
-  //     ];
-  //     providers[i].location = [{}];
-  //     providers[i] = await providers[i].save();
-  //   }
-  //   return res.status(200).send({
-  //     isSuccessed: true,
-  //     data: providers,
-  //     error: null,
-  //   });
-  // },
+  async updateIm(req, res, next) {
+    console.log("hete");
+    let providers = await ProviderModel.find();
+    console.log(providers);
+    for (let i = 0; i < providers.length; i++) {
+      providers[i].cities = [
+        {
+          id: "5ff59dac9a6ffd0030e98d1b",
+          locations: [
+            { lat: "24.472806825717893", long: "39.610923416912556" },
+            { lat: "24.15562951472156", long: "47.326109893620014" },
+          ],
+        },
+      ];
+      providers[i].location = [{}];
+      providers[i] = await providers[i].save();
+    }
+    return res.status(200).send({
+      isSuccessed: true,
+      data: providers,
+      error: null,
+    });
+  },
 };
 
 export { ProviderControllers };
