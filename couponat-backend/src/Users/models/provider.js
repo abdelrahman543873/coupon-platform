@@ -41,7 +41,6 @@ let providerSchema = mongoose.Schema(
         },
         locations: [
           {
-            _id: false,
             lat: {
               type: String,
               required: true,
