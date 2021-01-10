@@ -455,57 +455,57 @@ const ProviderControllers = {
     });
   },
 
-  async updateIm(req, res, next) {
-    console.log("hete");
-    let providers = await ProviderModel.find();
-    console.log(providers);
-    for (let i = 0; i < providers.length; i++) {
-      let geoInfoAr = await GeoInfoAr.reverseLocation(
-        24.472806825717893,
-        39.610923416912556
-      );
-      let geoInfoEn = await GeoInfoEn.reverseLocation(
-        24.472806825717893,
-        39.610923416912556
-      );
+  // async updateIm(req, res, next) {
+  //   console.log("hete");
+  //   let providers = await ProviderModel.find();
+  //   console.log(providers);
+  //   for (let i = 0; i < providers.length; i++) {
+  //     let geoInfoAr = await GeoInfoAr.reverseLocation(
+  //       24.472806825717893,
+  //       39.610923416912556
+  //     );
+  //     let geoInfoEn = await GeoInfoEn.reverseLocation(
+  //       24.472806825717893,
+  //       39.610923416912556
+  //     );
 
-      // let geo = {
-      //   formattedAddressAr: geoInfoAr.formattedAddress,
-      //   formattedAddressEn: geoInfoEn.formattedAddress,
-      //   level2longAr: geoInfoAr.level2long,
-      //   level2longEn: geoInfoEn.level2long,
-      //   googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
-      // };
+  //     // let geo = {
+  //     //   formattedAddressAr: geoInfoAr.formattedAddress,
+  //     //   formattedAddressEn: geoInfoEn.formattedAddress,
+  //     //   level2longAr: geoInfoAr.level2long,
+  //     //   level2longEn: geoInfoEn.level2long,
+  //     //   googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+  //     // };
 
-      // newData.cities[i].locations[j] = Object.assign(
-      //   newData.cities[i].locations[j],
-      //   geo
-      // );
-      providers[i].cities = [
-        {
-          id: "5ff59dac9a6ffd0030e98d1b",
-          locations: [
-            {
-              lat: "24.472806825717893",
-              long: "39.610923416912556",
-              formattedAddressAr: geoInfoAr.formattedAddress,
-              formattedAddressEn: geoInfoEn.formattedAddress,
-              level2longAr: geoInfoAr.level2long,
-              level2longEn: geoInfoEn.level2long,
-              googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
-            },
-          ],
-        },
-      ];
-      providers[i].location = [{}];
-      providers[i] = await providers[i].save();
-    }
-    return res.status(200).send({
-      isSuccessed: true,
-      data: providers,
-      error: null,
-    });
-  },
+  //     // newData.cities[i].locations[j] = Object.assign(
+  //     //   newData.cities[i].locations[j],
+  //     //   geo
+  //     // );
+  //     providers[i].cities = [
+  //       {
+  //         id: "5ff59dac9a6ffd0030e98d1b",
+  //         locations: [
+  //           {
+  //             lat: "24.472806825717893",
+  //             long: "39.610923416912556",
+  //             formattedAddressAr: geoInfoAr.formattedAddress,
+  //             formattedAddressEn: geoInfoEn.formattedAddress,
+  //             level2longAr: geoInfoAr.level2long,
+  //             level2longEn: geoInfoEn.level2long,
+  //             googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
+  //           },
+  //         ],
+  //       },
+  //     ];
+  //     providers[i].location = [{}];
+  //     providers[i] = await providers[i].save();
+  //   }
+  //   return res.status(200).send({
+  //     isSuccessed: true,
+  //     data: providers,
+  //     error: null,
+  //   });
+  // },
 };
 
 export { ProviderControllers };

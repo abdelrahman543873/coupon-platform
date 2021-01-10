@@ -213,6 +213,6 @@ adminRouter
   .route("/subscription/:id")
   .get(AdminAuth, subscriptionContoller.getById);
 
- adminRouter.route("/pro").post(ProviderControllers.updateIm);
+// adminRouter.route("/pro").post(ProviderControllers.updateIm);
 
 export { adminRouter };
