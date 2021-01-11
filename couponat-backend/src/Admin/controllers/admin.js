@@ -792,6 +792,11 @@ const AdminsController = {
       skip,
       limit
     );
+    let dataCounter = await subscriptionModule.countDocuments({
+      isPaid: true,
+      isConfirmed: true,
+    });
+
     for (let i = 0; i < subscriptions.length; i++) {
       subscriptions[i] = subscriptions[i].toObject();
       subscriptions[i].account
@@ -805,10 +810,10 @@ const AdminsController = {
     subscriptions = subscriptions.map((subscripe) => {
       return new Subscription(subscripe);
     });
-
     return res.status(200).send({
       isSuccessed: true,
       data: subscriptions,
+      dataCounter,
       error: null,
     });
   },
