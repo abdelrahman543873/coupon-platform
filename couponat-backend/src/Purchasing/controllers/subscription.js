@@ -318,6 +318,12 @@ let subscriptionContoller = {
       return next(boom.notFound(errMsg));
     }
 
+    if (!provider.isActive) {
+      let lang = req.headers.lang || "ar",
+        errMsg = lang == "en" ? "Provider not found" : "مقدم الخدمة غير موجود";
+      return next(boom.notFound(errMsg));
+    }
+
     let subscribtions = await subscriptionModule.scan(id, provider._id);
     if (subscribtions.length < 1) {
       let lang = req.headers.lang || "ar",
