@@ -30,6 +30,7 @@ import {
   Subscription,
 } from "../../middlewares/responsHandler";
 import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper";
+import { SubscripionModel } from "../../Purchasing/models/subscription";
 
 const AdminsController = {
   async add(req, res, next) {
@@ -792,7 +793,7 @@ const AdminsController = {
       skip,
       limit
     );
-    let dataCounter = await subscriptionModule.countDocuments({
+    let dataCounter = await SubscripionModel.countDocuments({
       isPaid: true,
       isConfirmed: true,
     });
