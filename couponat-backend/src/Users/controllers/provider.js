@@ -63,8 +63,8 @@ const ProviderControllers = {
         let geo = {
           formattedAddressAr: geoInfoAr.formattedAddress,
           formattedAddressEn: geoInfoEn.formattedAddress,
-          level2longAr: geoInfoAr.level3long,
-          level2longEn: geoInfoEn.level3long,
+          level2longAr: geoInfoAr.level2long,
+          level2longEn: geoInfoEn.level2long,
           googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
         };
 
@@ -205,8 +205,8 @@ const ProviderControllers = {
           let geo = {
             formattedAddressAr: geoInfoAr.formattedAddress,
             formattedAddressEn: geoInfoEn.formattedAddress,
-            level2longAr: geoInfoAr.level3long,
-            level2longEn: geoInfoEn.level3long,
+            level2longAr: geoInfoAr.level2long,
+            level2longEn: geoInfoEn.level2long,
             googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
           };
 
@@ -472,8 +472,8 @@ const ProviderControllers = {
   //     // let geo = {
   //     //   formattedAddressAr: geoInfoAr.formattedAddress,
   //     //   formattedAddressEn: geoInfoEn.formattedAddress,
-  //     //   level2longAr: geoInfoAr.level3long,
-  //     //   level2longEn: geoInfoEn.level3long,
+  //     //   level2longAr: geoInfoAr.level2long,
+  //     //   level2longEn: geoInfoEn.level2long,
   //     //   googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
   //     // };
 
@@ -490,8 +490,8 @@ const ProviderControllers = {
   //             long: "39.610923416912556",
   //             formattedAddressAr: geoInfoAr.formattedAddress,
   //             formattedAddressEn: geoInfoEn.formattedAddress,
-  //             level2longAr: geoInfoAr.level3long,
-  //             level2longEn: geoInfoEn.level3long,
+  //             level2longAr: geoInfoAr.level2long,
+  //             level2longEn: geoInfoEn.level2long,
   //             googlePlaceId: geoInfoAr.googlePlaceId || geoInfoEn.googlePlaceId,
   //           },
   //         ],

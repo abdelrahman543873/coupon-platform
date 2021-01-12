@@ -29,7 +29,9 @@ let GeoInfoEn = {
           googlePlaceId: doc[0].extra.googlePlaceId
             ? doc[0].extra.googlePlaceId
             : "",
-          level2long: doc[0].administrativeLevels.level2long
+          level2long: doc[0].administrativeLevels.level3long
+            ? doc[0].administrativeLevels.level3long
+            : doc[0].administrativeLevels.level2long
             ? doc[0].administrativeLevels.level2long
             : "",
         };
@@ -53,7 +55,9 @@ let GeoInfoAr = {
           googlePlaceId: doc[0].extra.googlePlaceId
             ? doc[0].extra.googlePlaceId
             : "",
-          level2long: doc[0].administrativeLevels.level2long
+          level2long: doc[0].administrativeLevels.level3long
+            ? doc[0].administrativeLevels.level3long
+            : doc[0].administrativeLevels.level2long
             ? doc[0].administrativeLevels.level2long
             : "",
         };
