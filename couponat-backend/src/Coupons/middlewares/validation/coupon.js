@@ -92,7 +92,7 @@ const CouponValidationWares = {
       parseInt(req.body.servicePrice) <= parseInt(req.body.offerPrice)
     ) {
       let errMsg =
-        lang == "en"
+        req.headers.lang == "en"
           ? "offer price must be less than service price"
           : "السعر بعد الخصم يجب ان يكون اقل من السعر قبل الخصم";
       return next(boom.notFound(errMsg));
