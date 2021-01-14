@@ -155,9 +155,9 @@ const CouponController = {
 
     if (
       (body.servicePrice &&
-        parseInt(body.servicePrice) <= parseInt(coupon.offerPrice)) ||
+        parseInt(body.servicePrice) <= parseInt(coupons.offerPrice)) ||
       (body.offerPrice &&
-        parseInt(body.offerPrice) >= parseInt(coupon.servicePrice))
+        parseInt(body.offerPrice) >= parseInt(coupons.servicePrice))
     ) {
       let errMsg =
         lang == "en"
