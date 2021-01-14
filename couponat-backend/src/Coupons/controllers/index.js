@@ -154,7 +154,8 @@ const CouponController = {
     let body = req.body;
 
     if (
-      (body.servicePrice &&
+      (!(body.servicePrice && body.offerPrice) &&
+        body.servicePrice &&
         parseInt(body.servicePrice) <= parseInt(coupons.offerPrice)) ||
       (body.offerPrice &&
         parseInt(body.offerPrice) >= parseInt(coupons.servicePrice))
