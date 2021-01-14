@@ -152,6 +152,20 @@ const CouponController = {
       return next(boom.notFound(errMsg));
     }
     let body = req.body;
+
+    if (
+      (body.servicePrice &&
+        parseInt(body.servicePrice) <= parseInt(coupon.offerPrice)) ||
+      (body.offerPrice &&
+        parseInt(body.offerPrice) >= parseInt(coupon.servicePrice))
+    ) {
+      let errMsg =
+        lang == "en"
+          ? "offer price must be less than service price"
+          : "السعر بعد الخصم يجب ان يكون اقل من السعر قبل الخصم";
+      return next(boom.notFound(errMsg));
+    }
+
     body.name && !body.name.arabic
       ? (body.name.arabic = coupons.name.arabic)
       : "";

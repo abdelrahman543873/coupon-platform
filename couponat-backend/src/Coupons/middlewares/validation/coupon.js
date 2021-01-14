@@ -85,6 +85,18 @@ const CouponValidationWares = {
 
     console.log(req.body.name);
     console.log(req.body.description);
+
+    if (
+      req.body.servicePrice &&
+      req.body.offerPrice &&
+      parseInt(req.body.servicePrice) <= parseInt(req.body.offerPrice)
+    ) {
+      let errMsg =
+        lang == "en"
+          ? "offer price must be less than service price"
+          : "السعر بعد الخصم يجب ان يكون اقل من السعر قبل الخصم";
+      return next(boom.notFound(errMsg));
+    }
     const { error } = CouponValidations.updateCoupon.validate(req.body);
 
     if (error) {
