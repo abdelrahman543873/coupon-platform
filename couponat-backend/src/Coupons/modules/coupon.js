@@ -60,8 +60,11 @@ const CouponModule = {
       });
   },
 
-  async search(skip = 1, limit = 1, name = "") {
+  async search(skip = 1, limit = 1, name = "", category) {
+    if (category && !checkAllMongooseId(category)) return null;
+
     let queryOp = {};
+    category ? (queryOp.category = category) : "";
     queryOp.isActive = true;
     if (name !== "") {
       queryOp.$or = [

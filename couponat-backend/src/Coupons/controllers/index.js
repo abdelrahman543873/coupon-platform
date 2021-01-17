@@ -89,10 +89,11 @@ const CouponController = {
     let auth = await decodeToken(req.headers.authentication),
       id = auth ? auth.id : null;
     let name = req.query.name,
+      category = req.query.category || null,
       skip = parseInt(req.query.skip) || 0,
       limit = parseInt(req.query.limit) || 0;
 
-    let coupons = await CouponModule.search(skip, limit, name);
+    let coupons = await CouponModule.search(skip, limit, name, category);
     coupons = coupons.map((coupon) => {
       return new Coupon(coupon);
     });
