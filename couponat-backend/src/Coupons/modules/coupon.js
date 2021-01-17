@@ -74,6 +74,12 @@ const CouponModule = {
         {
           "name.arabic": new RegExp(name, "i"),
         },
+        {
+          "description.english": new RegExp(name, "i"),
+        },
+        {
+          "description.arabic": new RegExp(name, "i"),
+        },
       ];
     }
     queryOp.totalCount = {
