@@ -61,7 +61,7 @@ const CouponModule = {
   },
 
   async search(skip = 1, limit = 1, name = "", category) {
-    if (category && !checkAllMongooseId(category)) return null;
+    if (category && !checkAllMongooseId(category)) return [];
 
     let queryOp = {};
     category ? (queryOp.category = category) : "";
