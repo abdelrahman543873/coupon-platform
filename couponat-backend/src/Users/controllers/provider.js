@@ -435,20 +435,20 @@ const ProviderControllers = {
         ? provider.name.split(" ").reverse().join(" ")
         : provider.name;
       pdfDoc
-        .fillColor("blue")
-        .font("./assets/fonts/Tajawal-Bold.ttf")
-        .fontSize(20)
-        .text("Provider: ", {
-          continued: true,
-        })
+        // .fillColor("blue")
+        // .font("./assets/fonts/Tajawal-Bold.ttf")
+        // .fontSize(20)
+        // .text("Provider: ", {
+        //   continued: true,
+        // })
         .fillColor("black")
-        .fontSize(20)
-        .text(name, { rtl: true });
+        .fontSize(40)
+        .text(name, { align: "center" });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Providers-Images/" + last_segment, {
         width: 300,
         height: 300,
-        align: "cebnter",
+        align: "center",
       });
     });
     pdfDoc.end();
