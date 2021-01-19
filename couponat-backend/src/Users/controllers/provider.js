@@ -431,24 +431,24 @@ const ProviderControllers = {
       let segment_array = provider.qrURL.split("/");
       let last_segment = segment_array.pop();
       let arabic = /[\u0600-\u06FF]/;
-      // let name = arabic.test(provider.name)
-      //   ? provider.name.split(" ").reverse().join(" ")
-      //   : provider.name;
+      let name = arabic.test(provider.name)
+        ? provider.name.split(" ").reverse().join(" ")
+        : provider.name;
       pdfDoc
-        // .fillColor("blue")
-        // .font("./assets/fonts/Tajawal-Bold.ttf")
-        // .fontSize(20)
-        // .text("Provider: ", {
-        //   continued: true,
-        // })
         .fillColor("blue")
-        .fontSize(40)
-        .text(provider.name, { align: "center",rtl: true });
-      pdfDoc.moveDown(0.3);
+        .font("./assets/fonts/Tajawal-Bold.ttf")
+        .fontSize(20)
+        .text("Provider: ", {
+          continued: true,
+        })
+        .fillColor("black")
+        .fontSize(20)
+        .text(name, { rtl: true });
+      pdfDoc.moveDown(0.5);
       pdfDoc.image("./Providers-Images/" + last_segment, {
-        width: 250,
-        height: 250,
         align: "center",
+        width: 300,
+        height: 300,
       });
     });
     pdfDoc.end();
