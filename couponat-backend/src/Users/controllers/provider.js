@@ -434,7 +434,6 @@ const ProviderControllers = {
       let name = arabic.test(provider.name)
         ? provider.name.split(" ").reverse().join(" ")
         : provider.name;
-      alert(arabic.test(string)); // displays true
       pdfDoc
         .fillColor("blue")
         .font("./assets/fonts/Tajawal-Bold.ttf")
