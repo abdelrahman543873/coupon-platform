@@ -443,7 +443,7 @@ const ProviderControllers = {
         // })
         .fillColor("blue")
         .fontSize(40)
-        .text(provider.name, { align: "center" });
+        .text(provider.name, { align: "center",rtl: true });
       pdfDoc.moveDown(0.3);
       pdfDoc.image("./Providers-Images/" + last_segment, {
         width: 250,
