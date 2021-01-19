@@ -439,7 +439,7 @@ const ProviderControllers = {
         })
         .fillColor("black")
         .fontSize(20)
-        .text(provider.name, { align: "left" });
+        .text(provider.name, { align: "left", rtl: true });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Providers-Images/" + last_segment, {
         width: 300,
