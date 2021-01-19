@@ -430,6 +430,11 @@ const ProviderControllers = {
       pdfDoc.addPage();
       let segment_array = provider.qrURL.split("/");
       let last_segment = segment_array.pop();
+      let arabic = /[\u0600-\u06FF]/;
+      let name = arabic.test(provider.name)
+        ? provider.name.split(" ").reverse().join(" ")
+        : provider.name;
+      alert(arabic.test(string)); // displays true
       pdfDoc
         .fillColor("blue")
         .font("./assets/fonts/Tajawal-Bold.ttf")
@@ -439,7 +444,7 @@ const ProviderControllers = {
         })
         .fillColor("black")
         .fontSize(20)
-        .text(provider.name, { rtl: true });
+        .text(name, { rtl: true });
       pdfDoc.moveDown(0.5);
       pdfDoc.image("./Providers-Images/" + last_segment, {
         width: 300,
