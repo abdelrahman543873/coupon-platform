@@ -358,6 +358,14 @@ let subscriptionContoller = {
           lang == "en" ? "Subscription not found" : "عملية الاشتراك غير موجودة";
       return next(boom.notFound(errMsg));
     }
+    if (!subscribe.isConfirmed) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "Admin Approval is Pending"
+            : "في إنتظار تاكيد الأدمن لعملية الاشتراك";
+      return next(boom.notFound(errMsg));
+    }
 
     subscribe.isUsed = true;
     subscribe.isPaid = true;
@@ -369,15 +377,6 @@ let subscriptionContoller = {
       coupon.subCount = coupon.subCount + 1;
       coupon = await coupon.save();
       subscribe.coupon = coupon;
-    }
-
-    if (!subscribe.isConfirmed) {
-      let lang = req.headers.lang || "ar",
-        errMsg =
-          lang == "en"
-            ? "Admin Approval is Pending"
-            : "في إنتظار تاكيد الأدمن لعملية الاستراك";
-      return next(boom.notFound(errMsg));
     }
 
     subscribe = new Subscription(subscribe);
