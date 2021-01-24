@@ -371,6 +371,15 @@ let subscriptionContoller = {
       subscribe.coupon = coupon;
     }
 
+    if (!subscribe.isConfirmed) {
+      let lang = req.headers.lang || "ar",
+        errMsg =
+          lang == "en"
+            ? "Admin Approval is Pending"
+            : "في إنتظار تاكيد الأدمن لعملية الاستراك";
+      return next(boom.notFound(errMsg));
+    }
+
     subscribe = new Subscription(subscribe);
 
     await NotificationModule.couponUsedNotification(

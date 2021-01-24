@@ -77,7 +77,6 @@ let subscriptionModule = {
     return await SubscripionModel.find({
       user,
       provider,
-      isConfirmed: true,
       isUsed: false,
     });
   },
