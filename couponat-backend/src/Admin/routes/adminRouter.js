@@ -102,7 +102,6 @@ adminRouter
   .route("/providers/:id/modification")
   .put(
     AdminAuth,
-    uploadHelper("Providers-Images/").single("logoURL"),
     ProviderValidationWares.updateProvider,
     AdminsController.updateProvider
   );
