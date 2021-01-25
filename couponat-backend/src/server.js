@@ -21,7 +21,7 @@ server.use(express.urlencoded({ extended: true }));
 // for application/json requests
 server.use(express.json());
 
-server.use("/share", (req, res, next) => {
+server.use("/app", (req, res, next) => {
   let agent = req.headers["user-agent"];
   console.log(agent);
   if (agent.includes("iPhone;") || agent.includes("iPhone"))
@@ -30,7 +30,10 @@ server.use("/share", (req, res, next) => {
     res.redirect(
       "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
     );
-  else next();
+  else
+    res.redirect(
+      "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
+    );
 });
 
 server.use("/api/v1", router);
