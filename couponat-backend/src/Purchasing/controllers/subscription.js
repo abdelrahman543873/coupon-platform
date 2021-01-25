@@ -363,7 +363,7 @@ let subscriptionContoller = {
         errMsg =
           lang == "en"
             ? "Admin Approval is Pending"
-            : "في إنتظار تاكيد الأدمن لعملية الاشتراك";
+            : "في إنتظار تاكيد الأدمن لعملية الدفع";
       return next(boom.notFound(errMsg));
     }
 

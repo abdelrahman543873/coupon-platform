@@ -244,7 +244,7 @@ let NotificationModule = {
         title:
           lang == "en"
             ? `New Bank Transfer Operation`
-            : `عملية تحويل بكي جديدة`,
+            : `عملية تحويل بنكي جديدة`,
         body:
           lang == "en"
             ? `New Payment Operation need to review`
