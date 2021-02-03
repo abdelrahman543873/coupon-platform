@@ -138,14 +138,14 @@ const ClientControllers = {
           : "رقم مستخدم من حساب أخر";
       return next(boom.notFound(errMsg));
     }
-    user = client.email ? await ClientModule.getByEmail(client.email) : null;
-    if (user) {
-      let errMsg =
-        req.headers.lang == "en"
-          ? "Email Used befor"
-          : "البريد الالكتروني مستخدم من حساب أخر";
-      return next(boom.notFound(errMsg));
-    }
+    // user = client.email ? await ClientModule.getByEmail(client.email) : null;
+    // if (user) {
+    //   let errMsg =
+    //     req.headers.lang == "en"
+    //       ? "Email Used befor"
+    //       : "البريد الالكتروني مستخدم من حساب أخر";
+    //   return next(boom.notFound(errMsg));
+    // }
     let { doc, err } = await ClientModule.addViaSocialMedia(client);
     if (err)
       return next(boom.badData(getErrorMessage(err, req.headers.lang || "ar")));

@@ -18,7 +18,6 @@ let clientSchema = mongoose.Schema(
     email: {
       type: String,
       sparse: true,
-      unique: true,
     },
     isVerified: {
       type: Boolean,
@@ -37,7 +36,7 @@ let clientSchema = mongoose.Schema(
     },
     socialMediaType: {
       type: String,
-      enum: ["GOOGLE", "FACEBOOK", "TWITTER","APPLE"],
+      enum: ["GOOGLE", "FACEBOOK", "TWITTER", "APPLE"],
     },
     favCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupon" }],
     fcmToken: String,
