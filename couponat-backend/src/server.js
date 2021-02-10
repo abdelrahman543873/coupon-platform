@@ -28,7 +28,7 @@ server.use("/app", (req, res, next) => {
     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
   else if (agent.includes("Android"))
     res.redirect(
-      "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
+      "https://play.google.com/store/apps/details?id=com.alef.couponalmadena"
     );
   else
     res.redirect(
