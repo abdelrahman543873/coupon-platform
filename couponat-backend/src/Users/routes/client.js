@@ -59,7 +59,7 @@ customersRouter
 customersRouter.route("/search").get(CouponController.search);
 
 customersRouter
-  .route("/fav-products/sync")
+  .route("/fav-coupons/sync")
   .post(checkUserAuth, ClientControllers.asyncFavCoupons);
 
 customersRouter
