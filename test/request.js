@@ -1,8 +1,8 @@
-import * as request from "supertest";
-import { server } from "../src/server";
+import request from "supertest";
+import server from "../src/server.js";
 
 export async function post({ variables, token, headers, url }) {
-  const req = request(server)
+  const req = await request(server)
     .post(url)
     .send(variables)
     .set("Content-Type", "application/json");
@@ -11,21 +11,24 @@ export async function post({ variables, token, headers, url }) {
     if (headers.timezone) return req.set("timezone", headers.timezone);
     if (headers.lang) return req.set("lang", headers.lang);
   }
-  return await req;
+  return req;
 }
 
 export async function get({ variables, token, headers, url }) {
-  const req = request(server).get(url).send(variables);
+  const req = await request(server)
+    .get(url)
+    .send(variables)
+    .set("Content-Type", "application/json");
   if (token) req.set("Authorization", `Bearer ${token}`);
   if (headers) {
     if (headers.timezone) return req.set("timezone", headers.timezone);
     if (headers.lang) return req.set("lang", headers.lang);
   }
-  return await req;
+  return req;
 }
 
 export async function put({ variables, token, headers, url }) {
-  const req = request(server)
+  const req = await request(server)
     .put(url)
     .send(variables)
     .set("Content-Type", "application/json");
@@ -34,11 +37,11 @@ export async function put({ variables, token, headers, url }) {
     if (headers.timezone) return req.set("timezone", headers.timezone);
     if (headers.lang) return req.set("lang", headers.lang);
   }
-  return await req;
+  return req;
 }
 
 export async function remove({ variables, token, headers, url }) {
-  const req = request(server)
+  const req = await request(server)
     .delete(url)
     .send(variables)
     .set("Content-Type", "application/json");
@@ -47,5 +50,5 @@ export async function remove({ variables, token, headers, url }) {
     if (headers.timezone) return req.set("timezone", headers.timezone);
     if (headers.lang) return req.set("lang", headers.lang);
   }
-  return await req;
+  return req;
 }

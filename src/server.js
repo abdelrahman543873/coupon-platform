@@ -44,4 +44,4 @@ server.all("*", (req, res, next) => {
 // Error handler middleware.
 server.use(errorHandling);
 
-export { server };
+export default server;

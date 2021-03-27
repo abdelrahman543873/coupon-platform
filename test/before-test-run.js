@@ -1,4 +1,5 @@
-import { server } from "../src/server";
+import mongoose from "mongoose";
+import server from "../src/server.js";
 const app = () => {
   return server.listen(process.env.COUPONAT_N_PORT);
 };
@@ -7,5 +8,6 @@ beforeAll(async () => {
 });
 
 afterAll(async (done) => {
-  await app().close();
+  app().close();
+  mongoose.disconnect(done);
 });
