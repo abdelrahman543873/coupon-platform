@@ -1,4 +1,4 @@
-import { AppBankModel } from "../models/appBanks";
+import { AppBankModel } from "../models/appBanks.js";
 
 let BanksModule = {
   async addBankAccount(bank) {

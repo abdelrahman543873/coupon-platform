@@ -73,6 +73,5 @@ let couponSchema = mongoose.Schema(
   }
 );
 
-couponSchema.plugin(require("mongoose-autopopulate"));
 let CouponModel = mongoose.model("Coupon", couponSchema);
 export { CouponModel };

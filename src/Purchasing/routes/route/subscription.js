@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { checkUserAuth } from "../../../utils/auth";
-import { uploadHelper } from "../../../utils/MulterHelper";
-import { subscriptionContoller } from "../../controllers/subscription";
-import { SubscriptionValidationWares } from "../../middlewares/subscription";
+import { checkUserAuth } from "../../../utils/auth.js";
+import { uploadHelper } from "../../../utils/MulterHelper.js";
+import { subscriptionContoller } from "../../controllers/subscription.js";
+import { SubscriptionValidationWares } from "../../middlewares/subscription.js";
 
 const subscriptionRouter = Router();
 

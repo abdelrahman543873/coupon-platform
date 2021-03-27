@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { decodeToken } from "./JWTHelper";
+import { decodeToken } from "./JWTHelper.js";
 
 async function checkUserAuth(req, res, next) {
   let lang = req.headers.lang || "ar",

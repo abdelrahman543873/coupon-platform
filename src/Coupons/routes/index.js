@@ -1,8 +1,8 @@
 import express from "express";
-import { CouponValidationWares } from "../middlewares/validation/coupon";
-import { CouponController } from "../controllers/index";
-import { checkUserAuth } from "../../utils/auth";
-import { uploadHelper } from "../../utils/MulterHelper";
+import { CouponValidationWares } from "../middlewares/validation/coupon.js";
+import { CouponController } from "../controllers/index.js";
+import { checkUserAuth } from "../../utils/auth.js";
+import { uploadHelper } from "../../utils/MulterHelper.js";
 
 const couponRouter = express.Router();
 

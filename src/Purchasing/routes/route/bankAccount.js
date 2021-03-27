@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { BankAccountController } from "../../controllers/bank";
+import { BankAccountController } from "../../controllers/bank.js";
 
 const bankAccountRouter = Router();
 

@@ -1,6 +1,6 @@
 import boom from "@hapi/boom";
-import { decodeToken } from "../../utils/JWTHelper";
-import { AdminModule } from "../modules/admin";
+import { decodeToken } from "../../utils/JWTHelper.js";
+import { AdminModule } from "../modules/admin.js";
 
 async function AdminAuth(req, res, next) {
   let lang = req.headers.lang || "ar",

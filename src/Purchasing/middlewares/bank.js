@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { BankValidations } from "../utils/validations/bank";
+import { BankValidations } from "../utils/validations/bank.js";
 
 let BankValidationWares = {
   async add(req, res, next) {

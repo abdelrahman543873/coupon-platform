@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 let subscriptionSchema = mongoose.Schema(
   {
     user: {
@@ -68,6 +67,5 @@ let subscriptionSchema = mongoose.Schema(
   }
 );
 
-subscriptionSchema.plugin(require("mongoose-autopopulate"));
 let SubscripionModel = mongoose.model("Subscription", subscriptionSchema);
 export { SubscripionModel };

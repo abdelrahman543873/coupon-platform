@@ -1,5 +1,5 @@
-import { Payment } from "../../middlewares/responsHandler";
-import { paymentTypeModule } from "../modules/paymentType";
+import { Payment } from "../../middlewares/responsHandler.js";
+import { paymentTypeModule } from "../modules/paymentType.js";
 
 let PaymentTypeController = {
   async add(req, res, next) {

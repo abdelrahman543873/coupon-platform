@@ -1,6 +1,6 @@
 import express from "express";
-import { checkUserAuth } from "../../utils/auth";
-import { notificationsController } from "../controller/notification";
+import { checkUserAuth } from "../../utils/auth.js";
+import { notificationsController } from "../controller/notification.js";
 
 const notificationRouter = express.Router();
 

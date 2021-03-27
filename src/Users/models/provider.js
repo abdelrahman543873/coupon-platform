@@ -81,7 +81,6 @@ let providerSchema = mongoose.Schema(
   }
 );
 
-providerSchema.plugin(require("mongoose-autopopulate"));
 let ProviderModel = mongoose.model("Provider", providerSchema);
 
 export { ProviderModel };

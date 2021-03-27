@@ -1,12 +1,12 @@
-require("dotenv").config();
-
-import { connectDB } from "./src/db/dbConnection";
-import { server } from "./src/server";
-
-let dbUrl = process.env.COUPONAT_N_PORT;
 import cron from "node-cron";
-import { SubscripionModel } from "./src/Purchasing/models/subscription";
-import { subscriptionModule } from "./src/Purchasing/modules/subscription";
+import { SubscripionModel } from "./src/Purchasing/models/subscription.js";
+import { subscriptionModule } from "./src/Purchasing/modules/subscription.js";
+import { connectDB } from "./src/db/dbConnection.js";
+import { server } from "./src/server.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+let dbUrl = process.env.COUPONAT_DB_URL_LOCAL;
 if (process.env.RUN_INSIDE_DOCKER) {
   dbUrl = process.env.COUPONAT_DB_URL_COMPOSE;
 }

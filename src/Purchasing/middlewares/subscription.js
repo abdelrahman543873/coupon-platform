@@ -1,6 +1,5 @@
 import boom from "@hapi/boom";
-import { paymentTypeModule } from "../modules/paymentType";
-import { SubscriptionValidations } from "../utils/validations/subscription";
+import { SubscriptionValidations } from "../utils/validations/subscription.js";
 
 let SubscriptionValidationWares = {
   async subscripe(req, res, next) {

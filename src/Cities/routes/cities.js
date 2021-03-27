@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { cityValidationware } from "../middlewares/validations/city";
-import { CityController } from "../controllers/city";
+import { CityController } from "../controllers/city.js";
 
 const citiesRouter = Router();
 

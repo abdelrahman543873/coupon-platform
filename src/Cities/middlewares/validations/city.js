@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { CityValidation } from "../../utils/validations/city";
+import { CityValidation } from "../../utils/validations/city.js";
 
 const cityValidationware = {
   addCity(req, res, next) {

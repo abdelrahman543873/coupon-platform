@@ -1,5 +1,5 @@
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
-import { PeymentTypeModel } from "../models/paymentType";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
+import { PeymentTypeModel } from "../models/paymentType.js";
 
 let paymentTypeModule = {
   async add(payment) {

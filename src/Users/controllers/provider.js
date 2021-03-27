@@ -2,19 +2,19 @@ import boom from "@hapi/boom";
 import PDFDocument from "pdfkit";
 import fs from "fs";
 import stringHash from "string-hash";
-import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
-import { ProviderModule } from "../modules/provider";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { decodeToken, generateToken } from "../../utils/JWTHelper";
-import { Coupon, Provider } from "../../middlewares/responsHandler";
-import { CityModule } from "../../Cities/modules/city";
-import { NotificationModule } from "../../CloudMessaging/module/notification";
-import { CouponModule } from "../../Coupons/modules/coupon";
-import { ContactModel } from "../models/contactUs";
-import { ProviderModel } from "../models/provider";
-import { IP } from "../../../serverIP";
+import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper.js";
+import { ProviderModule } from "../modules/provider.js";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { decodeToken, generateToken } from "../../utils/JWTHelper.js";
+import { Coupon, Provider } from "../../middlewares/responsHandler.js";
+import { CityModule } from "../../Cities/modules/city.js";
+import { NotificationModule } from "../../CloudMessaging/module/notification.js";
+import { CouponModule } from "../../Coupons/modules/coupon.js";
+import { ContactModel } from "../models/contactUs.js";
+import { ProviderModel } from "../models/provider.js";
+import { IP } from "../../../serverIP.js";
 import { nanoid } from "nanoid";
-import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper";
+import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {

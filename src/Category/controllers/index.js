@@ -1,9 +1,7 @@
 import boom from "@hapi/boom";
-import { IP } from "../../../serverIP";
-import { Category } from "../../middlewares/responsHandler";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { CategoryModel } from "../models";
-import { CategoryModule } from "../modules";
+import { Category } from "../../middlewares/responsHandler.js";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { CategoryModule } from "../modules/index.js";
 
 const CategoryController = {
   async addCategory(req, res, next) {

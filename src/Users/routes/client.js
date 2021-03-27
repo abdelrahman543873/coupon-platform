@@ -1,10 +1,10 @@
 import express from "express";
-import { CouponController } from "../../Coupons/controllers";
-import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
-import { checkUserAuth } from "../../utils/auth";
-import { uploadHelper } from "../../utils/MulterHelper";
-import { ClientControllers } from "../controllers/client";
-import { ClientValidationWares } from "../middlewares/validations/client";
+import { CouponController } from "../../Coupons/controllers/index.js";
+import { subscriptionContoller } from "../../Purchasing/controllers/subscription.js";
+import { checkUserAuth } from "../../utils/auth.js";
+import { uploadHelper } from "../../utils/MulterHelper.js";
+import { ClientControllers } from "../controllers/client.js";
+import { ClientValidationWares } from "../middlewares/validations/client.js";
 
 const customersRouter = express.Router();
 

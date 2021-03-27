@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { providersRouter } from "../Users/routes/provider";
-import { customersRouter } from "../Users/routes/client";
-import { citiesRouter } from "../Cities/routes/cities";
-import { categoryRouter } from "../Category/routes";
-import { couponRouter } from "../Coupons/routes";
-import { adminRouter } from "../Admin/routes/adminRouter";
-import { AdminsController } from "../Admin/controllers/admin";
-import { purchasingRouter } from "../Purchasing/routes";
-import { notificationRouter } from "../CloudMessaging/routes";
-import { adminValidationwar } from "../Admin/middlewares/validations/admin";
+import { providersRouter } from "../Users/routes/provider.js";
+import { customersRouter } from "../Users/routes/client.js";
+import { citiesRouter } from "../Cities/routes/cities.js";
+import { categoryRouter } from "../Category/routes/index.js";
+import { couponRouter } from "../Coupons/routes/index.js";
+import { adminRouter } from "../Admin/routes/adminRouter.js";
+import { AdminsController } from "../Admin/controllers/admin.js";
+import { purchasingRouter } from "../Purchasing/routes/index.js";
+import { notificationRouter } from "../CloudMessaging/routes/index.js";
+import { adminValidationwar } from "../Admin/middlewares/validations/admin.js";
 
 const router = Router();
 

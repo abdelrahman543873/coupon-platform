@@ -1,7 +1,6 @@
-import { CouponModel } from "../../Coupons/models/coupon";
-import { SubscripionModel } from "../../Purchasing/models/subscription";
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
-import { ProviderModel } from "../models/provider";
+import { CouponModel } from "../../Coupons/models/coupon.js";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
+import { ProviderModel } from "../models/provider.js";
 
 const ProviderModule = {
   async add(provider) {

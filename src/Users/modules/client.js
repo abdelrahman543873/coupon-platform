@@ -1,5 +1,5 @@
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
-import { ClientModel } from "../models/client";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
+import { ClientModel } from "../models/client.js";
 
 const ClientModule = {
   async getById(id) {

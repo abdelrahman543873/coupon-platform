@@ -1,5 +1,5 @@
-import { VerificationModel } from "../../Users/models/verification";
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
+import { VerificationModel } from "../../Users/models/verification.js";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 
 const VerificationsModule = {
   async add(code, user, mobile) {

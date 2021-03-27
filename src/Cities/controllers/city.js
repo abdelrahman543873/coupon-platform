@@ -1,8 +1,7 @@
 import boom from "@hapi/boom";
-import { City } from "../../middlewares/responsHandler";
-import { decodeToken } from "../../utils/JWTHelper";
-import { CityModel } from "../models/city";
-import { CityModule } from "../modules/city";
+import { City } from "../../middlewares/responsHandler.js";
+import { decodeToken } from "../../utils/JWTHelper.js";
+import { CityModule } from "../modules/city.js";
 
 const CityController = {
   async addCity(req, res, next) {

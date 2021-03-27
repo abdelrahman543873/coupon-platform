@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { errorsOverride } from "../../../utils/JoiErrorOverriding";
+import { errorsOverride } from "../../../utils/JoiErrorOverriding.js";
 
 let BankValidations = {
   addBank: Joi.object({

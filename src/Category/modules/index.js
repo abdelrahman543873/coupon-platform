@@ -1,5 +1,5 @@
-import { CategoryModel } from "../models/index";
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
+import { CategoryModel } from "../models/index.js";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 const CategoryModule = {
   async add(category) {
     return await CategoryModel({

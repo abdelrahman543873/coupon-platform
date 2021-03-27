@@ -1,22 +1,22 @@
 import boom from "@hapi/boom";
-import { ClientModule } from "../modules/client";
-import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { getSMSToken } from "../../utils/SMSToken";
-import { VerificationsModule } from "../modules/verifications";
-import { decodeToken, generateToken } from "../../utils/JWTHelper";
+import { ClientModule } from "../modules/client.js";
+import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper.js";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { getSMSToken } from "../../utils/SMSToken.js";
+import { VerificationsModule } from "../modules/verifications.js";
+import { decodeToken, generateToken } from "../../utils/JWTHelper.js";
 import {
   Category,
   Client,
   Coupon,
   Provider,
-} from "../../middlewares/responsHandler";
-import { ProviderModule } from "../modules/provider";
-import { CategoryModule } from "../../Category/modules";
-import { CouponModule } from "../../Coupons/modules/coupon";
-import { ContactModel } from "../models/contactUs";
-import { subscriptionModule } from "../../Purchasing/modules/subscription";
-import { Messages } from "../../utils/twilloHelper";
+} from "../../middlewares/responsHandler.js";
+import { ProviderModule } from "../modules/provider.js";
+import { CategoryModule } from "../../Category/modules/index.js";
+import { CouponModule } from "../../Coupons/modules/coupon.js";
+import { ContactModel } from "../models/contactUs.js";
+import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
+import { Messages } from "../../utils/twilloHelper.js";
 
 const ClientControllers = {
   async add(req, res, next) {

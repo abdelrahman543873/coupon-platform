@@ -1,9 +1,9 @@
-import { admin } from "../admin";
-import { NotificationModel } from "../model/notification";
-import { AdminModel } from "../../Admin/models/admin";
-import { ClientModel } from "../../Users/models/client";
-import { TokensModel } from "../model/tokens";
-
+import { NotificationModel } from "../model/notification.js";
+import { AdminModel } from "../../Admin/models/admin.js";
+import { ClientModel } from "../../Users/models/client.js";
+import { TokensModel } from "../model/tokens.js";
+import * as admin from "firebase-admin";
+import { serviceAccount } from "../service-account-file.js";
 let NotificationModule = {
   domain: "http://couponat.alefsoftware.com/",
   async newCouponNotification(coupon, lang, providerName) {
@@ -440,6 +440,10 @@ let NotificationModule = {
 function sendToMultiple(message) {
   console.log("fromSend: ", message.tokens);
   admin
+    .initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: "https://coupouns-1f184.firebaseio.com",
+    })
     .messaging()
     .sendMulticast(message)
     .then((response) => {

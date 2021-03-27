@@ -1,16 +1,16 @@
 import boom from "@hapi/boom";
 import { nanoid } from "nanoid";
-import { CouponModule } from "../../Coupons/modules/coupon";
-import { Provider, Subscription } from "../../middlewares/responsHandler";
-import { ClientModule } from "../../Users/modules/client";
-import { ProviderModule } from "../../Users/modules/provider";
-import { decodeToken } from "../../utils/JWTHelper";
-import { paymentTypeModule } from "../modules/paymentType";
-import { subscriptionModule } from "../modules/subscription";
-import { AppBankModel } from "../../Purchasing/models/appBanks";
-import { AppCreditModel } from "../../Purchasing/models/appCridit";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { NotificationModule } from "../../CloudMessaging/module/notification";
+import { CouponModule } from "../../Coupons/modules/coupon.js";
+import { Provider, Subscription } from "../../middlewares/responsHandler.js";
+import { ClientModule } from "../../Users/modules/client.js";
+import { ProviderModule } from "../../Users/modules/provider.js";
+import { decodeToken } from "../../utils/JWTHelper.js";
+import { paymentTypeModule } from "../modules/paymentType.js";
+import { subscriptionModule } from "../modules/subscription.js";
+import { AppBankModel } from "../../Purchasing/models/appBanks.js";
+import { AppCreditModel } from "../../Purchasing/models/appCridit.js";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 
 let subscriptionContoller = {
   async subscripe(req, res, next) {

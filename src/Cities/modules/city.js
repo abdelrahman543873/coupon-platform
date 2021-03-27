@@ -1,5 +1,5 @@
-import { CityModel } from "../models/city";
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
+import { CityModel } from "../models/city.js";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 
 const CityModule = {
   async getAll(isAdmin) {

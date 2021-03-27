@@ -1,5 +1,5 @@
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
-import { SubscripionModel } from "../models/subscription";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
+import { SubscripionModel } from "../models/subscription.js";
 
 let subscriptionModule = {
   async subscripe(subscripe) {

@@ -1,4 +1,4 @@
-import { IP } from "../../serverIP";
+import { IP } from "../../serverIP.js";
 
 class Provider {
   constructor(provider) {

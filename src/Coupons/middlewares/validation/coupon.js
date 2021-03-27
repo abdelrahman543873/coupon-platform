@@ -1,6 +1,6 @@
 import boom from "@hapi/boom";
-import { CategoryModule } from "../../../Category/modules";
-import { CouponValidations } from "../../utils/validations/coupon";
+import { CategoryModule } from "../../../Category/modules/index.js";
+import { CouponValidations } from "../../utils/validations/coupon.js";
 
 const CouponValidationWares = {
   async addCoupon(req, res, next) {

@@ -1,6 +1,6 @@
 import Joi from "joi";
-import { errorsOverride } from "../../../utils/JoiErrorOverriding";
-import { checkMongooseId } from "../../../utils/mongooseIdHelper";
+import { errorsOverride } from "../../../utils/JoiErrorOverriding.js";
+import { checkMongooseId } from "../../../utils/mongooseIdHelper.js";
 
 const locationSchema = Joi.object().keys({
   lat: Joi.string().required().error(errorsOverride),

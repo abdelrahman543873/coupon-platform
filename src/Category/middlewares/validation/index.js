@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { CategoryValidations } from "../../utils/validations";
+import { CategoryValidations } from "../../utils/validations/index.js";
 
 const CategoryalidationWares = {
   async add(req, res, next) {

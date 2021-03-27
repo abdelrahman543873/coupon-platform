@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { adminValidationSchemas } from "../../utils/validations/admin";
+import { adminValidationSchemas } from "../../utils/validations/admin.js";
 
 const adminValidationwar = {
   async add(req, res, next) {

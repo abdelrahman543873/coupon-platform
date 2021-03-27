@@ -1,6 +1,6 @@
 import Joi from "joi";
-import { errorsOverride } from "../../../utils/JoiErrorOverriding";
-import { checkMongooseId } from "../../../utils/mongooseIdHelper";
+import { errorsOverride } from "../../../utils/JoiErrorOverriding.js";
+import { checkMongooseId } from "../../../utils/mongooseIdHelper.js";
 
 const langNameSchema = Joi.object().keys({
   arabic: Joi.string().min(3).required().error(errorsOverride),

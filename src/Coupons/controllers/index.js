@@ -1,16 +1,16 @@
 import boom from "@hapi/boom";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { CouponModule } from "../modules/coupon";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { CouponModule } from "../modules/coupon.js";
 import { nanoid } from "nanoid";
-import { Coupon, Subscription } from "../../middlewares/responsHandler";
-import { decodeToken } from "../../utils/JWTHelper";
+import { Coupon, Subscription } from "../../middlewares/responsHandler.js";
+import { decodeToken } from "../../utils/JWTHelper.js";
 import Jimp from "jimp";
-import { ClientModule } from "../../Users/modules/client";
-import { subscriptionModule } from "../../Purchasing/modules/subscription";
-import { ProviderModule } from "../../Users/modules/provider";
-import { NotificationModule } from "../../CloudMessaging/module/notification";
-import { SubscripionModel } from "../../Purchasing/models/subscription";
-import { CouponModel } from "../models/coupon";
+import { ClientModule } from "../../Users/modules/client.js";
+import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
+import { ProviderModule } from "../../Users/modules/provider.js";
+import { NotificationModule } from "../../CloudMessaging/module/notification.js";
+import { SubscripionModel } from "../../Purchasing/models/subscription.js";
+import { CouponModel } from "../models/coupon.js";
 
 const CouponController = {
   async addCoupon(req, res, next) {

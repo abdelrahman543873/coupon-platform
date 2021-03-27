@@ -1,5 +1,5 @@
 import boom from "@hapi/boom";
-import { ClientValidations } from "../../utils/validations/client";
+import { ClientValidations } from "../../utils/validations/client.js";
 
 const ClientValidationWares = {
   addClient(req, res, next) {

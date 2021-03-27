@@ -1,17 +1,13 @@
-import express, { Router } from "express";
-require("express-async-errors"); // wrap async errors within the app.
 import cors from "cors";
-import { errorHandling } from "./middlewares/errorHandler";
-import { router } from "./routes";
-const http = require("http");
+import { errorHandling } from "./middlewares/errorHandler.js";
+import { router } from "./routes/index.js";
+import express from "express";
 
-let server = express(),
-  corsOptions = {
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  };
-
-const appRouter = Router();
+let server = express();
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 server.use(cors(corsOptions));
 

@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 function hashPass(password) {
   let salt = bcrypt.genSaltSync(10);

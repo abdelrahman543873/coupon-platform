@@ -1,5 +1,5 @@
-import { Cridit } from "../../middlewares/responsHandler";
-import { AppCreditModel } from "../models/appCridit";
+import { Cridit } from "../../middlewares/responsHandler.js";
+import { AppCreditModel } from "../models/appCridit.js";
 
 let CriditCardController = {
   async get(req, res, next) {

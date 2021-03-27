@@ -1,21 +1,21 @@
 import { Router } from "express";
-import { CategoryController } from "../../Category/controllers";
-import { CategoryalidationWares } from "../../Category/middlewares/validation";
-import { CityController } from "../../Cities/controllers/city";
-import { cityValidationware } from "../../Cities/middlewares/validations/city";
-import { CouponController } from "../../Coupons/controllers";
-import { CouponValidationWares } from "../../Coupons/middlewares/validation/coupon";
-import { BankAccountController } from "../../Purchasing/controllers/bank";
-import { PaymentTypeController } from "../../Purchasing/controllers/paymentType";
-import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
-import { BankValidationWares } from "../../Purchasing/middlewares/bank";
-import { PaymentValidationWares } from "../../Purchasing/middlewares/paymentTypes";
-import { ProviderControllers } from "../../Users/controllers/provider";
-import { ProviderValidationWares } from "../../Users/middlewares/validations/provider";
-import { uploadHelper } from "../../utils/MulterHelper";
-import { AdminsController } from "../controllers/admin";
-import { AdminAuth, ValidateAuth } from "../middlewares/admimAuth";
-import { adminValidationwar } from "../middlewares/validations/admin";
+import { CategoryController } from "../../Category/controllers/index.js";
+import { CategoryalidationWares } from "../../Category/middlewares/validation/index.js";
+import { CityController } from "../../Cities/controllers/city.js";
+import { cityValidationware } from "../../Cities/middlewares/validations/city.js";
+import { CouponController } from "../../Coupons/controllers/index.js";
+import { CouponValidationWares } from "../../Coupons/middlewares/validation/coupon.js";
+import { BankAccountController } from "../../Purchasing/controllers/bank.js";
+import { PaymentTypeController } from "../../Purchasing/controllers/paymentType.js";
+import { subscriptionContoller } from "../../Purchasing/controllers/subscription.js";
+import { BankValidationWares } from "../../Purchasing/middlewares/bank.js";
+import { PaymentValidationWares } from "../../Purchasing/middlewares/paymentTypes.js";
+import { ProviderControllers } from "../../Users/controllers/provider.js";
+import { ProviderValidationWares } from "../../Users/middlewares/validations/provider.js";
+import { uploadHelper } from "../../utils/MulterHelper.js";
+import { AdminsController } from "../controllers/admin.js";
+import { AdminAuth, ValidateAuth } from "../middlewares/admimAuth.js";
+import { adminValidationwar } from "../middlewares/validations/admin.js";
 
 const adminRouter = Router();
 

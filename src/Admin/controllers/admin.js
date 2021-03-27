@@ -2,35 +2,35 @@ import boom from "@hapi/boom";
 import Jimp from "jimp";
 import QRCode from "qrcode";
 import { nanoid } from "nanoid";
-import { CouponModule } from "../../Coupons/modules/coupon";
-import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper";
-import { getErrorMessage } from "../../utils/handleDBError";
-import { decodeToken, generateToken } from "../../utils/JWTHelper";
-import { AdminModule } from "../modules/admin";
-import { ProviderModule } from "../../Users/modules/provider";
-import { CategoryModule } from "../../Category/modules";
-import { CouponModel } from "../../Coupons/models/coupon";
-import { ClientModule } from "../../Users/modules/client";
-import { getSMSToken } from "../../utils/SMSToken";
-import { VerificationsModule } from "../../Users/modules/verifications";
-import { sendClientMail } from "../../utils/nodemailer";
-import { ContactModel } from "../../Users/models/contactUs";
-import { NotificationModule } from "../../CloudMessaging/module/notification";
-import { checkAllMongooseId } from "../../utils/mongooseIdHelper";
-import { AppCreditModel } from "../../Purchasing/models/appCridit";
-import { ProviderModel } from "../../Users/models/provider";
-import { subscriptionModule } from "../../Purchasing/modules/subscription";
-import { AppBankModel } from "../../Purchasing/models/appBanks";
-import { Messages } from "../../utils/twilloHelper";
+import { CouponModule } from "../../Coupons/modules/coupon.js";
+import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper.js";
+import { getErrorMessage } from "../../utils/handleDBError.js";
+import { decodeToken, generateToken } from "../../utils/JWTHelper.js";
+import { AdminModule } from "../modules/admin.js";
+import { ProviderModule } from "../../Users/modules/provider.js";
+import { CategoryModule } from "../../Category/modules/index.js";
+import { CouponModel } from "../../Coupons/models/coupon.js";
+import { ClientModule } from "../../Users/modules/client.js";
+import { getSMSToken } from "../../utils/SMSToken.js";
+import { VerificationsModule } from "../../Users/modules/verifications.js";
+import { sendClientMail } from "../../utils/nodemailer.js";
+import { ContactModel } from "../../Users/models/contactUs.js";
+import { NotificationModule } from "../../CloudMessaging/module/notification.js";
+import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
+import { AppCreditModel } from "../../Purchasing/models/appCridit.js";
+import { ProviderModel } from "../../Users/models/provider.js";
+import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
+import { AppBankModel } from "../../Purchasing/models/appBanks.js";
+import { Messages } from "../../utils/twilloHelper.js";
 import {
   Category,
   Coupon,
   Cridit,
   Provider,
   Subscription,
-} from "../../middlewares/responsHandler";
-import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper";
-import { SubscripionModel } from "../../Purchasing/models/subscription";
+} from "../../middlewares/responsHandler.js";
+import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
+import { SubscripionModel } from "../../Purchasing/models/subscription.js";
 
 const AdminsController = {
   async add(req, res, next) {

@@ -1,9 +1,8 @@
 import express from "express";
-import { ProviderControllers } from "../controllers/provider";
-import { ProviderValidationWares } from "../middlewares/validations/provider";
-import { uploadHelper } from "../../utils/MulterHelper";
-import { checkUserAuth } from "../../utils/auth";
-import { subscriptionContoller } from "../../Purchasing/controllers/subscription";
+import { ProviderControllers } from "../controllers/provider.js";
+import { ProviderValidationWares } from "../middlewares/validations/provider.js";
+import { uploadHelper } from "../../utils/MulterHelper.js";
+import { checkUserAuth } from "../../utils/auth.js";
 
 const providersRouter = express.Router();
 

@@ -1,9 +1,9 @@
-import { ProviderModel } from "../../Users/models/provider";
-import { ClientModel } from "../../Users/models/client";
-import { AdminModel } from "../../Admin/models/admin";
-import { NotificationModule } from "../module/notification";
-import { decodeToken } from "../../utils/JWTHelper";
-import { TokensModel } from "../model/tokens";
+import { ProviderModel } from "../../Users/models/provider.js";
+import { ClientModel } from "../../Users/models/client.js";
+import { AdminModel } from "../../Admin/models/admin.js";
+import { NotificationModule } from "../module/notification.js";
+import { decodeToken } from "../../utils/JWTHelper.js";
+import { TokensModel } from "../model/tokens.js";
 
 let notificationsController = {
   async addTokenToUser(req, res, next) {
