@@ -1,8 +1,8 @@
-import cron from "node-cron";
 import { SubscripionModel } from "./src/Purchasing/models/subscription.js";
 import { subscriptionModule } from "./src/Purchasing/modules/subscription.js";
 import { connectDB } from "./src/db/dbConnection.js";
-import server from "./src/server.js";
+import { server } from "./src/server.js";
+import cron from "node-cron";
 import dotenv from "dotenv";
 
 dotenv.config();

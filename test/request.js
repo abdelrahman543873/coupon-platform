@@ -1,5 +1,5 @@
 import request from "supertest";
-import server from "../src/server.js";
+import { server } from "../src/server.js";
 
 export async function post({ variables, token, headers, url }) {
   const req = await request(server)

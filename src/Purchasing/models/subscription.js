@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-let subscriptionSchema = mongoose.Schema(
+const subscriptionSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -67,5 +67,5 @@ let subscriptionSchema = mongoose.Schema(
   }
 );
 
-let SubscripionModel = mongoose.model("Subscription", subscriptionSchema);
+const SubscripionModel = mongoose.model("Subscription", subscriptionSchema);
 export { SubscripionModel };

@@ -1,1 +1,5 @@
-export const TERMS_AND_CONDITIONS = "/api/v1/terms&conditions";
+export const GET_TERMS_AND_CONDITIONS =
+  "/admin-management/getTermsAndConditions";
+
+export const ADD_TERMS_AND_CONDITIONS =
+  "/admin-management/addTermsAndConditions";

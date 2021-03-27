@@ -6,14 +6,14 @@ function generateToken(id, type = "") {
       id,
       type,
     },
-    "<Hey,Thi$i$CoUpOnAtTokeNSecret/>"
+    process.env.JWT_SECRET
   );
 }
 
 async function decodeToken(auth) {
   try {
     let token = auth.replace("Bearer ", ""),
-      decoded = jwt.verify(token, "<Hey,Thi$i$CoUpOnAtTokeNSecret/>");
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded && decoded.id) {
       return decoded;
     } else {

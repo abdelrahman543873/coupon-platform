@@ -3,6 +3,7 @@
     "module": "commonJS",
     "target": "es6",
     "resolveJsonModule": true,
+    "experimentalDecorators": true
   },
   "exclude": ["node_modules"]
 }

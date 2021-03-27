@@ -18,7 +18,6 @@ import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {
-    console.log("controller");
     let provider = req.body;
     let logoURL = "";
     provider.email = provider.email.toLowerCase();

@@ -1,7 +1,8 @@
 import cors from "cors";
 import { errorHandling } from "./middlewares/errorHandler.js";
-import { router } from "./routes/index.js";
+import { router } from "./routes/app.routes.js";
 import express from "express";
+import "reflect-metadata";
 
 let server = express();
 const corsOptions = {
@@ -32,7 +33,7 @@ server.use("/app", (req, res, next) => {
     );
 });
 
-server.use("/api/v1", router);
+server.use(router);
 
 server.use("/api/v1/PrivacyPolicy", express.static("assets/puplic"));
 
@@ -44,4 +45,4 @@ server.all("*", (req, res, next) => {
 // Error handler middleware.
 server.use(errorHandling);
 
-export default server;
+export { server };
