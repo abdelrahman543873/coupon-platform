@@ -1,5 +1,5 @@
 export default {
-  moduleFileExtensions: ["js", "json", "ts"],
+  moduleFileExtensions: ["js"],
   moduleDirectories: ["node_modules", "src"],
   rootDir: "./",
   testRegex: ".spec.js$",
