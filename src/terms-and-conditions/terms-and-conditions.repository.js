@@ -1,4 +1,4 @@
-import { termsAndConditionsModel } from "./models/terms-and-conditions.model";
+import { termsAndConditionsModel } from "./models/terms-and-conditions.model.js";
 export const addTermsAndConditionsRepository = async (termsAndConditions) => {
   return await termsAndConditionsModel.create(termsAndConditions);
 };

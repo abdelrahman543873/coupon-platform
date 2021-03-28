@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "babel app.js serverIP.js -d dist && babel src -d dist/src",
+    "build": "babel app.js serverIP.js -d dist && babel src -d dist/src ",
     "start": "nodemon dist/app.js",
     "serve": "yarn build && node dist/index.js",
     "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
