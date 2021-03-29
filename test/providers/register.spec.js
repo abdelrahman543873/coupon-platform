@@ -1,26 +1,24 @@
 import { post } from "../request.js";
 import { REGISTER } from "../endpoints/provider.js";
-import faker from "faker";
-describe("register suite case", () => {
-  it("register", async () => {
+import { buildProviderParams } from "../../src/provider/provider.factory.js";
+import { rollbackDbForProvider } from "./rollback-for-provider.js";
+describe("provider register suite case", () => {
+  afterEach(async () => {
+    await rollbackDbForProvider();
+  });
+  it("provider register", async () => {
+    const {
+      logoURL,
+      isActive,
+      code,
+      fcmToken,
+      qrURL,
+      ...input
+    } = await buildProviderParams();
     const res = await post({
       url: REGISTER,
-      variables: {
-        name: "abdo",
-        email: faker.internet.exampleEmail(),
-        password: "123456789",
-        slogan: "hala bala bala",
-        cities: [
-          {
-            id: "5ff70597eff3770032f1393e",
-            locations: [
-              { lat: "31.097100200408285", long: "29.741868446680048" },
-            ],
-          },
-        ],
-        officeTele: "12345678sssasssasad",
-      },
+      variables: input,
     });
-    expect(res.body.data.user.name).toBe("abdo");
+    expect(res.body.data.user.name).toBe(input.name);
   });
 });

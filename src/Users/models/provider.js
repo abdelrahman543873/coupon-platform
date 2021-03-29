@@ -81,6 +81,6 @@ let providerSchema = mongoose.Schema(
   }
 );
 
-let ProviderModel = mongoose.model("Provider", providerSchema);
+// let ProviderModel = mongoose.model("Provider", providerSchema);
 
-export { ProviderModel };
+// export { ProviderModel };

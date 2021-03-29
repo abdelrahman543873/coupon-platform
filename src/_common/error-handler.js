@@ -1,6 +1,7 @@
 //the unnecessary paramter here are for the sake of the controller
 const handleError = (err, req, res, next) => {
-  const { statusCode, message } = err;
+  const statusCode = err.statusCode ? err.statusCode : 500;
+  const message = err.message ? err.message : err;
   res.status(statusCode).json({
     success: false,
     statusCode,

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { providersRouter } from "../Users/routes/provider.js";
 import { customersRouter } from "../Users/routes/client.js";
 import { citiesRouter } from "../Cities/routes/cities.js";
 import { categoryRouter } from "../Category/routes/index.js";
@@ -10,6 +9,7 @@ import { purchasingRouter } from "../Purchasing/routes/index.js";
 import { notificationRouter } from "../CloudMessaging/routes/index.js";
 import { adminValidationwar } from "../Admin/middlewares/validations/admin.js";
 import { termsAndConditionsRouter } from "../terms-and-conditions/terms-and-condtions.routes.js";
+import { providersRouter } from "../provider/provider.routes.js";
 
 const router = Router();
 

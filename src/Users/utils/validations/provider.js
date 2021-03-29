@@ -10,13 +10,9 @@ const locationSchema = Joi.object().keys({
 const ProviderValidations = {
   add: Joi.object({
     name: Joi.string().min(3).max(30).required().error(errorsOverride),
-
     email: Joi.string().email().required().error(errorsOverride),
-
     password: Joi.string().min(8).required().error(errorsOverride),
-
     slogan: Joi.string().min(10).required().error(errorsOverride),
-
     cities: Joi.array()
       .items({
         id: Joi.custom(checkMongooseId, "custom validation")

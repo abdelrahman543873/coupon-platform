@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 import boom from "@hapi/boom";
 
-function uploadHelper(dest) {
+export const uploadHelper = (dest) => {
   let imgExt = [
     ".JPG",
     ".PNG",
@@ -44,5 +44,4 @@ function uploadHelper(dest) {
       },
     });
   return upload;
-}
-export { uploadHelper };
+};

@@ -1,10 +1,9 @@
-import { ProviderModel } from "../../Users/models/provider.js";
 import { ClientModel } from "../../Users/models/client.js";
 import { AdminModel } from "../../Admin/models/admin.js";
 import { NotificationModule } from "../module/notification.js";
 import { decodeToken } from "../../utils/JWTHelper.js";
 import { TokensModel } from "../model/tokens.js";
-
+import { ProviderModel } from "../../provider/models/provider.model.js";
 let notificationsController = {
   async addTokenToUser(req, res, next) {
     let auth = await decodeToken(req.headers.authentication),

@@ -11,10 +11,10 @@ import { CityModule } from "../../Cities/modules/city.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 import { CouponModule } from "../../Coupons/modules/coupon.js";
 import { ContactModel } from "../models/contactUs.js";
-import { ProviderModel } from "../models/provider.js";
 import { IP } from "../../../serverIP.js";
 import { nanoid } from "nanoid";
 import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
+import { ProviderModel } from "../../provider/models/provider.model.js";
 
 const ProviderControllers = {
   async addProvider(req, res, next) {
@@ -32,14 +32,14 @@ const ProviderControllers = {
     provider.password = hashedPass;
     //provider.cities = [...new Set(provider.cities.map((city) => city.id))];
 
-    for (let i = 0; i < provider.cities.length; i++) {
-      let city = await CityModule.getById(provider.cities[i].id);
-      if (!city) {
-        return next(
-          boom.badData(`City with Id ${provider.cities[i].id} not found`)
-        );
-      }
-    }
+    // for (let i = 0; i < provider.cities.length; i++) {
+    //   let city = await CityModule.getById(provider.cities[i].id);
+    //   if (!city) {
+    //     return next(
+    //       boom.badData(`City with Id ${provider.cities[i].id} not found`)
+    //     );
+    //   }
+    // }
 
     provider.code = nanoid(6);
 

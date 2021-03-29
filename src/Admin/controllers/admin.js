@@ -18,7 +18,6 @@ import { ContactModel } from "../../Users/models/contactUs.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 import { AppCreditModel } from "../../Purchasing/models/appCridit.js";
-import { ProviderModel } from "../../Users/models/provider.js";
 import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
 import { AppBankModel } from "../../Purchasing/models/appBanks.js";
 import { Messages } from "../../utils/twilloHelper.js";
@@ -31,7 +30,7 @@ import {
 } from "../../middlewares/responsHandler.js";
 import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
-
+import { ProviderModel } from "../../provider/models/provider.model.js";
 const AdminsController = {
   async add(req, res, next) {
     let { email, name, password } = req.body,
