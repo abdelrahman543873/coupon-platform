@@ -1,7 +1,6 @@
 // This function is the error handler for the server,
 // its invoked when next(err) called.
 function errorHandling(err, req, res, next) {
-  console.log(err);
   if (err.code == 11000) {
     return res.send({
       isSuccessed: false,

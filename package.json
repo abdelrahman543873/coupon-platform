@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "babel app.js serverIP.js -d dist && babel src -d dist/src ",
-    "start": "nodemon dist/app.js",
+    "start": "yarn build && nodemon dist/app.js",
     "serve": "yarn build && node dist/index.js",
     "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
   },
@@ -43,7 +43,7 @@
     "is-base64": "^1.1.0",
     "jest": "^26.6.3",
     "jimp": "^0.16.1",
-    "joi": "^17.2.1",
+    "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.5",
     "mongoose-autopopulate": "^0.12.2",

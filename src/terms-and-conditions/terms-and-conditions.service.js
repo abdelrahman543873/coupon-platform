@@ -3,12 +3,20 @@ import {
   getTermsAndConditionsRepository,
 } from "./terms-and-conditions.repository.js";
 
-export const addTermsAndConditionsService = async (req, res) => {
-  const termsAndConditions = await addTermsAndConditionsRepository(req.body);
-  res.send(termsAndConditions);
+export const addTermsAndConditionsService = async (req, res, next) => {
+  try {
+    const termsAndConditions = await addTermsAndConditionsRepository(req.body);
+    res.send(termsAndConditions);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getTermsAndConditionsService = async (req, res) => {
-  const termsAndConditions = await getTermsAndConditionsRepository();
-  res.send(termsAndConditions);
+  try {
+    const termsAndConditions = await getTermsAndConditionsRepository();
+    res.send(termsAndConditions);
+  } catch (error) {
+    next(error);
+  }
 };

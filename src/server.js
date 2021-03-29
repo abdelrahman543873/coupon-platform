@@ -3,6 +3,7 @@ import { errorHandling } from "./middlewares/errorHandler.js";
 import { router } from "./routes/app.routes.js";
 import express from "express";
 import "reflect-metadata";
+import { handleError } from "./_common/error-handler.js";
 
 let server = express();
 const corsOptions = {
@@ -43,6 +44,7 @@ server.all("*", (req, res, next) => {
 });
 
 // Error handler middleware.
-server.use(errorHandling);
+server.use(handleError);
+// server.use(errorHandling);
 
 export { server };
