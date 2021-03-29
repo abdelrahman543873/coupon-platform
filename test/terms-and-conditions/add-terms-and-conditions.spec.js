@@ -14,4 +14,14 @@ describe("add terms and conditions suite case", () => {
     });
     expect(res.body.enDescription).toBe(params.enDescription);
   });
+
+  // it("return error if arDescription doesn't exists", async () => {
+  //   const params = await buildTermsAndConditionsParams();
+  //   delete params.arDescription;
+  //   const res = await post({
+  //     url: ADD_TERMS_AND_CONDITIONS,
+  //     variables: params,
+  //   });
+  //   console.log(res.body);
+  // });
 });

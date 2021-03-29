@@ -1,13 +1,13 @@
-import { get } from "../request.js";
+import { post } from "../request.js";
 import { REGISTER } from "../endpoints/provider.js";
-import { generateToken } from "../../src/utils/JWTHelper.js";
+import faker from "faker";
 describe("register suite case", () => {
   it("register", async () => {
-    const res = await get({
+    const res = await post({
       url: REGISTER,
       variables: {
         name: "abdo",
-        email: "abdo@gmail.com",
+        email: faker.internet.exampleEmail(),
         password: "123456789",
         slogan: "hala bala bala",
         cities: [
@@ -20,8 +20,7 @@ describe("register suite case", () => {
         ],
         officeTele: "12345678sssasssasad",
       },
-      // token: generateToken(),
     });
-    console.log(res.body);
+    expect(res.body.data.user.name).toBe("abdo");
   });
 });
