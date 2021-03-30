@@ -13,7 +13,7 @@ services:
       - ./Subscriptions-Images:/coupons/Subscriptions-Images
       - ./Customers-Images:/coupons/Customers-Images
     ports:
-      - "${HOST_PORT}:${CONTAINER_PORT}"
+      - "${HOST_PORT}:${COUPONAT_N_PORT}"
     depends_on:
       - couponat-mongo-db-2
   couponat-mongo-db-2:
