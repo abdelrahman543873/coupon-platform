@@ -3,7 +3,7 @@ import { errorHandling } from "./middlewares/errorHandler.js";
 import { router } from "./routes/app.routes.js";
 import express from "express";
 import "reflect-metadata";
-import { handleError } from "./_common/error-handler.js";
+import { handleError } from "./_common/error-handling-module/error-handler.js";
 
 let server = express();
 const corsOptions = {
