@@ -11,10 +11,7 @@ dotenv.config();
 //  : process.env.COUPONAT_DB_URL_LOCAL;
 //console.log(dbUrl);
 
-let dbUrl = process.env.COUPONAT_N_PORT;
-if (process.env.RUN_INSIDE_DOCKER) {
-  dbUrl = process.env.COUPONAT_DB_URL_COMPOSE;
-}
+let dbUrl = mongodb://COUPONAT_PLATFORM:COUPONAT_PLATFORM_PASS@couponat-mongo-db-2/couponat;
 console.log(dbUrl);
 
 
