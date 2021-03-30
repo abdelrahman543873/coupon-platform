@@ -7,15 +7,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 let dbUrl = process.env.RUN_INSIDE_DOCKER
-<<<<<<< HEAD
   ? process.env.COUPONAT_DB_URL_COMPOSE
   : process.env.COUPONAT_DB_URL_LOCAL;
-=======
-  ? process.env.COUPONAT_DB_URL_LOCAL
-  : process.env.COUPONAT_DB_URL_COMPOSE;
-console.log(dbUrl);
-
->>>>>>> c81ad375c926b55a38d812094479519eac77852b
 connectDB(dbUrl)
   .then(() => {
     server.listen(process.env.COUPONAT_N_PORT, () => {

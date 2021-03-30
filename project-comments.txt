@@ -19,3 +19,6 @@ to avoid the problem with esm modules and jest
 
 import express from "express" is imported that way cause of an error with docker see this 
 https://github.com/Azure/azure-sdk-for-js/issues/10318
+
+added targets: { esmodules: true } cause of the problem with regenerator for runtime problem read 
+here https://github.com/babel/babel/issues/9849

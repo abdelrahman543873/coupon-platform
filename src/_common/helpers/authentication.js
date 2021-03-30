@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ProviderModel } from "../../provider/models/provider.model";
+import { ProviderModel } from "../../provider/models/provider.model.js";
 import { BaseHttpError } from "../error-handling-module/error-handler.js";
 export const authenticationMiddleware = async (req, res, next) => {
   try {

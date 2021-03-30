@@ -1,5 +1,10 @@
 {
-  "presets": [["@babel/preset-env", { "modules": false }]],
+  "presets": [
+    [
+      "@babel/preset-env",
+      { "modules": false, "targets": { "esmodules": true } }
+    ]
+  ],
   "plugins": [
     ["@babel/plugin-proposal-object-rest-spread"],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],

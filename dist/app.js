@@ -10,60 +10,39 @@ import cron from "node-cron";
 import dotenv from "dotenv";
 dotenv.config();
 var dbUrl = process.env.RUN_INSIDE_DOCKER ? process.env.COUPONAT_DB_URL_COMPOSE : process.env.COUPONAT_DB_URL_LOCAL;
-console.log(dbUrl);
-connectDB(dbUrl).then(function () {
-  server.listen(process.env.COUPONAT_N_PORT, function () {
+connectDB(dbUrl).then(() => {
+  server.listen(process.env.COUPONAT_N_PORT, () => {
     console.log("Couponat platform is running on port: " + process.env.COUPONAT_N_PORT);
   });
-  cron.schedule("0 0 */4 * * *", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var date, subscriptions, subscriptionsId, i, deleteSub;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            console.log("Here now");
-            date = new Date(new Date().setDate(new Date().getDate() - 7));
-            _context.next = 4;
-            return SubscripionModel.find({
-              isConfirmed: true,
-              isPaid: false,
-              isUsed: false,
-              createdAt: {
-                $lte: date
-              }
-            }, {
-              _id: 1
-            });
-
-          case 4:
-            subscriptions = _context.sent;
-            subscriptionsId = [];
-
-            for (i = 0; i < subscriptions.length; i++) {
-              console.log(subscriptions[i]._id);
-              subscriptionsId.push(subscriptions[i]._id + "");
-            }
-
-            console.log("data: ", subscriptionsId);
-            _context.next = 10;
-            return subscriptionModule["delete"](subscriptionsId);
-
-          case 10:
-            deleteSub = _context.sent;
-
-            if (deleteSub.err) {
-              console.log(err);
-            } else if (deleteSub.doc) {
-              console.log(deleteSub.doc);
-            }
-
-          case 12:
-          case "end":
-            return _context.stop();
-        }
+  cron.schedule("0 0 */4 * * *", /*#__PURE__*/_asyncToGenerator(function* () {
+    console.log("Here now");
+    var date = new Date(new Date().setDate(new Date().getDate() - 7));
+    var subscriptions = yield SubscripionModel.find({
+      isConfirmed: true,
+      isPaid: false,
+      isUsed: false,
+      createdAt: {
+        $lte: date
       }
-    }, _callee);
-  })));
-})["catch"](function (err) {
+    }, {
+      _id: 1
+    });
+    var subscriptionsId = [];
+
+    for (var i = 0; i < subscriptions.length; i++) {
+      console.log(subscriptions[i]._id);
+      subscriptionsId.push(subscriptions[i]._id + "");
+    }
+
+    console.log("data: ", subscriptionsId);
+    var deleteSub = yield subscriptionModule.delete(subscriptionsId);
+
+    if (deleteSub.err) {
+      console.log(err);
+    } else if (deleteSub.doc) {
+      console.log(deleteSub.doc);
+    }
+  }));
+}).catch(err => {
   console.log("Error: Couponat platform connection to database, " + err);
 });
