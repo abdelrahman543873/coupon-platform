@@ -1,10 +1,10 @@
-import express, { Router } from "express";
+import express from "express";
 import { CriditCardController } from "../controllers/criditCard.js";
 import { bankAccountRouter } from "./route/bankAccount.js";
 import { paymentRouter } from "./route/paymentType.js";
 import { subscriptionRouter } from "./route/subscription.js";
 
-const purchasingRouter = Router();
+const purchasingRouter = express.Router();
 
 purchasingRouter.use("/paymentType", paymentRouter);
 purchasingRouter.use("/appBankAccount", bankAccountRouter);

@@ -9,12 +9,7 @@ import { server } from "./src/server.js";
 import cron from "node-cron";
 import dotenv from "dotenv";
 dotenv.config();
-var dbUrl = process.env.COUPONAT_DB_URL_LOCAL;
-
-if (process.env.RUN_INSIDE_DOCKER) {
-  dbUrl = process.env.COUPONAT_DB_URL_COMPOSE;
-}
-
+var dbUrl = process.env.RUN_INSIDE_DOCKER ? process.env.COUPONAT_DB_URL_COMPOSE : process.env.COUPONAT_DB_URL_LOCAL;
 console.log(dbUrl);
 connectDB(dbUrl).then(function () {
   server.listen(process.env.COUPONAT_N_PORT, function () {

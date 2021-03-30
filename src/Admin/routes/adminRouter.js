@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 import { CategoryController } from "../../Category/controllers/index.js";
 import { CategoryalidationWares } from "../../Category/middlewares/validation/index.js";
 import { CityController } from "../../Cities/controllers/city.js";
@@ -17,7 +17,7 @@ import { AdminsController } from "../controllers/admin.js";
 import { AdminAuth, ValidateAuth } from "../middlewares/admimAuth.js";
 import { adminValidationwar } from "../middlewares/validations/admin.js";
 
-const adminRouter = Router();
+const adminRouter = express.Router();
 
 adminRouter
   .route("/")

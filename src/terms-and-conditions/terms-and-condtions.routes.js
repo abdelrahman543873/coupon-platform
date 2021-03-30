@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import { AddTermsAndConditionsInput } from "./inputs.ts/add-terms-and-conditions.input.js";
 import {
@@ -6,7 +6,7 @@ import {
   getTermsAndConditionsService,
 } from "./terms-and-conditions.service.js";
 
-const termsAndConditionsRouter = Router();
+const termsAndConditionsRouter = express.Router();
 
 termsAndConditionsRouter.post(
   "/addTermsAndConditions",

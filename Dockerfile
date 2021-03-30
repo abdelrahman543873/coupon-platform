@@ -1,15 +1,15 @@
 FROM node:12.19.0-alpine
 
-WORKDIR /coupons
+WORKDIR ./
 
-COPY package.json .
+COPY package.json package.json
 
-RUN yarn install
+RUN yarn
 
-RUN npm install -g nodemon
+RUN yarn global add nodemon
 
 COPY . .
 
 ENV RUN_INSIDE_DOCKER=true
 
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "start" ]

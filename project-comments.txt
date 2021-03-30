@@ -1,0 +1,21 @@
+nodemon.json file is added cause of the circular dependency problem with docker see 
+https://github.com/remy/nodemon/issues/1786#issuecomment-722502923
+
+babel.json file is added with 
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "modules": "auto"
+          },
+          "jest"
+        ]
+      ],
+      "plugins": ["@babel/plugin-transform-runtime"]
+    }
+to avoid the problem with esm modules and jest
+
+import express from "express" is imported that way cause of an error with docker see this 
+https://github.com/Azure/azure-sdk-for-js/issues/10318

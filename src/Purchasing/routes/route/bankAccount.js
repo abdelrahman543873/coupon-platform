@@ -1,7 +1,7 @@
-import express, { Router } from "express";
+import express from "express";
 import { BankAccountController } from "../../controllers/bank.js";
 
-const bankAccountRouter = Router();
+const bankAccountRouter = express.Router();
 
 bankAccountRouter.route("/").get(BankAccountController.getAll);
 

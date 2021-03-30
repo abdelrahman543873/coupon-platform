@@ -1,10 +1,10 @@
-import { Router } from "express";
+import express from "express";
 import { checkUserAuth } from "../../../utils/auth.js";
 import { uploadHelper } from "../../../utils/MulterHelper.js";
 import { subscriptionContoller } from "../../controllers/subscription.js";
 import { SubscriptionValidationWares } from "../../middlewares/subscription.js";
 
-const subscriptionRouter = Router();
+const subscriptionRouter = express.Router();
 
 subscriptionRouter
   .route("/")
