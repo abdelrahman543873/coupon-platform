@@ -10,6 +10,13 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
   ? process.env.COUPONAT_DB_URL_COMPOSE
   : process.env.COUPONAT_DB_URL_LOCAL;
 console.log(dbUrl);
+
+if (process.env.RUN_INSIDE_DOCKER) {
+  dbUrl = process.env.COUPONAT_DB_URL_COMPOSE;
+}
+console.log(dbUrl);
+
+
 connectDB(dbUrl)
   .then(() => {
     server.listen(process.env.COUPONAT_N_PORT, () => {
