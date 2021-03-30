@@ -7,8 +7,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 let dbUrl = process.env.RUN_INSIDE_DOCKER
-  ? process.env.COUPONAT_DB_URL_COMPOSE
-  : process.env.COUPONAT_DB_URL_LOCAL;
+  ? process.env.COUPONAT_DB_URL_LOCAL
+  : process.env.COUPONAT_DB_URL_COMPOSE;
 console.log(dbUrl);
 
 connectDB(dbUrl)
