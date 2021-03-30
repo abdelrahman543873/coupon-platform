@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  coupons:
+  couponat-backend-2:
     image: cop9
     build: .
     command: "yarn start"
@@ -13,13 +13,13 @@ services:
       - ./Subscriptions-Images:/coupons/Subscriptions-Images
       - ./Customers-Images:/coupons/Customers-Images
     ports:
-      - "${COUPONAT_N_PORT}:${COUPONAT_N_PORT}"
+      - "${HOST_PORT}:${COUPONAT_N_PORT}"
     depends_on:
-      - mongodb
-  mongodb:
+      - couponat-mongo-db-2
+  couponat-mongo-db-2:
     image: "mongo"
-    ports:
-      - "27017:27017"
+#    ports:
+#      - "27017:27017"
     volumes:
       - ./mongo:/var/lib/mongo
       - ./externalVolumes/db:/data/db
