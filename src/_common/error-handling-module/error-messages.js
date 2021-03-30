@@ -8,4 +8,12 @@ export const LocalizedErrorMessages = {
     EN: "you have to enter the error message as this error doesn't exist",
     AR: "you have to enter the error message as this error doesn't exist",
   },
+  606: {
+    EN: "missing authorization header",
+    AR: "missing authorization header",
+  },
+  607: {
+    EN: "wrong password",
+    AR: "wrong password",
+  },
 };

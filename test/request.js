@@ -28,7 +28,7 @@ export async function get({ variables, token, headers, url }) {
 }
 
 export async function put({ variables, token, headers, url }) {
-  const req = await request(server)
+  const req = request(server)
     .put(url)
     .send(variables)
     .set("Content-Type", "application/json");

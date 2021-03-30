@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-function generateToken(id, type = "") {
+export const generateToken = (id, type = "") => {
   return jwt.sign(
     {
       id,
@@ -8,9 +8,9 @@ function generateToken(id, type = "") {
     },
     process.env.JWT_SECRET
   );
-}
+};
 
-async function decodeToken(auth) {
+export const decodeToken = async (auth) => {
   try {
     let token = auth.replace("Bearer ", ""),
       decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -22,6 +22,4 @@ async function decodeToken(auth) {
   } catch (err) {
     return null;
   }
-}
-
-export { generateToken, decodeToken };
+};
