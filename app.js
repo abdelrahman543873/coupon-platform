@@ -6,14 +6,10 @@ import cron from "node-cron";
 import dotenv from "dotenv";
 
 dotenv.config();
-//let dbUrl = process.env.RUN_INSIDE_DOCKER
-//  ? process.env.COUPONAT_DB_URL_COMPOSE
+let dbUrl = process.env.RUN_INSIDE_DOCKER
+  ? process.env.COUPONAT_DB_URL_COMPOSE;
 //  : process.env.COUPONAT_DB_URL_LOCAL;
-//console.log(dbUrl);
-
-let dbUrl = couponat-mongo-db-2;
 console.log(dbUrl);
-
 
 connectDB(dbUrl)
   .then(() => {
