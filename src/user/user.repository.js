@@ -19,6 +19,12 @@ export const updateUser = async (_id, user) => {
   );
 };
 
+export const findUserByEmailOrPhone = async (user) => {
+  return await UserModel.findOne({
+    $or: [{ email: user.email }, { phone: user.phone }],
+  });
+};
+
 export const rawDeleteUser = async () => {
   return await UserModel.deleteMany({});
 };

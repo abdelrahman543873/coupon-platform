@@ -4,10 +4,12 @@ import { uploadHelper } from "../utils/MulterHelper.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
+import { ProviderLoginInput } from "./inputs/provider-login.input.js";
 import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import {
   getProviderService,
+  providerLoginService,
   providerRegisterService,
   updateProviderService,
 } from "./provider.service.js";
@@ -39,5 +41,9 @@ providersRouter
     ValidationMiddleware(UpdateProviderInput),
     updateProviderService
   );
+
+providersRouter
+  .route("/auth")
+  .post(ValidationMiddleware(ProviderLoginInput), providerLoginService);
 
 export { providersRouter };

@@ -18,6 +18,10 @@ export const updateProviderRepository = async (userId, providerData) => {
   );
 };
 
+export const findProviderByUserId = async (userId) => {
+  return await ProviderModel.findOne({ userId });
+};
+
 export const rawDeleteProvider = async () => {
   return await ProviderModel.deleteMany({});
 };
