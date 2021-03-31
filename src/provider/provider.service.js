@@ -17,6 +17,8 @@ import {
 
 export const providerRegisterService = async (req, res, next) => {
   try {
+    const existingUser = await findUserByEmailOrPhone(req.body);
+    if (existingUser) throw new BaseHttpError(601);
     const user = await createUser({ role: UserRoleEnum[0], ...req.body });
     const provider = await providerRegisterRepository({
       userId: user.id,

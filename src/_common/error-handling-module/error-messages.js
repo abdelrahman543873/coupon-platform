@@ -1,7 +1,6 @@
 export const LocalizedErrorMessages = {
   600: { EN: "Unauthorized", AR: "غير مصرح له" },
-  601: { EN: "Email already exists", AR: "Email already exists" },
-  602: { EN: "Phone already exists", AR: "Phone already exists" },
+  601: { EN: "user already exists", AR: "Email already exists" },
   603: { EN: "Invalid credentials", AR: "Invalid credentials" },
   604: { EN: "Blocked user", AR: "Blocked user" },
   605: {
