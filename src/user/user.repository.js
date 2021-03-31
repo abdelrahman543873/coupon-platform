@@ -18,3 +18,7 @@ export const updateUser = async (_id, user) => {
     { new: true }
   );
 };
+
+export const rawDeleteUser = async () => {
+  return await UserModel.deleteMany({});
+};
