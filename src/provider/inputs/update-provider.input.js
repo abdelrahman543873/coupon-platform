@@ -5,7 +5,6 @@ export const UpdateProviderInput = Joi.object({
   phone: Joi.string().min(7),
   password: Joi.string().min(8),
   slogan: Joi.string().min(10),
-  officeTele: Joi.string().min(3),
   websiteLink: Joi.string().allow("").min(3),
   facebookLink: Joi.string().allow("").min(3),
   instagramLink: Joi.string().min(3).allow(""),

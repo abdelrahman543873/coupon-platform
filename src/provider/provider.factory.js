@@ -11,7 +11,6 @@ export const buildProviderParams = async (obj = {}) => {
     logoURL: obj.logoURL || faker.internet.url(),
     isActive: obj.isActive || faker.datatype.boolean(),
     code: obj.code || faker.datatype.number(),
-    officeTele: obj.officeTele || faker.phone.phoneNumber(),
     websiteLink: obj.websiteLink || faker.internet.url(),
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),

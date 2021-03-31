@@ -21,10 +21,6 @@ export const provider = mongoose.Schema(
       required: true,
       unique: true,
     },
-    officeTele: {
-      type: String,
-      required: true,
-    },
     websiteLink: { type: String },
     facebookLink: { type: String },
     instagramLink: { type: String },
