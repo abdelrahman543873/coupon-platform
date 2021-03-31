@@ -1,5 +1,6 @@
 import { NotificationModule } from "../CloudMessaging/module/notification.js";
 import { user } from "../user/models/user.model.js";
+import { UserRoleEnum } from "../user/user-role.enum.js";
 import { createUser, updateUser } from "../user/user.repository.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
@@ -11,11 +12,10 @@ import {
 
 export const providerRegisterService = async (req, res, next) => {
   try {
-    const { name, email, password, phone, ...providerData } = req.body;
-    const user = await createUser({ name, email, password, phone });
+    const user = await createUser({ role: UserRoleEnum[0], ...req.body });
     const provider = await providerRegisterRepository({
       userId: user.id,
-      ...providerData,
+      ...req.body,
     });
     await NotificationModule.newProviderNotification(req.headers.lang, {
       name: provider.name,

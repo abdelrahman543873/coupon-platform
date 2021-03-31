@@ -18,6 +18,7 @@ export const user = mongoose.Schema(
     role: {
       type: String,
       enum: UserRoleEnum,
+      required: true,
     },
     email: {
       type: String,

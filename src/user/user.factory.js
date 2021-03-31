@@ -12,7 +12,7 @@ export const buildUserParams = async (obj = {}) => {
       ? await hashPass(obj.password)
       : await hashPass(faker.internet.password()),
     phone: obj.phone || faker.phone.phoneNumber(),
-    role: obj.role || faker.random.arrayElement[UserRoleEnum],
+    role: obj.role || faker.random.arrayElement(UserRoleEnum),
   };
 };
 
