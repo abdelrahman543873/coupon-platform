@@ -35,6 +35,16 @@ export const providerRegisterService = async (req, res, next) => {
   }
 };
 
+export const getProviderService = async (req, res, next) => {
+  try {
+    return res
+      .status(200)
+      .json({ success: true, data: req.currentUser, error: null });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateProviderService = async (req, res, next) => {
   try {
     const passwordValidation = req.body.password

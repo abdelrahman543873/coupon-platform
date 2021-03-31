@@ -2,7 +2,7 @@ import request from "supertest";
 import { server } from "../src/server.js";
 
 export async function post({ variables, token, headers, url }) {
-  const req = await request(server)
+  const req = request(server)
     .post(url)
     .send(variables)
     .set("Content-Type", "application/json");
@@ -15,7 +15,7 @@ export async function post({ variables, token, headers, url }) {
 }
 
 export async function get({ variables, token, headers, url }) {
-  const req = await request(server)
+  const req = request(server)
     .get(url)
     .send(variables)
     .set("Content-Type", "application/json");
@@ -41,7 +41,7 @@ export async function put({ variables, token, headers, url }) {
 }
 
 export async function remove({ variables, token, headers, url }) {
-  const req = await request(server)
+  const req = request(server)
     .delete(url)
     .send(variables)
     .set("Content-Type", "application/json");

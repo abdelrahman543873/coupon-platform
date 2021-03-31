@@ -7,6 +7,7 @@ import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import {
+  getProviderService,
   providerRegisterService,
   updateProviderService,
 } from "./provider.service.js";
@@ -19,6 +20,14 @@ providersRouter
     uploadHelper("Providers-Images/").single("logoURL"),
     ValidationMiddleware(ProviderRegisterInput),
     providerRegisterService
+  );
+
+providersRouter
+  .route("/")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    getProviderService
   );
 
 providersRouter
