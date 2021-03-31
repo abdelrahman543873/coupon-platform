@@ -1,15 +1,12 @@
 import faker from "faker";
+import { userFactory } from "../user/user.factory";
 import { hashPass } from "../utils/bcryptHelper";
 import { generateToken } from "../utils/JWTHelper";
 import { ProviderModel } from "./models/provider.model.js";
 
 export const buildProviderParams = async (obj = {}) => {
   return {
-    name: obj.name || faker.name.firstName(),
-    email: obj.email || faker.internet.email(),
-    password: obj.password
-      ? await hashPass(obj.password)
-      : await hashPass(faker.internet.password()),
+    userId: obj.userId || (await userFactory())._id,
     slogan: obj.slogan || faker.lorem.slug(),
     logoURL: obj.logoURL || faker.internet.url(),
     isActive: obj.isActive || faker.datatype.boolean(),
@@ -35,6 +32,5 @@ export const providersFactory = async (count = 10, obj = {}) => {
 export const providerFactory = async (obj = {}) => {
   const params = await buildProviderParams(obj);
   const provider = await ProviderModel.create(params);
-  provider.token = generateToken(provider._id, "PROVIDER");
   return provider;
 };

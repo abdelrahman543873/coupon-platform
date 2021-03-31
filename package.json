@@ -22,6 +22,7 @@
     "@firebase/app-types": "0.x",
     "@hapi/boom": "^9.1.0",
     "@hapi/formula": "^2.0.0",
+    "@tepez/joi-phone-number-extensions": "^0.2.0",
     "@types/express": "^4.17.7",
     "@types/jest": "^26.0.22",
     "@types/qs": "6.9.4",

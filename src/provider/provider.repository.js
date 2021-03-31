@@ -1,21 +1,18 @@
 import { nanoid } from "nanoid";
 import { hashPass } from "../utils/bcryptHelper.js";
-import { ProviderModel } from "./models/provider.model.js";
-import mongoose from "mongoose";
+import { ProviderModel, provider } from "./models/provider.model.js";
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,
-    password: await hashPass(provider.password),
     code: nanoid(),
   });
 };
 
-export const updateProviderRepository = async (_id, providerData) => {
+export const updateProviderRepository = async (userId, providerData) => {
   return await ProviderModel.findOneAndUpdate(
-    { _id },
+    { userId },
     {
       ...providerData,
-      password: await hashPass(providerData.newPassword),
     },
     { new: true }
   );

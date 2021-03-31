@@ -1,18 +1,33 @@
 import { put } from "../request.js";
 import { PROVIDER_MODIFICATION } from "../endpoints/provider.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
-import { providerFactory } from "../../src/provider/provider.factory.js";
+import {
+  buildProviderParams,
+  providerFactory,
+} from "../../src/provider/provider.factory.js";
+import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
   });
-  it("update provider", async () => {
-    const user = await providerFactory({ name: "bro", password: "12345678" });
-    const input = {
-      name: "something",
-      password: "12345678",
-      newPassword: "12345678",
+  it("successfully update provider if all data is entered", async () => {
+    const user = await userFactory({ password: "12345678" });
+    await providerFactory({ userId: user._id });
+    const providerInput = {
+      ...(await buildUserParams()),
+      ...(await buildProviderParams()),
     };
+    const {
+      password,
+      role,
+      userId,
+      isActive,
+      code,
+      fcmToken,
+      logoURL,
+      qrURL,
+      ...input
+    } = providerInput;
     const res = await put({
       url: PROVIDER_MODIFICATION,
       variables: input,
@@ -22,7 +37,8 @@ describe("update provider suite case", () => {
   });
 
   it("error if wrong password", async () => {
-    const user = await providerFactory({ name: "bro", password: "12345678" });
+    const user = await userFactory({ password: "12345678" });
+    const provider = await providerFactory({ userId: user.id });
     const input = {
       name: "something",
       password: "12345670",

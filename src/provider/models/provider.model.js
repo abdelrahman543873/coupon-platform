@@ -1,30 +1,16 @@
 import mongoose from "mongoose";
 
-const provider = mongoose.Schema(
+export const provider = mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-
-    password: {
-      type: String,
-      required: true,
-    },
-
     slogan: {
       type: String,
       required: true,
     },
-
-    logoURL: String,
-
+    logoURL: { type: String },
     isActive: {
       type: Boolean,
       required: true,
@@ -39,13 +25,12 @@ const provider = mongoose.Schema(
       type: String,
       required: true,
     },
-
-    websiteLink: String,
-    facebookLink: String,
-    instagramLink: String,
-    twitterLink: String,
-    fcmToken: String,
-    qrURL: String,
+    websiteLink: { type: String },
+    facebookLink: { type: String },
+    instagramLink: { type: String },
+    twitterLink: { type: String },
+    fcmToken: { type: String },
+    qrURL: { type: String },
   },
   {
     timestamps: true,

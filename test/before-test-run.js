@@ -9,6 +9,7 @@ beforeAll(async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   });
   app = server.listen(process.env.COUPONAT_N_PORT);
 });

@@ -2,6 +2,7 @@ import Joi from "joi";
 export const UpdateProviderInput = Joi.object({
   name: Joi.string().min(3).max(30),
   email: Joi.string().email().lowercase(),
+  phone: Joi.string().min(7),
   password: Joi.string().min(8),
   slogan: Joi.string().min(10),
   officeTele: Joi.string().min(3),
