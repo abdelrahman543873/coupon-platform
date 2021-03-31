@@ -18,7 +18,6 @@ describe("update provider suite case", () => {
       ...(await buildProviderParams()),
     };
     const {
-      password,
       role,
       userId,
       isActive,
@@ -28,6 +27,48 @@ describe("update provider suite case", () => {
       qrURL,
       ...input
     } = providerInput;
+    input.password = "12345678";
+    input.newPassword = "newPassword";
+    const res = await put({
+      url: PROVIDER_MODIFICATION,
+      variables: input,
+      token: user.token,
+    });
+    expect(res.body.data.name).toBe(input.name);
+  });
+
+  it("only update provider", async () => {
+    const user = await userFactory({ password: "12345678" });
+    await providerFactory({ userId: user._id });
+    const providerInput = {
+      ...(await buildProviderParams()),
+    };
+    const {
+      userId,
+      isActive,
+      code,
+      fcmToken,
+      logoURL,
+      qrURL,
+      ...input
+    } = providerInput;
+    input.password = "12345678";
+    input.newPassword = "newPassword";
+    const res = await put({
+      url: PROVIDER_MODIFICATION,
+      variables: input,
+      token: user.token,
+    });
+    expect(res.body.data.slogan).toBe(input.slogan);
+  });
+
+  it("only update user", async () => {
+    const user = await userFactory({ password: "12345678" });
+    await providerFactory({ userId: user._id });
+    const providerInput = {
+      ...(await buildUserParams()),
+    };
+    const { password, role, ...input } = providerInput;
     const res = await put({
       url: PROVIDER_MODIFICATION,
       variables: input,
