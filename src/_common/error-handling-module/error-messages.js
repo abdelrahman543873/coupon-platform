@@ -16,4 +16,8 @@ export const LocalizedErrorMessages = {
     EN: "wrong password",
     AR: "wrong password",
   },
+  608: {
+    EN: "user role is not authorized",
+    AR: "user role is not authorized",
+  },
 };

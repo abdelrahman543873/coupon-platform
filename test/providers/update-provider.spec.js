@@ -6,12 +6,16 @@ import {
   providerFactory,
 } from "../../src/provider/provider.factory.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
+import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
   });
   it("successfully update provider if all data is entered", async () => {
-    const user = await userFactory({ password: "12345678" });
+    const user = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
     await providerFactory({ userId: user._id });
     const providerInput = {
       ...(await buildUserParams()),
@@ -38,7 +42,10 @@ describe("update provider suite case", () => {
   });
 
   it("only update provider", async () => {
-    const user = await userFactory({ password: "12345678" });
+    const user = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
     await providerFactory({ userId: user._id });
     const providerInput = {
       ...(await buildProviderParams()),
@@ -63,7 +70,10 @@ describe("update provider suite case", () => {
   });
 
   it("only update user", async () => {
-    const user = await userFactory({ password: "12345678" });
+    const user = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
     await providerFactory({ userId: user._id });
     const providerInput = {
       ...(await buildUserParams()),
@@ -78,7 +88,10 @@ describe("update provider suite case", () => {
   });
 
   it("error if wrong password", async () => {
-    const user = await userFactory({ password: "12345678" });
+    const user = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
     const provider = await providerFactory({ userId: user.id });
     const input = {
       name: "something",
