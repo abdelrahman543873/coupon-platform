@@ -1,4 +1,4 @@
-import { CategoryModel } from "../models/index.js";
+import { CategoryModel } from "../../category/models/category.model.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 const CategoryModule = {
   async add(category) {

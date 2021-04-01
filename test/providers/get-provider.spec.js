@@ -12,7 +12,7 @@ describe("get provider suite case", () => {
     const user = await userFactory({
       role: UserRoleEnum[0],
     });
-    await providerFactory({ userId: user.id });
+    await providerFactory({ _id: user._id });
     const res = await get({
       url: GET_PROVIDER,
       token: user.token,

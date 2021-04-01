@@ -10,8 +10,7 @@ import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
 import { ProviderModule } from "../../Users/modules/provider.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
-import { CouponModel } from "../models/coupon.js";
-
+import { CouponModel } from "../../coupon/models/coupon.model.js";
 const CouponController = {
   async addCoupon(req, res, next) {
     let coupon = req.body;

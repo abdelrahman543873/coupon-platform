@@ -9,7 +9,6 @@ import { decodeToken, generateToken } from "../../utils/JWTHelper.js";
 import { AdminModule } from "../modules/admin.js";
 import { ProviderModule } from "../../Users/modules/provider.js";
 import { CategoryModule } from "../../Category/modules/index.js";
-import { CouponModel } from "../../Coupons/models/coupon.js";
 import { ClientModule } from "../../Users/modules/client.js";
 import { getSMSToken } from "../../utils/SMSToken.js";
 import { VerificationsModule } from "../../Users/modules/verifications.js";
@@ -31,6 +30,7 @@ import {
 import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
+import { CouponModel } from "../../coupon/models/coupon.model.js";
 const AdminsController = {
   async add(req, res, next) {
     let { email, name, password } = req.body,

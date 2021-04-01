@@ -1,9 +1,9 @@
 import { AdminModel } from "../models/admin.js";
-import { CouponModel } from "../../Coupons/models/coupon.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 import { ContactModel } from "../../Users/models/contactUs.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
+import { CouponModel } from "../../coupon/models/coupon.model.js";
 const AdminModule = {
   async add(email, name, password) {
     return await AdminModel({

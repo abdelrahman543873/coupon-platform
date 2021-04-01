@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-let categorySchema = mongoose.Schema(
+const category = mongoose.Schema(
   {
     name: {
       arabic: {
@@ -30,5 +30,4 @@ let categorySchema = mongoose.Schema(
   }
 );
 
-// let CategoryModel = mongoose.model("Category", categorySchema);
-// export { CategoryModel };
+export const CategoryModel = mongoose.model("Category", category);

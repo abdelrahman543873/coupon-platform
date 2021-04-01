@@ -13,7 +13,7 @@ describe("provider login suite case", () => {
       role: UserRoleEnum[0],
       password: "something",
     });
-    await providerFactory({ userId: user.id });
+    await providerFactory({ _id: user._id });
     const res = await post({
       url: PROVIDER_LOGIN,
       variables: { email: user.email, password: "something" },
@@ -26,7 +26,7 @@ describe("provider login suite case", () => {
       role: UserRoleEnum[0],
       password: "something",
     });
-    await providerFactory({ userId: user.id });
+    await providerFactory({ _id: user.id });
     const res = await post({
       url: PROVIDER_LOGIN,
       variables: { phone: user.phone, password: "something" },
@@ -39,7 +39,7 @@ describe("provider login suite case", () => {
       role: UserRoleEnum[0],
       password: "something",
     });
-    await providerFactory({ userId: user.id });
+    await providerFactory({ _id: user.id });
     const res = await post({
       url: PROVIDER_LOGIN,
       variables: { phone: user.phone, password: "someoneInHere" },

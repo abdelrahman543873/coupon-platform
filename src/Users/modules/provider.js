@@ -1,7 +1,6 @@
-import { CouponModel } from "../../Coupons/models/coupon.js";
+import { CouponModel } from "../../coupon/models/coupon.model.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
-
 const ProviderModule = {
   async add(provider) {
     return await ProviderModel({ ...provider })

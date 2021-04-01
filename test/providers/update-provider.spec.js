@@ -16,14 +16,14 @@ describe("update provider suite case", () => {
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ userId: user._id });
+    await providerFactory({ _id: user._id });
     const providerInput = {
       ...(await buildUserParams()),
       ...(await buildProviderParams()),
     };
     const {
       role,
-      userId,
+      _id,
       isActive,
       code,
       fcmToken,
@@ -46,12 +46,12 @@ describe("update provider suite case", () => {
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ userId: user._id });
+    await providerFactory({ _id: user._id });
     const providerInput = {
       ...(await buildProviderParams()),
     };
     const {
-      userId,
+      _id,
       isActive,
       code,
       fcmToken,
@@ -74,7 +74,7 @@ describe("update provider suite case", () => {
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ userId: user._id });
+    await providerFactory({ _id: user._id });
     const providerInput = {
       ...(await buildUserParams()),
     };
@@ -92,7 +92,7 @@ describe("update provider suite case", () => {
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    const provider = await providerFactory({ userId: user.id });
+    const provider = await providerFactory({ _id: user.id });
     const input = {
       name: "something",
       password: "12345670",

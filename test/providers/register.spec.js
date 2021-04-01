@@ -20,7 +20,7 @@ describe("provider register suite case", () => {
       fcmToken,
       qrURL,
       role,
-      userId,
+      _id,
       ...input
     } = providerInput;
     const res = await post({

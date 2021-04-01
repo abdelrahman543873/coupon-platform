@@ -1,6 +1,5 @@
+import { CouponModel } from "../../coupon/models/coupon.model.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
-import { CouponModel } from "../models/coupon.js";
-
 const CouponModule = {
   async add(coupon) {
     return await CouponModel({

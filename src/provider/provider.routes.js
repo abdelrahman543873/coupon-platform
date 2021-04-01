@@ -8,6 +8,7 @@ import { ProviderLoginInput } from "./inputs/provider-login.input.js";
 import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import {
+  getMyCouponsService,
   getProviderService,
   providerLoginService,
   providerRegisterService,
@@ -45,5 +46,13 @@ providersRouter
 providersRouter
   .route("/auth")
   .post(ValidationMiddleware(ProviderLoginInput), providerLoginService);
+
+providersRouter
+  .route("/coupons")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    getMyCouponsService
+  );
 
 export { providersRouter };

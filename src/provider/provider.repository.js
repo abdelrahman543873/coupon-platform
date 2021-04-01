@@ -8,9 +8,9 @@ export const providerRegisterRepository = async (provider) => {
   });
 };
 
-export const updateProviderRepository = async (userId, providerData) => {
+export const updateProviderRepository = async (_id, providerData) => {
   return await ProviderModel.findOneAndUpdate(
-    { userId },
+    { _id },
     {
       ...providerData,
     },
@@ -18,8 +18,8 @@ export const updateProviderRepository = async (userId, providerData) => {
   );
 };
 
-export const findProviderByUserId = async (userId) => {
-  return await ProviderModel.findOne({ userId });
+export const findProviderByUserId = async (_id) => {
+  return await ProviderModel.findOne({ _id });
 };
 
 export const rawDeleteProvider = async () => {

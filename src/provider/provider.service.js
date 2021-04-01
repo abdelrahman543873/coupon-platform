@@ -1,5 +1,5 @@
 import { NotificationModule } from "../CloudMessaging/module/notification.js";
-import { user } from "../user/models/user.model.js";
+import { getMyCouponsRepository } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
   createUser,
@@ -21,12 +21,12 @@ export const providerRegisterService = async (req, res, next) => {
     if (existingUser) throw new BaseHttpError(601);
     const user = await createUser({ role: UserRoleEnum[0], ...req.body });
     const provider = await providerRegisterRepository({
-      userId: user.id,
+      _id: user._id,
       ...req.body,
     });
     await NotificationModule.newProviderNotification(req.headers.lang, {
       name: provider.name,
-      id: provider.id,
+      id: provider._id,
     });
 
     return res.status(201).json({
@@ -87,6 +87,23 @@ export const updateProviderService = async (req, res, next) => {
       success: true,
       data: { ...user.toJSON(), ...provider.toJSON() },
       error: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getMyCouponsService = async (req, res, next) => {
+  try {
+    const coupons = await getMyCouponsRepository(
+      req.currentUser._id,
+      req.query.categoryId,
+      req.query.offset,
+      req.query.limit
+    );
+    return res.status(200).json({
+      success: true,
+      data: coupons,
     });
   } catch (error) {
     next(error);

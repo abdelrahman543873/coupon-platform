@@ -74,4 +74,4 @@ let couponSchema = mongoose.Schema(
 );
 
 let CouponModel = mongoose.model("Coupon", couponSchema);
-export { CouponModel };
+// export { CouponModel };
