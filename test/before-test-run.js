@@ -5,7 +5,7 @@ let app;
 beforeAll(async () => {
   dotenv.config();
   jest.setTimeout(50000);
-  mongoose.connect(process.env.COUPONAT_DB_URL_LOCAL, {
+  await mongoose.connect(process.env.COUPONAT_DB_URL_LOCAL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
