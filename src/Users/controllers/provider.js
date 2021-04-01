@@ -10,12 +10,11 @@ import { Coupon, Provider } from "../../middlewares/responsHandler.js";
 import { CityModule } from "../../Cities/modules/city.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 import { CouponModule } from "../../Coupons/modules/coupon.js";
-import { ContactModel } from "../models/contactUs.js";
 import { IP } from "../../../serverIP.js";
 import { nanoid } from "nanoid";
 import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
-
+import { ContactUsModel } from "../../contact-us/models/contact-us.model.js";
 const ProviderControllers = {
   async addProvider(req, res, next) {
     let provider = req.body;
@@ -329,7 +328,7 @@ const ProviderControllers = {
   async contactUs(req, res, next) {
     let { email, description } = req.body;
 
-    let saveContact = await ContactModel({
+    let saveContact = await ContactUsModel({
       email,
       description,
       type: "PROVIDER",

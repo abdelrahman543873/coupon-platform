@@ -14,10 +14,9 @@ import {
 import { ProviderModule } from "../modules/provider.js";
 import { CategoryModule } from "../../Category/modules/index.js";
 import { CouponModule } from "../../Coupons/modules/coupon.js";
-import { ContactModel } from "../models/contactUs.js";
 import { subscriptionModule } from "../../Purchasing/modules/subscription.js";
 import { Messages } from "../../utils/twilloHelper.js";
-
+import { ContactUsModel } from "../../contact-us/models/contact-us.model.js";
 const ClientControllers = {
   async add(req, res, next) {
     let { name, mobile, countryCode, password } = req.body,
@@ -505,7 +504,7 @@ const ClientControllers = {
   async contactUs(req, res, next) {
     let { email, description } = req.body;
 
-    let saveContact = await ContactModel({ email, description, type: "ClIENT" })
+    let saveContact = await ContactUsModel({ email, description, type: "ClIENT" })
       .save()
       .catch((err) => {
         return res.status(402).send({

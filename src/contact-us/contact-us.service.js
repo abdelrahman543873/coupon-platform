@@ -1,4 +1,4 @@
-import { sendContactUsMessageRepository } from "./contact-us.repository";
+import { sendContactUsMessageRepository } from "./contact-us.repository.js";
 
 export const sendContactUsMessageService = async (req, res, next) => {
   try {

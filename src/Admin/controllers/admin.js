@@ -13,7 +13,6 @@ import { ClientModule } from "../../Users/modules/client.js";
 import { getSMSToken } from "../../utils/SMSToken.js";
 import { VerificationsModule } from "../../Users/modules/verifications.js";
 import { sendClientMail } from "../../utils/nodemailer.js";
-import { ContactModel } from "../../Users/models/contactUs.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
 import { AppCreditModel } from "../../Purchasing/models/appCridit.js";
@@ -31,6 +30,7 @@ import { GeoInfoAr, GeoInfoEn } from "../../utils/GeocodeHelper.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
 import { CouponModel } from "../../coupon/models/coupon.model.js";
+import { ContactUsModel } from "../../contact-us/models/contact-us.model.js";
 const AdminsController = {
   async add(req, res, next) {
     let { email, name, password } = req.body,
@@ -591,7 +591,7 @@ const AdminsController = {
       limit = parseInt(req.query.limit) || null;
     return res.status(200).send({
       isSuccessed: true,
-      data: await ContactModel.find()
+      data: await ContactUsModel.find()
         .sort("-createdAt")
         .skip(skip)
         .limit(limit),
@@ -601,7 +601,7 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.params.id;
-    let mail = checkAllMongooseId(id) ? await ContactModel.findById(id) : null;
+    let mail = checkAllMongooseId(id) ? await ContactUsModel.findById(id) : null;
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"

@@ -1,9 +1,9 @@
 import { AdminModel } from "../models/admin.js";
 import { SubscripionModel } from "../../Purchasing/models/subscription.js";
 import { checkAllMongooseId } from "../../utils/mongooseIdHelper.js";
-import { ContactModel } from "../../Users/models/contactUs.js";
 import { ProviderModel } from "../../provider/models/provider.model.js";
 import { CouponModel } from "../../coupon/models/coupon.model.js";
+import { ContactUsModel } from "../../contact-us/models/contact-us.model.js";
 const AdminModule = {
   async add(email, name, password) {
     return await AdminModel({
@@ -92,7 +92,7 @@ const AdminModule = {
   async deleteMail(mailId) {
     if (!checkAllMongooseId(mailId)) return null;
 
-    return await ContactModel.deleteOne({ _id: mailId })
+    return await ContactUsModel.deleteOne({ _id: mailId })
       .then((doc) => ({ doc, err: null }))
       .catch((err) => ({ err, doc: null }));
   },
