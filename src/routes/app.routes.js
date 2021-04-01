@@ -10,6 +10,7 @@ import { notificationRouter } from "../CloudMessaging/routes/index.js";
 import { adminValidationwar } from "../Admin/middlewares/validations/admin.js";
 import { termsAndConditionsRouter } from "../terms-and-conditions/terms-and-condtions.routes.js";
 import { providersRouter } from "../provider/provider.routes.js";
+import { contactUsRouter } from "../contact-us/contact-us.routes.js";
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.use("/admin-management", adminRouter);
 router.use("/cloud-messaging", notificationRouter);
 router.use("/purchasing-management/", purchasingRouter);
 router.use("/admin-management", termsAndConditionsRouter);
+router.use("/contact-us", contactUsRouter);
 
 router
   .route("/pass-reset")

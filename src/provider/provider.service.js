@@ -46,7 +46,13 @@ export const providerRegisterService = async (req, res, next) => {
 
 export const getProviderService = async (req, res, next) => {
   try {
-    return res.status(200).json({ success: true, data: req.currentUser });
+    const provider = await findProviderByUserId(req.currentUser._id);
+    return res
+      .status(200)
+      .json({
+        success: true,
+        data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
+      });
   } catch (error) {
     next(error);
   }

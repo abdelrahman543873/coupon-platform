@@ -25,6 +25,5 @@ let contactSchema = mongoose.Schema(
   }
 );
 
-let ContactModel = mongoose.model("Contact", contactSchema);
-
-export { ContactModel };
+// let ContactModel = mongoose.model("Contact", contactSchema);
+// export { ContactModel };

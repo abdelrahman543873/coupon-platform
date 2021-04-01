@@ -14,6 +14,7 @@ export const user = mongoose.Schema(
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     role: {
       type: String,
@@ -22,6 +23,7 @@ export const user = mongoose.Schema(
     },
     email: {
       type: String,
+      unique: true,
     },
   },
   {
