@@ -1,4 +1,5 @@
 import { CouponModel } from "./models/coupon.model.js";
+import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
 
 export const getMyCouponsRepository = async (
   providerId,
@@ -14,6 +15,21 @@ export const getMyCouponsRepository = async (
     },
     { offset: offset * 10, limit, sort: "-createdAt" }
   );
+};
+
+export const getProviderHomeRepository = async (providerId) => {
+  const numberOfSoldCoupons = await providerCustomerCouponModel
+    .distinct("couponId", {
+      providerId,
+    })
+    .countDocuments();
+
+  const numberOfCoupons = await CouponModel.countDocuments({ providerId });
+  return {
+    numberOfSoldCoupons,
+    numberOfCoupons,
+    remainingCoupons: numberOfCoupons - numberOfSoldCoupons,
+  };
 };
 
 export const rawDeleteCoupon = async () => {

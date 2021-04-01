@@ -9,6 +9,7 @@ import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import {
   getMyCouponsService,
+  getProviderHomeService,
   getProviderService,
   providerLoginService,
   providerRegisterService,
@@ -53,6 +54,14 @@ providersRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     getMyCouponsService
+  );
+
+providersRouter
+  .route("/home")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    getProviderHomeService
   );
 
 export { providersRouter };

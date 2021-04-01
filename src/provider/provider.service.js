@@ -1,5 +1,8 @@
 import { NotificationModule } from "../CloudMessaging/module/notification.js";
-import { getMyCouponsRepository } from "../coupon/coupon.repository.js";
+import {
+  getMyCouponsRepository,
+  getProviderHomeRepository,
+} from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
   createUser,
@@ -108,4 +111,12 @@ export const getMyCouponsService = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const getProviderHomeService = async (req, res, next) => {
+  const home = await getProviderHomeRepository(req.currentUser._id);
+  return res.status(200).json({
+    success: true,
+    data: home,
+  });
 };
