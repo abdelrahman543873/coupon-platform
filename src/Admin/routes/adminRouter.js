@@ -12,11 +12,10 @@ import { BankValidationWares } from "../../Purchasing/middlewares/bank.js";
 import { PaymentValidationWares } from "../../Purchasing/middlewares/paymentTypes.js";
 import { ProviderControllers } from "../../Users/controllers/provider.js";
 import { ProviderValidationWares } from "../../Users/middlewares/validations/provider.js";
-import { uploadHelper } from "../../utils/MulterHelper.js";
+import { uploadHelper } from "../../_common/upload/uploader.js";
 import { AdminsController } from "../controllers/admin.js";
 import { AdminAuth, ValidateAuth } from "../middlewares/admimAuth.js";
 import { adminValidationwar } from "../middlewares/validations/admin.js";
-
 const adminRouter = express.Router();
 
 adminRouter

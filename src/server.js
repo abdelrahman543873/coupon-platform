@@ -1,10 +1,7 @@
 import cors from "cors";
-import { errorHandling } from "./middlewares/errorHandler.js";
 import { router } from "./routes/app.routes.js";
 import express from "express";
-import "reflect-metadata";
 import { handleError } from "./_common/error-handling-module/error-handler.js";
-
 let server = express();
 const corsOptions = {
   origin: "*",
@@ -19,20 +16,20 @@ server.use(express.urlencoded({ extended: true }));
 // for application/json requests
 server.use(express.json());
 
-server.use("/app", (req, res, next) => {
-  let agent = req.headers["user-agent"];
-  console.log(agent);
-  if (agent.includes("iPhone;") || agent.includes("iPhone"))
-    res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
-  else if (agent.includes("Android"))
-    res.redirect(
-      "https://play.google.com/store/apps/details?id=com.alef.couponalmadena"
-    );
-  else
-    res.redirect(
-      "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
-    );
-});
+// server.use("/app", (req, res, next) => {
+//   let agent = req.headers["user-agent"];
+//   console.log(agent);
+//   if (agent.includes("iPhone;") || agent.includes("iPhone"))
+//     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
+//   else if (agent.includes("Android"))
+//     res.redirect(
+//       "https://play.google.com/store/apps/details?id=com.alef.couponalmadena"
+//     );
+//   else
+//     res.redirect(
+//       "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
+//     );
+// });
 
 server.use(router);
 
@@ -43,8 +40,6 @@ server.all("*", (req, res, next) => {
   res.status(404).send("not found!!");
 });
 
-// Error handler middleware.
 server.use(handleError);
-// server.use(errorHandling);
 
 export { server };

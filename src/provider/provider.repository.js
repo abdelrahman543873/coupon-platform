@@ -13,6 +13,7 @@ export const updateProviderRepository = async (_id, providerData) => {
     { _id },
     {
       ...providerData,
+      ...(providerData.logoURL && { logoURL: providerData.logoURL.path }),
     },
     { new: true }
   );

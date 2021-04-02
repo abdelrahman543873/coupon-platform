@@ -7,6 +7,7 @@ import {
 } from "../../src/provider/provider.factory.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
+import path from "path";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -85,6 +86,24 @@ describe("update provider suite case", () => {
       token: user.token,
     });
     expect(res.body.data.name).toBe(input.name);
+  });
+
+  it("successful file upload", async () => {
+    const user = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ _id: user._id });
+    const testFiles = path.resolve(process.cwd(), "test");
+    const filePath = `${testFiles}/test-files/test-duck.jpg`;
+    const res = await put({
+      url: PROVIDER_MODIFICATION,
+      token: user.token,
+      fileParam: "logo",
+      filePath,
+    });
+    const fileStored = res.body.data.logoURL.includes(".jpg");
+    expect(fileStored).toBe(true);
   });
 
   it("error if wrong password", async () => {

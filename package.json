@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "babel app.js serverIP.js -d dist && babel src -d dist/src ",
-    "start": "yarn build && nodemon dist/app.js",
+    "start": "yarn build && nodemon app.js",
     "serve": "yarn build && node dist/index.js",
     "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
   },
@@ -25,6 +25,7 @@
     "@tepez/joi-phone-number-extensions": "^0.2.0",
     "@types/express": "^4.17.7",
     "@types/jest": "^26.0.22",
+    "@types/multer": "^1.4.5",
     "@types/qs": "6.9.4",
     "axios": "^0.21.1",
     "babel-jest": "^26.6.3",
@@ -39,6 +40,7 @@
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.10.0",
     "faker": "^5.5.1",
+    "file-type": "^16.3.0",
     "firebase-admin": "^9.5.0",
     "fs": "0.0.1-security",
     "is-base64": "^1.1.0",

@@ -1,6 +1,5 @@
 import express from "express";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { uploadHelper } from "../utils/MulterHelper.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
@@ -15,16 +14,15 @@ import {
   providerRegisterService,
   updateProviderService,
 } from "./provider.service.js";
-
+import {
+  fileValidationMiddleWare,
+  uploadHelper,
+} from "../_common/upload/uploader.js";
 const providersRouter = express.Router();
 
 providersRouter
   .route("/")
-  .post(
-    uploadHelper("Providers-Images/").single("logoURL"),
-    ValidationMiddleware(ProviderRegisterInput),
-    providerRegisterService
-  );
+  .post(ValidationMiddleware(ProviderRegisterInput), providerRegisterService);
 
 providersRouter
   .route("/")
@@ -37,10 +35,11 @@ providersRouter
 providersRouter
   .route("/modification")
   .put(
-    uploadHelper("Providers-Images/").single("logoURL"),
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     ValidationMiddleware(UpdateProviderInput),
+    uploadHelper("public/logos").single("logo"),
+    fileValidationMiddleWare,
     updateProviderService
   );
 

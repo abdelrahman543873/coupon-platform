@@ -31,7 +31,6 @@ export const providerRegisterService = async (req, res, next) => {
       name: provider.name,
       id: provider._id,
     });
-
     return res.status(201).json({
       success: true,
       data: {
@@ -47,12 +46,10 @@ export const providerRegisterService = async (req, res, next) => {
 export const getProviderService = async (req, res, next) => {
   try {
     const provider = await findProviderByUserId(req.currentUser._id);
-    return res
-      .status(200)
-      .json({
-        success: true,
-        data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
-      });
+    return res.status(200).json({
+      success: true,
+      data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
+    });
   } catch (error) {
     next(error);
   }
@@ -88,10 +85,10 @@ export const updateProviderService = async (req, res, next) => {
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
     const user = await updateUser(req.currentUser._id, req.body);
-    const provider = await updateProviderRepository(
-      req.currentUser._id,
-      req.body
-    );
+    const provider = await updateProviderRepository(req.currentUser._id, {
+      ...req.body,
+      logoURL: req.file,
+    });
     return res.status(200).json({
       success: true,
       data: { ...user.toJSON(), ...provider.toJSON() },

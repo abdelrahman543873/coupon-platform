@@ -4,7 +4,7 @@ import { UserModel } from "./models/user.model.js";
 export const createUser = async (user) => {
   return await UserModel.create({
     ...user,
-    password: await hashPass(user.password),
+    ...(user.password && { password: await hashPass(user.password) }),
   });
 };
 

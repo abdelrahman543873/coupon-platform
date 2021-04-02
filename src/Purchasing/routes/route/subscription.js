@@ -1,9 +1,8 @@
 import express from "express";
 import { checkUserAuth } from "../../../utils/auth.js";
-import { uploadHelper } from "../../../utils/MulterHelper.js";
+import { uploadHelper } from "../../../_common/upload/uploader.js";
 import { subscriptionContoller } from "../../controllers/subscription.js";
 import { SubscriptionValidationWares } from "../../middlewares/subscription.js";
-
 const subscriptionRouter = express.Router();
 
 subscriptionRouter

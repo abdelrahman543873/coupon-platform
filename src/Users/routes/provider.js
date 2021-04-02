@@ -1,9 +1,8 @@
 import express from "express";
 import { ProviderControllers } from "../controllers/provider.js";
 import { ProviderValidationWares } from "../middlewares/validations/provider.js";
-import { uploadHelper } from "../../utils/MulterHelper.js";
 import { checkUserAuth } from "../../utils/auth.js";
-
+import { uploadHelper } from "../../_common/upload/uploader.js";
 const providersRouter = express.Router();
 
 providersRouter

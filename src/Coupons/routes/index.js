@@ -2,8 +2,7 @@ import express from "express";
 import { CouponValidationWares } from "../middlewares/validation/coupon.js";
 import { CouponController } from "../controllers/index.js";
 import { checkUserAuth } from "../../utils/auth.js";
-import { uploadHelper } from "../../utils/MulterHelper.js";
-
+import { uploadHelper } from "../../_common/upload/uploader.js";
 const couponRouter = express.Router();
 
 couponRouter

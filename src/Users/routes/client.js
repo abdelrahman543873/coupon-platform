@@ -2,7 +2,7 @@ import express from "express";
 import { CouponController } from "../../Coupons/controllers/index.js";
 import { subscriptionContoller } from "../../Purchasing/controllers/subscription.js";
 import { checkUserAuth } from "../../utils/auth.js";
-import { uploadHelper } from "../../utils/MulterHelper.js";
+import { uploadHelper } from "../../_common/upload/uploader.js";
 import { ClientControllers } from "../controllers/client.js";
 import { ClientValidationWares } from "../middlewares/validations/client.js";
 

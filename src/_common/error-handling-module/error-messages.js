@@ -19,4 +19,8 @@ export const LocalizedErrorMessages = {
     EN: "user role is not authorized",
     AR: "user role is not authorized",
   },
+  609: {
+    EN: "unsupported file format",
+    AR: "unsupported file format",
+  },
 };
