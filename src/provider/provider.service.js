@@ -2,6 +2,7 @@ import { NotificationModule } from "../CloudMessaging/module/notification.js";
 import {
   getMyCouponsRepository,
   getProviderHomeRepository,
+  getRecentlySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
@@ -101,15 +102,23 @@ export const updateProviderService = async (req, res, next) => {
 
 export const getMyCouponsService = async (req, res, next) => {
   try {
-    const coupons = await getMyCouponsRepository(
-      req.currentUser._id,
-      req.query.categoryId,
-      req.query.offset,
-      req.query.limit
-    );
+    let data;
+    req.query.recentlySold &&
+      (data = await getRecentlySoldCouponsRepository(
+        req.currentUser._id,
+        req.query.offset,
+        req.query.limit
+      ));
+    !data &&
+      (data = await getMyCouponsRepository(
+        req.currentUser._id,
+        req.query.categoryId,
+        req.query.offset,
+        req.query.limit
+      ));
     return res.status(200).json({
       success: true,
-      data: coupons,
+      data,
     });
   } catch (error) {
     next(error);

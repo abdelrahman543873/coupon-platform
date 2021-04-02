@@ -17,6 +17,17 @@ export const getMyCouponsRepository = async (
   );
 };
 
+export const getRecentlySoldCouponsRepository = async (
+  providerId,
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { providerId },
+    { populate: "couponId", offset: offset * 10, limit, sort: "-createdAt" }
+  );
+};
+
 export const getProviderHomeRepository = async (providerId) => {
   const numberOfSoldCoupons = await providerCustomerCouponModel
     .distinct("couponId", {

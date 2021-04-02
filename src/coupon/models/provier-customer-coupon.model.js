@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 const providerCustomerCoupon = mongoose.Schema(
   {
     providerId: {
@@ -22,6 +23,7 @@ const providerCustomerCoupon = mongoose.Schema(
     versionKey: false,
   }
 );
+providerCustomerCoupon.plugin(mongoosePaginate);
 export const providerCustomerCouponModel = mongoose.model(
   "ProviderCustomerCoupon",
   providerCustomerCoupon
