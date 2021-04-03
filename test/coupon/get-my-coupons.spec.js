@@ -1,4 +1,4 @@
-import { get } from "../request.js";
+import { get, testRequest } from "../request.js";
 import { GET_MY_COUPONS } from "../endpoints/provider.js";
 import { rollbackDbForCoupon } from "./rollback-for-coupon.js";
 import {
@@ -6,6 +6,7 @@ import {
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
+import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("get my coupons suite case", () => {
   afterEach(async () => {
     await rollbackDbForCoupon();
@@ -13,7 +14,8 @@ describe("get my coupons suite case", () => {
   it("get my coupons successfully", async () => {
     const provider = await providerFactory();
     await couponsFactory(10, { providerId: provider._id });
-    const res = await get({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
       url: GET_MY_COUPONS,
       token: provider.token,
     });
@@ -28,7 +30,8 @@ describe("get my coupons suite case", () => {
       {},
       { providerId: provider._id }
     );
-    const res = await get({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
       url: `${GET_MY_COUPONS}?recentlySold=true`,
       token: provider.token,
     });

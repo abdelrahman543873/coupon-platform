@@ -1,7 +1,10 @@
 import request from "supertest";
 import { server } from "../src/server.js";
+import { BaseHttpError } from "../src/_common/error-handling-module/error-handler.js";
+import { HTTP_METHODS_ENUM } from "./request.methods.enum.js";
 
-export const post = async ({
+export const testRequest = async ({
+  method,
   variables,
   token,
   headers,
@@ -9,9 +12,21 @@ export const post = async ({
   fileParam,
   filePath,
 }) => {
-  const req = request(server).post(url).set("Content-Type", "application/json");
-  if (variables) req.send(variables);
-  if (fileParam && filePath) req.attach(fileParam, filePath);
+  let req = request(server);
+  method === HTTP_METHODS_ENUM.POST && (req = req.post(url));
+  method === HTTP_METHODS_ENUM.GET && (req = req.get(url));
+  method === HTTP_METHODS_ENUM.PUT && (req = req.put(url));
+  method === HTTP_METHODS_ENUM.DELETE && (req = req.delete(url));
+  if (!Object.values(HTTP_METHODS_ENUM).includes(method))
+    throw new BaseHttpError(610);
+  variables && filePath
+    ? Object.keys(variables).forEach((key) => {
+        req.field(key, JSON.stringify(variables[key]));
+      })
+    : variables;
+  fileParam && filePath
+    ? req.attach(fileParam, filePath)
+    : req.send(variables).set("Content-Type", "application/json");
   if (token) req.set("Authorization", `Bearer ${token}`);
   if (headers) {
     if (headers.timezone) return req.set("timezone", headers.timezone);
@@ -19,86 +34,3 @@ export const post = async ({
   }
   return req;
 };
-export const postWithFiles = async ({
-  variables,
-  token,
-  headers,
-  url,
-  fileParam,
-  filePath,
-}) => {
-  const req = request(server).post(url).set("Content-Type", "application/json");
-  if (variables) {
-    Object.keys(variables).forEach((key) => {
-      req.field(key, JSON.stringify(variables[key]));
-    });
-  }
-  if (fileParam && filePath) req.attach(fileParam, filePath);
-  if (token) req.set("Authorization", `Bearer ${token}`);
-  if (headers) {
-    if (headers.timezone) return req.set("timezone", headers.timezone);
-    if (headers.lang) return req.set("lang", headers.lang);
-  }
-  return req;
-};
-
-export async function get({
-  variables,
-  token,
-  headers,
-  url,
-  fileParam,
-  filePath,
-}) {
-  const req = request(server)
-    .get(url)
-    .send(variables)
-    .set("Content-Type", "application/json");
-  if (token) req.set("Authorization", `Bearer ${token}`);
-  if (fileParam && filePath) req.attach(fileParam, filePath);
-  if (headers) {
-    if (headers.timezone) return req.set("timezone", headers.timezone);
-    if (headers.lang) return req.set("lang", headers.lang);
-  }
-  return req;
-}
-
-export const put = async ({
-  variables,
-  token,
-  headers,
-  url,
-  fileParam,
-  filePath,
-}) => {
-  const req = request(server).put(url).set("Content-Type", "application/json");
-  if (variables) req.send(variables);
-  if (token) req.set("Authorization", `Bearer ${token}`);
-  if (fileParam && filePath) req.attach(fileParam, filePath);
-  if (headers) {
-    if (headers.timezone) return req.set("timezone", headers.timezone);
-    if (headers.lang) return req.set("lang", headers.lang);
-  }
-  return req;
-};
-
-export async function remove({
-  variables,
-  token,
-  headers,
-  url,
-  fileParam,
-  filePath,
-}) {
-  const req = request(server)
-    .delete(url)
-    .send(variables)
-    .set("Content-Type", "application/json");
-  if (token) req.set("Authorization", `Bearer ${token}`);
-  if (fileParam && filePath) req.attach(fileParam, filePath);
-  if (headers) {
-    if (headers.timezone) return req.set("timezone", headers.timezone);
-    if (headers.lang) return req.set("lang", headers.lang);
-  }
-  return req;
-}

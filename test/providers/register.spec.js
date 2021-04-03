@@ -1,9 +1,10 @@
-import { post } from "../request.js";
 import { REGISTER } from "../endpoints/provider.js";
 import { buildProviderParams } from "../../src/provider/provider.factory.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
+import { testRequest } from "../request.js";
+import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("provider register suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -23,7 +24,8 @@ describe("provider register suite case", () => {
       _id,
       ...input
     } = providerInput;
-    const res = await post({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: REGISTER,
       variables: input,
     });
@@ -41,7 +43,8 @@ describe("provider register suite case", () => {
       email: user.email,
       password: "something",
     };
-    const res = await post({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: REGISTER,
       variables: input,
     });

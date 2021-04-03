@@ -23,7 +23,7 @@ export const buildCouponParams = async (obj = {}) => {
     categoryId: obj.categoryId || (await categoryFactory())._id,
     code: obj.code || faker.datatype.number(),
     isActive: obj.isActive || true,
-    imageURL: obj.imageURL || faker.internet.url(),
+    logoURL: obj.logoURL || faker.internet.url(),
   };
 };
 

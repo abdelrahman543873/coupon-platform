@@ -1,4 +1,4 @@
-import { put } from "../request.js";
+import { testRequest, testRequestWithFiles } from "../request.js";
 import { PROVIDER_MODIFICATION } from "../endpoints/provider.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import {
@@ -8,6 +8,7 @@ import {
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import path from "path";
+import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -34,7 +35,8 @@ describe("update provider suite case", () => {
     } = providerInput;
     input.password = "12345678";
     input.newPassword = "newPassword";
-    const res = await put({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
       token: user.token,
@@ -62,7 +64,8 @@ describe("update provider suite case", () => {
     } = providerInput;
     input.password = "12345678";
     input.newPassword = "newPassword";
-    const res = await put({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
       token: user.token,
@@ -80,7 +83,8 @@ describe("update provider suite case", () => {
       ...(await buildUserParams()),
     };
     const { password, role, ...input } = providerInput;
-    const res = await put({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
       token: user.token,
@@ -96,7 +100,8 @@ describe("update provider suite case", () => {
     await providerFactory({ _id: user._id });
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
-    const res = await put({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       token: user.token,
       fileParam: "logo",
@@ -117,7 +122,8 @@ describe("update provider suite case", () => {
       password: "12345670",
       newPassword: "12345678",
     };
-    const res = await put({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
       token: user.token,

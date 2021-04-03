@@ -1,9 +1,10 @@
-import { post } from "../request.js";
+import { post, testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
-import { userFactory } from "../../src/user/user.factory.js";
+import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { PROVIDER_LOGIN } from "../endpoints/provider.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
+import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("provider login suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -14,7 +15,8 @@ describe("provider login suite case", () => {
       password: "something",
     });
     await providerFactory({ _id: user._id });
-    const res = await post({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
       variables: { email: user.email, password: "something" },
     });
@@ -27,7 +29,8 @@ describe("provider login suite case", () => {
       password: "something",
     });
     await providerFactory({ _id: user.id });
-    const res = await post({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
       variables: { phone: user.phone, password: "something" },
     });
@@ -40,7 +43,8 @@ describe("provider login suite case", () => {
       password: "something",
     });
     await providerFactory({ _id: user.id });
-    const res = await post({
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
       variables: { phone: user.phone, password: "someoneInHere" },
     });
@@ -48,9 +52,11 @@ describe("provider login suite case", () => {
   });
 
   it("error if user doesn't exist", async () => {
-    const res = await post({
+    const params = await buildUserParams()
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
-      variables: { phone: "+20100000000", password: "someoneInHere" },
+      variables: { phone: params.phone, password: params.password },
     });
     expect(res.body.statusCode).toBe(603);
   });

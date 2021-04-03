@@ -23,4 +23,8 @@ export const LocalizedErrorMessages = {
     EN: "unsupported file format",
     AR: "unsupported file format",
   },
+  610: {
+    EN: "invalid http method",
+    AR: "invalid http method",
+  },
 };
