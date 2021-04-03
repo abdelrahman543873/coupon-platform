@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
-import { hashPass } from "../utils/bcryptHelper.js";
-import { ProviderModel, provider } from "./models/provider.model.js";
+import { ProviderModel } from "./models/provider.model.js";
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,

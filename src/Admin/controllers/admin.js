@@ -10,7 +10,7 @@ import { AdminModule } from "../modules/admin.js";
 import { ProviderModule } from "../../Users/modules/provider.js";
 import { CategoryModule } from "../../Category/modules/index.js";
 import { ClientModule } from "../../Users/modules/client.js";
-import { getSMSToken } from "../../utils/SMSToken.js";
+import { getSMSToken } from "../../_common/helpers/smsOTP.js";
 import { VerificationsModule } from "../../Users/modules/verifications.js";
 import { sendClientMail } from "../../utils/nodemailer.js";
 import { NotificationModule } from "../../CloudMessaging/module/notification.js";
@@ -601,7 +601,9 @@ const AdminsController = {
 
   async mailReply(req, res, next) {
     let id = req.params.id;
-    let mail = checkAllMongooseId(id) ? await ContactUsModel.findById(id) : null;
+    let mail = checkAllMongooseId(id)
+      ? await ContactUsModel.findById(id)
+      : null;
     if (!mail) {
       let errMsg =
         req.headers.lang == "en"

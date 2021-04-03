@@ -2,7 +2,7 @@ import boom from "@hapi/boom";
 import { ClientModule } from "../modules/client.js";
 import { hashPass, bcryptCheckPass } from "../../utils/bcryptHelper.js";
 import { getErrorMessage } from "../../utils/handleDBError.js";
-import { getSMSToken } from "../../utils/SMSToken.js";
+import { getSMSToken } from "../../_common/helpers/smsOTP.js";
 import { VerificationsModule } from "../modules/verifications.js";
 import { decodeToken, generateToken } from "../../utils/JWTHelper.js";
 import {

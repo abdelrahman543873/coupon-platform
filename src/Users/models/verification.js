@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-let verificationSchema = mongoose.Schema(
+const verification = mongoose.Schema(
   {
     code: {
       type: String,
@@ -17,6 +17,4 @@ let verificationSchema = mongoose.Schema(
   }
 );
 
-let VerificationModel = mongoose.model("Verification", verificationSchema);
-
-export { VerificationModel };
+// export const VerificationModel = mongoose.model("Verification", verification);

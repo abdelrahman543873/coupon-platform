@@ -3,6 +3,7 @@ import { BaseHttpError } from "../error-handling-module/error-handler.js";
 import file_type from "file-type";
 import fs from "fs";
 import path from "path";
+import { multiPartToJsonParser } from "../helpers/helper-functions.js";
 export const uploadHelper = (dest) => {
   const fileFilter = (req, file, callback) => {
     try {
@@ -12,13 +13,9 @@ export const uploadHelper = (dest) => {
     }
   };
   const filename = (req, file, cb) => {
+    const name = req.currentUser ? req.currentUser.phone : req.body.phone;
     try {
-      cb(
-        null,
-        `${req.currentUser.phone}-${Date.now()}${path.extname(
-          file.originalname
-        )}`
-      );
+      cb(null, `${name}-${Date.now()}${path.extname(file.originalname)}`);
     } catch (error) {
       cb(error);
     }
@@ -54,22 +51,28 @@ export const fileValidationMiddleWare = async (req, res, next) => {
       "svg",
       "jpeg",
     ];
-    req.files &&
+    if (req.files) {
       req.files.forEach(async (file) => {
         const fileType = await file_type.fromFile(file.path);
         if (!imgExt.includes(fileType.ext)) {
           await fs.unlinkSync(req.file.path);
           throw new BaseHttpError(609);
         }
+        // code to parse multi part data which is necessary for
+        // upload parameters with files
+        multiPartToJsonParser(req.body);
       });
-    req.file &&
-      (async () => {
-        const fileType = await file_type.fromFile(req.file.path);
-        if (!imgExt.includes(fileType.ext)) {
-          await fs.unlinkSync(req.file.path);
-          throw new BaseHttpError(609);
-        }
-      });
+    }
+    if (req.file) {
+      const fileType = await file_type.fromFile(req.file.path);
+      if (!imgExt.includes(fileType.ext)) {
+        await fs.unlinkSync(req.file.path);
+        throw new BaseHttpError(609);
+      }
+      // code to parse multi part data which is necessary for
+      // upload parameters with files
+      multiPartToJsonParser(req.body);
+    }
     next();
   } catch (error) {
     next(error);
