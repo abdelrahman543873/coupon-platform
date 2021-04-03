@@ -6,7 +6,9 @@ import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import { ProviderLoginInput } from "./inputs/provider-login.input.js";
 import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
+import { AddCouponInput } from "./inputs/add-coupon.input.js";
 import {
+  addCouponService,
   getMyCouponsService,
   getProviderHomeService,
   getProviderService,
@@ -61,6 +63,17 @@ providersRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     getProviderHomeService
+  );
+
+providersRouter
+  .route("/add-coupon")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    ValidationMiddleware(AddCouponInput),
+    uploadHelper("public/coupons").single("coupon"),
+    fileValidationMiddleWare,
+    addCouponService
   );
 
 export { providersRouter };

@@ -43,6 +43,13 @@ export const getProviderHomeRepository = async (providerId) => {
   };
 };
 
+export const addCouponRepository = async (coupon) => {
+  return await CouponModel.create({
+    ...coupon,
+    ...(coupon.logoURL && { logoURL: coupon.logoURL.path }),
+  });
+};
+
 export const rawDeleteCoupon = async () => {
   return await CouponModel.deleteMany({});
 };

@@ -54,7 +54,7 @@ const coupon = mongoose.Schema(
       required: true,
       default: true,
     },
-    imgURL: { type: String },
+    logoURL: { type: String },
   },
   {
     timestamps: true,

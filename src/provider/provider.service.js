@@ -1,5 +1,6 @@
 import { NotificationModule } from "../CloudMessaging/module/notification.js";
 import {
+  addCouponRepository,
   getMyCouponsRepository,
   getProviderHomeRepository,
   getRecentlySoldCouponsRepository,
@@ -86,6 +87,11 @@ export const updateProviderService = async (req, res, next) => {
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
     const user = await updateUser(req.currentUser._id, req.body);
+    // multi part file conversion
+    req.file &&
+      Object.keys(JSON.parse(JSON.stringify(req.body))).forEach((key) => {
+        requestBody[key] = JSON.parse(requestBody[key]);
+      });
     const provider = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
       logoURL: req.file,
@@ -131,4 +137,27 @@ export const getProviderHomeService = async (req, res, next) => {
     success: true,
     data: home,
   });
+};
+
+export const addCouponService = async (req, res, next) => {
+  try {
+    // code to parse multi part data which is necessary for
+    // upload parameters with files
+    let requestBody = req.body;
+    req.file &&
+      Object.keys(JSON.parse(JSON.stringify(req.body))).forEach((key) => {
+        requestBody[key] = JSON.parse(requestBody[key]);
+      });
+    const coupon = await addCouponRepository({
+      ...requestBody,
+      logoURL: req.file,
+      providerId: req.currentUser._id,
+    });
+    return res.status(200).json({
+      success: true,
+      data: coupon,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
