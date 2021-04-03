@@ -1,11 +1,13 @@
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
+import { generateToken } from "../utils/JWTHelper.js";
 import { addVerificationCode } from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
   CustomerRegisterRepository,
+  getCustomerBySocialLoginRepository,
   getCustomerRepository,
 } from "./customer.repository.js";
 
@@ -45,6 +47,22 @@ export const getCustomerService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { ...customer.toJSON() },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const socialLoginService = async (req, res, next) => {
+  try {
+    const customer = await getCustomerBySocialLoginRepository(
+      req.body.socialMediaId
+    );
+    if (!customer) throw new BaseHttpError(611);
+    if (!customer.isVerified) throw new BaseHttpError(612);
+    res.status(200).json({
+      success: true,
+      data: { ...customer.toJSON(), auth: generateToken(customer.user.id) },
     });
   } catch (error) {
     next(error);

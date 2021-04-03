@@ -16,3 +16,7 @@ export const rawDeleteCustomer = async () => {
 export const getCustomerRepository = async (user) => {
   return await CustomerModel.findOne({ user }).populate("user");
 };
+
+export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
+  return await CustomerModel.findOne({ socialMediaId }).populate("user");
+};

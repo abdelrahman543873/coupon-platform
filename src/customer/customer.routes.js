@@ -8,8 +8,10 @@ import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
   CustomerRegisterService,
   getCustomerService,
+  socialLoginService,
 } from "./customer.service.js";
 import { CustomerRegisterInput } from "./inputs/customer-register.input.js";
+import { SocialLoginInput } from "./inputs/social-auth.input.js";
 
 const customersRouter = express.Router();
 
@@ -23,5 +25,9 @@ customersRouter
   );
 
 customersRouter.route("/").get(authenticationMiddleware, getCustomerService);
+
+customersRouter
+  .route("/social-auth")
+  .post(ValidationMiddleware(SocialLoginInput), socialLoginService);
 
 export { customersRouter };

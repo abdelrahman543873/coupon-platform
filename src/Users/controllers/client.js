@@ -504,7 +504,11 @@ const ClientControllers = {
   async contactUs(req, res, next) {
     let { email, description } = req.body;
 
-    let saveContact = await ContactUsModel({ email, description, type: "ClIENT" })
+    let saveContact = await ContactUsModel({
+      email,
+      description,
+      type: "ClIENT",
+    })
       .save()
       .catch((err) => {
         return res.status(402).send({

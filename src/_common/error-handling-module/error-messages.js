@@ -27,4 +27,12 @@ export const LocalizedErrorMessages = {
     EN: "invalid http method",
     AR: "invalid http method",
   },
+  611: {
+    EN: "user doesn't exist",
+    AR: "user doesn't exist",
+  },
+  612: {
+    EN: "user isn't active yet",
+    AR: "user isn't active yet",
+  },
 };
