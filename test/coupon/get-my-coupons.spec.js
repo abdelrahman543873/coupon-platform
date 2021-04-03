@@ -1,4 +1,4 @@
-import { get, testRequest } from "../request.js";
+import { testRequest } from "../request.js";
 import { GET_MY_COUPONS } from "../endpoints/provider.js";
 import { rollbackDbForCoupon } from "./rollback-for-coupon.js";
 import {
@@ -13,7 +13,7 @@ describe("get my coupons suite case", () => {
   });
   it("get my coupons successfully", async () => {
     const provider = await providerFactory();
-    await couponsFactory(10, { providerId: provider._id });
+    await couponsFactory(10, { provider: provider.user });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_MY_COUPONS,
@@ -26,9 +26,9 @@ describe("get my coupons suite case", () => {
     const provider = await providerFactory();
     await providerCustomerCouponsFactory(
       10,
-      { providerId: provider._id },
+      { provider: provider.user },
       {},
-      { providerId: provider._id }
+      { provider: provider.user }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,

@@ -1,13 +1,14 @@
 import faker from "faker";
 import { couponFactory } from "../coupon/coupon.factory.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
+import { userFactory } from "../user/user.factory.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import { CustomerModel } from "./models/customer.model.js";
 import { socialMediaEnum } from "./social-media-type.enum.js";
 
 export const buildCustomerParams = async (obj = {}) => {
   return {
-    _id: obj._id || (await userFactory({ role: UserRoleEnum[1] }))._id,
+    user: obj.user || (await userFactory({ role: UserRoleEnum[1] }))._id,
     isVerified: obj.isVerified || false,
     isSocialMediaVerified: obj.isSocialMediaVerified || false,
     socialMediaId: obj.socialMediaId || faker.datatype.uuid(),
@@ -30,6 +31,6 @@ export const CustomersFactory = async (count = 10, obj = {}) => {
 export const customerFactory = async (obj = {}) => {
   const params = await buildCustomerParams(obj);
   const customer = await CustomerModel.create(params);
-  customer.token = generateToken(user._id, "CUSTOMER");
+  customer.token = generateToken(customer.user, "CUSTOMER");
   return customer;
 };

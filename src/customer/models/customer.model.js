@@ -3,7 +3,7 @@ import { socialMediaEnum } from "../social-media-type.enum.js";
 
 const customer = mongoose.Schema(
   {
-    _id: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

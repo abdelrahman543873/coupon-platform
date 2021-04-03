@@ -1,10 +1,14 @@
 import express from "express";
+import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import {
   fileValidationMiddleWare,
   uploadHelper,
 } from "../_common/upload/uploader.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
-import { CustomerRegisterService } from "./customer.service.js";
+import {
+  CustomerRegisterService,
+  getCustomerService,
+} from "./customer.service.js";
 import { CustomerRegisterInput } from "./inputs/customer-register.input.js";
 
 const customersRouter = express.Router();
@@ -17,5 +21,7 @@ customersRouter
     fileValidationMiddleWare,
     CustomerRegisterService
   );
+
+customersRouter.route("/").get(authenticationMiddleware, getCustomerService);
 
 export { customersRouter };

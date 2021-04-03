@@ -6,9 +6,9 @@ import { buildCouponParams } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("update provider suite case", () => {
   it("add coupon successfully", async () => {
-    const provider = await providerFactory();
+    const mockProvider = await providerFactory();
     const {
-      providerId,
+      provider,
       isActive,
       logoURL,
       ...variables
@@ -16,7 +16,7 @@ describe("update provider suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_COUPON,
-      token: provider.token,
+      token: mockProvider.token,
       variables,
     });
     expect(res.body.data.name.arabic).toBe(variables.name.arabic);

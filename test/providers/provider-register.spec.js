@@ -22,6 +22,7 @@ describe("provider register suite case", () => {
       qrURL,
       role,
       _id,
+      user,
       ...input
     } = providerInput;
     const res = await testRequest({

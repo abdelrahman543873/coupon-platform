@@ -2,17 +2,17 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 const providerCustomerCoupon = mongoose.Schema(
   {
-    providerId: {
+    provider: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    customerId: {
+    customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    couponId: {
+    coupon: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Coupon",
       required: true,

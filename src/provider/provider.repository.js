@@ -7,9 +7,9 @@ export const providerRegisterRepository = async (provider) => {
   });
 };
 
-export const updateProviderRepository = async (_id, providerData) => {
+export const updateProviderRepository = async (user, providerData) => {
   return await ProviderModel.findOneAndUpdate(
-    { _id },
+    { user },
     {
       ...providerData,
       ...(providerData.logoURL && { logoURL: providerData.logoURL.path }),
@@ -18,8 +18,8 @@ export const updateProviderRepository = async (_id, providerData) => {
   );
 };
 
-export const findProviderByUserId = async (_id) => {
-  return await ProviderModel.findOne({ _id });
+export const findProviderByUserId = async (user) => {
+  return await ProviderModel.findOne({ user });
 };
 
 export const rawDeleteProvider = async () => {

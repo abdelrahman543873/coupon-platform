@@ -18,9 +18,9 @@ export const buildCouponParams = async (obj = {}) => {
     },
     servicePrice: obj.servicePrice || faker.commerce.price(),
     offerPrice: obj.offerPrice || faker.commerce.price(),
-    providerId:
-      obj.providerId || (await userFactory({ role: UserRoleEnum[0] }))._id,
-    categoryId: obj.categoryId || (await categoryFactory())._id,
+    provider:
+      obj.provider || (await userFactory({ role: UserRoleEnum[0] }))._id,
+    category: obj.category || (await categoryFactory())._id,
     code: obj.code || faker.datatype.number(),
     isActive: obj.isActive || true,
     logoURL: obj.logoURL || faker.internet.url(),
@@ -33,10 +33,9 @@ export const buildProviderCustomerCouponParams = async (
   couponObj = {}
 ) => {
   return {
-    providerId:
-      providerObj.providerId || (await providerFactory(providerObj))._id,
-    customerId: customerObj.customerId || (await userFactory(customerObj))._id,
-    couponId: couponObj.couponId || (await couponFactory(couponObj))._id,
+    provider: providerObj.provider || (await providerFactory(providerObj))._id,
+    customer: customerObj.customer || (await userFactory(customerObj))._id,
+    coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
   };
 };
 

@@ -26,7 +26,7 @@ const coupon = mongoose.Schema(
         trim: true,
       },
     },
-    providerId: {
+    provider: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -39,7 +39,7 @@ const coupon = mongoose.Schema(
       type: Number,
       required: true,
     },
-    categoryId: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,

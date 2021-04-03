@@ -14,7 +14,7 @@ describe("provider login suite case", () => {
       role: UserRoleEnum[0],
       password: "something",
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: user.id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
@@ -28,7 +28,7 @@ describe("provider login suite case", () => {
       role: UserRoleEnum[0],
       password: "something",
     });
-    await providerFactory({ _id: user.id });
+    await providerFactory({ user: user.id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,
@@ -52,7 +52,7 @@ describe("provider login suite case", () => {
   });
 
   it("error if user doesn't exist", async () => {
-    const params = await buildUserParams()
+    const params = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: PROVIDER_LOGIN,

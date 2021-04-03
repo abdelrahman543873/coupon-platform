@@ -10,15 +10,15 @@ describe("get provider suite case", () => {
     await rollbackDbForProvider();
   });
   it("get provider successfully", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: mockUser._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_PROVIDER,
-      token: user.token,
+      token: mockUser.token,
     });
-    expect(res.body.data.name).toBe(user.name);
+    expect(res.body.data.name).toBe(mockUser.name);
   });
 });

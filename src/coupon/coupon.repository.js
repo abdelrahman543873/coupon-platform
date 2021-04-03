@@ -2,40 +2,40 @@ import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
 
 export const getMyCouponsRepository = async (
-  providerId,
-  categoryId,
+  provider,
+  category,
   offset = 0,
   limit = 15
 ) => {
   return await CouponModel.paginate(
     {
-      providerId,
+      provider,
       isActive: true,
-      ...(categoryId && { categoryId }),
+      ...(category && { category }),
     },
     { offset: offset * 10, limit, sort: "-createdAt" }
   );
 };
 
 export const getRecentlySoldCouponsRepository = async (
-  providerId,
+  provider,
   offset = 0,
   limit = 15
 ) => {
   return await providerCustomerCouponModel.paginate(
-    { providerId },
-    { populate: "couponId", offset: offset * 10, limit, sort: "-createdAt" }
+    { provider },
+    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
   );
 };
 
-export const getProviderHomeRepository = async (providerId) => {
+export const getProviderHomeRepository = async (provider) => {
   const numberOfSoldCoupons = await providerCustomerCouponModel
-    .distinct("couponId", {
-      providerId,
+    .distinct("coupon", {
+      provider,
     })
     .countDocuments();
 
-  const numberOfCoupons = await CouponModel.countDocuments({ providerId });
+  const numberOfCoupons = await CouponModel.countDocuments({ provider });
   return {
     numberOfSoldCoupons,
     numberOfCoupons,

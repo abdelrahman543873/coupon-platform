@@ -12,3 +12,7 @@ export const CustomerRegisterRepository = async (customer) => {
 export const rawDeleteCustomer = async () => {
   return await CustomerModel.deleteMany({});
 };
+
+export const getCustomerRepository = async (user) => {
+  return await CustomerModel.findOne({ user }).populate("user");
+};

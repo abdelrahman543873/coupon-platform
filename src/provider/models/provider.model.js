@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const provider = mongoose.Schema(
   {
-    _id: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

@@ -14,23 +14,23 @@ describe("update provider suite case", () => {
     await rollbackDbForProvider();
   });
   it("successfully update provider if all data is entered", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: mockUser._id });
     const providerInput = {
       ...(await buildUserParams()),
       ...(await buildProviderParams()),
     };
     const {
       role,
-      _id,
       isActive,
       code,
       fcmToken,
       logoURL,
       qrURL,
+      user,
       ...input
     } = providerInput;
     input.password = "12345678";
@@ -39,17 +39,17 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
-      token: user.token,
+      token: mockUser.token,
     });
     expect(res.body.data.name).toBe(input.name);
   });
 
   it("only update provider", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: mockUser._id });
     const providerInput = {
       ...(await buildProviderParams()),
     };
@@ -60,6 +60,7 @@ describe("update provider suite case", () => {
       fcmToken,
       logoURL,
       qrURL,
+      user,
       ...input
     } = providerInput;
     input.password = "12345678";
@@ -68,17 +69,17 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
-      token: user.token,
+      token: mockUser.token,
     });
     expect(res.body.data.slogan).toBe(input.slogan);
   });
 
   it("only update user", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: mockUser._id });
     const providerInput = {
       ...(await buildUserParams()),
     };
@@ -87,23 +88,23 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
-      token: user.token,
+      token: mockUser.token,
     });
     expect(res.body.data.name).toBe(input.name);
   });
 
   it("successful file upload", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    await providerFactory({ _id: user._id });
+    await providerFactory({ user: mockUser._id });
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
-      token: user.token,
+      token: mockUser.token,
       fileParam: "logo",
       filePath,
     });
@@ -112,11 +113,11 @@ describe("update provider suite case", () => {
   });
 
   it("error if wrong password", async () => {
-    const user = await userFactory({
+    const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });
-    const provider = await providerFactory({ _id: user.id });
+    const provider = await providerFactory({ user: mockUser.id });
     const input = {
       name: "something",
       password: "12345670",
@@ -126,7 +127,7 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       variables: input,
-      token: user.token,
+      token: mockUser.token,
     });
     expect(res.body.statusCode).toBe(607);
   });

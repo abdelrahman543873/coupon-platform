@@ -143,7 +143,7 @@ export const addCouponService = async (req, res, next) => {
     const coupon = await addCouponRepository({
       ...req.body,
       logoURL: req.file,
-      providerId: req.currentUser._id,
+      provider: req.currentUser._id,
     });
     return res.status(200).json({
       success: true,
