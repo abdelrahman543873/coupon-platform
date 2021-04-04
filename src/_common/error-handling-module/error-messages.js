@@ -35,4 +35,8 @@ export const LocalizedErrorMessages = {
     EN: "user isn't active yet",
     AR: "user isn't active yet",
   },
+  613: {
+    EN: "token is malformed",
+    AR: "token is malformed",
+  },
 };
