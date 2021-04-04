@@ -44,6 +44,7 @@ export const CustomerRegisterService = async (req, res, next) => {
 export const getCustomerService = async (req, res, next) => {
   try {
     const customer = await getCustomerRepository(req.currentUser._id);
+    
     return res.status(200).json({
       success: true,
       data: { ...customer.toJSON() },

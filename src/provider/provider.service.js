@@ -26,7 +26,7 @@ export const providerRegisterService = async (req, res, next) => {
     if (existingUser) throw new BaseHttpError(601);
     const user = await createUser({ role: UserRoleEnum[0], ...req.body });
     const provider = await providerRegisterRepository({
-      _id: user._id,
+      user: user.id,
       ...req.body,
     });
     await NotificationModule.newProviderNotification(req.headers.lang, {
@@ -47,7 +47,9 @@ export const providerRegisterService = async (req, res, next) => {
 
 export const getProviderService = async (req, res, next) => {
   try {
-    const provider = await findProviderByUserId(req.currentUser._id);
+    console.log(req.currentUser);
+    const provider = await findProviderByUserId(req.currentUser.id);
+    console.log(provider);
     return res.status(200).json({
       success: true,
       data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
