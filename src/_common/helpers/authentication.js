@@ -14,7 +14,9 @@ export const authenticationMiddleware = async (req, res, next) => {
       if (decoded) user = decoded;
     });
     if (verificationError) throw new BaseHttpError(613);
-    req.currentUser = await UserModel.findById(user.id);
+    const authenticatedUser = await UserModel.findById(user.id);
+    if (!authenticatedUser) throw new BaseHttpError(614);
+    req.currentUser = authenticatedUser;
     next();
   } catch (err) {
     next(err);

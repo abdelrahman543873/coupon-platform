@@ -39,4 +39,8 @@ export const LocalizedErrorMessages = {
     EN: "token is malformed",
     AR: "token is malformed",
   },
+  614: {
+    EN: "token is expired",
+    AR: "token is expired",
+  },
 };

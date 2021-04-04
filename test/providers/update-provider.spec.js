@@ -76,6 +76,35 @@ describe("update provider suite case", () => {
     expect(res.body.data.slogan).toBe(input.slogan);
   });
 
+  it("error if only correct password is entered", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ user: mockUser._id });
+    const providerInput = {
+      ...(await buildProviderParams()),
+    };
+    const {
+      _id,
+      isActive,
+      code,
+      fcmToken,
+      logoURL,
+      qrURL,
+      user,
+      ...input
+    } = providerInput;
+    input.password = "12345678";
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: input,
+      token: mockUser.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
   it("only update user", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[0],
@@ -103,7 +132,7 @@ describe("update provider suite case", () => {
       url: REGISTER,
       variables,
     });
-    const { user, isActive, fcmToken, qrURL, logoURL,...providerInput } = {
+    const { user, isActive, fcmToken, qrURL, logoURL, ...providerInput } = {
       ...(await buildProviderParams()),
     };
     const res2 = await testRequest({
