@@ -9,5 +9,5 @@ export const UpdateProviderInput = Joi.object({
   facebookLink: Joi.string().allow("").min(3),
   instagramLink: Joi.string().min(3).allow(""),
   twitterLink: Joi.string().min(3).allow(""),
-  newPassword: Joi.string().min(8),
+  newPassword: Joi.string().min(8).disallow(Joi.ref("password")),
 }).and("password", "newPassword");

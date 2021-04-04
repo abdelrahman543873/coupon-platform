@@ -43,4 +43,8 @@ export const LocalizedErrorMessages = {
     EN: "token is expired",
     AR: "token is expired",
   },
+  615: {
+    EN: "same password as the previous one",
+    AR: "same password as the previous one",
+  },
 };

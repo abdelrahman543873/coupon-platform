@@ -9,8 +9,6 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { CUSTOMER_REGISTER } from "../endpoints/customer.js";
-import { provider } from "../../src/provider/models/provider.model.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -179,7 +177,7 @@ describe("update provider suite case", () => {
       filePath,
       variables: { password: "12345678" },
     });
-    expect(res.body.statusCode).toBe(400)
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("error if wrong password", async () => {
@@ -200,5 +198,25 @@ describe("update provider suite case", () => {
       token: mockUser.token,
     });
     expect(res.body.statusCode).toBe(607);
+  });
+
+  it("error if two passwords are the same", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    const provider = await providerFactory({ user: mockUser.id });
+    const input = {
+      name: "something",
+      password: "12345678",
+      newPassword: "12345678",
+    };
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: input,
+      token: mockUser.token,
+    });
+    expect(res.body.statusCode).toBe(400);
   });
 });
