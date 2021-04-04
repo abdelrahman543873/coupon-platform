@@ -13,6 +13,6 @@ describe("get terms and conditions suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: GET_TERMS_AND_CONDITIONS,
     });
-    expect(res.body.length).toBe(10);
+    expect(res.body.data.length).toBe(10);
   });
 });

@@ -89,8 +89,8 @@ export const providerLoginService = async (req, res, next) => {
       success: true,
       data: {
         user: { ...user.toJSON(), ...provider.toJSON() },
-        authToken: generateToken(user._id, "PROVIDER"),
       },
+      authToken: generateToken(user._id, "PROVIDER"),
     });
   } catch (error) {
     next(error);

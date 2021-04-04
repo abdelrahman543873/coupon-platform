@@ -6,7 +6,7 @@ import {
 export const addTermsAndConditionsService = async (req, res, next) => {
   try {
     const termsAndConditions = await addTermsAndConditionsRepository(req.body);
-    res.send(termsAndConditions);
+    res.status(200).json({ data: termsAndConditions });
   } catch (error) {
     next(error);
   }
@@ -15,7 +15,7 @@ export const addTermsAndConditionsService = async (req, res, next) => {
 export const getTermsAndConditionsService = async (req, res) => {
   try {
     const termsAndConditions = await getTermsAndConditionsRepository();
-    res.send(termsAndConditions);
+    res.status(200).json({ data: termsAndConditions });
   } catch (error) {
     next(error);
   }

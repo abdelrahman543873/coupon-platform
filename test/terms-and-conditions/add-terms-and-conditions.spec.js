@@ -14,7 +14,7 @@ describe("add terms and conditions suite case", () => {
       url: ADD_TERMS_AND_CONDITIONS,
       variables: params,
     });
-    expect(res.body.enDescription).toBe(params.enDescription);
+    expect(res.body.data.enDescription).toBe(params.enDescription);
   });
 
   it("return error if arDescription doesn't exists", async () => {
