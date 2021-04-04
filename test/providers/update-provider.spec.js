@@ -1,5 +1,5 @@
 import { testRequest, testRequestWithFiles } from "../request.js";
-import { PROVIDER_MODIFICATION } from "../endpoints/provider.js";
+import { PROVIDER_MODIFICATION, REGISTER } from "../endpoints/provider.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import {
   buildProviderParams,
@@ -9,6 +9,8 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
+import { CUSTOMER_REGISTER } from "../endpoints/customer.js";
+import { provider } from "../../src/provider/models/provider.model.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -91,6 +93,26 @@ describe("update provider suite case", () => {
       token: mockUser.token,
     });
     expect(res.body.data.name).toBe(input.name);
+  });
+
+  it("register and update", async () => {
+    const { role, email, ...variables } = await buildUserParams();
+    variables.slogan = "this is a long slogan ";
+    const mockUser = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: REGISTER,
+      variables,
+    });
+    const { user, isActive, fcmToken, qrURL, logoURL,...providerInput } = {
+      ...(await buildProviderParams()),
+    };
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: providerInput,
+      token: mockUser.body.data.authToken,
+    });
+    expect(res2.body.data.slogan).toBe(providerInput.slogan);
   });
 
   it("successful file upload", async () => {
