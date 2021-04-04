@@ -34,7 +34,7 @@ server.all("*", (req, res, next) => {
 
 server.use(handleError);
 
-export { server };
+export { server }
 
 // server.use("/app", (req, res, next) => {
 //   let agent = req.headers["user-agent"];
