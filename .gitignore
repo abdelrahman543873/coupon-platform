@@ -9,4 +9,4 @@ Customers-Images
 Subscriptions-Images
 /dist
 /public
-.env
+/.env
