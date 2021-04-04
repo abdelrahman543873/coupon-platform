@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
 
@@ -46,6 +47,7 @@ export const getProviderHomeRepository = async (provider) => {
 export const addCouponRepository = async (coupon) => {
   return await CouponModel.create({
     ...coupon,
+    code: nanoid(),
     ...(coupon.logoURL && { logoURL: coupon.logoURL.path }),
   });
 };

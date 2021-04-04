@@ -11,6 +11,7 @@ describe("update provider suite case", () => {
       provider,
       isActive,
       logoURL,
+      code,
       ...variables
     } = await buildCouponParams();
     const res = await testRequest({
@@ -29,6 +30,7 @@ describe("update provider suite case", () => {
       providerId,
       isActive,
       logoURL,
+      code,
       ...variables
     } = await buildCouponParams();
     delete variables.provider;
