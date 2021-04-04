@@ -7,7 +7,7 @@ import { UserRoleEnum } from "./user-role.enum.js";
 export const buildUserParams = async (obj = {}) => {
   return {
     name: obj.name || faker.name.firstName(),
-    email: obj.email || faker.internet.email(),
+    email: obj.email || faker.internet.email().toLowerCase(),
     password: obj.password
       ? await hashPass(obj.password)
       : await hashPass(faker.internet.password()),

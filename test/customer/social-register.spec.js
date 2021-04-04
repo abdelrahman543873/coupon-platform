@@ -1,4 +1,4 @@
-import { buildUserParams } from "../../src/user/user.factory";
+import { buildUserParams, userFactory } from "../../src/user/user.factory";
 import { CUSTOMER_SOCIAL_REGISTER } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
@@ -30,6 +30,30 @@ describe("customer social register suite case", () => {
       variables,
     });
     expect(res.body.data.name).toBe(variables.name);
+  });
+
+  it("error if customer register with same email", async () => {
+    const {
+      role,
+      user,
+      isVerified,
+      isSocialMediaVerified,
+      favCoupons,
+      fcmToken,
+      password,
+      profilePictureURL,
+      ...variables
+    } = {
+      ...(await buildUserParams()),
+      ...(await buildCustomerParams()),
+    };
+    await userFactory({ email: variables.email });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_SOCIAL_REGISTER,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(601);
   });
 
   it("customer social register with file upload", async () => {
