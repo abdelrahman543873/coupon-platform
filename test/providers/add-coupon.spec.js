@@ -19,7 +19,7 @@ describe("update provider suite case", () => {
       token: mockProvider.token,
       variables,
     });
-    expect(res.body.data.name.arabic).toBe(variables.name.arabic);
+    expect(res.body.data.enName).toBe(variables.enName);
   });
   it("successful coupon file upload", async () => {
     const provider = await providerFactory();

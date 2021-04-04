@@ -22,9 +22,9 @@ export const testRequest = async ({
   //only way to upload a file and send object values
   variables && filePath
     ? Object.keys(variables).forEach((key) => {
-        typeof variables[key] === "object"
-          ? req.field(key, JSON.stringify(variables[key]))
-          : req.field(key, variables[key]);
+        typeof variables[key] === "string"
+          ? req.field(key, variables[key])
+          : req.field(key, `${variables[key]}`);
       })
     : variables;
   fileParam && filePath

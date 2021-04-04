@@ -2,29 +2,25 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 const coupon = mongoose.Schema(
   {
-    name: {
-      arabic: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      english: {
-        type: String,
-        required: true,
-        trim: true,
-      },
+    enName: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    description: {
-      arabic: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      english: {
-        type: String,
-        required: true,
-        trim: true,
-      },
+    arName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    enDescription: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    arDescription: {
+      type: String,
+      required: true,
+      trim: true,
     },
     provider: {
       type: mongoose.Schema.Types.ObjectId,

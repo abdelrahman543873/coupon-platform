@@ -8,14 +8,10 @@ import { providerCustomerCouponModel } from "./models/provier-customer-coupon.mo
 
 export const buildCouponParams = async (obj = {}) => {
   return {
-    name: {
-      arabic: obj.arabicName || faker.commerce.productName(),
-      english: obj.englishName || faker.commerce.productName(),
-    },
-    description: {
-      english: obj.enDescription || faker.commerce.productDescription(),
-      arabic: obj.arDescription || faker.commerce.productDescription(),
-    },
+    enName: obj.enName || faker.commerce.productName(),
+    arName: obj.arName || faker.commerce.productName(),
+    enDescription: obj.enDescription || faker.commerce.productDescription(),
+    arDescription: obj.arDescription || faker.commerce.productDescription(),
     servicePrice: obj.servicePrice || faker.commerce.price(),
     offerPrice: obj.offerPrice || faker.commerce.price(),
     provider:

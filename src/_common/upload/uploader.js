@@ -3,7 +3,6 @@ import { BaseHttpError } from "../error-handling-module/error-handler.js";
 import file_type from "file-type";
 import fs from "fs";
 import path from "path";
-import { multiPartToJsonParser } from "../helpers/helper-functions.js";
 export const uploadHelper = (dest) => {
   const fileFilter = (req, file, callback) => {
     try {
@@ -58,9 +57,6 @@ export const fileValidationMiddleWare = async (req, res, next) => {
           await fs.unlinkSync(req.file.path);
           throw new BaseHttpError(609);
         }
-        // code to parse multi part data which is necessary for
-        // upload parameters with files
-        multiPartToJsonParser(req.body);
       });
     }
     if (req.file) {
@@ -69,9 +65,6 @@ export const fileValidationMiddleWare = async (req, res, next) => {
         await fs.unlinkSync(req.file.path);
         throw new BaseHttpError(609);
       }
-      // code to parse multi part data which is necessary for
-      // upload parameters with files
-      multiPartToJsonParser(req.body);
     }
     next();
   } catch (error) {
