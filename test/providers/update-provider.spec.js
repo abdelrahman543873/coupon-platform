@@ -163,6 +163,25 @@ describe("update provider suite case", () => {
     expect(fileStored).toBe(true);
   });
 
+  it("successful validation with file upload", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ user: mockUser._id });
+    const testFiles = path.resolve(process.cwd(), "test");
+    const filePath = `${testFiles}/test-files/test-duck.jpg`;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      token: mockUser.token,
+      fileParam: "logo",
+      filePath,
+      variables: { password: "12345678" },
+    });
+    expect(res.body.statusCode).toBe(400)
+  });
+
   it("error if wrong password", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[0],

@@ -39,8 +39,8 @@ providersRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    ValidationMiddleware(UpdateProviderInput),
     uploadHelper("public/logos").single("logo"),
+    ValidationMiddleware(UpdateProviderInput),
     fileValidationMiddleWare,
     updateProviderService
   );
@@ -70,8 +70,8 @@ providersRouter
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    ValidationMiddleware(AddCouponInput),
     uploadHelper("public/coupons").single("coupon"),
+    ValidationMiddleware(AddCouponInput),
     fileValidationMiddleWare,
     addCouponService
   );

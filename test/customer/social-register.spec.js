@@ -33,7 +33,7 @@ describe("customer social register suite case", () => {
   });
 
   it("customer social register with file upload", async () => {
-    const { role, ...variables } = await buildUserParams();
+    const { role, password, ...variables } = await buildUserParams();
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const res = await testRequest({

@@ -20,8 +20,8 @@ const customersRouter = express.Router();
 customersRouter
   .route("/")
   .post(
-    ValidationMiddleware(CustomerRegisterInput),
     uploadHelper("public/profile-pictures").single("profile-picture"),
+    ValidationMiddleware(CustomerRegisterInput),
     fileValidationMiddleWare,
     CustomerRegisterService
   );
@@ -35,8 +35,8 @@ customersRouter
 customersRouter
   .route("/social-register")
   .post(
-    ValidationMiddleware(SocialRegisterInput),
     uploadHelper("public/profile-pictures").single("profile-picture"),
+    ValidationMiddleware(SocialRegisterInput),
     fileValidationMiddleWare,
     socialRegisterService
   );

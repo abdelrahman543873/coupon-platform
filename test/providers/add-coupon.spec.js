@@ -31,6 +31,7 @@ describe("update provider suite case", () => {
       logoURL,
       ...variables
     } = await buildCouponParams();
+    delete variables.provider;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_COUPON,

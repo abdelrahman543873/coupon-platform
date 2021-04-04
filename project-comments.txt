@@ -22,3 +22,5 @@ https://github.com/Azure/azure-sdk-for-js/issues/10318
 
 added targets: { esmodules: true } cause of the problem with regenerator for runtime problem read 
 here https://github.com/babel/babel/issues/9849
+
+validation middleware should be always after file upload so that the req.body property is rendered correctly
