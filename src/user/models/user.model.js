@@ -21,9 +21,9 @@ export const user = mongoose.Schema(
       enum: UserRoleEnum,
       required: true,
     },
+    // not unique cause users could be created without email and null email is considered duplicate on mongoose
     email: {
       type: String,
-      unique: true,
     },
   },
   {

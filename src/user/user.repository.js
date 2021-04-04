@@ -21,7 +21,8 @@ export const updateUser = async (_id, user) => {
 
 export const findUserByEmailOrPhone = async (user) => {
   return await UserModel.findOne({
-    $or: [{ email: user.email }, { phone: user.phone }],
+    ...(user.email && { email: user.email }),
+    ...(user.phone && { phone: user.phone }),
   });
 };
 

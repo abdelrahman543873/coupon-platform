@@ -19,9 +19,9 @@ const customer = mongoose.Schema(
       required: true,
       default: false,
     },
+    // not unique cause users could be created without email and null email is considered duplicate on mongoose
     socialMediaId: {
       type: String,
-      unique: true,
     },
     socialMediaType: {
       type: String,

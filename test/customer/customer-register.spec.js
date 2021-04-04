@@ -18,6 +18,24 @@ describe("customer register suite case", () => {
     expect(res.body.data.user.name).toBe(variables.name);
   });
 
+  it("customer register twice", async () => {
+    const { role, email, ...variables } = await buildUserParams();
+    const variables2 = await buildUserParams();
+    await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_REGISTER,
+      variables,
+    });
+    delete variables2.email;
+    delete variables2.role;
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_REGISTER,
+      variables: variables2,
+    });
+    expect(res2.body.data.user.name).toBe(variables2.name);
+  });
+
   it("customer register with file upload", async () => {
     const { role, ...variables } = await buildUserParams();
     const testFiles = path.resolve(process.cwd(), "test");
