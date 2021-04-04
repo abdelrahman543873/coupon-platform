@@ -51,6 +51,9 @@ export const providerRegisterService = async (req, res, next) => {
           ...user.toJSON(),
           ...provider.toJSON(),
           code: verificationCode.code,
+          // this is done so the api user won't be confused between the User property of the provider and
+          // the id of the provider
+          _id: provider.user,
         },
         authToken: generateToken(user._id, "PROVIDER"),
       },
