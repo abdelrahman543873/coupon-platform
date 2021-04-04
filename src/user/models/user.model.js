@@ -7,9 +7,9 @@ export const user = mongoose.Schema(
       type: String,
       required: true,
     },
+    // password isn't required for the case of the social media register
     password: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,

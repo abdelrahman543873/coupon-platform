@@ -68,3 +68,29 @@ export const socialLoginService = async (req, res, next) => {
     next(error);
   }
 };
+
+export const socialRegisterService = async (req, res, next) => {
+  try {
+    const existingUser = await findUserByEmailOrPhone(req.body);
+    if (existingUser) throw new BaseHttpError(601);
+    const user = await createUser({
+      ...req.body,
+      role: UserRoleEnum[1],
+    });
+    const customer = await CustomerRegisterRepository({
+      user: user.id,
+      ...req.body,
+      profilePictureURL: req.file,
+    });
+    res.status(201).json({
+      success: true,
+      data: {
+        ...user.toJSON(),
+        ...customer.toJSON(),
+        authToken: generateToken(user.id, "CLIENT"),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
