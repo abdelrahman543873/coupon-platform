@@ -13,7 +13,10 @@ import {
 } from "../user/user.repository.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
+import { addVerificationCode } from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
+import { createVerificationCode } from "../_common/helpers/smsOTP.js";
+import { sendMessage } from "../_common/helpers/twilio.js";
 import {
   findProviderByUserId,
   providerRegisterRepository,
@@ -29,6 +32,14 @@ export const providerRegisterService = async (req, res, next) => {
       user: user.id,
       ...req.body,
     });
+    const verificationCode = await addVerificationCode({
+      ...createVerificationCode(),
+      user: user._id,
+    });
+    await sendMessage({
+      to: req.body.phone,
+      text: verificationCode.code,
+    });
     await NotificationModule.newProviderNotification(req.headers.lang, {
       name: provider.name,
       id: provider._id,
@@ -36,7 +47,11 @@ export const providerRegisterService = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       data: {
-        user: { ...user.toJSON(), ...provider.toJSON() },
+        user: {
+          ...user.toJSON(),
+          ...provider.toJSON(),
+          code: verificationCode.code,
+        },
         authToken: generateToken(user._id, "PROVIDER"),
       },
     });

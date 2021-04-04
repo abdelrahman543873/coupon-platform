@@ -16,11 +16,6 @@ export const provider = mongoose.Schema(
       required: true,
       default: false,
     },
-    code: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     websiteLink: { type: String },
     facebookLink: { type: String },
     instagramLink: { type: String },

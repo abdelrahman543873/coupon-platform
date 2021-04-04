@@ -10,7 +10,6 @@ export const buildProviderParams = async (obj = {}) => {
     slogan: obj.slogan || faker.lorem.slug(),
     logoURL: obj.logoURL || faker.internet.url(),
     isActive: obj.isActive || faker.datatype.boolean(),
-    code: obj.code || faker.datatype.number(),
     websiteLink: obj.websiteLink || faker.internet.url(),
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),

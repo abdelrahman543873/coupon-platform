@@ -3,7 +3,6 @@ import { ProviderModel } from "./models/provider.model.js";
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,
-    code: nanoid(),
   });
 };
 
