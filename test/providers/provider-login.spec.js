@@ -20,7 +20,7 @@ describe("provider login suite case", () => {
       url: PROVIDER_LOGIN,
       variables: { email: user.email, password: "something" },
     });
-    expect(res.body.data.name).toBe(user.name);
+    expect(res.body.data.user.name).toBe(user.name);
   });
 
   it("provider login by phone successfully", async () => {
@@ -34,7 +34,7 @@ describe("provider login suite case", () => {
       url: PROVIDER_LOGIN,
       variables: { phone: user.phone, password: "something" },
     });
-    expect(res.body.data.name).toBe(user.name);
+    expect(res.body.data.user.name).toBe(user.name);
   });
 
   it("error if wrong password", async () => {
