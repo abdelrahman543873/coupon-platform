@@ -19,9 +19,12 @@ export const testRequest = async ({
   method === HTTP_METHODS_ENUM.DELETE && (req = req.delete(url));
   if (!Object.values(HTTP_METHODS_ENUM).includes(method))
     throw new BaseHttpError(610);
+  //only way to upload a file and send object values
   variables && filePath
     ? Object.keys(variables).forEach((key) => {
-        req.field(key, JSON.stringify(variables[key]));
+        typeof variables[key] === "object"
+          ? req.field(key, JSON.stringify(variables[key]))
+          : req.field(key, variables[key]);
       })
     : variables;
   fileParam && filePath
