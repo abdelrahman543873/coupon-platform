@@ -47,9 +47,7 @@ export const providerRegisterService = async (req, res, next) => {
 
 export const getProviderService = async (req, res, next) => {
   try {
-    console.log(req.currentUser);
     const provider = await findProviderByUserId(req.currentUser.id);
-    console.log(provider);
     return res.status(200).json({
       success: true,
       data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
