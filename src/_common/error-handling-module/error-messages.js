@@ -47,4 +47,8 @@ export const LocalizedErrorMessages = {
     EN: "same password as the previous one",
     AR: "same password as the previous one",
   },
+  616: {
+    EN: "Section Must be newest or bestSeller",
+    AR: "Section Must be newest or bestSeller",
+  },
 };

@@ -30,11 +30,22 @@ export const getRecentlySoldCouponsRepository = async (
   );
 };
 
+export const getRecentlyAdddedCouponsRepository = async (
+  offset = 0,
+  limit = 15
+) => {
+  return await CouponModel.paginate(
+    {},
+    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
+  );
+};
+
 export const getMostSellingCouponRepository = async (
   offset = 0,
   limit = 15
 ) => {
-  const mostSoldCoupons = await providerCustomerCouponModel.aggregate([
+  //pagination with aggregation to be modified and improved
+  return await providerCustomerCouponModel.aggregate([
     {
       $sortByCount: "$coupon",
     },
@@ -46,13 +57,30 @@ export const getMostSellingCouponRepository = async (
         as: "coupon",
       },
     },
+    {
+      $unwind: "$coupon",
+    },
+    {
+      $facet: {
+        metadata: [
+          {
+            $group: {
+              _id: null,
+              total: { $sum: 1 },
+            },
+          },
+        ],
+        docs: [{ $skip: offset }, { $limit: limit }],
+      },
+    },
+    {
+      $project: {
+        docs: 1,
+        totalDocs: { $arrayElemAt: ["$metadata.total", 0] },
+      },
+    },
   ]);
-  return await providerCustomerCouponModel.aggregatePaginate(mostSoldCoupons, {
-    limit,
-    offset,
-  });
 };
-
 export const getProviderHomeRepository = async (provider) => {
   const numberOfSoldCoupons = await providerCustomerCouponModel
     .distinct("coupon", {

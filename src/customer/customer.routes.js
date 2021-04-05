@@ -10,6 +10,7 @@ import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
   CustomerRegisterService,
   getCustomerHomeService,
+  getCustomersCouponsService,
   getCustomerService,
   socialLoginService,
   socialRegisterService,
@@ -29,7 +30,13 @@ customersRouter
     CustomerRegisterService
   );
 
-customersRouter.route("/").get(authenticationMiddleware, getCustomerService);
+customersRouter
+  .route("/")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    getCustomerService
+  );
 
 customersRouter
   .route("/social-auth")
@@ -45,5 +52,7 @@ customersRouter
   );
 
 customersRouter.route("/home").get(getCustomerHomeService);
+
+customersRouter.route("/getCoupons").get(getCustomersCouponsService);
 
 export { customersRouter };

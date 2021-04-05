@@ -1,6 +1,7 @@
 import { getCategories } from "../category/category.repository.js";
 import {
   getMostSellingCouponRepository,
+  getRecentlyAdddedCouponsRepository,
   getRecentlySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
@@ -112,6 +113,30 @@ export const getCustomerHomeService = async (req, res, next) => {
         categories,
         providers,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCustomersCouponsService = async (req, res, next) => {
+  try {
+    if (req.query.section !== "newest" && req.query.section !== "bestSeller")
+      throw new BaseHttpError(616);
+    let data;
+    req.query.section === "newest" &&
+      (data = await getRecentlyAdddedCouponsRepository(
+        req.query.providerId,
+        req.query.offset,
+        req.query.limit
+      ));
+    !data &&
+      (data = (
+        await getMostSellingCouponRepository(req.query.offset, req.query.limit)
+      )[0]);
+    return res.status(200).json({
+      success: true,
+      data,
     });
   } catch (error) {
     next(error);

@@ -5,12 +5,13 @@ let app;
 beforeAll(async () => {
   dotenv.config();
   jest.setTimeout(50000);
-  await mongoose.connect(process.env.COUPONAT_DB_URL_LOCAL, {
+  const mongo = await mongoose.connect(process.env.COUPONAT_DB_URL_LOCAL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
   });
+  await mongo.connection.db.dropDatabase();
   app = server.listen(process.env.COUPONAT_N_PORT);
 });
 
