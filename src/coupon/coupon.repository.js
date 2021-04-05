@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { provider } from "../provider/models/provider.model.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
 
@@ -24,9 +25,31 @@ export const getRecentlySoldCouponsRepository = async (
   limit = 15
 ) => {
   return await providerCustomerCouponModel.paginate(
-    { provider },
+    { ...(provider && { provider }) },
     { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
   );
+};
+
+export const getMostSellingCouponRepository = async (
+  offset = 0,
+  limit = 15
+) => {
+  const something = await providerCustomerCouponModel.aggregate([
+    {
+      $sortByCount: "$coupon",
+    },
+    { $skip: offset },
+    { $limit: limit },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "_id",
+        foreignField: "_id",
+        as: "coupon",
+      },
+    },
+  ]);
+  return something;
 };
 
 export const getProviderHomeRepository = async (provider) => {
@@ -54,4 +77,8 @@ export const addCouponRepository = async (coupon) => {
 
 export const rawDeleteCoupon = async () => {
   return await CouponModel.deleteMany({});
+};
+
+export const rawDeleteProviderCustomerCoupon = async () => {
+  return await providerCustomerCouponModel.deleteMany({});
 };

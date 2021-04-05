@@ -17,6 +17,23 @@ export const updateProviderRepository = async (user, providerData) => {
   );
 };
 
+export const getRecentlySoldCouponsRepository = async (
+  provider,
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { ...(provider && { provider }) },
+    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
+  );
+};
+export const getProviders = async (offset = 0, limit = 15) => {
+  return await ProviderModel.paginate(
+    {},
+    { offset: offset * 10, limit, sort: "-createdAt", lean: true }
+  );
+};
+
 export const findProviderByUserId = async (user) => {
   return await ProviderModel.findOne({ user });
 };

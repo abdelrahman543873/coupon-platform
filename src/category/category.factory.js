@@ -3,10 +3,8 @@ import { CategoryModel } from "./models/category.model.js";
 
 export const buildCategoryParams = (obj = {}) => {
   return {
-    name: {
-      arabic: obj.arabicName || faker.commerce.productName(),
-      english: obj.englishName || faker.commerce.productName(),
-    },
+    enName: obj.enName || faker.commerce.productName(),
+    arName: obj.arName || faker.commerce.productName(),
     isDeleted: obj.isDeleted || false,
     images: {
       selected: faker.internet.url(),

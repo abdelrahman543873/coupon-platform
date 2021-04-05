@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import mongoosePaginate from "mongoose-paginate-v2";
 export const provider = mongoose.Schema(
   {
     user: {
@@ -28,7 +28,5 @@ export const provider = mongoose.Schema(
     versionKey: false,
   }
 );
-
-const ProviderModel = mongoose.model("Provider", provider);
-
-export { ProviderModel };
+provider.plugin(mongoosePaginate);
+export const ProviderModel = mongoose.model("Provider", provider);

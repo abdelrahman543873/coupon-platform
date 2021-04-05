@@ -1,5 +1,7 @@
 import express from "express";
+import { UserRoleEnum } from "../user/user-role.enum.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
+import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import {
   fileValidationMiddleWare,
   uploadHelper,
@@ -7,6 +9,7 @@ import {
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
   CustomerRegisterService,
+  getCustomerHomeService,
   getCustomerService,
   socialLoginService,
   socialRegisterService,
@@ -39,6 +42,14 @@ customersRouter
     ValidationMiddleware(SocialRegisterInput),
     fileValidationMiddleWare,
     socialRegisterService
+  );
+
+customersRouter
+  .route("/home")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    getCustomerHomeService
   );
 
 export { customersRouter };

@@ -1,18 +1,17 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const category = mongoose.Schema(
   {
-    name: {
-      arabic: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      english: {
-        type: String,
-        required: true,
-        trim: true,
-      },
+    arName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    enName: {
+      type: String,
+      required: true,
+      trim: true,
     },
     isDeleted: {
       type: Boolean,
@@ -29,5 +28,5 @@ const category = mongoose.Schema(
     versionKey: false,
   }
 );
-
+category.plugin(mongoosePaginate);
 export const CategoryModel = mongoose.model("Category", category);
