@@ -47,8 +47,8 @@ customersRouter
 customersRouter
   .route("/home")
   .get(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[1]),
+    // authenticationMiddleware,
+    // authorizationMiddleware(UserRoleEnum[1]),
     getCustomerHomeService
   );
 

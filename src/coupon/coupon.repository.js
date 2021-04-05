@@ -34,12 +34,10 @@ export const getMostSellingCouponRepository = async (
   offset = 0,
   limit = 15
 ) => {
-  const something = await providerCustomerCouponModel.aggregate([
+  const mostSoldCoupons = await providerCustomerCouponModel.aggregate([
     {
       $sortByCount: "$coupon",
     },
-    { $skip: offset },
-    { $limit: limit },
     {
       $lookup: {
         from: CouponModel.collection.name,
@@ -49,7 +47,10 @@ export const getMostSellingCouponRepository = async (
       },
     },
   ]);
-  return something;
+  return await providerCustomerCouponModel.aggregatePaginate(mostSoldCoupons, {
+    limit,
+    offset,
+  });
 };
 
 export const getProviderHomeRepository = async (provider) => {
