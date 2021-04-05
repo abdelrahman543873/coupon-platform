@@ -1,9 +1,8 @@
 version: "3.7"
 services:
   couponat-backend-2:
-    image: cop9
+    image: couponat-backend-2
     build: .
-    command: "yarn start"
     env_file: .env
     restart: always
     volumes:
@@ -18,8 +17,6 @@ services:
       - couponat-mongo-db-2
   couponat-mongo-db-2:
     image: "mongo"
-#    ports:
-#      - "27017:27017"
     volumes:
       - ./mongo:/var/lib/mongo
       - ./externalVolumes/db:/data/db
