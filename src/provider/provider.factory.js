@@ -24,7 +24,7 @@ export const providersFactory = async (count = 10, obj = {}) => {
   for (let i = 0; i < count; i++) {
     providers.push(await buildProviderParams(obj));
   }
-  return await ProviderModel.collection.insertMany(termsAndConditions);
+  return await ProviderModel.collection.insertMany(providers);
 };
 
 export const providerFactory = async (obj = {}) => {

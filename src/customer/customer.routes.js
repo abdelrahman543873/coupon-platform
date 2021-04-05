@@ -44,12 +44,6 @@ customersRouter
     socialRegisterService
   );
 
-customersRouter
-  .route("/home")
-  .get(
-    // authenticationMiddleware,
-    // authorizationMiddleware(UserRoleEnum[1]),
-    getCustomerHomeService
-  );
+customersRouter.route("/home").get(getCustomerHomeService);
 
 export { customersRouter };

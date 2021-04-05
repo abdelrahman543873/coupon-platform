@@ -106,20 +106,11 @@ export const socialRegisterService = async (req, res, next) => {
 export const getCustomerHomeService = async (req, res, next) => {
   try {
     const categories = await getCategories(req.query.offset, req.query.limit);
-    //change this to be an object input
-    const recentCoupons = await getRecentlySoldCouponsRepository(
-      req.query.provider,
-      req.query.offset,
-      req.query.limit
-    );
     const providers = await getProviders(req.query.offset, req.query.limit);
-    const mostSoldCoupons = await getMostSellingCouponRepository();
     res.status(200).json({
       data: {
         categories,
-        recentCoupons,
         providers,
-        mostSoldCoupons,
       },
     });
   } catch (error) {
