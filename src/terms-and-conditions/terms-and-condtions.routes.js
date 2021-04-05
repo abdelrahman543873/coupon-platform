@@ -14,6 +14,7 @@ termsAndConditionsRouter.post(
   addTermsAndConditionsService
 );
 
+
 termsAndConditionsRouter.get(
   "/getTermsAndConditions",
   getTermsAndConditionsService

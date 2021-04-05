@@ -213,4 +213,4 @@ adminRouter
 
 // adminRouter.route("/pro").post(ProviderControllers.updateIm);
 
-export { adminRouter };
+// export { adminRouter };
