@@ -68,29 +68,7 @@ export const getProviderService = async (req, res, next) => {
     const provider = await findProviderByUserId(req.currentUser.id);
     return res.status(200).json({
       success: true,
-      data: { ...req.currentUser.toJSON(), ...provider.toJSON() },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const providerLoginService = async (req, res, next) => {
-  try {
-    const user = await findUserByEmailOrPhone(req.body);
-    if (!user) throw new BaseHttpError(603);
-    const passwordValidation = await bcryptCheckPass(
-      req.body.password,
-      user.password
-    );
-    if (!passwordValidation) throw new BaseHttpError(603);
-    const provider = await findProviderByUserId(user._id);
-    return res.status(200).json({
-      success: true,
-      data: {
-        user: { ...user.toJSON(), ...provider.toJSON() },
-      },
-      authToken: generateToken(user._id, "PROVIDER"),
+      data: provider,
     });
   } catch (error) {
     next(error);

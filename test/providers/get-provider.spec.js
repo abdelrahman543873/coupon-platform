@@ -19,6 +19,6 @@ describe("get provider suite case", () => {
       url: GET_PROVIDER,
       token: mockUser.token,
     });
-    expect(res.body.data.name).toBe(mockUser.name);
+    expect(res.body.data.user.name).toBe(mockUser.name);
   });
 });

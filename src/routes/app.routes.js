@@ -11,6 +11,7 @@ import { providersRouter } from "../provider/provider.routes.js";
 import { contactUsRouter } from "../contact-us/contact-us.routes.js";
 import { customersRouter } from "../customer/customer.routes.js";
 import { adminRouter } from "../admin/admin.routes.js";
+import { loginRouter } from "../login/login.routes.js";
 
 const router = express.Router();
 
@@ -24,6 +25,7 @@ router.use("/cloud-messaging", notificationRouter);
 router.use("/purchasing-management/", purchasingRouter);
 router.use("/admin-management", termsAndConditionsRouter);
 router.use("/contact-us", contactUsRouter);
+router.use("/login", loginRouter);
 
 router
   .route("/pass-reset")

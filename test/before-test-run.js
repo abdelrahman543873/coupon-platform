@@ -11,7 +11,6 @@ beforeAll(async () => {
     useCreateIndex: true,
     useFindAndModify: false,
   });
-  await mongo.connection.db.dropDatabase();
   app = server.listen(process.env.COUPONAT_N_PORT);
 });
 

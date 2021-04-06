@@ -12,7 +12,6 @@ import {
   getMyCouponsService,
   getProviderHomeService,
   getProviderService,
-  providerLoginService,
   providerRegisterService,
   updateProviderService,
 } from "./provider.service.js";
@@ -44,10 +43,6 @@ providersRouter
     fileValidationMiddleWare,
     updateProviderService
   );
-
-providersRouter
-  .route("/auth")
-  .post(ValidationMiddleware(ProviderLoginInput), providerLoginService);
 
 providersRouter
   .route("/coupons")

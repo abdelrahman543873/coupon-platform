@@ -35,7 +35,11 @@ export const getProviders = async (offset = 0, limit = 15) => {
 };
 
 export const findProviderByUserId = async (user) => {
-  return await ProviderModel.findOne({ user });
+  return await ProviderModel.findOne(
+    { user },
+    { _id: 0 },
+    { lean: true, populate: "user" }
+  );
 };
 
 export const rawDeleteProvider = async () => {
