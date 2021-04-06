@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { provider } from "../provider/models/provider.model.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
 
@@ -102,6 +101,14 @@ export const addCouponRepository = async (coupon) => {
     code: nanoid(),
     ...(coupon.logoURL && { logoURL: coupon.logoURL.path }),
   });
+};
+
+export const findCouponByIdAndProvider = async (_id, provider) => {
+  return await CouponModel.findById({ _id, provider });
+};
+
+export const deleteCoupon = async (_id) => {
+  return await CouponModel.deleteOne({ _id });
 };
 
 export const rawDeleteCoupon = async () => {

@@ -1,6 +1,7 @@
 import { NotificationModule } from "../CloudMessaging/module/notification.js";
 import {
   addCouponRepository,
+  findCouponByIdAndProvider,
   getMyCouponsRepository,
   getProviderHomeRepository,
   getRecentlySoldCouponsRepository,
@@ -22,6 +23,7 @@ import {
   providerRegisterRepository,
   updateProviderRepository,
 } from "./provider.repository.js";
+import { deleteCoupon } from "../coupon/coupon.repository.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
@@ -140,6 +142,23 @@ export const addCouponService = async (req, res, next) => {
       provider: req.currentUser._id,
     });
     return res.status(200).json({
+      success: true,
+      data: coupon,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteCouponService = async (req, res, next) => {
+  try {
+    const coupon = await findCouponByIdAndProvider(
+      req.body.coupon,
+      req.currentUser._id
+    );
+    if (!coupon) throw new BaseHttpError(618);
+    await deleteCoupon(coupon.id);
+    res.status(200).json({
       success: true,
       data: coupon,
     });

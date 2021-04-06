@@ -9,6 +9,7 @@ import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import { AddCouponInput } from "./inputs/add-coupon.input.js";
 import {
   addCouponService,
+  deleteCouponService,
   getMyCouponsService,
   getProviderHomeService,
   getProviderService,
@@ -19,6 +20,7 @@ import {
   fileValidationMiddleWare,
   uploadHelper,
 } from "../_common/upload/uploader.js";
+import { DeleteCouponInput } from "./inputs/delete-coupon.input.js";
 const providersRouter = express.Router();
 
 providersRouter
@@ -61,14 +63,23 @@ providersRouter
   );
 
 providersRouter
-  .route("/add-coupon")
+  .route("/addCoupon")
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     uploadHelper("public/coupons").single("coupon"),
-    ValidationMiddleware(AddCouponInput),
     fileValidationMiddleWare,
+    ValidationMiddleware(AddCouponInput),
     addCouponService
+  );
+
+providersRouter
+  .route("/deleteCoupon")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    ValidationMiddleware(DeleteCouponInput),
+    deleteCouponService
   );
 
 export { providersRouter };

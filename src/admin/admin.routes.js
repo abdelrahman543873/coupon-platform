@@ -8,7 +8,7 @@ import {
   manageProviderStatusService,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
-import { ApproveProviderInput } from "./inputs/approve-admin.input.js";
+import { ApproveProviderInput } from "./inputs/manage-provider-status.input.js";
 
 const adminRouter = express.Router();
 
