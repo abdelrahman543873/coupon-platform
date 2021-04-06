@@ -12,7 +12,7 @@ import { contactUsRouter } from "../contact-us/contact-us.routes.js";
 import { customersRouter } from "../customer/customer.routes.js";
 import { adminRouter } from "../admin/admin.routes.js";
 import { loginRouter } from "../login/login.routes.js";
-
+import { getInfoRouter } from "../get-info/get-info.routes.js";
 const router = express.Router();
 
 router.use("/providers-management", providersRouter);
@@ -26,13 +26,6 @@ router.use("/purchasing-management/", purchasingRouter);
 router.use("/admin-management", termsAndConditionsRouter);
 router.use("/contact-us", contactUsRouter);
 router.use("/login", loginRouter);
-
-router
-  .route("/pass-reset")
-  .post(adminValidationwar.resetPass, AdminsController.passReq);
-router
-  .route("/pass-reset/codeValidation")
-  .post(AdminsController.checkResetCode);
-router.route("/pass-reset/newPassword").post(AdminsController.changePassword);
+router.use("/getInfo", getInfoRouter);
 
 export { router };
