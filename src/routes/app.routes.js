@@ -13,6 +13,7 @@ import { customersRouter } from "../customer/customer.routes.js";
 import { adminRouter } from "../admin/admin.routes.js";
 import { loginRouter } from "../login/login.routes.js";
 import { getInfoRouter } from "../get-info/get-info.routes.js";
+import { searchRouter } from "../search/search.routes.js";
 const router = express.Router();
 
 router.use("/providers-management", providersRouter);
@@ -27,5 +28,6 @@ router.use("/admin-management", termsAndConditionsRouter);
 router.use("/contact-us", contactUsRouter);
 router.use("/login", loginRouter);
 router.use("/getInfo", getInfoRouter);
+router.use("/search", searchRouter);
 
 export { router };

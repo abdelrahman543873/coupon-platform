@@ -67,4 +67,8 @@ export const LocalizedErrorMessages = {
     EN: "subscription doesn't exist",
     AR: "subscription doesn't exist",
   },
+  620: {
+    EN: "enter a search query",
+    AR: "enter a search query",
+  },
 };
