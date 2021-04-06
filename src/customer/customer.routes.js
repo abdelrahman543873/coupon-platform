@@ -12,6 +12,7 @@ import {
   getCustomerHomeService,
   getCustomersCouponsService,
   getCustomerService,
+  resendCodeService,
   socialLoginService,
   socialRegisterService,
   verifyOTPService,
@@ -64,6 +65,14 @@ customersRouter
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(VerifyOTPInput),
     verifyOTPService
+  );
+
+customersRouter
+  .route("/resendCode")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    resendCodeService
   );
 
 export { customersRouter };

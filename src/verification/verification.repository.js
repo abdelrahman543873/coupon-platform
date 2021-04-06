@@ -11,3 +11,14 @@ export const verifyOTPRepository = async (user, code) => {
     code,
   });
 };
+
+export const resendCodeRepository = async (user) => {
+  return await VerificationModel.findOne({
+    user,
+    expirationDate: { $gte: Date.now() },
+  });
+};
+
+export const rawDeleteVerification = async () => {
+  return await VerificationModel.deleteMany({});
+};

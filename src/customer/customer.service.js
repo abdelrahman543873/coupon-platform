@@ -9,6 +9,7 @@ import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import {
   addVerificationCode,
+  resendCodeRepository,
   verifyOTPRepository,
 } from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
@@ -148,6 +149,28 @@ export const verifyOTPService = async (req, res, next) => {
   try {
     const code = await verifyOTPRepository(req.currentUser._id, req.body.code);
     if (!code) throw new BaseHttpError(617);
+    res.status(200).json({
+      success: true,
+      data: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resendCodeService = async (req, res, next) => {
+  try {
+    let verification = await resendCodeRepository(req.currentUser._id);
+    verification
+      ? verification
+      : await addVerificationCode({
+          ...createVerificationCode(),
+          user: req.currentUser._id,
+        });
+    await sendMessage({
+      to: req.body.phone,
+      text: verification.code,
+    });
     res.status(200).json({
       success: true,
       data: true,
