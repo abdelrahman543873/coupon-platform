@@ -2,6 +2,7 @@ import { getCategories } from "../category/category.repository.js";
 import {
   getMostSellingCouponRepository,
   getRecentlyAdddedCouponsRepository,
+  getCustomerSubscriptionsRepository,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -174,6 +175,22 @@ export const resendCodeService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCustomerSubscriptionsService = async (req, res, next) => {
+  try {
+    const subscriptions = await getCustomerSubscriptionsRepository(
+      req.currentUser._id,
+      req.query.offset,
+      req.query.limit
+    );
+    res.status(200).json({
+      success: true,
+      data: subscriptions,
     });
   } catch (error) {
     next(error);

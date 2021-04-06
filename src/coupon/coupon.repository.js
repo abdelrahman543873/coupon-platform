@@ -44,6 +44,23 @@ export const getSubscriptionsRepository = async (
     }
   );
 };
+
+export const getCustomerSubscriptionsRepository = async (
+  customer,
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { customer },
+    {
+      populate: "coupon provider",
+      offset: offset * 10,
+      limit,
+      sort: "-createdAt",
+    }
+  );
+};
+
 export const getSubscriptionRepository = async (_id, provider) => {
   return await providerCustomerCouponModel.findOne(
     { _id, provider },
