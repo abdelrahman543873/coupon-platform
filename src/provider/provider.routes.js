@@ -13,6 +13,7 @@ import {
   getMyCouponsService,
   getProviderHomeService,
   getProviderService,
+  getSubscribersService,
   providerRegisterService,
   updateCouponService,
   updateProviderService,
@@ -93,5 +94,13 @@ providersRouter
     fileValidationMiddleWare,
     ValidationMiddleware(UpdateCouponInput),
     updateCouponService
+  );
+
+providersRouter
+  .route("/getSubscribers")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    getSubscribersService
   );
 export { providersRouter };

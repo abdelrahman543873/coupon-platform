@@ -5,6 +5,7 @@ import {
   getMyCouponsRepository,
   getProviderHomeRepository,
   getRecentlySoldCouponsRepository,
+  getSubscribersRepository,
   updateCoupon,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -182,6 +183,22 @@ export const updateCouponService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: updatedCoupon,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSubscribersService = async (req, res, next) => {
+  try {
+    const subscribers = await getSubscribersRepository(
+      req.currentUser._id,
+      req.query.offset,
+      req.query.limit
+    );
+    res.status(200).json({
+      success: true,
+      data: subscribers,
     });
   } catch (error) {
     next(error);

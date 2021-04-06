@@ -29,6 +29,22 @@ export const getRecentlySoldCouponsRepository = async (
   );
 };
 
+export const getSubscribersRepository = async (
+  provider,
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { provider },
+    {
+      populate: "coupon customer",
+      offset: offset * 10,
+      limit,
+      sort: "-createdAt",
+    }
+  );
+};
+
 export const getRecentlyAdddedCouponsRepository = async (
   offset = 0,
   limit = 15

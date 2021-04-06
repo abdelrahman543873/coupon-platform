@@ -5783,11 +5783,6 @@ mongodb@3.6.5:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongoose-aggregate-paginate-v2@^1.0.42:
-  version "1.0.42"
-  resolved "https://registry.yarnpkg.com/mongoose-aggregate-paginate-v2/-/mongoose-aggregate-paginate-v2-1.0.42.tgz#27dd39030d6e0777df44e2253d6d838d76d54a6b"
-  integrity sha512-SOXrztB5DRjwimmxUtg0mVS/IzJEZlWOZ6veU5U1ia0BH7VfCIw+KCvdaiCXXlVAPL75PXroXh0lDcpuxfUVWw==
-
 mongoose-autopopulate@^0.12.2:
   version "0.12.3"
   resolved "https://registry.yarnpkg.com/mongoose-autopopulate/-/mongoose-autopopulate-0.12.3.tgz#5bf111db3fa485f5031d3303f6f25625304888e3"
