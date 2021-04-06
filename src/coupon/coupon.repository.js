@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { CouponModel } from "./models/coupon.model.js";
-import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
+import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 
 export const getMyCouponsRepository = async (
   provider,

@@ -1,5 +1,5 @@
-import { searchCouponsRepository } from "../coupon/coupon.repository";
-import { BaseHttpError } from "../_common/error-handling-module/error-handler";
+import { searchCouponsRepository } from "../coupon/coupon.repository.js";
+import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 
 export const searchCouponsService = async (req, res, next) => {
   try {

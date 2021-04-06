@@ -4,7 +4,7 @@ import { providerFactory } from "../provider/provider.factory.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { userFactory } from "../user/user.factory.js";
 import { CouponModel } from "./models/coupon.model.js";
-import { providerCustomerCouponModel } from "./models/provier-customer-coupon.model.js";
+import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 
 export const buildCouponParams = async (obj = {}) => {
   return {
