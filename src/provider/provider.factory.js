@@ -9,7 +9,7 @@ export const buildProviderParams = async (obj = {}) => {
     user: obj.user || (await userFactory({ role: UserRoleEnum[0] }))._id,
     slogan: obj.slogan || faker.lorem.slug(),
     logoURL: obj.logoURL || faker.internet.url(),
-    isActive: obj.isActive || faker.datatype.boolean(),
+    isActive: obj.isActive || false,
     websiteLink: obj.websiteLink || faker.internet.url(),
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),

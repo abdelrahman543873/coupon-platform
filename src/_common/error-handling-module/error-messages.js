@@ -51,4 +51,8 @@ export const LocalizedErrorMessages = {
     EN: "Section Must be newest or bestSeller",
     AR: "Section Must be newest or bestSeller",
   },
+  617: {
+    EN: "provider doesn't exists",
+    AR: "provider doesn't exists",
+  },
 };

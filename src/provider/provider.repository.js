@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { ProviderModel } from "./models/provider.model.js";
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
@@ -39,6 +38,14 @@ export const findProviderByUserId = async (user) => {
     { user },
     { _id: 0 },
     { lean: true, populate: "user" }
+  );
+};
+
+export const manageProviderStatusRepository = async (user, isActive) => {
+  return await ProviderModel.findOneAndUpdate(
+    { user },
+    { isActive },
+    { new: true }
   );
 };
 
