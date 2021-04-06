@@ -2,7 +2,6 @@ import { getCategories } from "../category/category.repository.js";
 import {
   getMostSellingCouponRepository,
   getRecentlyAdddedCouponsRepository,
-  getRecentlySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -55,7 +54,7 @@ export const getCustomerService = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: { ...customer.toJSON() },
+      data: customer,
     });
   } catch (error) {
     next(error);
