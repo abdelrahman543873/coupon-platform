@@ -29,7 +29,7 @@ export const getRecentlySoldCouponsRepository = async (
   );
 };
 
-export const getSubscribersRepository = async (
+export const getSubscriptionsRepository = async (
   provider,
   offset = 0,
   limit = 15
@@ -41,6 +41,15 @@ export const getSubscribersRepository = async (
       offset: offset * 10,
       limit,
       sort: "-createdAt",
+    }
+  );
+};
+export const getSubscriptionRepository = async (_id, provider) => {
+  return await providerCustomerCouponModel.findOne(
+    { _id, provider },
+    {},
+    {
+      populate: "coupon customer",
     }
   );
 };

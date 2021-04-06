@@ -7,4 +7,5 @@ export const GET_PROVIDER_HOME = "/providers-management/home";
 export const ADD_COUPON = "/providers-management/addCoupon";
 export const DELETE_COUPON = "/providers-management/deleteCoupon";
 export const UPDATE_COUPON = "/providers-management/updateCoupon";
-export const GET_SUBSCRIBERS = "/providers-management/getSubscribers";
+export const GET_SUBSCRIBERS = "/providers-management/getSubscriptions";
+export const GET_SUBSCRIPTION = "/providers-management/getSubscription";

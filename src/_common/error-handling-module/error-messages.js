@@ -63,4 +63,8 @@ export const LocalizedErrorMessages = {
     EN: "coupon doesn't exist",
     AR: "coupon doesn't exist",
   },
+  619: {
+    EN: "subscription doesn't exist",
+    AR: "subscription doesn't exist",
+  },
 };

@@ -3,7 +3,6 @@ import { UserRoleEnum } from "../user/user-role.enum.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
-import { ProviderLoginInput } from "./inputs/provider-login.input.js";
 import { ProviderRegisterInput } from "./inputs/provider-register.input.js";
 import { UpdateProviderInput } from "./inputs/update-provider.input.js";
 import { AddCouponInput } from "./inputs/add-coupon.input.js";
@@ -13,7 +12,8 @@ import {
   getMyCouponsService,
   getProviderHomeService,
   getProviderService,
-  getSubscribersService,
+  getSubscriptionService,
+  getSubscriptionsService,
   providerRegisterService,
   updateCouponService,
   updateProviderService,
@@ -24,6 +24,7 @@ import {
 } from "../_common/upload/uploader.js";
 import { DeleteCouponInput } from "./inputs/delete-coupon.input.js";
 import { UpdateCouponInput } from "./inputs/update-coupon.input.js";
+import { GetSubscriptionInput } from "./inputs/get-subscription.input.js";
 const providersRouter = express.Router();
 
 providersRouter
@@ -97,10 +98,19 @@ providersRouter
   );
 
 providersRouter
-  .route("/getSubscribers")
+  .route("/getSubscriptions")
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    getSubscribersService
+    getSubscriptionsService
+  );
+
+providersRouter
+  .route("/getSubscription")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    ValidationMiddleware(GetSubscriptionInput),
+    getSubscriptionService
   );
 export { providersRouter };

@@ -5,7 +5,8 @@ import {
   getMyCouponsRepository,
   getProviderHomeRepository,
   getRecentlySoldCouponsRepository,
-  getSubscribersRepository,
+  getSubscriptionsRepository,
+  getSubscriptionRepository,
   updateCoupon,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -189,9 +190,9 @@ export const updateCouponService = async (req, res, next) => {
   }
 };
 
-export const getSubscribersService = async (req, res, next) => {
+export const getSubscriptionsService = async (req, res, next) => {
   try {
-    const subscribers = await getSubscribersRepository(
+    const subscribers = await getSubscriptionsRepository(
       req.currentUser._id,
       req.query.offset,
       req.query.limit
@@ -199,6 +200,22 @@ export const getSubscribersService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: subscribers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSubscriptionService = async (req, res, next) => {
+  try {
+    const subscription = await getSubscriptionRepository(
+      req.body.subscription,
+      req.currentUser._id
+    );
+    if (!subscription) throw new BaseHttpError(619);
+    res.status(200).json({
+      success: true,
+      data: subscription,
     });
   } catch (error) {
     next(error);
