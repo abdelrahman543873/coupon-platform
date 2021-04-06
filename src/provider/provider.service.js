@@ -208,10 +208,10 @@ export const getSubscriptionsService = async (req, res, next) => {
 
 export const getSubscriptionService = async (req, res, next) => {
   try {
-    const subscription = await getSubscriptionRepository(
-      req.body.subscription,
-      req.currentUser._id
-    );
+    const subscription = await getSubscriptionRepository({
+      _id: req.body.subscription,
+      provider: req.currentUser._id,
+    });
     if (!subscription) throw new BaseHttpError(619);
     res.status(200).json({
       success: true,

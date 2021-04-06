@@ -12,6 +12,7 @@ import {
   getCustomerHomeService,
   getCustomersCouponsService,
   getCustomerService,
+  getCustomerSubscriptionService,
   getCustomerSubscriptionsService,
   resendCodeService,
   socialLoginService,
@@ -84,4 +85,11 @@ customersRouter
     getCustomerSubscriptionsService
   );
 
+customersRouter
+  .route("/getSubscription")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    getCustomerSubscriptionService
+  );
 export { customersRouter };

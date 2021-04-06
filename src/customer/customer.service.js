@@ -3,6 +3,7 @@ import {
   getMostSellingCouponRepository,
   getRecentlyAdddedCouponsRepository,
   getCustomerSubscriptionsRepository,
+  getSubscriptionRepository,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -191,6 +192,21 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: subscriptions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCustomerSubscriptionService = async (req, res, next) => {
+  try {
+    const subscription = await getSubscriptionRepository({
+      customer: req.currentUser._id,
+      _id: req.query.coupon,
+    });
+    res.status(200).json({
+      success: true,
+      data: subscription,
     });
   } catch (error) {
     next(error);
