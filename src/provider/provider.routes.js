@@ -14,6 +14,7 @@ import {
   getProviderHomeService,
   getProviderService,
   providerRegisterService,
+  updateCouponService,
   updateProviderService,
 } from "./provider.service.js";
 import {
@@ -21,6 +22,7 @@ import {
   uploadHelper,
 } from "../_common/upload/uploader.js";
 import { DeleteCouponInput } from "./inputs/delete-coupon.input.js";
+import { UpdateCouponInput } from "./inputs/update-coupon.input.js";
 const providersRouter = express.Router();
 
 providersRouter
@@ -82,4 +84,14 @@ providersRouter
     deleteCouponService
   );
 
+providersRouter
+  .route("/updateCoupon")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    uploadHelper("public/coupons").single("coupon"),
+    fileValidationMiddleWare,
+    ValidationMiddleware(UpdateCouponInput),
+    updateCouponService
+  );
 export { providersRouter };

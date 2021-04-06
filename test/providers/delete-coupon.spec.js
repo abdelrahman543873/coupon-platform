@@ -11,7 +11,7 @@ describe("delete coupon suite case", () => {
   });
   it("delete coupon successfully", async () => {
     const provider = await providerFactory();
-    const coupon = await couponFactory({ provider: provider._id });
+    const coupon = await couponFactory({ provider: provider.user });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: DELETE_COUPON,

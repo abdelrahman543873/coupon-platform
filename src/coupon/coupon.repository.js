@@ -104,7 +104,15 @@ export const addCouponRepository = async (coupon) => {
 };
 
 export const findCouponByIdAndProvider = async (_id, provider) => {
-  return await CouponModel.findById({ _id, provider });
+  return await CouponModel.findOne({ _id, provider });
+};
+
+export const updateCoupon = async (_id, provider, input) => {
+  return await CouponModel.findOneAndUpdate(
+    { _id, provider },
+    { ...input, ...(input.logoURL && { logoURL: input.logoURL.path }) },
+    { new: true, omitUndefined: true }
+  );
 };
 
 export const deleteCoupon = async (_id) => {

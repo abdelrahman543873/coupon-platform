@@ -5,6 +5,7 @@ import {
   getMyCouponsRepository,
   getProviderHomeRepository,
   getRecentlySoldCouponsRepository,
+  updateCoupon,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
@@ -161,6 +162,26 @@ export const deleteCouponService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: coupon,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateCouponService = async (req, res, next) => {
+  try {
+    const coupon = await findCouponByIdAndProvider(
+      req.body.coupon,
+      req.currentUser._id
+    );
+    if (!coupon) throw new BaseHttpError(618);
+    const updatedCoupon = await updateCoupon(coupon._id, req.currentUser._id, {
+      ...req.body,
+      logoURL: req.file,
+    });
+    res.status(200).json({
+      success: true,
+      data: updatedCoupon,
     });
   } catch (error) {
     next(error);
