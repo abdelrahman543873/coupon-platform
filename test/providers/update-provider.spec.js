@@ -74,7 +74,7 @@ describe("update provider suite case", () => {
     expect(res.body.data.slogan).toBe(input.slogan);
   });
 
-  it("error if only correct password is entered", async () => {
+  it("no error if only correct password is entered", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
@@ -100,10 +100,68 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.statusCode).toBe(400);
+    
+    expect(res.body.data.slogan).toBe(input.slogan);
   });
 
   it("only update user", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ user: mockUser._id });
+    const providerInput = {
+      ...(await buildUserParams()),
+    };
+    const { password, phone, role, ...input } = providerInput;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: input,
+      token: mockUser.token,
+    });
+    expect(res.body.data.name).toBe(input.name);
+  });
+
+  it("error if password is wrong when changing the phone", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ user: mockUser._id });
+    const providerInput = {
+      ...(await buildUserParams()),
+    };
+    const { password, role, ...input } = providerInput;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: { ...input, password: "123456789" },
+      token: mockUser.token,
+    });
+    expect(res.body.statusCode).toBe(607);
+  });
+
+  it("successfully change phone when right password entered", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[0],
+      password: "12345678",
+    });
+    await providerFactory({ user: mockUser._id });
+    const providerInput = {
+      ...(await buildUserParams()),
+    };
+    const { password, role, ...input } = providerInput;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: { ...input, password: "12345678" },
+      token: mockUser.token,
+    });
+    expect(res.body.data.phone).toBe(input.phone);
+  });
+
+  it("error if phone without password is entered", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[0],
       password: "12345678",
@@ -119,7 +177,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.name).toBe(input.name);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("register and update", async () => {
@@ -175,7 +233,7 @@ describe("update provider suite case", () => {
       token: mockUser.token,
       fileParam: "logo",
       filePath,
-      variables: { password: "12345678" },
+      variables: { password: "1234" },
     });
     expect(res.body.statusCode).toBe(400);
   });

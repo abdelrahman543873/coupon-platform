@@ -89,7 +89,6 @@ export const updateProviderService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { ...user.toJSON(), ...provider.toJSON() },
-      error: null,
     });
   } catch (error) {
     next(error);
