@@ -7,7 +7,10 @@ import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { generateToken } from "../utils/JWTHelper.js";
-import { addVerificationCode } from "../verification/verification.repository.js";
+import {
+  addVerificationCode,
+  verifyOTPRepository,
+} from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
@@ -39,7 +42,6 @@ export const CustomerRegisterService = async (req, res, next) => {
       success: true,
       data: {
         user: { ...user.toJSON(), ...customer.toJSON() },
-        code: verificationCode.code,
         authToken: generateToken(user._id, "CUSTOMER"),
       },
     });
@@ -136,6 +138,19 @@ export const getCustomersCouponsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyOTPService = async (req, res, next) => {
+  try {
+    const code = await verifyOTPRepository(req.currentUser._id, req.body.code);
+    if (!code) throw new BaseHttpError(617);
+    res.status(200).json({
+      success: true,
+      data: true,
     });
   } catch (error) {
     next(error);

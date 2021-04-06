@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
-let verificationSchema = mongoose.Schema(
+let verification = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      unique: true,
+      require: true,
     },
     code: {
       type: String,
@@ -21,7 +23,4 @@ let verificationSchema = mongoose.Schema(
   }
 );
 
-export const VerificationModel = mongoose.model(
-  "Verification",
-  verificationSchema
-);
+export const VerificationModel = mongoose.model("Verification", verification);

@@ -3,9 +3,8 @@ export const createVerificationCode = () => {
     process.env.NODE_ENV === "production"
       ? Math.floor(1000 + Math.random() * 9000)
       : 1234;
-  const expirationDate = new Date(
-    Date.now() + Number(process.env.OTP_EXPIRY_TIME) * 1000 * 60
-  );
+  const expirationDate =
+    Date.now() + Number(process.env.OTP_EXPIRY_TIME) * 1000 * 60;
   return { code, expirationDate };
 };
 

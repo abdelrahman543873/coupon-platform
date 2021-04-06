@@ -14,10 +14,12 @@ import {
   getCustomerService,
   socialLoginService,
   socialRegisterService,
+  verifyOTPService,
 } from "./customer.service.js";
 import { CustomerRegisterInput } from "./inputs/customer-register.input.js";
 import { SocialLoginInput } from "./inputs/social-auth.input.js";
 import { SocialRegisterInput } from "./inputs/social-register.input.js";
+import { VerifyOTPInput } from "./inputs/verify-otp.input.js";
 
 const customersRouter = express.Router();
 
@@ -54,5 +56,14 @@ customersRouter
 customersRouter.route("/home").get(getCustomerHomeService);
 
 customersRouter.route("/getCoupons").get(getCustomersCouponsService);
+
+customersRouter
+  .route("/verifyOTP")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(VerifyOTPInput),
+    verifyOTPService
+  );
 
 export { customersRouter };
