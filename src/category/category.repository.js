@@ -15,11 +15,29 @@ export const getCategoryByName = async (enName, arName) => {
   });
 };
 
+export const findCategoryRepository = async (_id) => {
+  return await CategoryModel.findOne({ _id });
+};
+
 export const createCategoryRepository = async (category) => {
   return await CategoryModel.create({
     ...category,
     ...(category.logoURL && { logoURL: category.logoURL.path }),
   });
+};
+
+export const updateCategoryRepository = async ({ _id, category }) => {
+  return await CategoryModel.findOneAndUpdate(
+    { _id },
+    {
+      ...category,
+      ...(category.logoURL && { logoURL: category.logoURL.path }),
+    },
+    {
+      new: true,
+      lean: true,
+    }
+  );
 };
 
 export const rawDeleteCategory = async () => {

@@ -1,8 +1,10 @@
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   createCategoryRepository,
+  findCategoryRepository,
   getCategories,
   getCategoryByName,
+  updateCategoryRepository,
 } from "./category.repository.js";
 
 export const getCategoriesService = async (req, res, next) => {
@@ -29,6 +31,23 @@ export const addCategoryService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: createdCategory,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateCategoryService = async (req, res, next) => {
+  try {
+    const category = await findCategoryRepository(req.body.category);
+    if (!category) throw new BaseHttpError(627);
+    const updatedCategory = await updateCategoryRepository({
+      category: { ...req.body, logoURL: req.file },
+      _id: category.id,
+    });
+    res.status(200).json({
+      success: true,
+      data: updatedCategory,
     });
   } catch (error) {
     next(error);

@@ -1,5 +1,8 @@
 import express from "express";
-import { addCategoryService } from "../category/category.service.js";
+import {
+  addCategoryService,
+  updateCategoryService,
+} from "../category/category.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
@@ -16,7 +19,7 @@ import {
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
 import { ApproveProviderInput } from "./inputs/manage-provider-status.input.js";
-
+import { UpdateCategoryInput } from "./inputs/update-category.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -37,6 +40,17 @@ adminRouter
     fileValidationMiddleWare,
     ValidationMiddleware(AddCategoryInput),
     addCategoryService
+  );
+
+adminRouter
+  .route("/updateCategory")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    uploadHelper("public/category-pictures").single("category"),
+    fileValidationMiddleWare,
+    ValidationMiddleware(UpdateCategoryInput),
+    updateCategoryService
   );
 
 adminRouter

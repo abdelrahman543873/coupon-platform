@@ -95,4 +95,8 @@ export const LocalizedErrorMessages = {
     EN: "category already exists",
     AR: "category already exists",
   },
+  627: {
+    EN: "category doesn't exist",
+    AR: "category doesn't exist",
+  },
 };
