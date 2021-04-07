@@ -26,12 +26,14 @@ export const buildCouponParams = async (obj = {}) => {
 export const buildProviderCustomerCouponParams = async (
   providerObj = {},
   customerObj = {},
-  couponObj = {}
+  couponObj = {},
+  isUsed
 ) => {
   return {
     provider: providerObj.provider || (await providerFactory(providerObj))._id,
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
+    isUsed: isUsed || false,
   };
 };
 

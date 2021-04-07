@@ -202,3 +202,11 @@ export const searchCouponsRepository = async (name, offset = 0, limit = 15) => {
 export const getCoupon = async ({ _id }) => {
   return await CouponModel.findOne({ _id }, {}, { lean: true });
 };
+
+export const markCouponUsedRepository = async ({ coupon, customer }) => {
+  return await providerCustomerCouponModel.findOneAndUpdate(
+    { customer, coupon },
+    { isUsed: true },
+    { new: true }
+  );
+};

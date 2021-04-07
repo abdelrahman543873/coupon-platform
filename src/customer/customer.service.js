@@ -5,6 +5,7 @@ import {
   getCustomerSubscriptionsRepository,
   getSubscriptionRepository,
   getCoupon,
+  markCouponUsedRepository,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -262,6 +263,22 @@ export const getCouponService = async (req, res, next) => {
   try {
     const coupon = await getCoupon({
       _id: req.query.coupon,
+    });
+    if (!coupon) throw new BaseHttpError(621);
+    res.status(200).json({
+      success: true,
+      data: coupon,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const markCouponUsedService = async (req, res, next) => {
+  try {
+    const coupon = await markCouponUsedRepository({
+      customer: req.currentUser._id,
+      coupon: req.body.coupon,
     });
     if (!coupon) throw new BaseHttpError(621);
     res.status(200).json({

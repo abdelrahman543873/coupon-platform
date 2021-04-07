@@ -17,7 +17,7 @@ const providerCustomerCoupon = mongoose.Schema(
       ref: "Coupon",
       required: true,
     },
-    isActive: {
+    isUsed: {
       type: Boolean,
       default: false,
     },

@@ -17,6 +17,7 @@ import {
   getCustomerSubscriptionService,
   getCustomerSubscriptionsService,
   getFavCouponsService,
+  markCouponUsedService,
   resendCodeService,
   socialLoginService,
   socialRegisterService,
@@ -29,6 +30,8 @@ import { SocialRegisterInput } from "./inputs/social-register.input.js";
 import { VerifyOTPInput } from "./inputs/verify-otp.input.js";
 import { AddFavCouponInput } from "./inputs/add-fav-coupon.input.js";
 import { AddFavCouponsInput } from "./inputs/add-fav-coupons.input.js";
+import { MarkCouponUsedInput } from "./inputs/mark-coupon-used.input.js";
+
 const customersRouter = express.Router();
 
 customersRouter
@@ -133,5 +136,14 @@ customersRouter
   );
 
 customersRouter.route("/getCoupon").get(getCouponService);
+
+customersRouter
+  .route("/markCouponUsed")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(MarkCouponUsedInput),
+    markCouponUsedService
+  );
 
 export { customersRouter };
