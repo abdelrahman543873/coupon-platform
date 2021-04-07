@@ -198,3 +198,7 @@ export const searchCouponsRepository = async (name, offset = 0, limit = 15) => {
     { limit, offset }
   );
 };
+
+export const getCoupon = async ({ _id }) => {
+  return await CouponModel.findOne({ _id }, {}, { lean: true });
+};

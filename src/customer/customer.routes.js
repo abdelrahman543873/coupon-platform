@@ -10,6 +10,7 @@ import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
   addFavCouponService,
   CustomerRegisterService,
+  getCouponService,
   getCustomerHomeService,
   getCustomersCouponsService,
   getCustomerService,
@@ -130,4 +131,7 @@ customersRouter
     ValidationMiddleware(AddFavCouponsInput),
     syncCouponsService
   );
+
+customersRouter.route("/getCoupon").get(getCouponService);
+
 export { customersRouter };

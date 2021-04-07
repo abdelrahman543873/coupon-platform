@@ -1,11 +1,5 @@
-import { categoriesFactory } from "../../src/category/category.factory";
-import {
-  couponFactory,
-  providerCustomerCouponFactory,
-  providerCustomerCouponsFactory,
-} from "../../src/coupon/coupon.factory";
+import { couponFactory } from "../../src/coupon/coupon.factory";
 import { customerFactory } from "../../src/customer/customer.factory";
-import { providersFactory } from "../../src/provider/provider.factory";
 import { ADD_FAV_COUPON } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";

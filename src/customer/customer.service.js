@@ -4,6 +4,7 @@ import {
   getRecentlyAdddedCouponsRepository,
   getCustomerSubscriptionsRepository,
   getSubscriptionRepository,
+  getCoupon,
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -251,6 +252,21 @@ export const syncCouponsService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: customer.favCoupons,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCouponService = async (req, res, next) => {
+  try {
+    const coupon = await getCoupon({
+      _id: req.query.coupon,
+    });
+    if (!coupon) throw new BaseHttpError(621);
+    res.status(200).json({
+      success: true,
+      data: coupon,
     });
   } catch (error) {
     next(error);

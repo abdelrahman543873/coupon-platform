@@ -71,4 +71,8 @@ export const LocalizedErrorMessages = {
     EN: "enter a search query",
     AR: "enter a search query",
   },
+  621: {
+    EN: "coupon not found!!",
+    AR: "coupon not found!!",
+  },
 };
