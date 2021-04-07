@@ -6,10 +6,7 @@ export const buildCategoryParams = (obj = {}) => {
     enName: obj.enName || faker.commerce.productName(),
     arName: obj.arName || faker.commerce.productName(),
     isDeleted: obj.isDeleted || false,
-    images: {
-      selected: faker.internet.url(),
-      unselected: faker.internet.url(),
-    },
+    logoURL: obj.logoURL || faker.internet.url(),
   };
 };
 

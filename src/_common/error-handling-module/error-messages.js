@@ -91,4 +91,8 @@ export const LocalizedErrorMessages = {
     EN: "provider doesn't exist",
     AR: "provider doesn't exist",
   },
+  626: {
+    EN: "category already exists",
+    AR: "category already exists",
+  },
 };

@@ -9,7 +9,6 @@ import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
-  findCoupons,
   findProviderCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";

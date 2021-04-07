@@ -18,10 +18,7 @@ const category = mongoose.Schema(
       required: true,
       default: false,
     },
-    images: {
-      selected: String,
-      unSelected: String,
-    },
+    logoURL: { type: String },
   },
   {
     timestamps: true,
