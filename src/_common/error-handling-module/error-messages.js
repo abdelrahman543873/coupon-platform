@@ -87,4 +87,8 @@ export const LocalizedErrorMessages = {
     EN: "no categories exist",
     AR: "no categories exist",
   },
+  625: {
+    EN: "provider doesn't exist",
+    AR: "provider doesn't exist",
+  },
 };

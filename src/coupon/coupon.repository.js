@@ -207,10 +207,18 @@ export const findCoupons = async (ids) => {
   return await CouponModel.find({ _id: { $in: ids } });
 };
 
+export const findProviderCouponsRepository = async (provider) => {
+  return await CouponModel.find({ provider }, {}, { lean: true });
+};
+
 export const markCouponUsedRepository = async ({ coupon, customer }) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
     { customer, coupon },
     { isUsed: true },
     { new: true }
   );
+};
+
+export const updateCouponsRepository = async ({ ids, value }) => {
+  return await CouponModel.updateMany({ _id: { $in: ids } }, value);
 };

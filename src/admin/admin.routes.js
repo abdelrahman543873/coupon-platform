@@ -5,6 +5,7 @@ import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
   addAdminService,
+  generatePdfService,
   manageProviderStatusService,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
@@ -22,12 +23,21 @@ adminRouter
   );
 
 adminRouter
-  .route("/manageProviderStatus")
+  .route("/toggleProvider")
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(ApproveProviderInput),
     manageProviderStatusService
+  );
+
+adminRouter
+  .route("/generatePdf")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(ApproveProviderInput),
+    generatePdfService
   );
 
 export { adminRouter };

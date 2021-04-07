@@ -12,7 +12,7 @@ export const updateProviderRepository = async (user, providerData) => {
       ...providerData,
       ...(providerData.logoURL && { logoURL: providerData.logoURL.path }),
     },
-    { new: true }
+    { new: true, omitUndefined: true }
   );
 };
 
@@ -31,6 +31,10 @@ export const getProviders = async (offset = 0, limit = 15) => {
     {},
     { offset: offset * 10, limit, sort: "-createdAt", lean: true }
   );
+};
+
+export const getProvider = async (user) => {
+  return await ProviderModel.findOne({ user });
 };
 
 export const findProviderByUserId = async (user) => {
