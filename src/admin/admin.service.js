@@ -13,6 +13,7 @@ import {
   findProviderCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
+import fs from "fs";
 export const addAdminService = async (req, res, next) => {
   try {
     const existingUser = await findUserByEmailOrPhone(req.body);
@@ -61,16 +62,23 @@ export const generateProviderQrCodeService = async (req, res, next) => {
   try {
     const provider = await getProvider(req.body.provider);
     if (!provider) throw new BaseHttpError(625);
-    const path = "./public/provider-qr-codes/" + provider.user + ".png";
-    await QRCode.toFile(path, decodeURI(encodeURI(provider.user)), {
-      type: "png",
-      color: {
-        dark: "#575757", // Blue dots
-        light: "#0000", // Transparent background
-      },
-    });
+    const path = "./public/provider-qr-codes/";
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    await QRCode.toFile(
+      `${path}${provider.user}.png`,
+      decodeURI(encodeURI(provider.user)),
+      {
+        type: "png",
+        color: {
+          dark: "#575757", // Blue dots
+          light: "#0000", // Transparent background
+        },
+      }
+    );
     const updatedProvider = await updateProviderRepository(provider.user, {
-      qrURL: path,
+      qrURL: `${path}${provider.user}.png`,
     });
     res.status(200).json({
       success: true,
