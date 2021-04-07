@@ -23,6 +23,7 @@ import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
   findProviderByUserId,
+  getProviders,
   providerRegisterRepository,
   updateProviderRepository,
 } from "./provider.repository.js";
@@ -216,6 +217,18 @@ export const getSubscriptionService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProvidersService = async (req, res, next) => {
+  try {
+    const providers = await getProviders(req.query.offset, req.query.limit);
+    res.status(200).json({
+      success: true,
+      data: providers,
     });
   } catch (error) {
     next(error);
