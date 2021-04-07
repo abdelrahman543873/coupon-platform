@@ -57,7 +57,7 @@ export const manageProviderStatusService = async (req, res, next) => {
   }
 };
 
-export const generatePdfService = async (req, res, next) => {
+export const generateProviderQrCodeService = async (req, res, next) => {
   try {
     const provider = await getProvider(req.body.provider);
     if (!provider) throw new BaseHttpError(625);
