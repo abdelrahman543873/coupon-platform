@@ -4,6 +4,7 @@ import {
   updateCategoryService,
 } from "../category/category.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
+import { addProviderService } from "../user/user.service.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
 import {
@@ -18,6 +19,7 @@ import {
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
+import { AddProviderInput } from "./inputs/add-provider.input.js";
 import { ApproveProviderInput } from "./inputs/manage-provider-status.input.js";
 import { UpdateCategoryInput } from "./inputs/update-category.input.js";
 const adminRouter = express.Router();
@@ -69,6 +71,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(ApproveProviderInput),
     generateProviderQrCodeService
+  );
+
+adminRouter
+  .route("/addProvider")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddProviderInput),
+    addProviderService
   );
 
 export { adminRouter };
