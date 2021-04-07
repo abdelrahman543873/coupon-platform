@@ -83,4 +83,8 @@ export const LocalizedErrorMessages = {
     EN: "you aren't subscribed to this coupon",
     AR: "you aren't subscribed to this coupon",
   },
+  624: {
+    EN: "no categories exist",
+    AR: "no categories exist",
+  },
 };
