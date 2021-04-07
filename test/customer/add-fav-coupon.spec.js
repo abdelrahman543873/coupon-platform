@@ -20,4 +20,15 @@ describe("add fav coupon suite case", () => {
     });
     expect(res.body.data.favCoupons.length).toBe(2);
   });
+
+  it("error if fav coupon null", async () => {
+    const customer = await customerFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_FAV_COUPON,
+      variables: { coupon: null },
+      token: customer.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
 });

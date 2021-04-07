@@ -75,4 +75,12 @@ export const LocalizedErrorMessages = {
     EN: "coupon not found!!",
     AR: "coupon not found!!",
   },
+  622: {
+    EN: "one or more coupons doesn't exist",
+    AR: "one or more coupons doesn't exist",
+  },
+  623: {
+    EN: "you aren't subscribed to this coupon",
+    AR: "you aren't subscribed to this coupon",
+  },
 };

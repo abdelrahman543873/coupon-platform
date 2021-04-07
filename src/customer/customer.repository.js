@@ -24,7 +24,7 @@ export const getCustomerRepository = async (user) => {
 export const addFavCouponRepository = async ({ user, couponId }) => {
   return await CustomerModel.findOneAndUpdate(
     { user },
-    { $push: { favCoupons: couponId } },
+    { $addToSet: { favCoupons: couponId } },
     { new: true }
   );
 };
@@ -32,7 +32,7 @@ export const addFavCouponRepository = async ({ user, couponId }) => {
 export const addFavCouponsRepository = async ({ user, coupons }) => {
   return await CustomerModel.findOneAndUpdate(
     { user },
-    { $push: { favCoupons: { $each: coupons } } },
+    { $addToSet: { favCoupons: { $each: coupons } } },
     { new: true }
   );
 };
