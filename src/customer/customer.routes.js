@@ -16,6 +16,7 @@ import {
   getCustomerService,
   getCustomerSubscriptionService,
   getCustomerSubscriptionsService,
+  getFavCouponsService,
   resendCodeService,
   socialLoginService,
   socialRegisterService,
@@ -102,5 +103,13 @@ customersRouter
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(AddFavCouponInput),
     addFavCouponService
+  );
+
+customersRouter
+  .route("/getFavCoupons")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    getFavCouponsService
   );
 export { customersRouter };

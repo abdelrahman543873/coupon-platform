@@ -228,3 +228,15 @@ export const addFavCouponService = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getFavCouponsService = async (req, res, next) => {
+  try {
+    const customer = await getCustomerRepository(req.currentUser._id);
+    res.status(200).json({
+      success: true,
+      data: customer.favCoupons,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
