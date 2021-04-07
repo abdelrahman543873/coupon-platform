@@ -19,6 +19,7 @@ import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
   addFavCouponRepository,
+  addFavCouponsRepository,
   CustomerRegisterRepository,
   getCustomerBySocialLoginRepository,
   getCustomerRepository,
@@ -232,6 +233,21 @@ export const addFavCouponService = async (req, res, next) => {
 export const getFavCouponsService = async (req, res, next) => {
   try {
     const customer = await getCustomerRepository(req.currentUser._id);
+    res.status(200).json({
+      success: true,
+      data: customer.favCoupons,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const syncCouponsService = async (req, res, next) => {
+  try {
+    const customer = await addFavCouponsRepository({
+      user: req.currentUser._id,
+      coupons: req.body.coupons,
+    });
     res.status(200).json({
       success: true,
       data: customer.favCoupons,

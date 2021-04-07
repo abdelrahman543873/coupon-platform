@@ -10,3 +10,4 @@ export const GET_CUSTOMER_SUBSCRIPTIONS =
   "/customers-management/getSubscriptions";
 export const ADD_FAV_COUPON = "/customers-management/addFavCoupon";
 export const GET_FAV_COUPONS = "/customers-management/getFavCoupons";
+export const SYNC_FAV_COUPONS = "/customers-management/syncFavCoupons";
