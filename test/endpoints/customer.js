@@ -8,3 +8,4 @@ export const VERIFY_OTP = "/customers-management/verifyOTP";
 export const RESEND_CODE = "/customers-management/resendCode";
 export const GET_CUSTOMER_SUBSCRIPTIONS =
   "/customers-management/getSubscriptions";
+export const ADD_FAV_COUPON = "/customers-management/addFavCoupon";

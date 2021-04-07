@@ -21,6 +21,14 @@ export const getCustomerRepository = async (user) => {
   ).populate("user");
 };
 
+export const addFavCouponRepository = async ({ user, couponId }) => {
+  return await CustomerModel.findOneAndUpdate(
+    { user },
+    { $push: { favCoupons: couponId } },
+    { new: true }
+  );
+};
+
 export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
   return await CustomerModel.findOne({ socialMediaId }).populate("user");
 };

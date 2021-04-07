@@ -18,6 +18,7 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
+  addFavCouponRepository,
   CustomerRegisterRepository,
   getCustomerBySocialLoginRepository,
   getCustomerRepository,
@@ -207,6 +208,21 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addFavCouponService = async (req, res, next) => {
+  try {
+    const customer = await addFavCouponRepository({
+      user: req.currentUser._id,
+      couponId: req.body.coupon,
+    });
+    res.status(200).json({
+      success: true,
+      data: customer,
     });
   } catch (error) {
     next(error);

@@ -1,4 +1,5 @@
 import express from "express";
+import { addCouponService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import { authorizationMiddleware } from "../_common/helpers/authorization.js";
@@ -8,6 +9,7 @@ import {
 } from "../_common/upload/uploader.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
+  addFavCouponService,
   CustomerRegisterService,
   getCustomerHomeService,
   getCustomersCouponsService,
@@ -23,7 +25,7 @@ import { CustomerRegisterInput } from "./inputs/customer-register.input.js";
 import { SocialLoginInput } from "./inputs/social-auth.input.js";
 import { SocialRegisterInput } from "./inputs/social-register.input.js";
 import { VerifyOTPInput } from "./inputs/verify-otp.input.js";
-
+import { AddFavCouponInput } from "./inputs/add-fav-coupon.input.js";
 const customersRouter = express.Router();
 
 customersRouter
@@ -91,5 +93,14 @@ customersRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     getCustomerSubscriptionService
+  );
+
+customersRouter
+  .route("/addFavCoupon")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(AddFavCouponInput),
+    addFavCouponService
   );
 export { customersRouter };
