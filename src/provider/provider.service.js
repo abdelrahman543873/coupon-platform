@@ -74,7 +74,7 @@ export const getProviderService = async (req, res, next) => {
     const provider = await findProviderByUserId(req.currentUser.id);
     return res.status(200).json({
       success: true,
-      data: provider,
+      data: { user: { ...provider, ...req.currentUser.toJSON() } },
     });
   } catch (error) {
     next(error);

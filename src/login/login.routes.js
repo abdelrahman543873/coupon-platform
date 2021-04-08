@@ -1,7 +1,7 @@
 import express from "express";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import { LoginInput } from "./inputs/login.input.js";
-import { loginService } from "./login.servicer.js";
+import { loginService } from "./login.service.js";
 
 const loginRouter = express.Router();
 

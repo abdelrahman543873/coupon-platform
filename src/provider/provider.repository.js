@@ -38,11 +38,7 @@ export const getProvider = async (user) => {
 };
 
 export const findProviderByUserId = async (user) => {
-  return await ProviderModel.findOne(
-    { user },
-    { _id: 0 },
-    { lean: true, populate: "user" }
-  );
+  return await ProviderModel.findOne({ user }, { _id: 0 }, { lean: true });
 };
 
 export const manageProviderStatusRepository = async (user, isActive) => {

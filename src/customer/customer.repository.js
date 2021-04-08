@@ -14,11 +14,7 @@ export const rawDeleteCustomer = async () => {
 };
 
 export const getCustomerRepository = async (user) => {
-  return await CustomerModel.findOne(
-    { user },
-    { _id: 0 },
-    { lean: true }
-  ).populate("user");
+  return await CustomerModel.findOne({ user }, { _id: 0 }, { lean: true });
 };
 
 export const addFavCouponRepository = async ({ user, couponId }) => {

@@ -15,16 +15,16 @@ export const loginService = async (req, res, next) => {
       user.password
     );
     if (!passwordValidation) throw new BaseHttpError(603);
-    let data = { ...user.toJSON() };
+    let data = { user: { ...user.toJSON() } };
     // if user is provider return provider and user data
     user.role === UserRoleEnum[0] &&
       (data = {
-        ...(await findProviderByUserId(user._id)),
+        user: { ...(await findProviderByUserId(user._id)), ...data.user },
       });
     //if user is customer return user and customer data
     user.role === UserRoleEnum[1] &&
       (data = {
-        ...(await getCustomerRepository(user.id)),
+        user: { ...(await getCustomerRepository(user.id)), ...data.user },
       });
     return res.status(200).json({
       success: true,
