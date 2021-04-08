@@ -175,6 +175,14 @@ export const updateCoupon = async (_id, provider, input) => {
   );
 };
 
+export const updateCouponById = async (_id, { input }) => {
+  return await CouponModel.findOneAndUpdate(
+    { _id },
+    { ...input, ...(input.logoURL && { logoURL: input.logoURL.path }) },
+    { new: true, omitUndefined: true }
+  );
+};
+
 export const deleteCoupon = async (_id) => {
   return await CouponModel.deleteOne({ _id });
 };

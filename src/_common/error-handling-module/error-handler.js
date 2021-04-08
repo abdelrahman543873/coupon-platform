@@ -1,6 +1,7 @@
 import { LocalizedErrorMessages } from "./error-messages.js";
 //the unnecessary paramter here are for the sake of the controller
 const handleError = (err, req, res, next) => {
+  console.log(err);
   const statusCode = err.statusCode ? err.statusCode : 500;
   const message = err.message ? err.message : err;
   res.status(statusCode).json({
