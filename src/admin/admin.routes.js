@@ -3,6 +3,7 @@ import {
   addCategoryService,
   updateCategoryService,
 } from "../category/category.service.js";
+import { adminAddCouponService } from "../coupon/coupon.service.js";
 import { getProvidersService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { addProviderService } from "../user/user.service.js";
@@ -21,6 +22,7 @@ import {
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
 import { AddProviderInput } from "./inputs/add-provider.input.js";
+import { AdminAddCouponInput } from "./inputs/admin-add-coupon.input.js";
 import { ApproveProviderInput } from "./inputs/manage-provider-status.input.js";
 import { UpdateCategoryInput } from "./inputs/update-category.input.js";
 const adminRouter = express.Router();
@@ -89,6 +91,17 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getProvidersService
+  );
+
+adminRouter
+  .route("/addCoupon")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    uploadHelper("public/coupons").single("coupon"),
+    fileValidationMiddleWare,
+    ValidationMiddleware(AdminAddCouponInput),
+    adminAddCouponService
   );
 
 export { adminRouter };
