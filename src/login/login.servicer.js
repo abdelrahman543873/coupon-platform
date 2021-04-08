@@ -28,8 +28,7 @@ export const loginService = async (req, res, next) => {
       });
     return res.status(200).json({
       success: true,
-      data,
-      authToken: generateToken(user._id, user.role),
+      data: { ...data, authToken: generateToken(user._id, user.role) },
     });
   } catch (error) {
     next(error);
