@@ -235,7 +235,7 @@ export const checkIfCouponWasSold = async ({ coupon }) => {
   return await providerCustomerCouponModel.findOne(
     { coupon },
     {},
-    { new: true }
+    { lean: true }
   );
 };
 

@@ -134,9 +134,7 @@ export const adminDeleteProviderService = async (req, res, next) => {
 
 export const adminDeleteCouponService = async (req, res, next) => {
   try {
-    const soldCoupon = await checkIfCouponWasSold({
-      coupon: req.body.coupon,
-    });
+    const soldCoupon = await checkIfCouponWasSold({ coupon: req.body.coupon });
     if (soldCoupon) throw new BaseHttpError(629);
     const coupon = await deleteCoupon(req.body.coupon);
     return res.status(200).json({
