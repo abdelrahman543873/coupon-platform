@@ -1,8 +1,12 @@
 import express from "express";
-import { searchCouponsService } from "./search.service.js";
+import {
+  searchCouponsService,
+  searchProviderService,
+} from "./search.service.js";
 
 const searchRouter = express.Router();
 
-searchRouter.route("/").get(searchCouponsService);
+searchRouter.route("/coupons").get(searchCouponsService);
+searchRouter.route("/providers").get(searchProviderService);
 
 export { searchRouter };

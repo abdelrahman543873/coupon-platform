@@ -62,3 +62,4 @@ export const countProvidersRepository = async (createdAt) => {
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
 };
+

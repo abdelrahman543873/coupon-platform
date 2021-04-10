@@ -1,5 +1,6 @@
 import { hashPass } from "../utils/bcryptHelper.js";
 import { UserModel } from "./models/user.model.js";
+import { UserRoleEnum } from "./user-role.enum.js";
 
 export const createUser = async (user) => {
   return await UserModel.create({
@@ -41,6 +42,20 @@ export const findUserByEmailOrPhone = async (user) => {
         $or: [{ email: user.email.toLowerCase() }, { phone: user.phone }],
       }),
   });
+};
+
+export const searchProvidersRepository = async (
+  name,
+  offset = 0,
+  limit = 15
+) => {
+  return await UserModel.paginate(
+    {
+      role: UserRoleEnum[0],
+      name: { $regex: name, $options: "i" },
+    },
+    { limit, offset }
+  );
 };
 
 export const adminDeleteUserRepository = async (_id) => {
