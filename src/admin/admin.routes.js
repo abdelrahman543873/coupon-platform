@@ -25,6 +25,7 @@ import {
   adminDeleteProviderService,
   adminDeleteCouponService,
   adminDeleteCategoryService,
+  getStatisticsService,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
@@ -37,6 +38,7 @@ import { AdminUpdateProviderInput } from "./inputs/admin-update-provider.input.j
 import { DeleteProviderInput } from "./inputs/delete-provider.input.js";
 import { AdminDeleteCouponInput } from "../provider/inputs/admin-delete-coupon.input.js";
 import { AdminDeleteCategory } from "./inputs/admin-delete-category.js";
+import { GetStatisticsInput } from "./inputs/get-statistics.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -86,6 +88,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(ApproveProviderInput),
     generateProviderQrCodeService
+  );
+
+adminRouter
+  .route("/getStatistics")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(GetStatisticsInput),
+    getStatisticsService
   );
 
 adminRouter

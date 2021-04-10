@@ -1,5 +1,6 @@
 import {
   adminDeleteProviderRepository,
+  countProvidersRepository,
   findProviderByUserId,
   getProvider,
   manageProviderStatusRepository,
@@ -16,6 +17,8 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import QRCode from "qrcode";
 import {
   checkIfCouponWasSold,
+  countCouponsRepository,
+  countSubscriptionsRepository,
   deleteCoupon,
   deleteProviderCouponsRepository,
   findCouponByCategory,
@@ -158,6 +161,22 @@ export const adminDeleteCategoryService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { category: { ...deletedCategory } },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getStatisticsService = async (req, res, next) => {
+  try {
+    const providers = await countProvidersRepository(req.body.filtrationDate);
+    const coupons = await countCouponsRepository(req.body.filtrationDate);
+    const subscriptions = await countSubscriptionsRepository(
+      req.body.filtrationDate
+    );
+    return res.status(200).json({
+      success: true,
+      data: { providers, coupons, subscriptions },
     });
   } catch (error) {
     next(error);

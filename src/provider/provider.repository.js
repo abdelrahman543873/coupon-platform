@@ -56,3 +56,9 @@ export const adminDeleteProviderRepository = async (user) => {
 export const rawDeleteProvider = async () => {
   return await ProviderModel.deleteMany({});
 };
+
+export const countProvidersRepository = async (createdAt) => {
+  return await ProviderModel.count({
+    ...(createdAt && { createdAt: { $gte: createdAt } }),
+  });
+};

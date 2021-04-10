@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { Coupon } from "../middlewares/responsHandler.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 
@@ -240,13 +241,21 @@ export const checkIfCouponWasSold = async ({ coupon }) => {
 };
 
 export const findCouponByCategory = async ({ category }) => {
-  return await CouponModel.findOne(
-    { category },
-    {},
-    { lean: true }
-  );
+  return await CouponModel.findOne({ category }, {}, { lean: true });
 };
 
 export const updateCouponsRepository = async ({ ids, value }) => {
   return await CouponModel.updateMany({ _id: { $in: ids } }, value);
+};
+
+export const countCouponsRepository = async (createdAt) => {
+  return await CouponModel.countDocuments({
+    ...(createdAt && { createdAt: { $gte: createdAt } }),
+  });
+};
+
+export const countSubscriptionsRepository = async (createdAt) => {
+  return await providerCustomerCouponModel.countDocuments({
+    ...(createdAt && { createdAt: { $gte: createdAt } }),
+  });
 };
