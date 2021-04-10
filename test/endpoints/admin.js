@@ -7,3 +7,4 @@ export const ADD_PROVIDER = "/admin-management/addProvider";
 export const GET_PROVIDERS = "/admin-management/getProviders";
 export const ADMIN_ADD_COUPON = "/admin-management/addCoupon";
 export const ADMIN_UPDATE_COUPON = "/admin-management/updateCoupon";
+export const ADMIN_UPDATE_PROVIDER = "/admin-management/updateProvider";

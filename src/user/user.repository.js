@@ -21,6 +21,17 @@ export const updateUser = async (_id, user) => {
   );
 };
 
+export const adminUpdateUser = async (_id, user) => {
+  return await UserModel.findOneAndUpdate(
+    { _id },
+    {
+      ...user,
+      ...(user.password && { password: await hashPass(user.password) }),
+    },
+    { new: true, omitUndefined: true }
+  );
+};
+
 export const findUserByEmailOrPhone = async (user) => {
   return await UserModel.findOne({
     ...(user.email && !user.phone && { email: user.email.toLowerCase() }),

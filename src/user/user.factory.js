@@ -8,9 +8,7 @@ export const buildUserParams = async (obj = {}) => {
   return {
     name: obj.name || faker.name.firstName(),
     email: obj.email || faker.internet.email().toLowerCase(),
-    password: obj.password
-      ? await hashPass(obj.password)
-      : await hashPass(faker.internet.password()),
+    password: obj.password || faker.internet.password(),
     phone: obj.phone || faker.phone.phoneNumber(),
     role: obj.role || faker.random.arrayElement(UserRoleEnum),
   };
@@ -26,6 +24,7 @@ export const UsersFactory = async (count = 10, obj = {}) => {
 
 export const userFactory = async (obj = {}) => {
   const params = await buildUserParams(obj);
+  params.password = await hashPass(params.password);
   const user = await UserModel.create(params);
   user.token = generateToken(user._id, "PROVIDER");
   return user;

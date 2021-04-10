@@ -5,7 +5,11 @@ import {
   updateProviderRepository,
 } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
+import {
+  createUser,
+  findUserByEmailOrPhone,
+  adminUpdateUser,
+} from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
@@ -82,6 +86,22 @@ export const generateProviderQrCodeService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: updatedProvider,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminUpdateProviderService = async (req, res, next) => {
+  try {
+    const user = await adminUpdateUser(req.body.provider, req.body);
+    const provider = await updateProviderRepository(req.body.provider, {
+      ...req.body,
+      logoURL: req.file,
+    });
+    return res.status(200).json({
+      success: true,
+      data: { ...user.toJSON(), ...provider.toJSON() },
     });
   } catch (error) {
     next(error);

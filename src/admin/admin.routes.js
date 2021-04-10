@@ -21,6 +21,7 @@ import {
   addAdminService,
   generateProviderQrCodeService,
   manageProviderStatusService,
+  adminUpdateProviderService,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
@@ -29,6 +30,7 @@ import { AdminAddCouponInput } from "./inputs/admin-add-coupon.input.js";
 import { AdminUpdateCouponInput } from "./inputs/admin-update-coupon.input.js";
 import { ApproveProviderInput } from "./inputs/manage-provider-status.input.js";
 import { UpdateCategoryInput } from "./inputs/update-category.input.js";
+import { AdminUpdateProviderInput } from "./inputs/admin-update-provider.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -117,6 +119,17 @@ adminRouter
     fileValidationMiddleWare,
     ValidationMiddleware(AdminUpdateCouponInput),
     adminUpdateCouponService
+  );
+
+adminRouter
+  .route("/updateProvider")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    uploadHelper("public/logos").single("logo"),
+    fileValidationMiddleWare,
+    ValidationMiddleware(AdminUpdateProviderInput),
+    adminUpdateProviderService
   );
 
 export { adminRouter };
