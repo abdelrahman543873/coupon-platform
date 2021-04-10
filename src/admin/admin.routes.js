@@ -24,6 +24,7 @@ import {
   adminUpdateProviderService,
   adminDeleteProviderService,
   adminDeleteCouponService,
+  adminDeleteCategoryService,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
@@ -35,6 +36,7 @@ import { UpdateCategoryInput } from "./inputs/update-category.input.js";
 import { AdminUpdateProviderInput } from "./inputs/admin-update-provider.input.js";
 import { DeleteProviderInput } from "./inputs/delete-provider.input.js";
 import { AdminDeleteCouponInput } from "../provider/inputs/admin-delete-coupon.input.js";
+import { AdminDeleteCategory } from "./inputs/admin-delete-category.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -152,6 +154,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AdminDeleteCouponInput),
     adminDeleteCouponService
+  );
+
+adminRouter
+  .route("/deleteCategory")
+  .delete(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminDeleteCategory),
+    adminDeleteCategoryService
   );
 
 export { adminRouter };

@@ -43,3 +43,7 @@ export const updateCategoryRepository = async ({ _id, category }) => {
 export const rawDeleteCategory = async () => {
   return await CategoryModel.deleteMany({});
 };
+
+export const deleteCategory = async (_id) => {
+  return await CategoryModel.findOneAndDelete({ _id }, { lean: true });
+};

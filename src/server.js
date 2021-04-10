@@ -25,7 +25,7 @@ server.use(express.json());
 
 server.use(router);
 
-server.use("/api/v1/PrivacyPolicy", express.static("assets/puplic"));
+server.use("/resources", express.static("./public"));
 
 // route not found fallback
 server.all("*", (req, res, next) => {

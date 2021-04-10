@@ -107,4 +107,8 @@ export const LocalizedErrorMessages = {
     EN: "coupon was sold before",
     AR: "coupon was sold before",
   },
+  630: {
+    EN: "this category has coupons",
+    AR: "this category has coupons",
+  },
 };

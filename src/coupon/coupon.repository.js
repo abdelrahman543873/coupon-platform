@@ -239,6 +239,14 @@ export const checkIfCouponWasSold = async ({ coupon }) => {
   );
 };
 
+export const findCouponByCategory = async ({ category }) => {
+  return await CouponModel.findOne(
+    { category },
+    {},
+    { lean: true }
+  );
+};
+
 export const updateCouponsRepository = async ({ ids, value }) => {
   return await CouponModel.updateMany({ _id: { $in: ids } }, value);
 };

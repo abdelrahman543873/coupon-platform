@@ -10,3 +10,4 @@ export const ADMIN_UPDATE_COUPON = "/admin-management/updateCoupon";
 export const ADMIN_UPDATE_PROVIDER = "/admin-management/updateProvider";
 export const ADMIN_DELETE_PROVIDER = "/admin-management/deleteProvider";
 export const ADMIN_DELETE_COUPON = "/admin-management/deleteCoupon";
+export const ADMIN_DELETE_CATEGORY = "/admin-management/deleteCategory";

@@ -18,11 +18,13 @@ import {
   checkIfCouponWasSold,
   deleteCoupon,
   deleteProviderCouponsRepository,
+  findCouponByCategory,
   findProviderCouponsRepository,
   getRecentlySoldCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import fs from "fs";
+import { deleteCategory } from "../category/category.repository.js";
 export const addAdminService = async (req, res, next) => {
   try {
     const existingUser = await findUserByEmailOrPhone(req.body);
@@ -140,6 +142,22 @@ export const adminDeleteCouponService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { coupon: { ...coupon } },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminDeleteCategoryService = async (req, res, next) => {
+  try {
+    const category = await findCouponByCategory({
+      category: req.body.category,
+    });
+    if (category) throw new BaseHttpError(630);
+    const deletedCategory = await deleteCategory(req.body.category);
+    return res.status(200).json({
+      success: true,
+      data: { category: { ...deletedCategory } },
     });
   } catch (error) {
     next(error);
