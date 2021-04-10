@@ -43,6 +43,10 @@ export const findUserByEmailOrPhone = async (user) => {
   });
 };
 
+export const adminDeleteUserRepository = async (_id) => {
+  return await UserModel.findOneAndDelete({ _id }, { lean: true });
+};
+
 export const rawDeleteUser = async () => {
   return await UserModel.deleteMany({});
 };

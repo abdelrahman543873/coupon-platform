@@ -187,6 +187,10 @@ export const deleteCoupon = async (_id) => {
   return await CouponModel.deleteOne({ _id });
 };
 
+export const deleteProviderCouponsRepository = async (provider) => {
+  return await CouponModel.deleteOne({ provider });
+};
+
 export const rawDeleteCoupon = async () => {
   return await CouponModel.deleteMany({});
 };

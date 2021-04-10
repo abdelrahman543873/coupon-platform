@@ -99,4 +99,8 @@ export const LocalizedErrorMessages = {
     EN: "category doesn't exist",
     AR: "category doesn't exist",
   },
+  628: {
+    EN: "provider can't be deleted as they already have sold coupons",
+    AR: "provider can't be deleted as they already have sold coupons",
+  },
 };

@@ -49,6 +49,10 @@ export const manageProviderStatusRepository = async (user, isActive) => {
   );
 };
 
+export const adminDeleteProviderRepository = async (user) => {
+  return await ProviderModel.findOneAndDelete({ user }, { lean: true });
+};
+
 export const rawDeleteProvider = async () => {
   return await ProviderModel.deleteMany({});
 };

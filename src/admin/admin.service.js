@@ -1,4 +1,5 @@
 import {
+  adminDeleteProviderRepository,
   findProviderByUserId,
   getProvider,
   manageProviderStatusRepository,
@@ -9,11 +10,14 @@ import {
   createUser,
   findUserByEmailOrPhone,
   adminUpdateUser,
+  adminDeleteUserRepository,
 } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
+  deleteProviderCouponsRepository,
   findProviderCouponsRepository,
+  getRecentlySoldCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import fs from "fs";
@@ -102,6 +106,24 @@ export const adminUpdateProviderService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { ...user.toJSON(), ...provider.toJSON() },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminDeleteProviderService = async (req, res, next) => {
+  try {
+    const soldCoupons = await getRecentlySoldCouponsRepository(
+      req.body.provider
+    );
+    if (soldCoupons.docs.length !== 0) throw new BaseHttpError(628);
+    await deleteProviderCouponsRepository(req.body.provider);
+    const provider = await adminDeleteProviderRepository(req.body.provider);
+    const user = await adminDeleteUserRepository(req.body.provider);
+    return res.status(200).json({
+      success: true,
+      data: { user: { ...user, ...provider } },
     });
   } catch (error) {
     next(error);
