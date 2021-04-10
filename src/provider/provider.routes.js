@@ -22,10 +22,10 @@ import {
   fileValidationMiddleWare,
   uploadHelper,
 } from "../_common/upload/uploader.js";
-import { DeleteCouponInput } from "./inputs/delete-coupon.input.js";
 import { UpdateCouponInput } from "./inputs/update-coupon.input.js";
 import { GetSubscriptionInput } from "./inputs/get-subscription.input.js";
 import { getCategoriesService } from "../category/category.service.js";
+import { DeleteCouponInput } from "../admin/inputs/delete-coupon.input.js";
 const providersRouter = express.Router();
 
 providersRouter

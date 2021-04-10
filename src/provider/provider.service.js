@@ -161,10 +161,10 @@ export const deleteCouponService = async (req, res, next) => {
       req.currentUser._id
     );
     if (!coupon) throw new BaseHttpError(618);
-    await deleteCoupon(coupon.id);
+    const deletedCoupon = await deleteCoupon(coupon.id);
     res.status(200).json({
       success: true,
-      data: coupon,
+      data: { coupon: deletedCoupon },
     });
   } catch (error) {
     next(error);

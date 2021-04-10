@@ -18,6 +18,6 @@ describe("delete coupon suite case", () => {
       token: provider.token,
       variables: { coupon: coupon._id },
     });
-    expect(res.body.data._id).toBe(decodeURI(encodeURI(coupon._id)));
+    expect(res.body.data.coupon._id).toBe(decodeURI(encodeURI(coupon._id)));
   });
 });

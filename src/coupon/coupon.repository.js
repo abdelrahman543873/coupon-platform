@@ -184,7 +184,7 @@ export const updateCouponById = async (_id, { input }) => {
 };
 
 export const deleteCoupon = async (_id) => {
-  return await CouponModel.deleteOne({ _id });
+  return await CouponModel.findOneAndDelete({ _id }, { lean: true });
 };
 
 export const deleteProviderCouponsRepository = async (provider) => {
@@ -227,6 +227,14 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
     { customer, coupon },
     { isUsed: true },
+    { new: true }
+  );
+};
+
+export const checkIfCouponWasSold = async ({ coupon }) => {
+  return await providerCustomerCouponModel.findOne(
+    { coupon },
+    {},
     { new: true }
   );
 };

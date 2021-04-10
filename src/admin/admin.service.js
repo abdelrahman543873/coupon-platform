@@ -15,6 +15,8 @@ import {
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
+  checkIfCouponWasSold,
+  deleteCoupon,
   deleteProviderCouponsRepository,
   findProviderCouponsRepository,
   getRecentlySoldCouponsRepository,
@@ -124,6 +126,22 @@ export const adminDeleteProviderService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { user: { ...user, ...provider } },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminDeleteCouponService = async (req, res, next) => {
+  try {
+    const soldCoupon = await checkIfCouponWasSold({
+      coupon: req.body.coupon,
+    });
+    if (soldCoupon) throw new BaseHttpError(629);
+    const coupon = await deleteCoupon(req.body.coupon);
+    return res.status(200).json({
+      success: true,
+      data: { coupon: { ...coupon } },
     });
   } catch (error) {
     next(error);

@@ -103,4 +103,8 @@ export const LocalizedErrorMessages = {
     EN: "provider can't be deleted as they already have sold coupons",
     AR: "provider can't be deleted as they already have sold coupons",
   },
+  629: {
+    EN: "coupon was sold before",
+    AR: "coupon was sold before",
+  },
 };
