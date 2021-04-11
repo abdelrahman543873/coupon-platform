@@ -12,3 +12,4 @@ export const ADMIN_DELETE_PROVIDER = "/admin-management/deleteProvider";
 export const ADMIN_DELETE_COUPON = "/admin-management/deleteCoupon";
 export const ADMIN_DELETE_CATEGORY = "/admin-management/deleteCategory";
 export const ADMIN_GET_STATISTICS = "/admin-management/getStatistics";
+export const ADMIN_GET_COUPONS = "/admin-management/getCoupons";

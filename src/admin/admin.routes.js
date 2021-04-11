@@ -6,6 +6,7 @@ import {
 import {
   adminAddCouponService,
   adminUpdateCouponService,
+  getAllCouponsService,
 } from "../coupon/coupon.service.js";
 import { getProvidersService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -174,6 +175,14 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AdminDeleteCategory),
     adminDeleteCategoryService
+  );
+
+adminRouter
+  .route("/getCoupons")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    getAllCouponsService
   );
 
 export { adminRouter };

@@ -12,9 +12,9 @@ export const getMyCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     {
-      provider,
-      isActive: true,
       ...(category && { category }),
+      ...(provider && { provider }),
+      isActive: true,
     },
     { offset: offset * limit, limit, sort: "-createdAt" }
   );
