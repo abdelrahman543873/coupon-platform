@@ -4,6 +4,7 @@ import {
   getCoupon,
   getMyCouponsRepository,
   updateCouponById,
+  getAdminSubscriptionsRepository,
 } from "./coupon.repository.js";
 
 export const adminAddCouponService = async (req, res, next) => {
@@ -51,6 +52,22 @@ export const getAllCouponsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { coupons },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllSubscriptionsService = async (req, res, next) => {
+  try {
+    const subscriptions = await getAdminSubscriptionsRepository(
+      req.query.provider,
+      req.query.offset,
+      req.query.limit
+    );
+    res.status(200).json({
+      success: true,
+      data: { subscriptions },
     });
   } catch (error) {
     next(error);

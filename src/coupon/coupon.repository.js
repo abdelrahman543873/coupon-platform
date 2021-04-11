@@ -37,9 +37,25 @@ export const getSubscriptionsRepository = async (
   limit = 15
 ) => {
   return await providerCustomerCouponModel.paginate(
-    { provider },
+    { ...(provider && { provider }) },
     {
       populate: "coupon customer",
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
+  );
+};
+
+export const getAdminSubscriptionsRepository = async (
+  provider,
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { ...(provider && { provider }) },
+    {
+      populate: "coupon customer provider",
       offset: offset * limit,
       limit,
       sort: "-createdAt",
