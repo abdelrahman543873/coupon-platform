@@ -50,6 +50,7 @@ const coupon = mongoose.Schema(
       required: true,
       default: true,
     },
+    amount: { type: Number, required: true },
     logoURL: { type: String },
   },
   {

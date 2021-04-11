@@ -14,7 +14,6 @@ import {
   providerFactory,
   providersFactory,
 } from "../../src/provider/provider.factory.js";
-import { CouponModel } from "../../src/coupon/models/coupon.model.js";
 describe("statistics suite case", () => {
   afterEach(async () => {
     await rollbackDbForAdmin();

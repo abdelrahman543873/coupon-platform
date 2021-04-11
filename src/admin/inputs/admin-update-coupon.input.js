@@ -11,4 +11,5 @@ export const AdminUpdateCouponInput = Joi.object({
   category: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .optional(),
+  amount: Joi.number().positive().max(9999),
 });

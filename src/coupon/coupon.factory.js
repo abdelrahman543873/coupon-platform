@@ -19,6 +19,7 @@ export const buildCouponParams = async (obj = {}) => {
     category: obj.category || (await categoryFactory())._id,
     code: obj.code || faker.datatype.number(),
     isActive: obj.isActive || true,
+    amount: obj.amount || faker.datatype.number(9999),
     logoURL: obj.logoURL || faker.internet.url(),
   };
 };
