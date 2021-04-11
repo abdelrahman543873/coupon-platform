@@ -1,8 +1,9 @@
 import { nanoid } from "nanoid";
-import { Coupon } from "../middlewares/responsHandler.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 export const getMyCouponsRepository = async (
   provider,
   category,
@@ -160,7 +161,9 @@ export const addCouponRepository = async (coupon) => {
   return await CouponModel.create({
     ...coupon,
     code: nanoid(),
-    ...(coupon.logoURL && { logoURL: coupon.logoURL.path }),
+    ...(coupon.logoURL && {
+      logoURL: process.env.SERVER_IP + coupon.logoURL.path,
+    }),
   });
 };
 
@@ -171,7 +174,12 @@ export const findCouponByIdAndProvider = async (_id, provider) => {
 export const updateCoupon = async (_id, provider, input) => {
   return await CouponModel.findOneAndUpdate(
     { _id, provider },
-    { ...input, ...(input.logoURL && { logoURL: input.logoURL.path }) },
+    {
+      ...input,
+      ...(input.logoURL && {
+        logoURL: process.env.SERVER_IP + input.logoURL.path,
+      }),
+    },
     { new: true, omitUndefined: true }
   );
 };
@@ -179,7 +187,12 @@ export const updateCoupon = async (_id, provider, input) => {
 export const updateCouponById = async (_id, { input }) => {
   return await CouponModel.findOneAndUpdate(
     { _id },
-    { ...input, ...(input.logoURL && { logoURL: input.logoURL.path }) },
+    {
+      ...input,
+      ...(input.logoURL && {
+        logoURL: process.env.SERVER_IP + input.logoURL.path,
+      }),
+    },
     { new: true, omitUndefined: true }
   );
 };

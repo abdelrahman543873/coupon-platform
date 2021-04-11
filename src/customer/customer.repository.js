@@ -1,10 +1,13 @@
 import { CustomerModel } from "./models/customer.model.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 export const CustomerRegisterRepository = async (customer) => {
   return await CustomerModel.create({
     ...customer,
     ...(customer.profilePictureURL && {
-      profilePictureURL: customer.profilePictureURL.path,
+      profilePictureURL:
+        process.env.SERVER_IP + customer.profilePictureURL.path,
     }),
   });
 };

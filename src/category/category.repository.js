@@ -1,5 +1,7 @@
 import { CategoryModel } from "./models/category.model.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 export const getCategories = async (offset = 0, limit = 15) => {
   return await CategoryModel.paginate(
     {
@@ -22,7 +24,9 @@ export const findCategoryRepository = async (_id) => {
 export const createCategoryRepository = async (category) => {
   return await CategoryModel.create({
     ...category,
-    ...(category.logoURL && { logoURL: category.logoURL.path }),
+    ...(category.logoURL && {
+      logoURL: process.env.SERVER_IP + category.logoURL.path,
+    }),
   });
 };
 
@@ -31,7 +35,9 @@ export const updateCategoryRepository = async ({ _id, category }) => {
     { _id },
     {
       ...category,
-      ...(category.logoURL && { logoURL: category.logoURL.path }),
+      ...(category.logoURL && {
+        logoURL: process.env.SERVER_IP + category.logoURL.path,
+      }),
     },
     {
       new: true,

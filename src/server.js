@@ -25,7 +25,7 @@ server.use(express.json());
 
 server.use(router);
 
-server.use("/resources", express.static("./public"));
+server.use("/public", express.static("./public"));
 
 // route not found fallback
 server.all("*", (req, res, next) => {

@@ -46,7 +46,6 @@ describe("add coupon suite case", () => {
       filePath,
       variables,
     });
-    const fileStored = res.body.data.logoURL.includes(".jpg");
-    expect(fileStored).toBe(true);
+    expect(res.body.data.logoURL).toContain(".jpg");
   });
 });

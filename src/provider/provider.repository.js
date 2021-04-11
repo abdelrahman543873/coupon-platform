@@ -1,4 +1,7 @@
 import { ProviderModel } from "./models/provider.model.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,
@@ -10,7 +13,9 @@ export const updateProviderRepository = async (user, providerData) => {
     { user },
     {
       ...providerData,
-      ...(providerData.logoURL && { logoURL: providerData.logoURL.path }),
+      ...(providerData.logoURL && {
+        logoURL: process.env.SERVER_IP + providerData.logoURL.path,
+      }),
     },
     { new: true, omitUndefined: true }
   );
@@ -62,4 +67,3 @@ export const countProvidersRepository = async (createdAt) => {
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
 };
-
