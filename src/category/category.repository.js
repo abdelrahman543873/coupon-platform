@@ -7,7 +7,7 @@ export const getCategories = async (offset = 0, limit = 15) => {
     {
       isDeleted: false,
     },
-    { offset: offset * 10, limit, sort: "-createdAt", lean: true }
+    { offset: offset * limit, limit, sort: "-createdAt", lean: true }
   );
 };
 

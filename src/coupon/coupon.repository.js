@@ -16,7 +16,7 @@ export const getMyCouponsRepository = async (
       isActive: true,
       ...(category && { category }),
     },
-    { offset: offset * 10, limit, sort: "-createdAt" }
+    { offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
 
@@ -27,7 +27,7 @@ export const getRecentlySoldCouponsRepository = async (
 ) => {
   return await providerCustomerCouponModel.paginate(
     { ...(provider && { provider }) },
-    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
+    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
 
@@ -40,7 +40,7 @@ export const getSubscriptionsRepository = async (
     { provider },
     {
       populate: "coupon customer",
-      offset: offset * 10,
+      offset: offset * limit,
       limit,
       sort: "-createdAt",
     }
@@ -56,7 +56,7 @@ export const getCustomerSubscriptionsRepository = async (
     { customer },
     {
       populate: "coupon provider",
-      offset: offset * 10,
+      offset: offset * limit,
       limit,
       sort: "-createdAt",
     }
@@ -97,7 +97,7 @@ export const getRecentlyAdddedCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     {},
-    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
+    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
 

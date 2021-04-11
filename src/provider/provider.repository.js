@@ -28,13 +28,13 @@ export const getRecentlySoldCouponsRepository = async (
 ) => {
   return await providerCustomerCouponModel.paginate(
     { ...(provider && { provider }) },
-    { populate: "coupon", offset: offset * 10, limit, sort: "-createdAt" }
+    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
 export const getProviders = async (offset = 0, limit = 15) => {
   return await ProviderModel.paginate(
     {},
-    { offset: offset * 10, limit, sort: "-createdAt", lean: true }
+    { offset: offset * limit, limit, sort: "-createdAt", lean: true }
   );
 };
 
