@@ -28,17 +28,6 @@ describe("reset password suite case", () => {
     expect(res.body.success).toBe(true);
   });
 
-  it("verify reset password code", async () => {
-    const admin = await userFactory({ role: UserRoleEnum[2] });
-    const verification = await verificationFactory({ email: admin.email });
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.POST,
-      url: RESET_PASSWORD,
-      variables: { code: verification.code, email: admin.email },
-    });
-    expect(res.body.success).toBe(true);
-  });
-
   it("should throw error if code and not email or phone", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const verification = await verificationFactory({ email: admin.email });
@@ -48,5 +37,31 @@ describe("reset password suite case", () => {
       variables: { code: verification.code },
     });
     expect(res.body.statusCode).toBe(400);
+  });
+
+  it("should throw error if wrong code", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    await verificationFactory({ email: admin.email });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { code: 1111, email: admin.email, newPassword: "12345678" },
+    });
+    expect(res.body.statusCode).toBe(617);
+  });
+
+  it("should change password successfully", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const verification = await verificationFactory({ email: admin.email });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: {
+        code: verification.code,
+        email: admin.email,
+        newPassword: "12345678",
+      },
+    });
+    expect(res.body.data.user.name).toBe(admin.name);
   });
 });
