@@ -9,8 +9,9 @@ export const connectDB = async (dbURL) => {
     useUnifiedTopology: true,
     useFindAndModify: false,
   });
-  mongo.connection.db.dropDatabase(() => {
-    console.log("database dropped");
-  });
+  // when dropping database
+  // mongo.connection.db.dropDatabase(() => {
+  //   console.log("database dropped");
+  // });
   return mongo;
 };

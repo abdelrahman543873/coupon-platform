@@ -18,17 +18,18 @@ describe("get info suite case", () => {
       url: GET_INFO,
       token: customer.token,
     });
-    expect(res.body.data.socialMediaId).toBe(customer.socialMediaId);
+    expect(res.body.data.user.socialMediaId).toBe(customer.socialMediaId);
   });
 
-  it("should get info for provider", async () => {
+  it("should get all info for provider", async () => {
     const provider = await providerFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_INFO,
       token: provider.token,
     });
-    expect(res.body.data.slogan).toBe(provider.slogan);
+    expect(res.body.data.user.name).toBeTruthy();
+    expect(res.body.data.user.slogan).toBe(provider.slogan);
   });
 
   it("should get info for user", async () => {

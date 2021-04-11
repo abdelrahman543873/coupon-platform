@@ -9,12 +9,18 @@ export const getInfoService = async (req, res, next) => {
     // if user is provider return provider and user data
     user.role === UserRoleEnum[0] &&
       (data = {
-        ...(await findProviderByUserId(user._id)),
+        user: {
+          ...(await findProviderByUserId(user._id)),
+          ...user.toJSON(),
+        },
       });
     //if user is customer return user and customer data
     user.role === UserRoleEnum[1] &&
       (data = {
-        ...(await getCustomerRepository(user.id)),
+        user: {
+          ...(await getCustomerRepository(user.id)),
+          ...user.toJSON(),
+        },
       });
     res.status(200).json({
       success: true,
