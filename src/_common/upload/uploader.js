@@ -14,7 +14,13 @@ export const uploadHelper = (dest) => {
   const filename = (req, file, cb) => {
     const name = req.currentUser ? req.currentUser.phone : req.body.phone;
     try {
-      cb(null, `${name}-${Date.now()}${path.extname(file.originalname)}`);
+      cb(
+        null,
+        // removing whit space from names
+        `${name.replace(/\s+/g, "")}-${Date.now()}${path.extname(
+          file.originalname
+        )}`
+      );
     } catch (error) {
       cb(error);
     }

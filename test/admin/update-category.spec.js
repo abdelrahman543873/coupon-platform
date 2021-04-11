@@ -42,6 +42,6 @@ describe("update category suite case", () => {
       fileParam: "category",
       filePath,
     });
-    expect(res.body.data.logoURL).toContain(admin.phone);
+    expect(res.body.data.logoURL).toContain(".jpg");
   });
 });
