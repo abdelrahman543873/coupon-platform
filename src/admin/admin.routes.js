@@ -56,7 +56,7 @@ adminRouter
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/category-pictures").single("category"),
+    uploadHelper("public/category-pictures").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(AddCategoryInput),
     addCategoryService
@@ -67,7 +67,7 @@ adminRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/category-pictures").single("category"),
+    uploadHelper("public/category-pictures").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(UpdateCategoryInput),
     updateCategoryService
@@ -122,7 +122,7 @@ adminRouter
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/coupons").single("coupon"),
+    uploadHelper("public/coupons").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(AdminAddCouponInput),
     adminAddCouponService
@@ -133,7 +133,7 @@ adminRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/coupons").single("coupon"),
+    uploadHelper("public/coupons").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(AdminUpdateCouponInput),
     adminUpdateCouponService
@@ -144,7 +144,7 @@ adminRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/logos").single("logo"),
+    uploadHelper("public/logos").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(AdminUpdateProviderInput),
     adminUpdateProviderService

@@ -49,7 +49,7 @@ describe("update coupon suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_COUPON,
       token: provider.token,
-      fileParam: "coupon",
+      fileParam: "image",
       filePath,
       variables,
     });

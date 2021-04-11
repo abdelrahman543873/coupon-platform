@@ -44,7 +44,7 @@ describe("customer register suite case", () => {
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
       variables,
-      fileParam: "profile-picture",
+      fileParam: "image",
       filePath,
     });
     const fileStored = res.body.data.user.profilePictureURL.includes(".jpg");

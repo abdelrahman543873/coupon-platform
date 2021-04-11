@@ -42,7 +42,7 @@ describe("add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_COUPON,
       token: provider.token,
-      fileParam: "coupon",
+      fileParam: "image",
       filePath,
       variables,
     });

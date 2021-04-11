@@ -64,7 +64,7 @@ describe("customer social register suite case", () => {
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
-      fileParam: "profile-picture",
+      fileParam: "image",
       filePath,
     });
     const fileStored = res.body.data.profilePictureURL.includes(".jpg");

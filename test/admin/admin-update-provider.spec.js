@@ -1,5 +1,5 @@
 import { testRequest } from "../request.js";
-import { PROVIDER_MODIFICATION, REGISTER } from "../endpoints/provider.js";
+import {  REGISTER } from "../endpoints/provider.js";
 import {
   buildProviderParams,
   providerFactory,
@@ -121,7 +121,7 @@ describe("admin update provider suite case", () => {
       url: ADMIN_UPDATE_PROVIDER,
       token: admin.token,
       variables: { provider: provider.user },
-      fileParam: "logo",
+      fileParam: "image",
       filePath,
     });
     expect(res.body.data.logoURL).toContain(".jpg");
@@ -136,7 +136,7 @@ describe("admin update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: ADMIN_UPDATE_PROVIDER,
       token: admin.token,
-      fileParam: "logo",
+      fileParam: "image",
       filePath,
     });
     expect(res.body.statusCode).toBe(400);

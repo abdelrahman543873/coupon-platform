@@ -30,7 +30,7 @@ describe("admin add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.POST,
       url: ADMIN_ADD_COUPON,
       token: admin.token,
-      fileParam: "coupon",
+      fileParam: "image",
       filePath,
       variables,
     });

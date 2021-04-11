@@ -39,7 +39,7 @@ describe("update category suite case", () => {
       url: UPDATE_CATEGORY,
       variables: category,
       token: admin.token,
-      fileParam: "category",
+      fileParam: "image",
       filePath,
     });
     expect(res.body.data.logoURL).toContain(".jpg");

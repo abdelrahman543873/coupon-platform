@@ -32,7 +32,7 @@ describe("add category suite case", () => {
       url: ADD_CATEGORY,
       variables: category,
       token: admin.token,
-      fileParam: "category",
+      fileParam: "image",
       filePath,
     });
     expect(res.body.data.logoURL).toContain(".jpg");

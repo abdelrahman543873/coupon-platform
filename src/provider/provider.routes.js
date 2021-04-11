@@ -45,7 +45,7 @@ providersRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    uploadHelper("public/logos").single("logo"),
+    uploadHelper("public/logos").single("image"),
     ValidationMiddleware(UpdateProviderInput),
     fileValidationMiddleWare,
     updateProviderService
@@ -72,7 +72,7 @@ providersRouter
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    uploadHelper("public/coupons").single("coupon"),
+    uploadHelper("public/coupons").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(AddCouponInput),
     addCouponService
@@ -92,7 +92,7 @@ providersRouter
   .put(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
-    uploadHelper("public/coupons").single("coupon"),
+    uploadHelper("public/coupons").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(UpdateCouponInput),
     updateCouponService

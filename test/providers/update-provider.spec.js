@@ -212,7 +212,7 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       token: mockUser.token,
-      fileParam: "logo",
+      fileParam: "image",
       filePath,
     });
     const fileStored = res.body.data.logoURL.includes(".jpg");
@@ -231,7 +231,7 @@ describe("update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
       token: mockUser.token,
-      fileParam: "logo",
+      fileParam: "image",
       filePath,
       variables: { password: "1234" },
     });
