@@ -11,6 +11,11 @@ import { generateToken } from "../utils/JWTHelper.js";
 
 export const resetPasswordService = async (req, res, next) => {
   try {
+    const user = await findUserByEmailOrPhone({
+      ...(req.body.phone && { phone: req.body.phone }),
+      ...(req.body.email && { email: req.body.email }),
+    });
+    if (!user) throw new BaseHttpError(611);
     if (req.body.code) {
       const verification = await verifyOTPRepository({
         code: req.body.code,
@@ -18,10 +23,6 @@ export const resetPasswordService = async (req, res, next) => {
         ...(req.body.email && { email: req.body.email }),
       });
       if (!verification) throw new BaseHttpError(617);
-      const user = await findUserByEmailOrPhone({
-        ...(req.body.phone && { phone: req.body.phone }),
-        ...(req.body.email && { email: req.body.email }),
-      });
       res.status(200).json({
         success: true,
         data: {
