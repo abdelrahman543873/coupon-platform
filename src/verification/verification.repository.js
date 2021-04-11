@@ -4,9 +4,11 @@ export const addVerificationCode = async (verification) => {
   return await VerificationModel.create(verification);
 };
 
-export const verifyOTPRepository = async (user, code) => {
+export const verifyOTPRepository = async ({ user, code, phone, email }) => {
   return await VerificationModel.findOne({
-    user,
+    ...(user && { user }),
+    ...(email && { email }),
+    ...(phone && { phone }),
     expirationDate: { $gte: Date.now() },
     code,
   });

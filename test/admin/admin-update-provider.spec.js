@@ -1,5 +1,5 @@
 import { testRequest } from "../request.js";
-import {  REGISTER } from "../endpoints/provider.js";
+import { REGISTER } from "../endpoints/provider.js";
 import {
   buildProviderParams,
   providerFactory,

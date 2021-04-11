@@ -5,4 +5,4 @@ export const SocialRegisterInput = Joi.object({
   socialMediaType: Joi.string(),
   phone: Joi.string().min(8).optional(),
   email: Joi.string().email().lowercase().optional(),
-});
+}).or("email", "phone");

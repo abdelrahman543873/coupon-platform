@@ -48,6 +48,7 @@ providersRouter
     uploadHelper("public/logos").single("image"),
     ValidationMiddleware(UpdateProviderInput),
     fileValidationMiddleWare,
+    ValidationMiddleware(UpdateProviderInput),
     updateProviderService
   );
 

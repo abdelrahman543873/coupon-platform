@@ -5,8 +5,6 @@ let verification = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      unique: true,
-      require: true,
     },
     code: {
       type: String,
@@ -16,6 +14,8 @@ let verification = mongoose.Schema(
       type: Date,
       required: true,
     },
+    phone: { type: String },
+    email: { type: String },
   },
   {
     timestamps: true,

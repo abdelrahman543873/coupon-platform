@@ -154,7 +154,10 @@ export const getCustomersCouponsService = async (req, res, next) => {
 
 export const verifyOTPService = async (req, res, next) => {
   try {
-    const code = await verifyOTPRepository(req.currentUser._id, req.body.code);
+    const code = await verifyOTPRepository({
+      user: req.currentUser._id,
+      code: req.body.code,
+    });
     if (!code) throw new BaseHttpError(617);
     res.status(200).json({
       success: true,

@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
+dotenv.config();
 async function sendClientMail(subject, message, email) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -16,6 +18,7 @@ async function sendClientMail(subject, message, email) {
     subject: subject,
     html: `<h2>${message}</h2>`,
   };
+  if (process.env.NODE_ENV !== "production") return "success";
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       return;

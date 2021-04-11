@@ -3,7 +3,6 @@ import { CUSTOMER_REGISTER, VERIFY_OTP } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
 import { rollbackDbForCustomer } from "./rollback-for-customer";
-import { verifyOTPRepository } from "../../src/verification/verification.repository.js";
 describe("verify otp suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
