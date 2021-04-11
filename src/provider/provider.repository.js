@@ -58,7 +58,7 @@ export const rawDeleteProvider = async () => {
 };
 
 export const countProvidersRepository = async (createdAt) => {
-  return await ProviderModel.count({
+  return await ProviderModel.countDocuments({
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
 };
