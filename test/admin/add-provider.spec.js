@@ -5,6 +5,7 @@ import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { rollbackDbForAdmin } from "./rollback-for-admin.js";
+import path from "path";
 describe("provider register suite case", () => {
   afterEach(async () => {
     await rollbackDbForAdmin();
@@ -54,5 +55,49 @@ describe("provider register suite case", () => {
       token: admin.token,
     });
     expect(res.body.statusCode).toBe(601);
+  });
+
+  it("successful file upload", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const testFiles = path.resolve(process.cwd(), "test");
+    const filePath = `${testFiles}/test-files/test-duck.jpg`;
+    const providerInput = {
+      ...(await buildUserParams()),
+      ...(await buildProviderParams()),
+    };
+    const {
+      logoURL,
+      isActive,
+      code,
+      fcmToken,
+      qrURL,
+      role,
+      _id,
+      user,
+      ...input
+    } = providerInput;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_PROVIDER,
+      fileParam: "image",
+      filePath,
+      token: admin.token,
+      variables: input,
+    });
+    expect(res.body.data.user.logoURL).toContain(".jpg");
+  });
+
+  it("successful validation with file upload", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const testFiles = path.resolve(process.cwd(), "test");
+    const filePath = `${testFiles}/test-files/test-duck.jpg`;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_PROVIDER,
+      token: admin.token,
+      fileParam: "image",
+      filePath,
+    });
+    expect(res.body.statusCode).toBe(400);
   });
 });

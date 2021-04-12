@@ -111,6 +111,8 @@ adminRouter
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    uploadHelper("public/logos").single("image"),
+    fileValidationMiddleWare,
     ValidationMiddleware(AddProviderInput),
     addProviderService
   );

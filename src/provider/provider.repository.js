@@ -5,6 +5,9 @@ dotenv.config();
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,
+    ...(provider.logoURL && {
+      logoURL: process.env.SERVER_IP + provider.logoURL.path,
+    }),
   });
 };
 

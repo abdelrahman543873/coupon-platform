@@ -14,6 +14,7 @@ export const addProviderService = async (req, res, next) => {
     const provider = await providerRegisterRepository({
       user: user.id,
       ...req.body,
+      logoURL: req.file,
     });
     const verificationCode = await addVerificationCode({
       ...createVerificationCode(),
