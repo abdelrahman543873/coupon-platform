@@ -1,5 +1,5 @@
 import { findProviderByUserId } from "../provider/provider.repository.js";
-import { findUserById } from "../user/user.repository.js";
+import { findUserById, updateUser } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   addCouponRepository,
@@ -9,6 +9,7 @@ import {
   getAdminSubscriptionsRepository,
 } from "./coupon.repository.js";
 import mongoose from "mongoose";
+import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 export const adminAddCouponService = async (req, res, next) => {
   try {
     const coupon = await addCouponRepository({
@@ -78,7 +79,7 @@ export const getAllSubscriptionsService = async (req, res, next) => {
 
 export const adminGetProviderService = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.body.provider))
+    if (!mongoose.Types.ObjectId.isValid(req.query.provider))
       throw new BaseHttpError(631);
     const user = await findUserById(req.query.provider);
     if (!user) throw new BaseHttpError(611);
@@ -86,6 +87,22 @@ export const adminGetProviderService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: { user: { ...user, ...provider } },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminUpdateProfileService = async (req, res, next) => {
+  try {
+    const passwordValidation = req.body.password
+      ? await bcryptCheckPass(req.body.password, req.currentUser.password)
+      : true;
+    if (!passwordValidation) throw new BaseHttpError(607);
+    const user = await updateUser(req.currentUser._id, req.body);
+    return res.status(200).json({
+      success: true,
+      data: { user: { ...user.toJSON() } },
     });
   } catch (error) {
     next(error);

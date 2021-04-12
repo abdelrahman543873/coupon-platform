@@ -7,6 +7,7 @@ import {
   adminAddCouponService,
   adminGetProviderService,
   adminUpdateCouponService,
+  adminUpdateProfileService,
   getAllCouponsService,
   getAllSubscriptionsService,
 } from "../coupon/coupon.service.js";
@@ -42,6 +43,7 @@ import { DeleteProviderInput } from "./inputs/delete-provider.input.js";
 import { AdminDeleteCouponInput } from "../provider/inputs/admin-delete-coupon.input.js";
 import { AdminDeleteCategory } from "./inputs/admin-delete-category.js";
 import { GetStatisticsInput } from "./inputs/get-statistics.input.js";
+import { UpdateAdminInput } from "./inputs/update-admin.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -201,6 +203,15 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     adminGetProviderService
+  );
+
+adminRouter
+  .route("/updateProfile")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(UpdateAdminInput),
+    adminUpdateProfileService
   );
 
 export { adminRouter };

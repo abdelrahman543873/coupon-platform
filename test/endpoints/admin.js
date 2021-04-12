@@ -15,3 +15,4 @@ export const ADMIN_GET_STATISTICS = "/admin-management/getStatistics";
 export const ADMIN_GET_COUPONS = "/admin-management/getCoupons";
 export const ADMIN_GET_SUBSCRIPTIONS = "/admin-management/getSubscriptions";
 export const GET_PROVIDER = "/admin-management/getProvider";
+export const UPDATE_ADMIN = "/admin-management/updateProfile";
