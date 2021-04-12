@@ -8,7 +8,7 @@ import {
   updateCouponById,
   getAdminSubscriptionsRepository,
 } from "./coupon.repository.js";
-
+import mongoose from "mongoose";
 export const adminAddCouponService = async (req, res, next) => {
   try {
     const coupon = await addCouponRepository({
@@ -78,6 +78,8 @@ export const getAllSubscriptionsService = async (req, res, next) => {
 
 export const adminGetProviderService = async (req, res, next) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.body.provider))
+      throw new BaseHttpError(631);
     const user = await findUserById(req.query.provider);
     if (!user) throw new BaseHttpError(611);
     const provider = await findProviderByUserId(req.query.provider);

@@ -111,4 +111,8 @@ export const LocalizedErrorMessages = {
     EN: "this category has coupons",
     AR: "this category has coupons",
   },
+  631: {
+    EN: "invalid id",
+    AR: "invalid id",
+  },
 };
