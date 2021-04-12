@@ -47,6 +47,7 @@ export const resetPasswordService = async (req, res, next) => {
       (await sendClientMail("code", verificationCode.code, req.body.email));
     res.status(201).json({
       success: true,
+      data: true,
     });
   } catch (error) {
     next(error);
@@ -60,7 +61,7 @@ export const changePasswordService = async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      data: { user: updatedUser },
+      data: true,
     });
   } catch (error) {
     next(error);

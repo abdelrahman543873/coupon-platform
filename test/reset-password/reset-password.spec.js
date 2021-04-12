@@ -17,6 +17,7 @@ describe("reset password suite case", () => {
       variables: { phone: admin.phone },
     });
     expect(res.body.success).toBe(true);
+    expect(res.body.data).toBe(true);
   });
   it("reset password with email", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
@@ -81,6 +82,6 @@ describe("reset password suite case", () => {
       variables: { newPassword: "something12" },
       token: res.body.data.authToken,
     });
-    expect(res1.body.data.user.name).toBeTruthy();
+    expect(res1.body.data).toBe(true);
   });
 });
