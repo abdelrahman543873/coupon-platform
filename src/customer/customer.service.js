@@ -165,9 +165,21 @@ export const verifyOTPService = async (req, res, next) => {
       code: req.body.code,
     });
     if (!code) throw new BaseHttpError(617);
+    const updatedCustomer = await updateCustomerRepository(
+      req.currentUser._id,
+      {
+        isVerified: true,
+      }
+    );
     res.status(200).json({
       success: true,
-      data: true,
+      data: {
+        user: {
+          ...updatedCustomer,
+          ...req.currentUser.toJSON(),
+          authToken: generateToken(req.currentUser._id, req.currentUser.role),
+        },
+      },
     });
   } catch (error) {
     next(error);
@@ -310,13 +322,13 @@ export const updateCustomerService = async (req, res, next) => {
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
     const user = await updateUser(req.currentUser._id, req.body);
-    const provider = await updateCustomerRepository(req.currentUser._id, {
+    const customer = await updateCustomerRepository(req.currentUser._id, {
       ...req.body,
       profilePictureURL: req.file,
     });
     return res.status(200).json({
       success: true,
-      data: { user: { ...provider.toJSON(), ...user.toJSON() } },
+      data: { user: { ...customer, ...user.toJSON() } },
     });
   } catch (error) {
     next(error);

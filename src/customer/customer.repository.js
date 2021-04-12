@@ -46,7 +46,7 @@ export const updateCustomerRepository = async (user, customerData) => {
           process.env.SERVER_IP + customerData.profilePictureURL.path,
       }),
     },
-    { new: true, omitUndefined: true }
+    { new: true, omitUndefined: true, lean: true }
   );
 };
 

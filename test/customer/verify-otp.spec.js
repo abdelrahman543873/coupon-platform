@@ -21,7 +21,8 @@ describe("verify otp suite case", () => {
       variables: { code: "12345" },
       token: res.body.data.authToken,
     });
-    expect(res1.body.data).toBe(true);
+    expect(res1.body.data.user.isVerified).toBe(true);
+    expect(res1.body.data.user.authToken).toBeTruthy();
     //test wrong code
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
