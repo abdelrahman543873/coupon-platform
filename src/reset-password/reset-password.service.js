@@ -8,7 +8,9 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import { generateToken } from "../utils/JWTHelper.js";
-
+import { UserRoleEnum } from "../user/user-role.enum.js";
+import { findProviderByUserId } from "../../src/provider/provider.repository.js";
+import { getCustomerRepository } from "../customer/customer.repository.js";
 export const resetPasswordService = async (req, res, next) => {
   try {
     const user = await findUserByEmailOrPhone({
@@ -45,9 +47,21 @@ export const resetPasswordService = async (req, res, next) => {
     //change this message
     req.body.email &&
       (await sendClientMail("code", verificationCode.code, req.body.email));
+    //returning extra user data
+    let userData;
+    user.role === UserRoleEnum[0] &&
+      (userData = await findProviderByUserId(user._id));
+    user.role === UserRoleEnum[1] &&
+      (userData = await getCustomerRepository(user._id));
     res.status(201).json({
       success: true,
-      data: true,
+      data: {
+        user: {
+          ...userData,
+          ...user.toJSON(),
+        },
+        authToken: generateToken(user._id, user.role),
+      },
     });
   } catch (error) {
     next(error);

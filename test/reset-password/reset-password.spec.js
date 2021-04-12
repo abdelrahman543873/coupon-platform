@@ -5,6 +5,8 @@ import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
 import { rollbackDbForResetPassword } from "../reset-password/rollback-for-reset-password.js";
 import { verificationFactory } from "../../src/verification/verification.factory";
+import { customerFactory } from "../../src/customer/customer.factory.js";
+import { providerFactory } from "../../src/provider/provider.factory";
 describe("reset password suite case", () => {
   afterEach(async () => {
     await rollbackDbForResetPassword();
@@ -17,7 +19,31 @@ describe("reset password suite case", () => {
       variables: { phone: admin.phone },
     });
     expect(res.body.success).toBe(true);
-    expect(res.body.data).toBe(true);
+    expect(res.body.data.user._id).toBe(admin.id);
+  });
+
+  it("customer reset password with phone", async () => {
+    const user = await userFactory({ role: UserRoleEnum[1] });
+    const customer = await customerFactory({ user: user.id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { phone: user.phone },
+    });
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.user._id).toBe(decodeURI(encodeURI(customer.user)));
+  });
+
+  it("provider reset password with phone", async () => {
+    const user = await userFactory({ role: UserRoleEnum[0] });
+    const customer = await providerFactory({ user: user.id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { phone: user.phone },
+    });
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.user._id).toBe(decodeURI(encodeURI(customer.user)));
   });
   it("reset password with email", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
@@ -27,6 +53,7 @@ describe("reset password suite case", () => {
       variables: { email: admin.email },
     });
     expect(res.body.success).toBe(true);
+    expect(res.body.data.user._id).toBe(admin.id);
   });
 
   it("should throw error if code and not email or phone", async () => {
