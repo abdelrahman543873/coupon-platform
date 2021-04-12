@@ -30,6 +30,16 @@ export const getRecentlySoldCouponsRepository = async (
     { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
+export const getCompletelySoldCouponsRepository = async (
+  provider,
+  offset = 0,
+  limit = 15
+) => {
+  return await CouponModel.paginate(
+    { ...(provider && { provider }), amount: 0 },
+    { offset: offset * limit, limit, sort: "-createdAt" }
+  );
+};
 
 export const getSubscriptionsRepository = async (
   provider,

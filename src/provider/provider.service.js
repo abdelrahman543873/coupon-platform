@@ -8,6 +8,7 @@ import {
   getSubscriptionsRepository,
   getSubscriptionRepository,
   updateCoupon,
+  getCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
@@ -106,6 +107,12 @@ export const getMyCouponsService = async (req, res, next) => {
     let data;
     req.query.recentlySold &&
       (data = await getRecentlySoldCouponsRepository(
+        req.currentUser._id,
+        req.query.offset,
+        req.query.limit
+      ));
+    req.query.sold &&
+      (data = await getCompletelySoldCouponsRepository(
         req.currentUser._id,
         req.query.offset,
         req.query.limit

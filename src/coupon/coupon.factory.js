@@ -7,20 +7,24 @@ import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 
 export const buildCouponParams = async (obj = {}) => {
+  const amount =
+    obj.amount === null || obj.amount === undefined
+      ? faker.datatype.number(9999)
+      : obj.amount;
   return {
-    enName: obj.enName || faker.commerce.productName(),
-    arName: obj.arName || faker.commerce.productName(),
     enDescription: obj.enDescription || faker.commerce.productDescription(),
     arDescription: obj.arDescription || faker.commerce.productDescription(),
     servicePrice: obj.servicePrice || faker.commerce.price(),
     offerPrice: obj.offerPrice || faker.commerce.price(),
-    provider:
-      obj.provider || (await userFactory({ role: UserRoleEnum[0] }))._id,
-    category: obj.category || (await categoryFactory())._id,
+    enName: obj.enName || faker.commerce.productName(),
+    arName: obj.arName || faker.commerce.productName(),
+    amount: amount,
+    logoURL: obj.logoURL || faker.internet.url(),
     code: obj.code || faker.datatype.number(),
     isActive: obj.isActive || true,
-    amount: obj.amount || faker.datatype.number(9999),
-    logoURL: obj.logoURL || faker.internet.url(),
+    category: obj.category || (await categoryFactory())._id,
+    provider:
+      obj.provider || (await userFactory({ role: UserRoleEnum[0] }))._id,
   };
 };
 
