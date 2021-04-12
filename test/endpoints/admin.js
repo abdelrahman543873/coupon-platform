@@ -16,3 +16,5 @@ export const ADMIN_GET_COUPONS = "/admin-management/getCoupons";
 export const ADMIN_GET_SUBSCRIPTIONS = "/admin-management/getSubscriptions";
 export const GET_PROVIDER = "/admin-management/getProvider";
 export const UPDATE_ADMIN = "/admin-management/updateProfile";
+export const DELETE_CONTACT_US_MESSAGE =
+  "/admin-management/deleteContactUsMessage";

@@ -1,4 +1,7 @@
-import { sendContactUsMessageRepository } from "./contact-us.repository.js";
+import {
+  deleteContactUsMessageRepository,
+  sendContactUsMessageRepository,
+} from "./contact-us.repository.js";
 
 export const sendContactUsMessageService = async (req, res, next) => {
   try {
@@ -9,6 +12,20 @@ export const sendContactUsMessageService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: message,
+    });
+  } catch {
+    next(error);
+  }
+};
+
+export const deleteContactUsMessageService = async (req, res, next) => {
+  try {
+    const deletedMessage = await deleteContactUsMessageRepository({
+      _id: req.body.contactUsMessage,
+    });
+    res.status(200).json({
+      success: true,
+      data: { message: deletedMessage },
     });
   } catch {
     next(error);
