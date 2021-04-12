@@ -52,7 +52,7 @@ describe("get my coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
-  it("get recently sold coupons", async () => {
+  it("get sold coupons", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {
       provider: provider.user,
@@ -62,6 +62,18 @@ describe("get my coupons suite case", () => {
       url: `${GET_MY_COUPONS}?sold=true`,
       token: provider.token,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    expect(res.body.data.docs.length).toBe(10);
+  });
+  it("get all coupons if paramter is false", async () => {
+    const provider = await providerFactory();
+    const coupons = await couponsFactory(10, {
+      provider: provider.user,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_MY_COUPONS}?sold=false`,
+      token: provider.token,
+    });
+    expect(res.body.data.docs.length).toBe(10);
   });
 });
