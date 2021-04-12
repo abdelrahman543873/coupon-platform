@@ -18,3 +18,4 @@ export const GET_PROVIDER = "/admin-management/getProvider";
 export const UPDATE_ADMIN = "/admin-management/updateProfile";
 export const DELETE_CONTACT_US_MESSAGE =
   "/admin-management/deleteContactUsMessage";
+export const GET_CONTACT_US_MESSAGES = "/admin-management/getContactUsMessages";

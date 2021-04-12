@@ -1,5 +1,6 @@
 import {
   deleteContactUsMessageRepository,
+  getContactUsMessagesRepository,
   sendContactUsMessageRepository,
 } from "./contact-us.repository.js";
 
@@ -26,6 +27,21 @@ export const deleteContactUsMessageService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: { message: deletedMessage },
+    });
+  } catch {
+    next(error);
+  }
+};
+
+export const getContactUsMessagesService = async (req, res, next) => {
+  try {
+    const messages = await getContactUsMessagesRepository(
+      req.query.offset,
+      req.query.limit
+    );
+    res.status(200).json({
+      success: true,
+      data: { messages },
     });
   } catch {
     next(error);

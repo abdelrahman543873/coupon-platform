@@ -45,7 +45,10 @@ import { AdminDeleteCategory } from "./inputs/admin-delete-category.js";
 import { GetStatisticsInput } from "./inputs/get-statistics.input.js";
 import { UpdateAdminInput } from "./inputs/update-admin.input.js";
 import { DeleteContactUsInput } from "../contact-us/inputs/delete-contact-us.input.js";
-import { deleteContactUsMessageService } from "../contact-us/contact-us.service.js";
+import {
+  deleteContactUsMessageService,
+  getContactUsMessagesService,
+} from "../contact-us/contact-us.service.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -225,6 +228,14 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(DeleteContactUsInput),
     deleteContactUsMessageService
+  );
+
+adminRouter
+  .route("/getContactUsMessages")
+  .delete(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    getContactUsMessagesService
   );
 
 export { adminRouter };
