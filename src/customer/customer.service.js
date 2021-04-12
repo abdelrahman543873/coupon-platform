@@ -10,7 +10,12 @@ import {
 } from "../coupon/coupon.repository.js";
 import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
+import {
+  createUser,
+  findUserByEmailOrPhone,
+  updateUser,
+} from "../user/user.repository.js";
+import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import {
   addVerificationCode,
@@ -26,6 +31,7 @@ import {
   CustomerRegisterRepository,
   getCustomerBySocialLoginRepository,
   getCustomerRepository,
+  updateCustomerRepository,
 } from "./customer.repository.js";
 
 export const CustomerRegisterService = async (req, res, next) => {
@@ -291,6 +297,26 @@ export const markCouponUsedService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: coupon,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateCustomerService = async (req, res, next) => {
+  try {
+    const passwordValidation = req.body.password
+      ? await bcryptCheckPass(req.body.password, req.currentUser.password)
+      : true;
+    if (!passwordValidation) throw new BaseHttpError(607);
+    const user = await updateUser(req.currentUser._id, req.body);
+    const provider = await updateCustomerRepository(req.currentUser._id, {
+      ...req.body,
+      profilePictureURL: req.file,
+    });
+    return res.status(200).json({
+      success: true,
+      data: { user: { ...provider.toJSON(), ...user.toJSON() } },
     });
   } catch (error) {
     next(error);

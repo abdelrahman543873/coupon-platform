@@ -46,7 +46,6 @@ providersRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     uploadHelper("public/logos").single("image"),
-    ValidationMiddleware(UpdateProviderInput),
     fileValidationMiddleWare,
     ValidationMiddleware(UpdateProviderInput),
     updateProviderService

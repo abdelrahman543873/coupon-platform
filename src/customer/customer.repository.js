@@ -36,6 +36,20 @@ export const addFavCouponsRepository = async ({ user, coupons }) => {
   );
 };
 
+export const updateCustomerRepository = async (user, customerData) => {
+  return await CustomerModel.findOneAndUpdate(
+    { user },
+    {
+      ...customerData,
+      ...(customerData.profilePictureURL && {
+        profilePictureURL:
+          process.env.SERVER_IP + customerData.profilePictureURL.path,
+      }),
+    },
+    { new: true, omitUndefined: true }
+  );
+};
+
 export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
   return await CustomerModel.findOne({ socialMediaId }).populate("user");
 };
