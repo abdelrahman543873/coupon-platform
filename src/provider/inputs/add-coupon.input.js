@@ -10,5 +10,5 @@ export const AddCouponInput = Joi.object({
   category: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .required(),
-  amount: Joi.number().positive().max(9999).required(),
+  amount: Joi.number().min(0).max(9999).required(),
 });

@@ -37,7 +37,7 @@ export const getCompletelySoldCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     { ...(provider && { provider }), amount: 0 },
-    { offset: offset * limit, limit, sort: "-createdAt" }
+    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
 

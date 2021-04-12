@@ -11,5 +11,5 @@ export const UpdateCouponInput = Joi.object({
   servicePrice: Joi.number().positive().precision(2),
   offerPrice: Joi.number().positive().precision(2),
   category: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
-  amount: Joi.number().positive().max(9999),
+  amount: Joi.number().min(0).max(9999),
 });

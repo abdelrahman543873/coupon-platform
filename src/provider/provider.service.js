@@ -105,13 +105,13 @@ export const updateProviderService = async (req, res, next) => {
 export const getMyCouponsService = async (req, res, next) => {
   try {
     let data;
-    req.query.recentlySold === true &&
+    req.query.recentlySold == "true" &&
       (data = await getRecentlySoldCouponsRepository(
         req.currentUser._id,
         req.query.offset,
         req.query.limit
       ));
-    req.query.sold === true &&
+    req.query.sold == "true" &&
       (data = await getCompletelySoldCouponsRepository(
         req.currentUser._id,
         req.query.offset,
