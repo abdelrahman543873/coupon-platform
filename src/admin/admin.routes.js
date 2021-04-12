@@ -5,6 +5,7 @@ import {
 } from "../category/category.service.js";
 import {
   adminAddCouponService,
+  adminGetProviderService,
   adminUpdateCouponService,
   getAllCouponsService,
   getAllSubscriptionsService,
@@ -192,6 +193,14 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getAllSubscriptionsService
+  );
+
+adminRouter
+  .route("/getProvider")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    adminGetProviderService
   );
 
 export { adminRouter };

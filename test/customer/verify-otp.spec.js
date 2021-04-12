@@ -18,7 +18,7 @@ describe("verify otp suite case", () => {
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: VERIFY_OTP,
-      variables: { code: "1234" },
+      variables: { code: "12345" },
       token: res.body.data.authToken,
     });
     expect(res1.body.data).toBe(true);
@@ -26,7 +26,7 @@ describe("verify otp suite case", () => {
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: VERIFY_OTP,
-      variables: { code: "12345" },
+      variables: { code: "123456" },
       token: res.body.data.authToken,
     });
     expect(res2.body.statusCode).toBe(617);
