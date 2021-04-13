@@ -21,3 +21,4 @@ export const DELETE_CONTACT_US_MESSAGE =
   "/admin-management/deleteContactUsMessage";
 export const GET_CONTACT_US_MESSAGES = "/admin-management/getContactUsMessages";
 export const ADMIN_SEND_CONTACT_US_MESSAGE = "/admin-management/mailReply";
+export const ADD_PAYMENT_TYPE = "/admin-management/addPaymentType";
