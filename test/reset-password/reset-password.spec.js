@@ -19,7 +19,7 @@ describe("reset password suite case", () => {
       variables: { phone: admin.phone },
     });
     expect(res.body.success).toBe(true);
-    expect(res.body.data.user._id).toBe(admin.id);
+    expect(res.body.data).toBe(true);
   });
 
   it("customer reset password with phone", async () => {
@@ -31,7 +31,7 @@ describe("reset password suite case", () => {
       variables: { phone: user.phone },
     });
     expect(res.body.success).toBe(true);
-    expect(res.body.data.user._id).toBe(decodeURI(encodeURI(customer.user)));
+    expect(res.body.data).toBe(true);
   });
 
   it("provider reset password with phone", async () => {
@@ -43,7 +43,7 @@ describe("reset password suite case", () => {
       variables: { phone: user.phone },
     });
     expect(res.body.success).toBe(true);
-    expect(res.body.data.user._id).toBe(decodeURI(encodeURI(customer.user)));
+    expect(res.body.data).toBe(true);
   });
   it("reset password with email", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
@@ -53,7 +53,7 @@ describe("reset password suite case", () => {
       variables: { email: admin.email },
     });
     expect(res.body.success).toBe(true);
-    expect(res.body.data.user._id).toBe(admin.id);
+    expect(res.body.data).toBe(true);
   });
 
   it("should throw error if code and not email or phone", async () => {
@@ -76,6 +76,22 @@ describe("reset password suite case", () => {
       variables: { code: 1111, email: admin.email },
     });
     expect(res.body.statusCode).toBe(617);
+  });
+
+  it("should return user and auth token if code is right", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    await verificationFactory({ email: admin.email });
+    await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { email: admin.email },
+    });
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { code: "12345", email: admin.email },
+    });
+    expect(res1.body.data.user._id).toBe(admin.id);
   });
 
   it("should change password successfully", async () => {

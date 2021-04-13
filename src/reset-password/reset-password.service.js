@@ -25,9 +25,19 @@ export const resetPasswordService = async (req, res, next) => {
         ...(req.body.email && { email: req.body.email }),
       });
       if (!verification) throw new BaseHttpError(617);
+      //returning extra user data
+      let userData;
+      user.role === UserRoleEnum[0] &&
+        (userData = await findProviderByUserId(user._id));
+      user.role === UserRoleEnum[1] &&
+        (userData = await getCustomerRepository(user._id));
       res.status(200).json({
         success: true,
         data: {
+          user: {
+            ...userData,
+            ...user.toJSON(),
+          },
           authToken: generateToken(user._id, user.role),
         },
       });
@@ -47,21 +57,9 @@ export const resetPasswordService = async (req, res, next) => {
     //change this message
     req.body.email &&
       (await sendClientMail("code", verificationCode.code, req.body.email));
-    //returning extra user data
-    let userData;
-    user.role === UserRoleEnum[0] &&
-      (userData = await findProviderByUserId(user._id));
-    user.role === UserRoleEnum[1] &&
-      (userData = await getCustomerRepository(user._id));
     res.status(201).json({
       success: true,
-      data: {
-        user: {
-          ...userData,
-          ...user.toJSON(),
-        },
-        authToken: generateToken(user._id, user.role),
-      },
+      data: true,
     });
   } catch (error) {
     next(error);
