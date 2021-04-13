@@ -1,6 +1,7 @@
 import {
   getSubscriptionRepository,
   confirmCouponPayment,
+  getUnconfirmedPaymentsRepository,
 } from "../coupon/coupon.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
@@ -66,6 +67,21 @@ export const confirmPaymentService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: { subscription: updatedSubscription },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUnconfirmedPaymentsService = async (req, res, next) => {
+  try {
+    const subscriptions = await getUnconfirmedPaymentsRepository(
+      req.query.offset,
+      req.query.limit
+    );
+    res.status(200).json({
+      success: true,
+      data: { subscriptions },
     });
   } catch (error) {
     next(error);

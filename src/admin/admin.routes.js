@@ -56,6 +56,7 @@ import {
   addPaymentTypeService,
   confirmPaymentService,
   getPaymentTypesService,
+  getUnconfirmedPaymentsService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
@@ -290,6 +291,14 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(ConfirmPaymentInput),
     confirmPaymentService
+  );
+
+adminRouter
+  .route("/getUnconfirmedPayments")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    getUnconfirmedPaymentsService
   );
 
 export { adminRouter };

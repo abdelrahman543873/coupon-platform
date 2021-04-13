@@ -325,3 +325,18 @@ export const createSubscriptionRepository = async ({ subscription }) => {
     }),
   });
 };
+
+export const getUnconfirmedPaymentsRepository = async (
+  offset = 0,
+  limit = 15
+) => {
+  return await providerCustomerCouponModel.paginate(
+    { isConfirmed: false },
+    {
+      populate: "coupon customer provider",
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
+  );
+};
