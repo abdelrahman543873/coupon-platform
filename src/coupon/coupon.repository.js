@@ -128,7 +128,12 @@ export const getRecentlyAdddedCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     {},
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
+    {
+      populate: "provider category",
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
   );
 };
 
