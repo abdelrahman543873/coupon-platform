@@ -281,6 +281,14 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
   );
 };
 
+export const confirmCouponPayment = async ({ _id }) => {
+  return await providerCustomerCouponModel.findOneAndUpdate(
+    { _id },
+    { isConfirmed: true },
+    { new: true }
+  );
+};
+
 export const checkIfCouponWasSold = async ({ coupon }) => {
   return await providerCustomerCouponModel.findOne(
     { coupon },

@@ -1,3 +1,7 @@
+import {
+  getSubscriptionRepository,
+  confirmCouponPayment,
+} from "../coupon/coupon.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   addPaymentTypeRepository,
@@ -44,6 +48,24 @@ export const updatePaymentTypeService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: { paymentType },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const confirmPaymentService = async (req, res, next) => {
+  try {
+    const subscription = await getSubscriptionRepository({
+      _id: req.body.subscription,
+    });
+    if (!subscription) throw new BaseHttpError(619);
+    const updatedSubscription = await confirmCouponPayment({
+      _id: subscription.id,
+    });
+    res.status(200).json({
+      success: true,
+      data: { subscription: updatedSubscription },
     });
   } catch (error) {
     next(error);

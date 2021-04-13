@@ -54,11 +54,13 @@ import {
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
+  confirmPaymentService,
   getPaymentTypesService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
 import { TogglePaymentTypeInput } from "../../src/payment/inputs/toggle-payment-type.input.js";
+import { ConfirmPaymentInput } from "../payment/inputs/confirm-payment.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -279,6 +281,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(TogglePaymentTypeInput),
     updatePaymentTypeService
+  );
+
+adminRouter
+  .route("/confirmPayment")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(ConfirmPaymentInput),
+    confirmPaymentService
   );
 
 export { adminRouter };
