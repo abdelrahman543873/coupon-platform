@@ -37,7 +37,14 @@ export const getRecentlySoldCouponsRepository = async (
 export const getProviders = async (offset = 0, limit = 15) => {
   return await ProviderModel.paginate(
     {},
-    { offset: offset * limit, limit, sort: "-createdAt", lean: true }
+    {
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+      lean: true,
+      populate: "user",
+      projection: { _id: 0 },
+    }
   );
 };
 

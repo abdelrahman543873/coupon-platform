@@ -123,13 +123,7 @@ adminRouter
     addProviderService
   );
 
-adminRouter
-  .route("/getProviders")
-  .get(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
-    getProvidersService
-  );
+adminRouter.route("/getProviders").get(getProvidersService);
 
 adminRouter
   .route("/addCoupon")
