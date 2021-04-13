@@ -6,7 +6,10 @@ export const buildContactUsParams = (obj = {}) => {
   return {
     email: obj.email || faker.internet.email(),
     description: obj.description || faker.commerce.productDescription(),
-    reply: obj.reply || faker.date.recent(),
+    reply: {
+      message: obj.reply || faker.random.words(),
+      date: obj.date || faker.date.recent(),
+    },
     type: obj.type || faker.random.arrayElement(UserRoleEnum),
   };
 };

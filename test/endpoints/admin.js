@@ -19,3 +19,4 @@ export const UPDATE_ADMIN = "/admin-management/updateProfile";
 export const DELETE_CONTACT_US_MESSAGE =
   "/admin-management/deleteContactUsMessage";
 export const GET_CONTACT_US_MESSAGES = "/admin-management/getContactUsMessages";
+export const ADMIN_SEND_CONTACT_US_MESSAGE = "/admin-management/mailReply";

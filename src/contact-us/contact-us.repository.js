@@ -8,6 +8,17 @@ export const deleteContactUsMessageRepository = async ({ _id }) => {
   return await ContactUsModel.findOneAndDelete({ _id }, { lean: true });
 };
 
+export const findContactUsMessage = async ({ _id }) => {
+  return await ContactUsModel.findOne({ _id }, {}, { lean: true });
+};
+
+export const updateContactUsMessage = async ({ _id, contactUsMessage }) => {
+  return await ContactUsModel.findOneAndUpdate({ _id }, contactUsMessage, {
+    lean: true,
+    new: true,
+  });
+};
+
 export const getContactUsMessagesRepository = async (
   offset = 0,
   limit = 15

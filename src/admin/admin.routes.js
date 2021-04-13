@@ -46,9 +46,11 @@ import { GetStatisticsInput } from "./inputs/get-statistics.input.js";
 import { UpdateAdminInput } from "./inputs/update-admin.input.js";
 import { DeleteContactUsInput } from "../contact-us/inputs/delete-contact-us.input.js";
 import {
+  adminSendContactsUsMessage,
   deleteContactUsMessageService,
   getContactUsMessagesService,
 } from "../contact-us/contact-us.service.js";
+import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -236,6 +238,15 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getContactUsMessagesService
+  );
+
+adminRouter
+  .route("/mailReply")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminReplyInput),
+    adminSendContactsUsMessage
   );
 
 export { adminRouter };
