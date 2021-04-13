@@ -1,14 +1,21 @@
 import mongoose from "mongoose";
 import { PaymentEnum } from "../payment.enum.js";
+import mongoosePaginate from "mongoose-paginate-v2";
 let payment = mongoose.Schema(
   {
     enName: {
       type: String,
       required: true,
+      unique: true,
+      sparse: true,
+      trim: true,
     },
     arName: {
       type: String,
       required: true,
+      unique: true,
+      sparse: true,
+      trim: true,
     },
     isActive: {
       type: Boolean,
@@ -24,5 +31,5 @@ let payment = mongoose.Schema(
     versionKey: false,
   }
 );
-
+payment.plugin(mongoosePaginate);
 export const PaymentModel = mongoose.model("Payment", payment);

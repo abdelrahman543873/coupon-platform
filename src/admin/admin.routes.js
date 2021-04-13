@@ -52,7 +52,10 @@ import {
   getContactUsMessagesService,
 } from "../contact-us/contact-us.service.js";
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
-import { addPaymentTypeService } from "../payment/payment.service.js";
+import {
+  addPaymentTypeService,
+  getPaymentTypesService,
+} from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
 const adminRouter = express.Router();
 
@@ -262,4 +265,9 @@ adminRouter
     ValidationMiddleware(AddPaymentTypeInput),
     addPaymentTypeService
   );
+
+adminRouter
+  .route("/getPaymentTypes")
+  .get(authenticationMiddleware, getPaymentTypesService);
+
 export { adminRouter };

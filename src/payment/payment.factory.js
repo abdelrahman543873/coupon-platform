@@ -1,5 +1,5 @@
 import faker from "faker";
-import { paymentModel } from "./models/payment.model";
+import { PaymentModel } from "./models/payment.model";
 import { PaymentEnum } from "./payment.enum";
 
 export const buildPaymentParams = (obj = {}) => {
@@ -16,10 +16,10 @@ export const paymentsFactory = async (count = 10, obj = {}) => {
   for (let i = 0; i < count; i++) {
     payments.push(buildPaymentParams(obj));
   }
-  return await paymentModel.collection.insertMany(payments);
+  return await PaymentModel.collection.insertMany(payments);
 };
 
 export const paymentFactory = async (obj = {}) => {
   const params = buildPaymentParams(obj);
-  return await paymentModel.create(params);
+  return await PaymentModel.create(params);
 };
