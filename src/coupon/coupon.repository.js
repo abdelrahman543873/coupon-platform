@@ -308,3 +308,12 @@ export const countSubscriptionsRepository = async (createdAt) => {
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
 };
+
+export const createSubscriptionRepository = async ({ subscription }) => {
+  return await providerCustomerCouponModel.create({
+    ...subscription,
+    ...(subscription.image && {
+      image: process.env.SERVER_IP + subscription.image.path,
+    }),
+  });
+};

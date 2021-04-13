@@ -15,3 +15,4 @@ export const GET_COUPON = "/customers-management/getCoupon";
 export const MARK_COUPON_USED = "/customers-management/markCouponUsed";
 export const GET_CATEGORIES = "/customers-management/getCategories";
 export const UPDATE_CUSTOMER = "/customers-management/updateProfile";
+export const SUBSCRIBE = "/customers-management/subscribe";

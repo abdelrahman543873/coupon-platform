@@ -123,4 +123,16 @@ export const LocalizedErrorMessages = {
     EN: "payment type doesn't exist",
     AR: "payment type doesn't exist",
   },
+  634: {
+    EN: "there must be an account number and transaction id",
+    AR: "there must be an account number and transaction id",
+  },
+  635: {
+    EN: "transaction image must be included",
+    AR: "transaction image must be included",
+  },
+  636: {
+    EN: "this coupon is completely sold",
+    AR: "this coupon is completely sold",
+  },
 };

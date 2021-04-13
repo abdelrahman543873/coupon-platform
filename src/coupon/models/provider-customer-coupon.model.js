@@ -17,10 +17,38 @@ const providerCustomerCoupon = mongoose.Schema(
       ref: "Coupon",
       required: true,
     },
+    paymentType: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
+      required: true,
+    },
     isUsed: {
       type: Boolean,
       default: false,
     },
+    isConfirmed: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
+    transactionId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    account: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    note: {
+      type: String,
+      default: "",
+    },
+    image: { type: String },
   },
   {
     timestamps: true,

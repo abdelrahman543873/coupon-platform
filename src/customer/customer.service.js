@@ -7,8 +7,14 @@ import {
   getCoupon,
   markCouponUsedRepository,
   findCoupons,
+  createSubscriptionRepository,
 } from "../coupon/coupon.repository.js";
-import { getProviders } from "../provider/provider.repository.js";
+import { PaymentEnum } from "../payment/payment.enum.js";
+import { findPayment } from "../payment/payment.repository.js";
+import {
+  findProviderByUserId,
+  getProviders,
+} from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
   createUser,
@@ -329,6 +335,42 @@ export const updateCustomerService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { user: { ...customer, ...user.toJSON() } },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const subscribeService = async (req, res, next) => {
+  try {
+    const provider = await findProviderByUserId(req.body.provider);
+    if (!provider) throw new BaseHttpError(625);
+    const coupon = await getCoupon({ _id: req.body.coupon });
+    if (!coupon) throw new BaseHttpError(618);
+    if (coupon.amount === 0) throw new BaseHttpError(636);
+    const paymentType = await findPayment({ _id: req.body.paymentType });
+    if (!paymentType) throw new BaseHttpError(633);
+    if (
+      paymentType.key !== PaymentEnum[2] &&
+      (!req.body.account || !req.body.transactionId)
+    )
+      throw new BaseHttpError(634);
+    if (paymentType.key == PaymentEnum[1] && !req.file)
+      throw new BaseHttpError(635);
+    const subscription = await createSubscriptionRepository({
+      subscription: {
+        coupon: coupon._id,
+        provider: provider.user,
+        paymentType: paymentType._id,
+        customer: req.currentUser._id,
+        image: req.file,
+        account: req.body.account,
+        transactionId: req.body.transactionId,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data: { subscription },
     });
   } catch (error) {
     next(error);

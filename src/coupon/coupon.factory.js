@@ -5,7 +5,7 @@ import { UserRoleEnum } from "../user/user-role.enum.js";
 import { userFactory } from "../user/user.factory.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
-
+import { paymentFactory } from "../payment/payment.factory.js";
 export const buildCouponParams = async (obj = {}) => {
   const amount =
     obj.amount === null || obj.amount === undefined
@@ -32,13 +32,21 @@ export const buildProviderCustomerCouponParams = async (
   providerObj = {},
   customerObj = {},
   couponObj = {},
-  isUsed
+  subscriptionObj = {}
 ) => {
   return {
+    transactionId: subscriptionObj.transactionId || faker.datatype.uuid(),
+    //change this RED ALERT
+    account: subscriptionObj.account || null,
+    note: subscriptionObj.note || faker.random.words(),
+    image: subscriptionObj.imgURL || faker.internet.url(),
+    isConfirmed: subscriptionObj.isConfirmed || false,
+    isPaid: subscriptionObj.isPaid || false,
+    isUsed: subscriptionObj.isUsed || false,
     provider: providerObj.provider || (await providerFactory(providerObj)).user,
+    paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
-    isUsed: isUsed || false,
   };
 };
 
@@ -58,12 +66,14 @@ export const couponFactory = async (obj = {}) => {
 export const providerCustomerCouponFactory = async (
   providerObj = {},
   customerObj = {},
-  couponObj = {}
+  couponObj = {},
+  subscriptionObj = {}
 ) => {
   const params = await buildProviderCustomerCouponParams(
     providerObj,
     customerObj,
-    couponObj
+    couponObj,
+    subscriptionObj
   );
   return await providerCustomerCouponModel.create(params);
 };
@@ -72,7 +82,8 @@ export const providerCustomerCouponsFactory = async (
   count = 10,
   providerObj = {},
   customerObj = {},
-  couponObj = {}
+  couponObj = {},
+  subscriptionObj = {}
 ) => {
   const providerCustomerCoupons = [];
   for (let i = 0; i < count; i++) {
@@ -80,7 +91,8 @@ export const providerCustomerCouponsFactory = async (
       await buildProviderCustomerCouponParams(
         providerObj,
         customerObj,
-        couponObj
+        couponObj,
+        subscriptionObj
       )
     );
   }

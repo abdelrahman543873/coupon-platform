@@ -21,6 +21,7 @@ import {
   resendCodeService,
   socialLoginService,
   socialRegisterService,
+  subscribeService,
   syncCouponsService,
   updateCustomerService,
   verifyOTPService,
@@ -33,6 +34,7 @@ import { AddFavCouponInput } from "./inputs/add-fav-coupon.input.js";
 import { AddFavCouponsInput } from "./inputs/add-fav-coupons.input.js";
 import { MarkCouponUsedInput } from "./inputs/mark-coupon-used.input.js";
 import { UpdateCustomerInput } from "./inputs/update-customer.input.js";
+import { SubscribeInput } from "./inputs/subscribe.input.js";
 
 const customersRouter = express.Router();
 
@@ -157,6 +159,17 @@ customersRouter
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(MarkCouponUsedInput),
     markCouponUsedService
+  );
+
+customersRouter
+  .route("/subscribe")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    uploadHelper("public/payments").single("image"),
+    fileValidationMiddleWare,
+    ValidationMiddleware(SubscribeInput),
+    subscribeService
   );
 
 export { customersRouter };
