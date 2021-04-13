@@ -36,10 +36,10 @@ describe("admin get coupons suite case", () => {
   it("should filter coupons by provider", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
-    await couponsFactory(10, { provider: provider._id });
+    await couponsFactory(10, { provider: provider.user });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${ADMIN_GET_COUPONS}?provider=${provider._id}`,
+      url: `${ADMIN_GET_COUPONS}?provider=${provider.user}`,
       token: admin.token,
     });
     expect(res.body.data.coupons.docs.length).toBe(10);

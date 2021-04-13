@@ -16,7 +16,12 @@ export const getMyCouponsRepository = async (
       ...(provider && { provider }),
       isActive: true,
     },
-    { offset: offset * limit, limit, sort: "-createdAt" }
+    {
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+      populate: "provider category",
+    }
   );
 };
 
