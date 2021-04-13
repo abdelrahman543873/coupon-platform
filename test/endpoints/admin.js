@@ -23,3 +23,4 @@ export const GET_CONTACT_US_MESSAGES = "/admin-management/getContactUsMessages";
 export const ADMIN_SEND_CONTACT_US_MESSAGE = "/admin-management/mailReply";
 export const ADD_PAYMENT_TYPE = "/admin-management/addPaymentType";
 export const GET_PAYMENT_TYPES = "/admin-management/getPaymentTypes";
+export const TOGGLE_PAYMENT_TYPE = "/admin-management/togglePaymentType";

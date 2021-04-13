@@ -119,4 +119,8 @@ export const LocalizedErrorMessages = {
     EN: "message not found",
     AR: "message not found",
   },
+  633: {
+    EN: "payment type doesn't exist",
+    AR: "payment type doesn't exist",
+  },
 };

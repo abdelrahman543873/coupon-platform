@@ -55,8 +55,10 @@ import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
   getPaymentTypesService,
+  updatePaymentTypeService,
 } from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
+import { TogglePaymentTypeInput } from "../../src/payment/inputs/toggle-payment-type.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -269,5 +271,14 @@ adminRouter
 adminRouter
   .route("/getPaymentTypes")
   .get(authenticationMiddleware, getPaymentTypesService);
+
+adminRouter
+  .route("/togglePaymentType")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(TogglePaymentTypeInput),
+    updatePaymentTypeService
+  );
 
 export { adminRouter };
