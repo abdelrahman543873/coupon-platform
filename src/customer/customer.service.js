@@ -8,6 +8,7 @@ import {
   markCouponUsedRepository,
   findCoupons,
   createSubscriptionRepository,
+  updateCouponById,
 } from "../coupon/coupon.repository.js";
 import { PaymentEnum } from "../payment/payment.enum.js";
 import { findPayment } from "../payment/payment.repository.js";
@@ -367,6 +368,9 @@ export const subscribeService = async (req, res, next) => {
         account: req.body.account,
         transactionId: req.body.transactionId,
       },
+    });
+    await updateCouponById(coupon._id, {
+      input: { amount: coupon.amount - 1 },
     });
     res.status(200).json({
       success: true,

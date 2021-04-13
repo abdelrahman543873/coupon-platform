@@ -1,5 +1,8 @@
 import { testRequest } from "../request.js";
-import { buildProviderCustomerCouponParams } from "../../src/coupon/coupon.factory.js";
+import {
+  buildProviderCustomerCouponParams,
+  couponFactory,
+} from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 import { SUBSCRIBE } from "../endpoints/customer.js";
@@ -7,6 +10,7 @@ import { paymentFactory } from "../../src/payment/payment.factory.js";
 import { PaymentEnum } from "../../src/payment/payment.enum.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import path from "path";
+import { getCoupon } from "../../src/coupon/coupon.repository.js";
 describe("subscribe suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -25,6 +29,32 @@ describe("subscribe suite case", () => {
         paymentType: paymentType.id,
       },
     });
+    expect(res.body.data.subscription.customer).toBe(
+      decodeURI(encodeURI(customer.user))
+    );
+  });
+
+  it("should decrease the amount of coupon sold successfully", async () => {
+    const customer = await customerFactory();
+    const coupon = await couponFactory();
+    const params = await buildProviderCustomerCouponParams(
+      {},
+      {},
+      { coupon: coupon.id }
+    );
+    const paymentType = await paymentFactory({ key: PaymentEnum[2] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: SUBSCRIBE,
+      token: customer.token,
+      variables: {
+        coupon: params.coupon,
+        provider: params.provider,
+        paymentType: paymentType.id,
+      },
+    });
+    const afterSubscription = (await getCoupon({ _id: coupon.id })).amount;
+    expect(afterSubscription).toBe(coupon.amount - 1);
     expect(res.body.data.subscription.customer).toBe(
       decodeURI(encodeURI(customer.user))
     );
