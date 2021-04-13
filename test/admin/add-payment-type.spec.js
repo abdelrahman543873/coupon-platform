@@ -20,4 +20,22 @@ describe("add payment type suite case", () => {
     });
     expect(res.body.data.payment.enName).toBe(variables.enName);
   });
+
+  it("should throw an error if two payment types with same name", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const { isActive, ...variables } = await buildPaymentParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_PAYMENT_TYPE,
+      variables,
+      token: admin.token,
+    });
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_PAYMENT_TYPE,
+      variables,
+      token: admin.token,
+    });
+    expect(res1.body.statusCode).toBe(500);
+  });
 });
