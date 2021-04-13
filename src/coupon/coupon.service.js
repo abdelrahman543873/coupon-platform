@@ -7,6 +7,7 @@ import {
   getMyCouponsRepository,
   updateCouponById,
   getAdminSubscriptionsRepository,
+  getSubscriptionRepository,
 } from "./coupon.repository.js";
 import mongoose from "mongoose";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
@@ -71,6 +72,22 @@ export const getAllSubscriptionsService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: { subscriptions },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSubscriptionService = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.query.id))
+      throw new BaseHttpError(631);
+    const subscription = await getSubscriptionRepository({
+      _id: req.query.id,
+    });
+    res.status(200).json({
+      success: true,
+      data: { subscription },
     });
   } catch (error) {
     next(error);

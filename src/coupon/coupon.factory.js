@@ -35,7 +35,7 @@ export const buildProviderCustomerCouponParams = async (
   isUsed
 ) => {
   return {
-    provider: providerObj.provider || (await providerFactory(providerObj))._id,
+    provider: providerObj.provider || (await providerFactory(providerObj)).user,
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
     isUsed: isUsed || false,

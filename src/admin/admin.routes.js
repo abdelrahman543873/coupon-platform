@@ -10,6 +10,7 @@ import {
   adminUpdateProfileService,
   getAllCouponsService,
   getAllSubscriptionsService,
+  getSubscriptionService,
 } from "../coupon/coupon.service.js";
 import { getProvidersService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -249,4 +250,11 @@ adminRouter
     adminSendContactsUsMessage
   );
 
+adminRouter
+  .route("/getSubscription")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    getSubscriptionService
+  );
 export { adminRouter };
