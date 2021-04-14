@@ -6,10 +6,11 @@ import {
   getCategoryByName,
   updateCategoryRepository,
 } from "./category.repository.js";
-
+import { home } from "./home.enum.js";
 export const getCategoriesService = async (req, res, next) => {
   try {
     const categories = await getCategories(req.query.offset, req.query.limit);
+    categories.docs.unshift(home);
     if (!categories) throw new BaseHttpError(624);
     res.status(200).json({
       success: true,

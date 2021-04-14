@@ -15,4 +15,13 @@ describe("get categories suite case", () => {
     });
     expect(res.body.data.docs.length).toBe(10);
   });
+
+  it("first item is the home item", async () => {
+    await categoriesFactory(10);
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CATEGORIES,
+    });
+    expect(res.body.data.docs[0].id).toBe(null);
+  });
 });
