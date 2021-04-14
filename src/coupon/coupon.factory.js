@@ -1,7 +1,6 @@
 import faker from "faker";
 import { categoryFactory } from "../category/category.factory.js";
 import { providerFactory } from "../provider/provider.factory.js";
-import { UserRoleEnum } from "../user/user-role.enum.js";
 import { userFactory } from "../user/user.factory.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
@@ -22,8 +21,7 @@ export const buildCouponParams = async (obj = {}) => {
     logoURL: obj.logoURL || faker.internet.url(),
     isActive: obj.isActive || true,
     category: obj.category || (await categoryFactory())._id,
-    provider:
-      obj.provider || (await userFactory({ role: UserRoleEnum[0] }))._id,
+    provider: obj.provider || (await providerFactory())._id,
   };
 };
 
@@ -42,7 +40,7 @@ export const buildProviderCustomerCouponParams = async (
     isConfirmed: subscriptionObj.isConfirmed || false,
     isPaid: subscriptionObj.isPaid || false,
     isUsed: subscriptionObj.isUsed || false,
-    provider: providerObj.provider || (await providerFactory(providerObj)).user,
+    provider: providerObj.provider || (await providerFactory(providerObj))._id,
     paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,

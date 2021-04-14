@@ -1,14 +1,18 @@
 import faker from "faker";
 import { UserRoleEnum } from "../user/user-role.enum";
 import { userFactory } from "../user/user.factory";
+import { hashPass } from "../utils/bcryptHelper";
 import { generateToken } from "../utils/JWTHelper";
 import { ProviderModel } from "./models/provider.model.js";
 
 export const buildProviderParams = async (obj = {}) => {
   return {
-    user: obj.user || (await userFactory({ role: UserRoleEnum[0] }))._id,
-    slogan: obj.slogan || faker.lorem.slug(),
-    logoURL: obj.logoURL || faker.internet.url(),
+    name: obj.name || faker.name.firstName(),
+    email: obj.email || faker.internet.email().toLowerCase(),
+    password: obj.password || faker.internet.password(),
+    role: UserRoleEnum[0],
+    slogan: obj.slogan || faker.commerce.productDescription(),
+    image: obj.image || faker.internet.url(),
     isActive: obj.isActive || false,
     websiteLink: obj.websiteLink || faker.internet.url(),
     facebookLink: obj.facebookLink || faker.internet.url(),
@@ -29,7 +33,8 @@ export const providersFactory = async (count = 10, obj = {}) => {
 
 export const providerFactory = async (obj = {}) => {
   const params = await buildProviderParams(obj);
+  params.password = await hashPass(params.password);
   const provider = await ProviderModel.create(params);
-  provider.token = generateToken(provider.user, "PROVIDER");
+  provider.token = generateToken(provider._id, "PROVIDER");
   return provider;
 };

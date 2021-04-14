@@ -2,11 +2,10 @@ import Joi from "joi";
 export const UpdateProviderInput = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string().email().lowercase().optional(),
-  phone: Joi.string().min(7).optional(),
   password: Joi.string()
     .min(8)
     .optional()
-    .when("phone", { then: Joi.string().min(8).required() })
+    .when("email", { then: Joi.string().min(8).required() })
     .when("newPassword", {
       then: Joi.string().min(8).disallow(Joi.ref("newPassword")).required(),
     }),

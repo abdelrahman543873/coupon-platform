@@ -13,7 +13,7 @@ import {
 import { PaymentEnum } from "../payment/payment.enum.js";
 import { findPayment } from "../payment/payment.repository.js";
 import {
-  findProviderByUserId,
+  findProviderById,
   getProviders,
 } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -56,7 +56,7 @@ export const CustomerRegisterService = async (req, res, next) => {
       ...createVerificationCode(),
       user: user._id,
     });
-    const code = await sendMessage({
+    await sendMessage({
       to: req.body.phone,
       text: verificationCode.code,
     });
@@ -356,7 +356,7 @@ export const updateCustomerService = async (req, res, next) => {
 
 export const subscribeService = async (req, res, next) => {
   try {
-    const provider = await findProviderByUserId(req.body.provider);
+    const provider = await findProviderById(req.body.provider);
     if (!provider) throw new BaseHttpError(625);
     const coupon = await getCoupon({ _id: req.body.coupon });
     if (!coupon) throw new BaseHttpError(618);
@@ -373,7 +373,7 @@ export const subscribeService = async (req, res, next) => {
     const subscription = await createSubscriptionRepository({
       subscription: {
         coupon: coupon._id,
-        provider: provider.user,
+        provider: provider._id,
         paymentType: paymentType._id,
         customer: req.currentUser._id,
         image: req.file,

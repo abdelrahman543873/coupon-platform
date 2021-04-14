@@ -11,11 +11,7 @@ import {
   getCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import {
-  createUser,
-  findUserByEmailOrPhone,
-  updateUser,
-} from "../user/user.repository.js";
+import { updateUser } from "../user/user.repository.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import { addVerificationCode } from "../verification/verification.repository.js";
@@ -23,7 +19,8 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
-  findProviderByUserId,
+  findProviderByEmailForLogin,
+  findProviderById,
   getProviders,
   providerRegisterRepository,
   updateProviderRepository,
@@ -32,16 +29,17 @@ import { deleteCoupon } from "../coupon/coupon.repository.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
-    const existingUser = await findUserByEmailOrPhone(req.body);
+    const existingUser = await findProviderByEmailForLogin({
+      provider: req.body,
+    });
     if (existingUser) throw new BaseHttpError(601);
-    const user = await createUser({ role: UserRoleEnum[0], ...req.body });
     const provider = await providerRegisterRepository({
-      user: user.id,
+      role: UserRoleEnum[0],
       ...req.body,
     });
     const verificationCode = await addVerificationCode({
       ...createVerificationCode(),
-      user: user._id,
+      user: provider._id,
     });
     await sendMessage({
       to: req.body.phone,
@@ -55,14 +53,10 @@ export const providerRegisterService = async (req, res, next) => {
       success: true,
       data: {
         user: {
-          ...user.toJSON(),
           ...provider.toJSON(),
           code: verificationCode.code,
-          // this is done so the api user won't be confused between the User property of the provider and
-          // the id of the provider
-          _id: provider.user,
         },
-        authToken: generateToken(user._id, "PROVIDER"),
+        authToken: generateToken(provider._id, "PROVIDER"),
       },
     });
   } catch (error) {
@@ -72,10 +66,10 @@ export const providerRegisterService = async (req, res, next) => {
 
 export const getProviderService = async (req, res, next) => {
   try {
-    const provider = await findProviderByUserId(req.currentUser.id);
+    const provider = await findProviderById(req.currentUser.id);
     return res.status(200).json({
       success: true,
-      data: { user: { ...provider, ...req.currentUser.toJSON() } },
+      data: { provider },
     });
   } catch (error) {
     next(error);
@@ -88,14 +82,13 @@ export const updateProviderService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
-    const user = await updateUser(req.currentUser._id, req.body);
     const provider = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
-      logoURL: req.file,
+      image: req.file,
     });
     return res.status(200).json({
       success: true,
-      data: { ...user.toJSON(), ...provider.toJSON() },
+      data: { provider },
     });
   } catch (error) {
     next(error);

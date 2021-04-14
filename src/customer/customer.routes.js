@@ -42,8 +42,8 @@ customersRouter
   .route("/")
   .post(
     uploadHelper("public/profile-pictures").single("image"),
-    ValidationMiddleware(CustomerRegisterInput),
     fileValidationMiddleWare,
+    ValidationMiddleware(CustomerRegisterInput),
     CustomerRegisterService
   );
 

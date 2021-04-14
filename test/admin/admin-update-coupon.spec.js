@@ -36,7 +36,7 @@ describe("admin update coupon suite case", () => {
   });
   it("successful coupon file upload", async () => {
     const provider = await providerFactory();
-    const coupon = await couponFactory({ provider: provider.user });
+    const coupon = await couponFactory({ provider: provider._id });
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const {

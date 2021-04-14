@@ -1,11 +1,7 @@
 import { testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import path from "path";
-import {
-  buildCouponParams,
-  couponFactory,
-  providerCustomerCouponsFactory,
-} from "../../src/coupon/coupon.factory.js";
+import { providerCustomerCouponsFactory } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ADMIN_DELETE_PROVIDER } from "../endpoints/admin.js";
 import { userFactory } from "../../src/user/user.factory.js";
@@ -22,9 +18,9 @@ describe("admin delete provider suite case", () => {
       method: HTTP_METHODS_ENUM.DELETE,
       url: ADMIN_DELETE_PROVIDER,
       token: admin.token,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
     });
-    expect(res.body.data.user.slogan).toBe(provider.slogan);
+    expect(res.body.data.provider.slogan).toBe(provider.slogan);
   });
 
   it("error if admin has sold coupons", async () => {
@@ -32,15 +28,15 @@ describe("admin delete provider suite case", () => {
     const provider = await providerFactory();
     await providerCustomerCouponsFactory(
       10,
-      { provider: provider.user },
+      { provider: provider._id },
       {},
-      { provider: provider.user }
+      { provider: provider._id }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.DELETE,
       url: ADMIN_DELETE_PROVIDER,
       token: admin.token,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
     });
     expect(res.body.statusCode).toBe(628);
   });

@@ -28,7 +28,7 @@ describe("statistics suite case", () => {
       url: ADMIN_GET_STATISTICS,
       token: admin.token,
     });
-    expect(res.body.data.providers).toBe(20);
+    expect(res.body.data.providers).toBe(40);
     expect(res.body.data.coupons).toBe(20);
     expect(res.body.data.subscriptions).toBe(10);
   });
@@ -62,7 +62,7 @@ describe("statistics suite case", () => {
         filtrationDate: "2018-04-10T12:44:47.872Z",
       },
     });
-    expect(res.body.data.providers).toBe(2);
+    expect(res.body.data.providers).toBe(4);
     expect(res.body.data.coupons).toBe(2);
     expect(res.body.data.subscriptions).toBe(1);
   });

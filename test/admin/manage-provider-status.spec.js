@@ -17,14 +17,14 @@ describe("manage provider status suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       token: admin.token,
     });
     expect(res.body.data).toBe(true);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       token: admin.token,
     });
     expect(res1.body.data).toBe(false);
@@ -33,23 +33,25 @@ describe("manage provider status suite case", () => {
   it("should deactivate admins coupons when deactivating admin", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
-    const coupons = await couponsFactory(10, { provider: provider.user });
+    const coupons = await couponsFactory(10, { provider: provider._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       token: admin.token,
     });
-    const couponsBeforeDeactivation = await findProviderCouponsRepository(provider.user);
+    const couponsBeforeDeactivation = await findProviderCouponsRepository(
+      provider._id
+    );
     expect(couponsBeforeDeactivation[0].isActive).toBe(true);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       token: admin.token,
     });
     const couponsAfterDeactivation = await findProviderCouponsRepository(
-      provider.user
+      provider._id
     );
     expect(couponsAfterDeactivation[0].isActive).toBe(false);
   });

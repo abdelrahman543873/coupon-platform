@@ -16,15 +16,8 @@ describe("admin update provider suite case", () => {
   });
   it("successfully admin update provider if all data is entered", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const mockUser = await userFactory({
-      role: UserRoleEnum[0],
-      password: "12345678",
-    });
-    await providerFactory({ user: mockUser._id });
-    const providerInput = {
-      ...(await buildUserParams()),
-      ...(await buildProviderParams()),
-    };
+    const mockUser = await providerFactory({ password: "12345678" });
+    const providerInput = await buildProviderParams();
     const {
       role,
       isActive,
@@ -32,17 +25,17 @@ describe("admin update provider suite case", () => {
       fcmToken,
       logoURL,
       qrURL,
+      image,
       ...input
     } = providerInput;
     input.provider = mockUser._id;
-    delete input.user;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: ADMIN_UPDATE_PROVIDER,
       variables: input,
       token: admin.token,
     });
-    expect(res.body.data.name).toBe(input.name);
+    expect(res.body.data.provider.name).toBe(input.name);
   });
 
   it("only admin update provider", async () => {
@@ -59,48 +52,49 @@ describe("admin update provider suite case", () => {
       logoURL,
       qrURL,
       user,
+      image,
+      role,
       ...input
     } = providerInput;
-    input.provider = provider.user;
+    input.provider = provider._id;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: ADMIN_UPDATE_PROVIDER,
       variables: input,
       token: admin.token,
     });
-    expect(res.body.data.slogan).toBe(input.slogan);
+    expect(res.body.data.provider.slogan).toBe(input.slogan);
   });
 
   it("only update user", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const provider = await providerFactory();
-    const providerInput = {
-      ...(await buildUserParams()),
-    };
-    const { password, role, ...input } = providerInput;
-    input.provider = provider.user;
+    const provider = await providerFactory({ password: "12345678" });
+    const providerInput = await buildUserParams();
+    const { password, role, phone, ...input } = providerInput;
+    input.provider = provider._id;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: ADMIN_UPDATE_PROVIDER,
       variables: input,
       token: admin.token,
     });
-    expect(res.body.data.name).toBe(input.name);
-    expect(res.body.data.phone).toBe(input.phone);
+    expect(res.body.data.provider.name).toBe(input.name);
+    expect(res.body.data.provider.email).toBe(input.email);
   });
 
   it("register and update", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { role, email, ...variables } = await buildUserParams();
+    const { role, phone, ...variables } = await buildUserParams();
     variables.slogan = "this is a long slogan ";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: REGISTER,
       variables,
     });
-    const { user, isActive, fcmToken, qrURL, logoURL, ...providerInput } = {
+    const { image, isActive, fcmToken, qrURL, logoURL, ...providerInput } = {
       ...(await buildProviderParams()),
     };
+    delete providerInput.role;
     providerInput.provider = res.body.data.user._id;
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -108,7 +102,7 @@ describe("admin update provider suite case", () => {
       variables: providerInput,
       token: admin.token,
     });
-    expect(res2.body.data.slogan).toBe(providerInput.slogan);
+    expect(res2.body.data.provider.slogan).toBe(providerInput.slogan);
   });
 
   it("successful file upload", async () => {
@@ -120,11 +114,11 @@ describe("admin update provider suite case", () => {
       method: HTTP_METHODS_ENUM.PUT,
       url: ADMIN_UPDATE_PROVIDER,
       token: admin.token,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       fileParam: "image",
       filePath,
     });
-    expect(res.body.data.logoURL).toContain(".jpg");
+    expect(res.body.data.provider.image).toContain(".jpg");
   });
 
   it("successful validation with file upload", async () => {

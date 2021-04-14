@@ -1,18 +1,30 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import { UserRoleEnum } from "../../user/user-role.enum.js";
 export const provider = mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      require: true,
-      unique: true,
+    name: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: UserRoleEnum,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
     },
     slogan: {
       type: String,
       required: true,
     },
-    logoURL: { type: String },
+    image: { type: String },
     isActive: {
       type: Boolean,
       required: true,

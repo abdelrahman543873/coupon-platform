@@ -15,7 +15,7 @@ describe("generate pdf suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: GENERATE_PDF,
-      variables: { provider: provider.user },
+      variables: { provider: provider._id },
       token: admin.token,
     });
     expect(res.body.data.qrURL).toContain(".png");

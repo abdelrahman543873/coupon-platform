@@ -1,5 +1,5 @@
-import { findProviderByUserId } from "../provider/provider.repository.js";
-import { findUserById, updateUser } from "../user/user.repository.js";
+import { findProviderById } from "../provider/provider.repository.js";
+import { updateUser } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   addCouponRepository,
@@ -99,12 +99,11 @@ export const adminGetProviderService = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.query.provider))
       throw new BaseHttpError(631);
-    const user = await findUserById(req.query.provider);
-    if (!user) throw new BaseHttpError(611);
-    const provider = await findProviderByUserId(req.query.provider);
+    const provider = await findProviderById(req.query.provider);
+    if (!provider) throw new BaseHttpError(611);
     res.status(200).json({
       success: true,
-      data: { user: { ...user, ...provider } },
+      data: { provider },
     });
   } catch (error) {
     next(error);

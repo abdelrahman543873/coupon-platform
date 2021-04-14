@@ -12,9 +12,9 @@ describe("get subscription suite case", () => {
     const provider = await providerFactory();
     const subscriptions = await providerCustomerCouponsFactory(
       10,
-      { provider: provider.user },
+      { provider: provider._id },
       {},
-      { provider: provider.user }
+      { provider: provider._id }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,

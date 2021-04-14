@@ -9,14 +9,15 @@ import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { findProviderByUserId } from "../../src/provider/provider.repository.js";
 import { getCustomerRepository } from "../customer/customer.repository.js";
+import { findProviderById } from "../provider/provider.repository.js";
 export const resetPasswordService = async (req, res, next) => {
   try {
-    const user = await findUserByEmailOrPhone({
-      ...(req.body.phone && { phone: req.body.phone }),
-      ...(req.body.email && { email: req.body.email }),
-    });
+    const user =
+      (await findUserByEmailOrPhone({
+        ...(req.body.phone && { phone: req.body.phone }),
+        ...(req.body.email && { email: req.body.email }),
+      })) || (await findProviderById(req.body.email));
     if (!user) throw new BaseHttpError(611);
     if (req.body.code) {
       const verification = await verifyOTPRepository({
@@ -27,8 +28,7 @@ export const resetPasswordService = async (req, res, next) => {
       if (!verification) throw new BaseHttpError(617);
       //returning extra user data
       let userData;
-      user.role === UserRoleEnum[0] &&
-        (userData = await findProviderByUserId(user._id));
+      user.role === UserRoleEnum[0] && (userData = user);
       user.role === UserRoleEnum[1] &&
         (userData = await getCustomerRepository(user._id));
       res.status(200).json({

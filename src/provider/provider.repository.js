@@ -1,27 +1,40 @@
 import { ProviderModel } from "./models/provider.model.js";
 import dotenv from "dotenv";
+import { hashPass } from "../utils/bcryptHelper.js";
 
 dotenv.config();
 export const providerRegisterRepository = async (provider) => {
   return await ProviderModel.create({
     ...provider,
-    ...(provider.logoURL && {
-      logoURL: process.env.SERVER_IP + provider.logoURL.path,
+    ...(provider.image && {
+      image: process.env.SERVER_IP + provider.image.path,
     }),
+    ...(provider.email && { email: provider.email.toLowerCase() }),
+    ...(provider.password && { password: await hashPass(provider.password) }),
   });
 };
 
-export const updateProviderRepository = async (user, providerData) => {
+export const updateProviderRepository = async (_id, providerData) => {
   return await ProviderModel.findOneAndUpdate(
-    { user },
+    { _id },
     {
       ...providerData,
-      ...(providerData.logoURL && {
-        logoURL: process.env.SERVER_IP + providerData.logoURL.path,
+      ...(providerData.image && {
+        image: process.env.SERVER_IP + providerData.image.path,
+      }),
+      ...(providerData.newPassword && {
+        password: await hashPass(providerData.newPassword),
       }),
     },
-    { new: true, omitUndefined: true }
+    { new: true, omitUndefined: true, lean: true, projection: { password: 0 } }
   );
+};
+export const findProviderByEmailForLogin = async ({ provider }) => {
+  // fix this
+  if (!provider.email) return null;
+  return await ProviderModel.findOne({
+    email: provider.email.toLowerCase(),
+  });
 };
 
 export const getRecentlySoldCouponsRepository = async (
@@ -48,24 +61,24 @@ export const getProviders = async (offset = 0, limit = 15) => {
   );
 };
 
-export const getProvider = async (user) => {
-  return await ProviderModel.findOne({ user });
+export const getProvider = async (_id) => {
+  return await ProviderModel.findOne({ _id });
 };
 
-export const findProviderByUserId = async (user) => {
-  return await ProviderModel.findOne({ user }, { _id: 0 }, { lean: true });
+export const findProviderById = async (_id) => {
+  return await ProviderModel.findOne({ _id }, {}, { lean: true });
 };
 
-export const manageProviderStatusRepository = async (user, isActive) => {
+export const manageProviderStatusRepository = async (_id, isActive) => {
   return await ProviderModel.findOneAndUpdate(
-    { user },
+    { _id },
     { isActive },
     { new: true }
   );
 };
 
-export const adminDeleteProviderRepository = async (user) => {
-  return await ProviderModel.findOneAndDelete({ user }, { lean: true });
+export const adminDeleteProviderRepository = async (_id) => {
+  return await ProviderModel.findOneAndDelete({ _id }, { lean: true });
 };
 
 export const rawDeleteProvider = async () => {

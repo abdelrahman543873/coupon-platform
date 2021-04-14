@@ -18,7 +18,7 @@ describe("customer register suite case", () => {
     expect(res.body.data.user.name).toBe(variables.name);
   });
 
-  it("customer register twice", async () => {
+  it("should register register two customers", async () => {
     const { role, email, ...variables } = await buildUserParams();
     const variables2 = await buildUserParams();
     await testRequest({

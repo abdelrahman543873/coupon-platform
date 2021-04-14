@@ -1,18 +1,13 @@
 import {
   adminDeleteProviderRepository,
   countProvidersRepository,
-  findProviderByUserId,
+  findProviderById,
   getProvider,
   manageProviderStatusRepository,
   updateProviderRepository,
 } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import {
-  createUser,
-  findUserByEmailOrPhone,
-  adminUpdateUser,
-  adminDeleteUserRepository,
-} from "../user/user.repository.js";
+import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
@@ -44,15 +39,13 @@ export const addAdminService = async (req, res, next) => {
 
 export const manageProviderStatusService = async (req, res, next) => {
   try {
-    const provider = await findProviderByUserId(req.body.provider);
+    const provider = await findProviderById(req.body.provider);
     if (!provider) throw new BaseHttpError(617);
     const updatedProvider = await manageProviderStatusRepository(
-      provider.user._id,
+      provider._id,
       !provider.isActive
     );
-    const providerCoupons = await findProviderCouponsRepository(
-      provider.user._id
-    );
+    const providerCoupons = await findProviderCouponsRepository(provider._id);
     let providerCouponsIds;
     !!providerCoupons.length &&
       (providerCouponsIds = providerCoupons.map((coupon) => {
@@ -91,7 +84,7 @@ export const generateProviderQrCodeService = async (req, res, next) => {
         },
       }
     );
-    const updatedProvider = await updateProviderRepository(provider.user, {
+    const updatedProvider = await updateProviderRepository(provider._id, {
       qrURL: `${path}${provider.user}.png`,
     });
     res.status(200).json({
@@ -105,14 +98,13 @@ export const generateProviderQrCodeService = async (req, res, next) => {
 
 export const adminUpdateProviderService = async (req, res, next) => {
   try {
-    const user = await adminUpdateUser(req.body.provider, req.body);
     const provider = await updateProviderRepository(req.body.provider, {
       ...req.body,
-      logoURL: req.file,
+      image: req.file,
     });
     return res.status(200).json({
       success: true,
-      data: { ...user.toJSON(), ...provider.toJSON() },
+      data: { provider },
     });
   } catch (error) {
     next(error);
@@ -127,10 +119,9 @@ export const adminDeleteProviderService = async (req, res, next) => {
     if (soldCoupons.docs.length !== 0) throw new BaseHttpError(628);
     await deleteProviderCouponsRepository(req.body.provider);
     const provider = await adminDeleteProviderRepository(req.body.provider);
-    const user = await adminDeleteUserRepository(req.body.provider);
     return res.status(200).json({
       success: true,
-      data: { user: { ...user, ...provider } },
+      data: { provider },
     });
   } catch (error) {
     next(error);

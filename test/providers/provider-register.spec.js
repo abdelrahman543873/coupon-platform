@@ -1,5 +1,5 @@
 import { REGISTER } from "../endpoints/provider.js";
-import { buildProviderParams } from "../../src/provider/provider.factory.js";
+import { buildProviderParams, providerFactory } from "../../src/provider/provider.factory.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
@@ -10,12 +10,9 @@ describe("provider register suite case", () => {
     await rollbackDbForProvider();
   });
   it("provider register", async () => {
-    const providerInput = {
-      ...(await buildUserParams()),
-      ...(await buildProviderParams()),
-    };
+    const providerInput = await buildProviderParams();
     const {
-      logoURL,
+      image,
       isActive,
       code,
       fcmToken,
@@ -30,11 +27,12 @@ describe("provider register suite case", () => {
       url: REGISTER,
       variables: input,
     });
+    console.log(res.body);
     expect(res.body.data.user.name).toBe(input.name);
   });
 
   it("error if user already exists", async () => {
-    const user = await userFactory({
+    const user = await providerFactory({
       role: UserRoleEnum[0],
       password: "12345678",
     });

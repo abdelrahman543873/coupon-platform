@@ -1,6 +1,6 @@
 import { ADD_PROVIDER } from "../endpoints/admin.js";
 import { buildProviderParams } from "../../src/provider/provider.factory.js";
-import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
+import { userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
@@ -12,10 +12,7 @@ describe("provider register suite case", () => {
   });
   it("should add provider", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const providerInput = {
-      ...(await buildUserParams()),
-      ...(await buildProviderParams()),
-    };
+    const providerInput = await buildProviderParams();
     const {
       logoURL,
       isActive,
@@ -24,7 +21,7 @@ describe("provider register suite case", () => {
       qrURL,
       role,
       _id,
-      user,
+      image,
       ...input
     } = providerInput;
     const res = await testRequest({
@@ -33,7 +30,7 @@ describe("provider register suite case", () => {
       variables: input,
       token: admin.token,
     });
-    expect(res.body.data.user.name).toBe(input.name);
+    expect(res.body.data.provider.name).toBe(input.name);
   });
 
   it("error if user already exists", async () => {
@@ -61,10 +58,7 @@ describe("provider register suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
-    const providerInput = {
-      ...(await buildUserParams()),
-      ...(await buildProviderParams()),
-    };
+    const providerInput = await buildProviderParams();
     const {
       logoURL,
       isActive,
@@ -74,6 +68,7 @@ describe("provider register suite case", () => {
       role,
       _id,
       user,
+      image,
       ...input
     } = providerInput;
     const res = await testRequest({
@@ -84,7 +79,7 @@ describe("provider register suite case", () => {
       token: admin.token,
       variables: input,
     });
-    expect(res.body.data.user.logoURL).toContain(".jpg");
+    expect(res.body.data.provider.image).toContain(".jpg");
   });
 
   it("successful validation with file upload", async () => {

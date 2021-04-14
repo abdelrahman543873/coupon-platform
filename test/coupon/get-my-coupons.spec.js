@@ -14,7 +14,7 @@ describe("get my coupons suite case", () => {
   });
   it("get my coupons successfully", async () => {
     const provider = await providerFactory();
-    await couponsFactory(10, { provider: provider.user });
+    await couponsFactory(10, { provider: provider._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_MY_COUPONS,
@@ -27,9 +27,9 @@ describe("get my coupons suite case", () => {
     const provider = await providerFactory();
     await providerCustomerCouponsFactory(
       10,
-      { provider: provider.user },
+      { provider: provider._id },
       {},
-      { provider: provider.user }
+      { provider: provider._id }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -42,7 +42,7 @@ describe("get my coupons suite case", () => {
   it("get recently sold coupons", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {
-      provider: provider.user,
+      provider: provider._id,
       amount: 0,
     });
     const res = await testRequest({
@@ -56,7 +56,7 @@ describe("get my coupons suite case", () => {
   it("get sold coupons", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {
-      provider: provider.user,
+      provider: provider._id,
       amount: 0,
     });
     const res = await testRequest({
@@ -69,9 +69,9 @@ describe("get my coupons suite case", () => {
 
   it("get sold coupons only and not all coupons", async () => {
     const provider = await providerFactory();
-    const coupon = await couponFactory({ provider: provider.user, amount: 0 });
+    const coupon = await couponFactory({ provider: provider._id, amount: 0 });
     const coupon1 = await couponFactory({
-      provider: provider.user,
+      provider: provider._id,
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -84,7 +84,7 @@ describe("get my coupons suite case", () => {
   it("get all coupons if paramter is false", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {
-      provider: provider.user,
+      provider: provider._id,
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
