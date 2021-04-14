@@ -40,6 +40,7 @@ import {
   getCustomerRepository,
   updateCustomerRepository,
 } from "./customer.repository.js";
+import mongoose from "mongoose";
 
 export const CustomerRegisterService = async (req, res, next) => {
   try {
@@ -143,19 +144,33 @@ export const getCustomerHomeService = async (req, res, next) => {
 
 export const getCustomersCouponsService = async (req, res, next) => {
   try {
-    if (req.query.section !== "newest" && req.query.section !== "bestSeller")
+    if (
+      req.query.section &&
+      req.query.section !== "newest" &&
+      req.query.section !== "bestSeller"
+    )
       throw new BaseHttpError(616);
+    if (
+      req.query.category &&
+      !mongoose.Types.ObjectId.isValid(req.query.category)
+    )
+      throw new BaseHttpError(631);
     let data;
-    req.query.section === "newest" &&
+    req.query.section === "bestSeller" &&
+      (data = (
+        await getMostSellingCouponRepository(
+          req.query.category,
+          req.query.offset,
+          req.query.limit
+        )
+      )[0]);
+    !data &&
       (data = await getRecentlyAdddedCouponsRepository(
-        req.query.providerId,
+        req.query.provider,
+        req.query.category,
         req.query.offset,
         req.query.limit
       ));
-    !data &&
-      (data = (
-        await getMostSellingCouponRepository(req.query.offset, req.query.limit)
-      )[0]);
     return res.status(200).json({
       success: true,
       data,

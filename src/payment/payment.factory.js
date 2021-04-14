@@ -4,8 +4,8 @@ import { PaymentEnum } from "./payment.enum";
 
 export const buildPaymentParams = (obj = {}) => {
   return {
-    enName: obj.enName || faker.commerce.productName(),
-    arName: obj.arName || faker.commerce.productName(),
+    enName: obj.enName || faker.datatype.uuid(),
+    arName: obj.arName || faker.datatype.uuid(),
     isActive: obj.isActive || true,
     key: obj.key || faker.random.arrayElement(PaymentEnum),
   };

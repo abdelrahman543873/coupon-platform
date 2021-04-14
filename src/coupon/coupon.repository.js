@@ -123,11 +123,13 @@ export const getCustomerSubscriptionRepository = async (_id, customer) => {
 };
 
 export const getRecentlyAdddedCouponsRepository = async (
+  provider,
+  category,
   offset = 0,
   limit = 15
 ) => {
   return await CouponModel.paginate(
-    {},
+    { ...(provider && { provider }), ...(category && { category }) },
     {
       populate: "provider category",
       offset: offset * limit,
@@ -138,6 +140,7 @@ export const getRecentlyAdddedCouponsRepository = async (
 };
 
 export const getMostSellingCouponRepository = async (
+  category,
   offset = 0,
   limit = 15
 ) => {
