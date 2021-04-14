@@ -20,8 +20,10 @@ export const getMyCouponsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      populate: "provider category",
-      projection: { "provider.password": 0 },
+      populate: [
+        { path: "provider", select: { password: 0 } },
+        { path: "category" },
+      ],
     }
   );
 };
@@ -55,11 +57,14 @@ export const getSubscriptionsRepository = async (
   return await providerCustomerCouponModel.paginate(
     { ...(provider && { provider }) },
     {
-      populate: "coupon customer",
+      populate: [
+        { path: "customer" },
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      projection: { "provider.password": 0 },
     }
   );
 };
@@ -72,7 +77,11 @@ export const getAdminSubscriptionsRepository = async (
   return await providerCustomerCouponModel.paginate(
     { ...(provider && { provider }) },
     {
-      populate: "coupon customer provider",
+      populate: [
+        { path: "customer" },
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
@@ -89,7 +98,10 @@ export const getCustomerSubscriptionsRepository = async (
   return await providerCustomerCouponModel.paginate(
     { customer },
     {
-      populate: "coupon provider",
+      populate: [
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
@@ -111,8 +123,11 @@ export const getSubscriptionRepository = async ({
     },
     {},
     {
-      populate: "coupon customer provider",
-      projection: { "provider.password": 0 },
+      populate: [
+        { path: "customer" },
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
     }
   );
 };
@@ -122,8 +137,7 @@ export const getCustomerSubscriptionRepository = async (_id, customer) => {
     { _id, provider },
     {},
     {
-      populate: "coupon customer",
-      projection: { "customer.password": 0 },
+      populate: [{ path: "customer" }, { path: "coupon" }],
     }
   );
 };
@@ -137,7 +151,10 @@ export const getRecentlyAdddedCouponsRepository = async (
   return await CouponModel.paginate(
     { ...(provider && { provider }), ...(category && { category }) },
     {
-      populate: "provider category",
+      populate: [
+        { path: "category" },
+        { path: "provider", select: { password: 0 } },
+      ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
@@ -325,11 +342,14 @@ export const getUnconfirmedPaymentsRepository = async (
   return await providerCustomerCouponModel.paginate(
     { isConfirmed: false },
     {
-      populate: "coupon customer provider",
+      populate: [
+        { path: "customer" },
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      projection: { "provider.password": 0 },
     }
   );
 };
