@@ -1,9 +1,7 @@
 export const home = {
   id: null,
-  name: {
-    arabic: "الكل",
-    english: "All",
-  },
+  arName: "الكل",
+  enName: "All",
   images: {
     selected:
       "http://api.couponat.alefsoftware.com/api/v1/categories-management/categories-images/selected.png",
