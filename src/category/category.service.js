@@ -28,8 +28,8 @@ export const addCategoryService = async (req, res, next) => {
     if (!!category.length) throw new BaseHttpError(626);
     const createdCategory = await createCategoryRepository({
       ...req.body,
-      selected: req.files?.selected[0],
-      unselected: req.files?.unSelected[0],
+      selected: req.files.selected[0],
+      unselected: req.files.unSelected[0],
     });
     res.status(200).json({
       success: true,
@@ -47,8 +47,8 @@ export const updateCategoryService = async (req, res, next) => {
     const updatedCategory = await updateCategoryRepository({
       category: {
         ...req.body,
-        selected: req.files?.selected[0],
-        unselected: req.files?.unSelected[0],
+        selected: req.files.selected[0],
+        unselected: req.files.unSelected[0],
       },
       _id: category.id,
     });
