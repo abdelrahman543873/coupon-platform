@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  addCategoryService,
-  updateCategoryService,
-} from "../category/category.service.js";
+import { addCategoryService } from "../category/category.service.js";
 import {
   adminAddCouponService,
   adminGetProviderService,
@@ -85,17 +82,17 @@ adminRouter.route("/addCategory").post(
   addCategoryService
 );
 
-adminRouter.route("/updateCategory").put(
-  authenticationMiddleware,
-  authorizationMiddleware(UserRoleEnum[2]),
-  uploadHelper("public/category-pictures").fields([
-    { name: "selected", maxCount: 1 },
-    { name: "unSelected", maxCount: 1 },
-  ]),
-  fileValidationMiddleWare,
-  ValidationMiddleware(UpdateCategoryInput),
-  updateCategoryService
-);
+// adminRouter.route("/updateCategory").put(
+//   authenticationMiddleware,
+//   authorizationMiddleware(UserRoleEnum[2]),
+//   uploadHelper("public/category-pictures").fields([
+//     { name: "selected", maxCount: 1 },
+//     { name: "unSelected", maxCount: 1 },
+//   ]),
+//   fileValidationMiddleWare,
+//   ValidationMiddleware(UpdateCategoryInput),
+//   updateCategoryService
+// );
 
 adminRouter
   .route("/toggleProvider")
