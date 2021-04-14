@@ -26,7 +26,7 @@ export const loginService = async (req, res, next) => {
       (data = {
         user: { ...(await getCustomerRepository(user.id)), ...data.user },
       });
-    delete data.password;
+    delete data.user.password;
     return res.status(200).json({
       success: true,
       data: { ...data, authToken: generateToken(user._id, user.role) },
