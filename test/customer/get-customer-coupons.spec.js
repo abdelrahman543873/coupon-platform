@@ -44,32 +44,6 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
-  it("should get coupons by category filter and best seller", async () => {
-    const category = await categoryFactory();
-    const providerCustomerCoupons = await providerCustomerCouponsFactory(
-      10,
-      {},
-      {},
-      { category: category._id }
-    );
-    // increasing the number of a coupon to check most sold
-    const additionalCoupon = await providerCustomerCouponFactory(
-      {
-        provider: providerCustomerCoupons.ops[0].provider,
-      },
-      { customer: providerCustomerCoupons.ops[0].customer },
-      { coupon: providerCustomerCoupons.ops[0].coupon }
-    );
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?category=${category._id}&section=bestSeller`,
-    });
-    expect(res.body.data.docs[0].coupon._id).toBe(
-      decodeURI(encodeURI(additionalCoupon.coupon))
-    );
-    expect(res.body.data.docs.length).toBe(10);
-  });
-
   it("error if not newest or best seller ", async () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,

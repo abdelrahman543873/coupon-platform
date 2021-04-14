@@ -140,12 +140,10 @@ export const getRecentlyAdddedCouponsRepository = async (
 };
 
 export const getMostSellingCouponRepository = async (
-  category,
   offset = 0,
   limit = 15
 ) => {
-  //pagination with aggregation to be modified and improved
-  return await providerCustomerCouponModel.aggregate([
+  const aggregation = providerCustomerCouponModel.aggregate([
     {
       $sortByCount: "$coupon",
     },
@@ -160,26 +158,11 @@ export const getMostSellingCouponRepository = async (
     {
       $unwind: "$coupon",
     },
-    {
-      $facet: {
-        metadata: [
-          {
-            $group: {
-              _id: null,
-              total: { $sum: 1 },
-            },
-          },
-        ],
-        docs: [{ $skip: offset }, { $limit: limit }],
-      },
-    },
-    {
-      $project: {
-        docs: 1,
-        totalDocs: { $arrayElemAt: ["$metadata.total", 0] },
-      },
-    },
   ]);
+  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
+    offset,
+    limit,
+  });
 };
 export const getProviderHomeRepository = async (provider) => {
   const numberOfSoldCoupons = await providerCustomerCouponModel

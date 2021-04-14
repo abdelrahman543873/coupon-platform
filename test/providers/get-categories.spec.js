@@ -13,7 +13,7 @@ describe("get categories suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: GET_CATEGORIES,
     });
-    expect(res.body.data.docs.length).toBe(10);
+    expect(res.body.data.docs.length).toBe(11);
   });
 
   it("first item is the home item", async () => {

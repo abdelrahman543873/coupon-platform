@@ -157,13 +157,10 @@ export const getCustomersCouponsService = async (req, res, next) => {
       throw new BaseHttpError(631);
     let data;
     req.query.section === "bestSeller" &&
-      (data = (
-        await getMostSellingCouponRepository(
-          req.query.category,
-          req.query.offset,
-          req.query.limit
-        )
-      )[0]);
+      (data = await getMostSellingCouponRepository(
+        req.query.offset,
+        req.query.limit
+      ));
     !data &&
       (data = await getRecentlyAdddedCouponsRepository(
         req.query.provider,
