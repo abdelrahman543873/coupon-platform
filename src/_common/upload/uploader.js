@@ -57,10 +57,10 @@ export const fileValidationMiddleWare = async (req, res, next) => {
       "jpeg",
     ];
     if (req.files) {
-      req.files.forEach(async (file) => {
-        const fileType = await file_type.fromFile(file.path);
+      Object.keys(req.files).forEach(async (file) => {
+        const fileType = await file_type.fromFile(req.files[file][0].path);
         if (!imgExt.includes(fileType.ext)) {
-          await fs.unlinkSync(req.file.path);
+          await fs.unlinkSync(req.files[file][0].path);
           throw new BaseHttpError(609);
         }
       });

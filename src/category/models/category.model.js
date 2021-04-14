@@ -13,12 +13,10 @@ const category = mongoose.Schema(
       required: true,
       trim: true,
     },
-    isDeleted: {
-      type: Boolean,
-      required: true,
-      default: false,
+    image: {
+      selected: String,
+      unSelected: String,
     },
-    logoURL: { type: String },
   },
   {
     timestamps: true,

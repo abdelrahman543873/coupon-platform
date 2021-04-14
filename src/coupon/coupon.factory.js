@@ -20,7 +20,6 @@ export const buildCouponParams = async (obj = {}) => {
     arName: obj.arName || faker.datatype.uuid(),
     amount: amount,
     logoURL: obj.logoURL || faker.internet.url(),
-    code: obj.code || faker.datatype.number(),
     isActive: obj.isActive || true,
     category: obj.category || (await categoryFactory())._id,
     provider:

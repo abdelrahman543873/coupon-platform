@@ -12,19 +12,19 @@ describe("add category suite case", () => {
   });
   it("add category successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { isDeleted, logoURL, ...category } = await buildCategoryParams();
+    const { image, ...category } = await buildCategoryParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_CATEGORY,
       variables: category,
       token: admin.token,
     });
-    expect(res.body.data.enName).toBe(category.enName);
+    expect(res.body.statusCode).toBe(637);
   });
 
-  it("successful coupon file upload", async () => {
+  it("successful category file upload", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { isDeleted, logoURL, ...category } = await buildCategoryParams();
+    const { image, ...category } = await buildCategoryParams();
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const res = await testRequest({
@@ -32,9 +32,10 @@ describe("add category suite case", () => {
       url: ADD_CATEGORY,
       variables: category,
       token: admin.token,
-      fileParam: "image",
+      fileParams: ["selected", "unSelected"],
       filePath,
     });
-    expect(res.body.data.logoURL).toContain(".jpg");
+    expect(res.body.data.image.selected).toContain(".jpg");
+    expect(res.body.data.image.unSelected).toContain(".jpg");
   });
 });

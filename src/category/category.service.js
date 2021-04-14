@@ -23,11 +23,13 @@ export const getCategoriesService = async (req, res, next) => {
 
 export const addCategoryService = async (req, res, next) => {
   try {
+    if (!req.files) throw new BaseHttpError(637);
     const category = await getCategoryByName(req.body.enName, req.body.arName);
     if (!!category.length) throw new BaseHttpError(626);
     const createdCategory = await createCategoryRepository({
       ...req.body,
-      logoURL: req.file,
+      selected: req.files?.selected[0],
+      unselected: req.files?.unSelected[0],
     });
     res.status(200).json({
       success: true,
@@ -43,7 +45,11 @@ export const updateCategoryService = async (req, res, next) => {
     const category = await findCategoryRepository(req.body.category);
     if (!category) throw new BaseHttpError(627);
     const updatedCategory = await updateCategoryRepository({
-      category: { ...req.body, logoURL: req.file },
+      category: {
+        ...req.body,
+        selected: req.files?.selected[0],
+        unselected: req.files?.unSelected[0],
+      },
       _id: category.id,
     });
     res.status(200).json({

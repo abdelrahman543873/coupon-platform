@@ -73,27 +73,29 @@ adminRouter
     addAdminService
   );
 
-adminRouter
-  .route("/addCategory")
-  .post(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/category-pictures").single("image"),
-    fileValidationMiddleWare,
-    ValidationMiddleware(AddCategoryInput),
-    addCategoryService
-  );
+adminRouter.route("/addCategory").post(
+  authenticationMiddleware,
+  authorizationMiddleware(UserRoleEnum[2]),
+  uploadHelper("public/category-pictures").fields([
+    { name: "selected", maxCount: 1 },
+    { name: "unSelected", maxCount: 1 },
+  ]),
+  fileValidationMiddleWare,
+  ValidationMiddleware(AddCategoryInput),
+  addCategoryService
+);
 
-adminRouter
-  .route("/updateCategory")
-  .put(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
-    uploadHelper("public/category-pictures").single("image"),
-    fileValidationMiddleWare,
-    ValidationMiddleware(UpdateCategoryInput),
-    updateCategoryService
-  );
+adminRouter.route("/updateCategory").put(
+  authenticationMiddleware,
+  authorizationMiddleware(UserRoleEnum[2]),
+  uploadHelper("public/category-pictures").fields([
+    { name: "selected", maxCount: 1 },
+    { name: "unSelected", maxCount: 1 },
+  ]),
+  fileValidationMiddleWare,
+  ValidationMiddleware(UpdateCategoryInput),
+  updateCategoryService
+);
 
 adminRouter
   .route("/toggleProvider")

@@ -182,7 +182,6 @@ export const getProviderHomeRepository = async (provider) => {
 export const addCouponRepository = async (coupon) => {
   return await CouponModel.create({
     ...coupon,
-    code: nanoid(),
     ...(coupon.logoURL && {
       logoURL: process.env.SERVER_IP + coupon.logoURL.path,
     }),

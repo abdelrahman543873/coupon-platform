@@ -135,4 +135,8 @@ export const LocalizedErrorMessages = {
     EN: "this coupon is completely sold",
     AR: "this coupon is completely sold",
   },
+  637: {
+    EN: "categories must have selected and unselected images",
+    AR: "categories must have selected and unselected images",
+  },
 };

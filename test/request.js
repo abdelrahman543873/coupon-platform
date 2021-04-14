@@ -11,6 +11,7 @@ export const testRequest = async ({
   url,
   fileParam,
   filePath,
+  fileParams,
 }) => {
   let req = request(server);
   method === HTTP_METHODS_ENUM.POST && (req = req.post(url));
@@ -29,7 +30,14 @@ export const testRequest = async ({
     : variables;
   fileParam && filePath
     ? req.attach(fileParam, filePath)
+    : fileParams
+    ? null
     : req.send(variables).set("Content-Type", "application/json");
+  fileParams
+    ? fileParams.forEach((param) => {
+        req.attach(param, filePath);
+      })
+    : null;
   if (token) req.set("Authorization", `Bearer ${token}`);
   if (headers) {
     if (headers.timezone) return req.set("timezone", headers.timezone);

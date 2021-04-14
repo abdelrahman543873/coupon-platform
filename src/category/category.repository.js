@@ -4,9 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 export const getCategories = async (offset = 0, limit = 15) => {
   return await CategoryModel.paginate(
-    {
-      isDeleted: false,
-    },
+    {},
     { offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
@@ -24,8 +22,11 @@ export const findCategoryRepository = async (_id) => {
 export const createCategoryRepository = async (category) => {
   return await CategoryModel.create({
     ...category,
-    ...(category.logoURL && {
-      logoURL: process.env.SERVER_IP + category.logoURL.path,
+    ...(category.unselected && {
+      "image.unSelected": process.env.SERVER_IP + category.unselected.path,
+    }),
+    ...(category.selected && {
+      "image.selected": process.env.SERVER_IP + category.selected.path,
     }),
   });
 };
@@ -35,8 +36,11 @@ export const updateCategoryRepository = async ({ _id, category }) => {
     { _id },
     {
       ...category,
-      ...(category.logoURL && {
-        logoURL: process.env.SERVER_IP + category.logoURL.path,
+      ...(category.unselected && {
+        "image.unSelected": process.env.SERVER_IP + category.unselected.path,
+      }),
+      ...(category.selected && {
+        "image.selected": process.env.SERVER_IP + category.selected.path,
       }),
     },
     {
