@@ -51,5 +51,9 @@ export const updateCustomerRepository = async (user, customerData) => {
 };
 
 export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
-  return await CustomerModel.findOne({ socialMediaId }).populate("user");
+  return await CustomerModel.findOne(
+    { socialMediaId },
+    { "user.password": 0 },
+    { populate: "user" }
+  );
 };

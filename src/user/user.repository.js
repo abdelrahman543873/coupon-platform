@@ -17,7 +17,7 @@ export const updateUser = async (_id, user) => {
       ...user,
       ...(user.newPassword && { password: await hashPass(user.newPassword) }),
     },
-    { new: true }
+    { new: true, projection: { password: 0 } }
   );
 };
 
@@ -28,11 +28,25 @@ export const adminUpdateUser = async (_id, user) => {
       ...user,
       ...(user.password && { password: await hashPass(user.password) }),
     },
-    { new: true, omitUndefined: true }
+    { new: true, omitUndefined: true, projection: { password: 0 } }
   );
 };
 
 export const findUserByEmailOrPhone = async (user) => {
+  return await UserModel.findOne(
+    {
+      ...(user.email && !user.phone && { email: user.email.toLowerCase() }),
+      ...(user.phone && !user.email && { phone: user.phone }),
+      ...(user.phone &&
+        user.email && {
+          $or: [{ email: user.email.toLowerCase() }, { phone: user.phone }],
+        }),
+    },
+    { password: 0 }
+  );
+};
+
+export const findUserByEmailOrPhoneForLogin = async (user) => {
   return await UserModel.findOne({
     ...(user.email && !user.phone && { email: user.email.toLowerCase() }),
     ...(user.phone && !user.email && { phone: user.phone }),
@@ -53,16 +67,19 @@ export const searchProvidersRepository = async (
       role: UserRoleEnum[0],
       name: { $regex: name, $options: "i" },
     },
-    { limit, offset }
+    { limit, offset, project: { password: 0 } }
   );
 };
 
 export const adminDeleteUserRepository = async (_id) => {
-  return await UserModel.findOneAndDelete({ _id }, { lean: true });
+  return await UserModel.findOneAndDelete(
+    { _id },
+    { lean: true, projection: { password: 0 } }
+  );
 };
 
 export const findUserById = async (_id) => {
-  return await UserModel.findOne({ _id }, {}, { lean: true });
+  return await UserModel.findOne({ _id }, { password: 0 }, { lean: true });
 };
 
 export const rawDeleteUser = async () => {

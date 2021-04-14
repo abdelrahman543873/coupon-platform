@@ -21,6 +21,7 @@ export const getMyCouponsRepository = async (
       limit,
       sort: "-createdAt",
       populate: "provider category",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -58,6 +59,7 @@ export const getSubscriptionsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -74,6 +76,7 @@ export const getAdminSubscriptionsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -90,6 +93,7 @@ export const getCustomerSubscriptionsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -108,6 +112,7 @@ export const getSubscriptionRepository = async ({
     {},
     {
       populate: "coupon customer provider",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -118,6 +123,7 @@ export const getCustomerSubscriptionRepository = async (_id, customer) => {
     {},
     {
       populate: "coupon customer",
+      projection: { "customer.password": 0 },
     }
   );
 };
@@ -135,6 +141,7 @@ export const getRecentlyAdddedCouponsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
+      projection: { "provider.password": 0 },
     }
   );
 };
@@ -322,6 +329,7 @@ export const getUnconfirmedPaymentsRepository = async (
       offset: offset * limit,
       limit,
       sort: "-createdAt",
+      projection: { "provider.password": 0 },
     }
   );
 };
