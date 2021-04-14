@@ -11,9 +11,12 @@ import {
 } from "./coupon.repository.js";
 import mongoose from "mongoose";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
+import { findCategoryRepository } from "../category/category.repository.js";
 
 export const adminAddCouponService = async (req, res, next) => {
   try {
+    const category = await findCategoryRepository(req.body.category);
+    if (!category) throw new BaseHttpError(638);
     const coupon = await addCouponRepository({
       ...req.body,
       logoURL: req.file,

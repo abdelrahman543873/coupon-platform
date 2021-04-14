@@ -26,6 +26,26 @@ describe("add coupon suite case", () => {
     });
     expect(res.body.data.enName).toBe(variables.enName);
   });
+
+  it("should throw error if category doesn't exist", async () => {
+    const mockProvider = await providerFactory();
+    const {
+      provider,
+      isActive,
+      logoURL,
+      code,
+      category,
+      ...variables
+    } = await buildCouponParams();
+    variables.category = mockProvider._id;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_COUPON,
+      token: mockProvider.token,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(638);
+  });
   it("successful coupon file upload", async () => {
     const provider = await providerFactory();
     const testFiles = path.resolve(process.cwd(), "test");

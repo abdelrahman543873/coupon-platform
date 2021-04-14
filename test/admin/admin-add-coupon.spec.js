@@ -36,4 +36,24 @@ describe("admin add coupon suite case", () => {
     });
     expect(res.body.data.logoURL).toContain(".jpg");
   });
+
+  it("should throw error if category doesn't exist", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const {
+      provider,
+      isActive,
+      logoURL,
+      code,
+      category,
+      ...variables
+    } = await buildCouponParams();
+    variables.category = admin._id;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADMIN_ADD_COUPON,
+      token: admin.token,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(638);
+  });
 });

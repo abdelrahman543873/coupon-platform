@@ -139,4 +139,8 @@ export const LocalizedErrorMessages = {
     EN: "categories must have selected and unselected images",
     AR: "categories must have selected and unselected images",
   },
+  638: {
+    EN: "category doesn't exist",
+    AR: "category doesn't exist",
+  },
 };

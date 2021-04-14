@@ -11,7 +11,6 @@ import {
   getCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { updateUser } from "../user/user.repository.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import { addVerificationCode } from "../verification/verification.repository.js";
@@ -26,6 +25,7 @@ import {
   updateProviderRepository,
 } from "./provider.repository.js";
 import { deleteCoupon } from "../coupon/coupon.repository.js";
+import { findCategoryRepository } from "../category/category.repository.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
@@ -140,6 +140,8 @@ export const getProviderHomeService = async (req, res, next) => {
 
 export const addCouponService = async (req, res, next) => {
   try {
+    const category = await findCategoryRepository(req.body.category);
+    if (!category) throw new BaseHttpError(638);
     const coupon = await addCouponRepository({
       ...req.body,
       logoURL: req.file,
