@@ -9,6 +9,7 @@ import {
   getSubscriptionRepository,
   updateCoupon,
   getCompletelySoldCouponsRepository,
+  getCoupon,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
@@ -53,7 +54,7 @@ export const providerRegisterService = async (req, res, next) => {
       success: true,
       data: {
         user: {
-            ...(await findProviderById(provider._id)),
+          ...(await findProviderById(provider._id)),
         },
         authToken: generateToken(provider._id, "PROVIDER"),
       },
@@ -148,7 +149,7 @@ export const addCouponService = async (req, res, next) => {
     });
     return res.status(200).json({
       success: true,
-      data: coupon,
+      data: await getCoupon({ _id: coupon.id }),
     });
   } catch (error) {
     next(error);

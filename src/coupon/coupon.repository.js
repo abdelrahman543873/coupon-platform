@@ -274,7 +274,18 @@ export const searchCouponsRepository = async (name, offset = 0, limit = 15) => {
 };
 
 export const getCoupon = async ({ _id }) => {
-  return await CouponModel.findOne({ _id }, {}, { lean: true });
+  return await CouponModel.findOne(
+    { _id },
+    {},
+    {
+      lean: true,
+      populate: [
+        { path: "category" },
+        { path: "coupon" },
+        { path: "provider", select: { password: 0 } },
+      ],
+    }
+  );
 };
 
 export const findCoupons = async (ids) => {
