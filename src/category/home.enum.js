@@ -1,5 +1,5 @@
 export const home = {
-  id: null,
+  _id: null,
   arName: "الكل",
   enName: "All",
   selected:
