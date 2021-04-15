@@ -2,6 +2,8 @@ import { nanoid } from "nanoid";
 import { CouponModel } from "./models/coupon.model.js";
 import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 import dotenv from "dotenv";
+import { ProviderModel } from "../provider/models/provider.model.js";
+import { CategoryModel } from "../category/models/category.model.js";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -185,6 +187,32 @@ export const getMostSellingCouponRepository = async (
     {
       $unwind: "$coupon",
     },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "coupon.provider",
+        foreignField: "_id",
+        as: "coupon.provider",
+      },
+    },
+    {
+      $unwind: "$coupon.provider",
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "coupon.category",
+        foreignField: "_id",
+        as: "coupon.category",
+      },
+    },
+    {
+      $unwind: "$coupon.category",
+    },
+    {
+      $project: { _id: 0, count: 0 },
+    },
+    { $replaceRoot: { newRoot: "$coupon" } },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
     offset,

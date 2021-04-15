@@ -19,6 +19,7 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
     });
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
 
@@ -30,6 +31,7 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?category=${category._id}`,
     });
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
 
@@ -41,6 +43,7 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?category=${category._id}&section=newest`,
     });
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
 
@@ -66,7 +69,8 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
-    expect(res.body.data.docs[0].coupon._id).toBe(
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
     );
   });

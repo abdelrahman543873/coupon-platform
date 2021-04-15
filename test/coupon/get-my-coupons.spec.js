@@ -20,7 +20,7 @@ describe("get my coupons suite case", () => {
       url: GET_MY_COUPONS,
       token: provider.token,
     });
-    expect(res.body.data.docs[0].category).toBeTruthy();
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.password).toBeFalsy();
     expect(res.body.data.docs.length).toBe(10);
   });
