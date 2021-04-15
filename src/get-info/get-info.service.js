@@ -13,6 +13,7 @@ export const getInfoService = async (req, res, next) => {
           ...user.toJSON(),
         },
       });
+    delete data.user.password;
     res.status(200).json({
       success: true,
       data,
