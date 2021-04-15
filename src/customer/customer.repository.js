@@ -5,10 +5,11 @@ dotenv.config();
 export const CustomerRegisterRepository = async (customer) => {
   return await CustomerModel.create({
     ...customer,
-    ...(customer.profilePictureURL && {
-      profilePictureURL:
-        process.env.SERVER_IP + customer.profilePictureURL.path,
-    }),
+    ...(customer.profilePictureURL &&
+      customer.profilePictureURL.path && {
+        profilePictureURL:
+          process.env.SERVER_IP + customer.profilePictureURL.path,
+      }),
   });
 };
 

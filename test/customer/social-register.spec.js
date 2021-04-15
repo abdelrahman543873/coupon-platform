@@ -18,7 +18,6 @@ describe("customer social register suite case", () => {
       favCoupons,
       fcmToken,
       password,
-      profilePictureURL,
       ...variables
     } = {
       ...(await buildUserParams()),
@@ -29,6 +28,7 @@ describe("customer social register suite case", () => {
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
     });
+    expect(res.body.data.profilePictureURL).toBe(variables.profilePictureURL);
     expect(res.body.data.name).toBe(variables.name);
   });
 
@@ -41,7 +41,6 @@ describe("customer social register suite case", () => {
       favCoupons,
       fcmToken,
       password,
-      profilePictureURL,
       phone,
       ...variables
     } = {
@@ -56,6 +55,40 @@ describe("customer social register suite case", () => {
     expect(res.body.data.name).toBe(variables.name);
   });
 
+  it("should register twice with email only", async () => {
+    const {
+      role,
+      user,
+      isVerified,
+      isSocialMediaVerified,
+      favCoupons,
+      fcmToken,
+      password,
+      phone,
+      ...variables
+    } = {
+      ...(await buildUserParams()),
+      ...(await buildCustomerParams()),
+    };
+    const variables2 = {
+      ...(await buildUserParams()),
+      ...(await buildCustomerParams()),
+    };
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_SOCIAL_REGISTER,
+      variables,
+    });
+
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_SOCIAL_REGISTER,
+      variables: { email: variables2.email, name: variables2.name },
+    });
+    expect(res2.body.data.name).toBe(variables2.name);
+    expect(res.body.data.name).toBe(variables.name);
+  });
+
   it("error if customer register with same email", async () => {
     const {
       role,
@@ -65,7 +98,6 @@ describe("customer social register suite case", () => {
       favCoupons,
       fcmToken,
       password,
-      profilePictureURL,
       ...variables
     } = {
       ...(await buildUserParams()),
@@ -78,21 +110,5 @@ describe("customer social register suite case", () => {
       variables,
     });
     expect(res.body.statusCode).toBe(601);
-  });
-
-  it("customer social register with file upload", async () => {
-    const { role, password, ...variables } = await buildUserParams();
-    const testFiles = path.resolve(process.cwd(), "test");
-    const filePath = `${testFiles}/test-files/test-duck.jpg`;
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.POST,
-      url: CUSTOMER_SOCIAL_REGISTER,
-      variables,
-      fileParam: "image",
-      filePath,
-    });
-    const fileStored = res.body.data.profilePictureURL.includes(".jpg");
-    expect(fileStored).toBe(true);
-    expect(res.body.data.name).toBe(variables.name);
   });
 });

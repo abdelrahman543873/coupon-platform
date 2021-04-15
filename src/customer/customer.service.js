@@ -113,7 +113,6 @@ export const socialRegisterService = async (req, res, next) => {
     const customer = await CustomerRegisterRepository({
       user: user.id,
       ...req.body,
-      profilePictureURL: req.file,
     });
     res.status(201).json({
       success: true,

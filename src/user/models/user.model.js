@@ -11,10 +11,9 @@ export const user = mongoose.Schema(
     password: {
       type: String,
     },
+    //solve this phones shouldn't be repeated
     phone: {
       type: String,
-      unique: true,
-      sparse: true,
     },
     role: {
       type: String,

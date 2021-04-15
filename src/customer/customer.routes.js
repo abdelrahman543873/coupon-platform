@@ -62,9 +62,7 @@ customersRouter
 customersRouter
   .route("/social-register")
   .post(
-    uploadHelper("public/profile-pictures").single("image"),
     ValidationMiddleware(SocialRegisterInput),
-    fileValidationMiddleWare,
     socialRegisterService
   );
 
