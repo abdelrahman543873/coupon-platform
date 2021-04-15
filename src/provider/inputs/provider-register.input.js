@@ -8,4 +8,5 @@ export const ProviderRegisterInput = Joi.object({
   facebookLink: Joi.string().allow("").min(3),
   instagramLink: Joi.string().min(3).allow(""),
   twitterLink: Joi.string().min(3).allow(""),
+  phone: Joi.string().regex(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
 });

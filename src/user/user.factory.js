@@ -9,7 +9,7 @@ export const buildUserParams = async (obj = {}) => {
     name: obj.name || faker.name.firstName(),
     email: obj.email || faker.internet.email().toLowerCase(),
     password: obj.password || faker.internet.password(),
-    phone: obj.phone || faker.phone.phoneNumber(),
+    phone: obj.phone || faker.phone.phoneNumber('+20165#######'),
     role: obj.role || faker.random.arrayElement(UserRoleEnum),
   };
 };

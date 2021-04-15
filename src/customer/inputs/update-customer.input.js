@@ -2,7 +2,7 @@ import Joi from "joi";
 export const UpdateCustomerInput = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string().email().lowercase().optional(),
-  phone: Joi.string().min(7).optional(),
+  phone: Joi.string().regex(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
   password: Joi.string()
     .min(8)
     .when("phone", { then: Joi.string().min(8).required() })

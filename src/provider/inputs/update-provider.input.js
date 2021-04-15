@@ -15,4 +15,5 @@ export const UpdateProviderInput = Joi.object({
   instagramLink: Joi.string().min(3).allow("").optional(),
   twitterLink: Joi.string().min(3).allow("").optional(),
   newPassword: Joi.string().min(8).optional(),
+  phone: Joi.string().regex(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
 });

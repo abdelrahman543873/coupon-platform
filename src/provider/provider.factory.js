@@ -20,6 +20,7 @@ export const buildProviderParams = async (obj = {}) => {
     twitterLink: obj.twitterLink || faker.internet.url(),
     fcmToken: obj.fcmToken || faker.random.objectElement(),
     qrURL: obj.qrURL || faker.internet.url(),
+    phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
   };
 };
 

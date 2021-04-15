@@ -20,6 +20,9 @@ export const provider = mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+    },
     slogan: {
       type: String,
       required: true,

@@ -11,7 +11,7 @@ export const buildVerificationParams = async (obj = {}) => {
     expirationDate:
       obj.expirationDate ||
       Date.now() + Number(process.env.OTP_EXPIRY_TIME) * 1000 * 60,
-    phone: obj.phone || faker.phone.phoneNumber(),
+    phone: obj.phone || faker.phone.phoneNumber('+20165#######'),
     email: obj.email || faker.internet.email(),
   };
 };
