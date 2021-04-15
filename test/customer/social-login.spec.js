@@ -16,6 +16,8 @@ describe("social media login suite case", () => {
       token: customer.token,
       variables: { socialMediaId: customer.socialMediaId },
     });
-    expect(res.body.data.socialMediaId).toBe(customer.socialMediaId);
+    expect(res.body.data.user.password).toBeFalsy();
+    expect(res.body.data.user.user).toBeFalsy();
+    expect(res.body.data.user.socialMediaId).toBe(customer.socialMediaId);
   });
 });

@@ -93,9 +93,18 @@ export const socialLoginService = async (req, res, next) => {
     if (!customer) throw new BaseHttpError(611);
     // restore this
     // if (!customer.isVerified) throw new BaseHttpError(612);
+    const data = {
+      ...customer,
+      ...customer.user,
+    };
+    // fix this
+    delete data.user;
     res.status(200).json({
       success: true,
-      data: { ...customer.toJSON(), auth: generateToken(customer.user.id) },
+      data: {
+        user: { ...data },
+        authToken: generateToken(customer.user.id),
+      },
     });
   } catch (error) {
     next(error);
