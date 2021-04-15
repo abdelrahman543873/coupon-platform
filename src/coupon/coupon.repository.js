@@ -269,7 +269,14 @@ export const searchCouponsRepository = async (name, offset = 0, limit = 15) => {
         { arName: { $regex: name, $options: "i" } },
       ],
     },
-    { limit, offset }
+    {
+      limit,
+      offset,
+      populate: [
+        { path: "category" },
+        { path: "provider", select: { password: 0 } },
+      ],
+    }
   );
 };
 

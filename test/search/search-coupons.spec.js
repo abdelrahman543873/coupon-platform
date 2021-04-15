@@ -15,6 +15,8 @@ describe("add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=${coupon.enName}`,
     });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0].enName).toBe(coupon.enName);
   });
 
@@ -24,6 +26,8 @@ describe("add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=a`,
     });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0].enName).toBe(coupon.enName);
   });
 
