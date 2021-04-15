@@ -62,7 +62,7 @@ export const confirmPaymentService = async (req, res, next) => {
     });
     if (!subscription) throw new BaseHttpError(619);
     const updatedSubscription = await confirmCouponPayment({
-      _id: subscription.id,
+      _id: subscription._id,
     });
     res.status(200).json({
       success: true,
