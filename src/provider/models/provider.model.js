@@ -25,7 +25,6 @@ export const provider = mongoose.Schema(
     },
     slogan: {
       type: String,
-      required: true,
     },
     image: { type: String },
     isActive: {
