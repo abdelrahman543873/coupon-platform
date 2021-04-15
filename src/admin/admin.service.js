@@ -41,9 +41,32 @@ export const manageProviderStatusService = async (req, res, next) => {
   try {
     const provider = await findProviderById(req.body.provider);
     if (!provider) throw new BaseHttpError(617);
+    let qrURL;
+    if (!provider.qrURL) {
+      const path = "public/provider-qr-codes/";
+      // this is done so that we can have an online url in the manage manageProviderStatusRepository
+      // and be able to create the directory if it doesn't exist on the server
+      if (!fs.existsSync(`./${path}`)) {
+        fs.mkdirSync(path);
+      }
+      await QRCode.toFile(
+        //here the same issue
+        `./${path}${provider._id}.png`,
+        decodeURI(encodeURI(provider._id)),
+        {
+          type: "png",
+          color: {
+            dark: "#575757", // Blue dots
+            light: "#0000", // Transparent background
+          },
+        }
+      );
+      qrURL = `${path}${provider._id}.png`;
+    }
     const updatedProvider = await manageProviderStatusRepository(
       provider._id,
-      !provider.isActive
+      !provider.isActive,
+      qrURL
     );
     const providerCoupons = await findProviderCouponsRepository(provider._id);
     let providerCouponsIds;
@@ -58,7 +81,7 @@ export const manageProviderStatusService = async (req, res, next) => {
       }));
     res.status(200).json({
       success: true,
-      data: updatedProvider.isActive,
+      data: updatedProvider,
     });
   } catch (error) {
     next(error);
@@ -74,8 +97,8 @@ export const generateProviderQrCodeService = async (req, res, next) => {
       fs.mkdirSync(path);
     }
     await QRCode.toFile(
-      `${path}${provider.user}.png`,
-      decodeURI(encodeURI(provider.user)),
+      `${path}${provider._id}.png`,
+      decodeURI(encodeURI(provider._id)),
       {
         type: "png",
         color: {
@@ -85,7 +108,7 @@ export const generateProviderQrCodeService = async (req, res, next) => {
       }
     );
     const updatedProvider = await updateProviderRepository(provider._id, {
-      qrURL: `${path}${provider.user}.png`,
+      qrURL: `${path}${provider._id}.png`,
     });
     res.status(200).json({
       success: true,

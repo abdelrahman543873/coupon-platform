@@ -6,6 +6,10 @@ import { generateToken } from "../utils/JWTHelper";
 import { ProviderModel } from "./models/provider.model.js";
 
 export const buildProviderParams = async (obj = {}) => {
+  const qrURL =
+    obj.qrURL === null || typeof obj.qrURL === "string"
+      ? obj.qrURL
+      : faker.internet.url();
   return {
     name: obj.name || faker.name.firstName(),
     email: obj.email || faker.internet.email().toLowerCase(),
@@ -19,7 +23,7 @@ export const buildProviderParams = async (obj = {}) => {
     instagramLink: obj.instagramLink || faker.internet.url(),
     twitterLink: obj.twitterLink || faker.internet.url(),
     fcmToken: obj.fcmToken || faker.random.objectElement(),
-    qrURL: obj.qrURL || faker.internet.url(),
+    qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
   };
 };
