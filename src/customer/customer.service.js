@@ -91,7 +91,8 @@ export const socialLoginService = async (req, res, next) => {
       req.body.socialMediaId
     );
     if (!customer) throw new BaseHttpError(611);
-    if (!customer.isVerified) throw new BaseHttpError(612);
+    // restore this
+    // if (!customer.isVerified) throw new BaseHttpError(612);
     res.status(200).json({
       success: true,
       data: { ...customer.toJSON(), auth: generateToken(customer.user.id) },
