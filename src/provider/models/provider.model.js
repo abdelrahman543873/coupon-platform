@@ -37,7 +37,7 @@ export const provider = mongoose.Schema(
     instagramLink: { type: String },
     twitterLink: { type: String },
     fcmToken: { type: String },
-    qrURL: { type: String, default: "", required: true },
+    qrURL: { type: String },
   },
   {
     timestamps: true,

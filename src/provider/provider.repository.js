@@ -68,10 +68,10 @@ export const findProviderById = async (_id) => {
   return await ProviderModel.findOne({ _id }, { password: 0 }, { lean: true });
 };
 
-export const manageProviderStatusRepository = async (_id, isActive) => {
+export const manageProviderStatusRepository = async (_id, isActive, qrURL) => {
   return await ProviderModel.findOneAndUpdate(
     { _id },
-    { isActive },
+    { isActive, ...(qrURL && { qrURL: `${process.env.SERVER_IP}${qrURL}` }) },
     { new: true }
   );
 };

@@ -13,21 +13,23 @@ describe("manage provider status suite case", () => {
   });
   it("manage admin status successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const provider = await providerFactory();
+    const provider = await providerFactory({ qrURL: null });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
       variables: { provider: provider._id },
       token: admin.token,
     });
-    expect(res.body.data).toBe(true);
+    expect(res.body.data.qrURL).toBeTruthy();
+    expect(res.body.data.isActive).toBe(true);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
       variables: { provider: provider._id },
       token: admin.token,
     });
-    expect(res1.body.data).toBe(false);
+    expect(res.body.data.qrURL).toBeTruthy();
+    expect(res1.body.data.isActive).toBe(false);
   });
 
   it("should deactivate admins coupons when deactivating admin", async () => {
