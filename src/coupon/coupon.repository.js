@@ -58,7 +58,7 @@ export const getSubscriptionsRepository = async (
     { ...(provider && { provider }) },
     {
       populate: [
-        { path: "customer" },
+        { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
       ],
@@ -78,7 +78,7 @@ export const getAdminSubscriptionsRepository = async (
     { ...(provider && { provider }) },
     {
       populate: [
-        { path: "customer" },
+        { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
       ],
@@ -124,7 +124,7 @@ export const getSubscriptionRepository = async ({
     {},
     {
       populate: [
-        { path: "customer" },
+        { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
       ],
@@ -137,7 +137,10 @@ export const getCustomerSubscriptionRepository = async (_id, customer) => {
     { _id, provider },
     {},
     {
-      populate: [{ path: "customer" }, { path: "coupon" }],
+      populate: [
+        { path: "customer", select: { password: 0 } },
+        { path: "coupon" },
+      ],
     }
   );
 };
@@ -343,7 +346,7 @@ export const getUnconfirmedPaymentsRepository = async (
     { isConfirmed: false },
     {
       populate: [
-        { path: "customer" },
+        { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
       ],

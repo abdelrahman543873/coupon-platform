@@ -23,7 +23,7 @@ export const getCategoriesService = async (req, res, next) => {
 
 export const addCategoryService = async (req, res, next) => {
   try {
-    if (!req.files.selected || !req.files.unSelected)
+    if (!req.files || !req.files.selected || !req.files.unSelected)
       throw new BaseHttpError(637);
     const category = await getCategoryByName(req.body.enName, req.body.arName);
     if (!!category.length) throw new BaseHttpError(626);
