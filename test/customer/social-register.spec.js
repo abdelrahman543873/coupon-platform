@@ -28,6 +28,7 @@ describe("customer social register suite case", () => {
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
     });
+    expect(res.body.data.user).toBeFalsy();
     expect(res.body.data.profilePictureURL).toBe(variables.profilePictureURL);
     expect(res.body.data.name).toBe(variables.name);
   });

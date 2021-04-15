@@ -114,11 +114,16 @@ export const socialRegisterService = async (req, res, next) => {
       user: user.id,
       ...req.body,
     });
+    const data = {
+      ...user.toJSON(),
+      ...customer.toJSON(),
+    };
+    //modify this
+    delete data.user;
     res.status(201).json({
       success: true,
       data: {
-        ...user.toJSON(),
-        ...customer.toJSON(),
+        ...data,
         authToken: generateToken(user.id, "CLIENT"),
       },
     });
