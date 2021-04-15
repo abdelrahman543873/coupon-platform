@@ -45,4 +45,22 @@ describe("update category suite case", () => {
     expect(res.body.data.selected).toContain(".jpg");
     expect(res.body.data.unSelected).toContain(".jpg");
   });
+
+  it("should update only one image", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const { selected, unSelected, ...category } = await buildCategoryParams();
+    const mockCategory = await categoryFactory();
+    category.category = mockCategory.id;
+    const testFiles = path.resolve(process.cwd(), "test");
+    const filePath = `${testFiles}/test-files/test-duck.jpg`;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_CATEGORY,
+      variables: category,
+      token: admin.token,
+      fileParams: ["selected"],
+      filePath,
+    });
+    console.log(res.body);
+  });
 });

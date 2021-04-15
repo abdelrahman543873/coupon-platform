@@ -6,11 +6,7 @@ services:
     env_file: .env
     restart: always
     volumes:
-      - ./Coupons-Images:/coupons/Coupons-Images
-      - ./Providers-Images:/coupons/Providers-Images
-      - ./Categories-Images:/coupons/Categories-Images
-      - ./Subscriptions-Images:/coupons/Subscriptions-Images
-      - ./Customers-Images:/coupons/Customers-Images
+      - ./public
     ports:
       - "${COUPONAT_C_PORT}:${COUPONAT_N_PORT}"
     depends_on:
