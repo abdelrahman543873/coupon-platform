@@ -61,6 +61,6 @@ describe("update category suite case", () => {
       fileParams: ["selected"],
       filePath,
     });
-    console.log(res.body);
+    expect(res.body.statusCode).not.toBe(500);
   });
 });
