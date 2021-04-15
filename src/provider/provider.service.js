@@ -53,8 +53,7 @@ export const providerRegisterService = async (req, res, next) => {
       success: true,
       data: {
         user: {
-          ...provider.toJSON(),
-          code: verificationCode.code,
+            ...(await findProviderById(provider._id)),
         },
         authToken: generateToken(provider._id, "PROVIDER"),
       },

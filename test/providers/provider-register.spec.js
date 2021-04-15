@@ -1,5 +1,8 @@
 import { REGISTER } from "../endpoints/provider.js";
-import { buildProviderParams, providerFactory } from "../../src/provider/provider.factory.js";
+import {
+  buildProviderParams,
+  providerFactory,
+} from "../../src/provider/provider.factory.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
