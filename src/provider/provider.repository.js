@@ -65,7 +65,7 @@ export const getProvider = async (_id) => {
 };
 
 export const findProviderById = async (_id) => {
-  return await ProviderModel.findOne({ _id }, {}, { lean: true });
+  return await ProviderModel.findOne({ _id }, { password: 0 }, { lean: true });
 };
 
 export const manageProviderStatusRepository = async (_id, isActive) => {
