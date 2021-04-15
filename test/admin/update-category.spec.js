@@ -15,7 +15,7 @@ describe("update category suite case", () => {
   });
   it("should update category successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { image, ...category } = await buildCategoryParams();
+    const { selected, unSelected, ...category } = await buildCategoryParams();
     const mockCategory = await categoryFactory();
     category.category = mockCategory.id;
     const res = await testRequest({
@@ -29,7 +29,7 @@ describe("update category suite case", () => {
 
   it("should successfully update category file", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { image, ...category } = await buildCategoryParams();
+    const { selected, unSelected, ...category } = await buildCategoryParams();
     const mockCategory = await categoryFactory();
     category.category = mockCategory.id;
     const testFiles = path.resolve(process.cwd(), "test");
@@ -42,7 +42,7 @@ describe("update category suite case", () => {
       fileParams: ["selected", "unSelected"],
       filePath,
     });
-    expect(res.body.data.image.selected).toContain(".jpg");
-    expect(res.body.data.image.unSelected).toContain(".jpg");
+    expect(res.body.data.selected).toContain(".jpg");
+    expect(res.body.data.unSelected).toContain(".jpg");
   });
 });

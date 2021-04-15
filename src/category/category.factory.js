@@ -5,7 +5,8 @@ export const buildCategoryParams = (obj = {}) => {
   return {
     enName: obj.enName || faker.commerce.productName(),
     arName: obj.arName || faker.commerce.productName(),
-    image: obj.logoURL || faker.internet.url(),
+    selected: obj.selected || faker.internet.url(),
+    unSelected: obj.unSelected || faker.internet.url(),
   };
 };
 

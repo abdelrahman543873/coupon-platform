@@ -27,7 +27,6 @@ describe("provider register suite case", () => {
       url: REGISTER,
       variables: input,
     });
-    console.log(res.body);
     expect(res.body.data.user.name).toBe(input.name);
   });
 

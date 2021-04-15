@@ -10,9 +10,9 @@ describe("add category suite case", () => {
   afterEach(async () => {
     await rollbackDbForAdmin();
   });
-  it("add category successfully", async () => {
+  it("error if files aren't uploaded", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { image, ...category } = await buildCategoryParams();
+    const { selected, unSelected, ...category } = await buildCategoryParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_CATEGORY,
@@ -24,7 +24,7 @@ describe("add category suite case", () => {
 
   it("successful category file upload", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { image, ...category } = await buildCategoryParams();
+    const { selected, unSelected, ...category } = await buildCategoryParams();
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const res = await testRequest({
@@ -35,7 +35,7 @@ describe("add category suite case", () => {
       fileParams: ["selected", "unSelected"],
       filePath,
     });
-    expect(res.body.data.image.selected).toContain(".jpg");
-    expect(res.body.data.image.unSelected).toContain(".jpg");
+    expect(res.body.data.selected).toContain(".jpg");
+    expect(res.body.data.unSelected).toContain(".jpg");
   });
 });

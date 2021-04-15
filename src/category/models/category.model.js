@@ -13,10 +13,8 @@ const category = mongoose.Schema(
       required: true,
       trim: true,
     },
-    image: {
-      selected: String,
-      unSelected: String,
-    },
+    selected: { type: String, trim: true },
+    unSelected: { type: String, trim: true },
   },
   {
     timestamps: true,

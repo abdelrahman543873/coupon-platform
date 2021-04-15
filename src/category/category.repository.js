@@ -23,10 +23,10 @@ export const createCategoryRepository = async (category) => {
   return await CategoryModel.create({
     ...category,
     ...(category.unselected && {
-      "image.unSelected": process.env.SERVER_IP + category.unselected.path,
+      unSelected: process.env.SERVER_IP + category.unselected.path,
     }),
     ...(category.selected && {
-      "image.selected": process.env.SERVER_IP + category.selected.path,
+      selected: process.env.SERVER_IP + category.selected.path,
     }),
   });
 };
@@ -37,10 +37,10 @@ export const updateCategoryRepository = async ({ _id, category }) => {
     {
       ...category,
       ...(category.unselected && {
-        "image.unSelected": process.env.SERVER_IP + category.unselected.path,
+        unSelected: process.env.SERVER_IP + category.unselected.path,
       }),
       ...(category.selected && {
-        "image.selected": process.env.SERVER_IP + category.selected.path,
+        selected: process.env.SERVER_IP + category.selected.path,
       }),
     },
     {
