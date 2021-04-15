@@ -8,23 +8,23 @@ export const user = mongoose.Schema(
       type: String,
       required: true,
     },
-    // password isn't required for the case of the social media register
     password: {
       type: String,
     },
     phone: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true,
     },
     role: {
       type: String,
       enum: UserRoleEnum,
       required: true,
     },
-    // not unique cause users could be created without email and null email is considered duplicate on mongoose
     email: {
       type: String,
+      unique: true,
+      sparse: true,
     },
   },
   {

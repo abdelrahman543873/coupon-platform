@@ -32,6 +32,30 @@ describe("customer social register suite case", () => {
     expect(res.body.data.name).toBe(variables.name);
   });
 
+  it("customer social register with email only", async () => {
+    const {
+      role,
+      user,
+      isVerified,
+      isSocialMediaVerified,
+      favCoupons,
+      fcmToken,
+      password,
+      profilePictureURL,
+      phone,
+      ...variables
+    } = {
+      ...(await buildUserParams()),
+      ...(await buildCustomerParams()),
+    };
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_SOCIAL_REGISTER,
+      variables,
+    });
+    expect(res.body.data.name).toBe(variables.name);
+  });
+
   it("error if customer register with same email", async () => {
     const {
       role,
