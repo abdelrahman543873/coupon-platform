@@ -29,7 +29,11 @@ describe("subscribe suite case", () => {
         paymentType: paymentType.id,
       },
     });
-    expect(res.body.data.subscription.customer).toBe(
+    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
     );
   });
@@ -54,8 +58,12 @@ describe("subscribe suite case", () => {
       },
     });
     const afterSubscription = (await getCoupon({ _id: coupon.id })).amount;
+    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
     expect(afterSubscription).toBe(coupon.amount - 1);
-    expect(res.body.data.subscription.customer).toBe(
+    expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
     );
   });
@@ -100,10 +108,14 @@ describe("subscribe suite case", () => {
       fileParam: "image",
       filePath,
     });
-    expect(res.body.data.subscription.customer).toBe(
+    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
     );
-    expect(res.body.data.subscription.image).toContain(".jpg");
+    expect(res.body.data.image).toContain(".jpg");
   });
 
   it("should subscribe with online payment successfully", async () => {
@@ -126,9 +138,13 @@ describe("subscribe suite case", () => {
       fileParam: "image",
       filePath,
     });
-    expect(res.body.data.subscription.customer).toBe(
+    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
     );
-    expect(res.body.data.subscription.image).toContain(".jpg");
+    expect(res.body.data.image).toContain(".jpg");
   });
 });

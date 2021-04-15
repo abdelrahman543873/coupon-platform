@@ -129,7 +129,9 @@ export const getSubscriptionRepository = async ({
         { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
+        { path: "paymentType" },
       ],
+      lean: true,
     }
   );
 };
