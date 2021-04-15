@@ -55,8 +55,7 @@ export const getProviders = async (offset = 0, limit = 15) => {
       limit,
       sort: "-createdAt",
       lean: true,
-      populate: "user",
-      projection: { _id: 0, "user.password": 0 },
+      projection: { _id: 0, password: 0 },
     }
   );
 };
