@@ -7,3 +7,12 @@ export const addCityRepository = async (city) => {
 export const rawDeleteCity = async () => {
   return await CityModel.deleteMany({});
 };
+
+export const findPointCities = async (point) => {
+  return await CityModel.find({
+    area: {
+      $geoIntersects: { $geometry: { type: "Point", coordinates: point } },
+    },
+    isActive: true,
+  });
+};

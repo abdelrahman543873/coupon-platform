@@ -26,6 +26,9 @@ import { UpdateCouponInput } from "./inputs/update-coupon.input.js";
 import { GetSubscriptionInput } from "./inputs/get-subscription.input.js";
 import { getCategoriesService } from "../category/category.service.js";
 import { DeleteCouponInput } from "../admin/inputs/delete-coupon.input.js";
+import { addLocationService } from "./provider.service.js";
+import { AddLocationInput } from "./inputs/add-location.input.js";
+
 const providersRouter = express.Router();
 
 providersRouter
@@ -113,6 +116,15 @@ providersRouter
     authorizationMiddleware(UserRoleEnum[0]),
     ValidationMiddleware(GetSubscriptionInput),
     getSubscriptionService
+  );
+
+providersRouter
+  .route("/addLocation")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    ValidationMiddleware(AddLocationInput),
+    addLocationService
   );
 
 providersRouter.route("/getCategories").get(getCategoriesService);

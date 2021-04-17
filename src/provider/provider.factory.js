@@ -25,6 +25,9 @@ export const buildProviderParams = async (obj = {}) => {
     fcmToken: obj.fcmToken || faker.random.objectElement(),
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
+    locations: obj.locations || {
+      coordinates: [faker.address.longitude(), faker.address.latitude()],
+    },
   };
 };
 
