@@ -27,6 +27,6 @@ let citySchema = mongoose.Schema(
   { versionKey: false }
 );
 
-let CityModel = mongoose.model("City", citySchema);
+// let CityModel = mongoose.model("City", citySchema);
 
-export { CityModel };
+// export { CityModel };
