@@ -25,6 +25,7 @@ describe("update provider suite case", () => {
       qrURL,
       user,
       image,
+      locations,
       ...input
     } = providerInput;
     input.password = "12345678";
@@ -47,6 +48,7 @@ describe("update provider suite case", () => {
       fcmToken,
       qrURL,
       role,
+      locations,
       image,
       password,
       ...input
@@ -72,6 +74,7 @@ describe("update provider suite case", () => {
       isActive,
       code,
       fcmToken,
+      locations,
       logoURL,
       qrURL,
       user,
@@ -162,6 +165,7 @@ describe("update provider suite case", () => {
       qrURL,
       logoURL,
       image,
+      locations,
       ...providerInput
     } = await buildProviderParams();
     delete providerInput.role;

@@ -143,4 +143,8 @@ export const LocalizedErrorMessages = {
     EN: "category doesn't exist",
     AR: "category doesn't exist",
   },
+  639: {
+    EN: "we don't support this location",
+    AR: "we don't support this location",
+  },
 };

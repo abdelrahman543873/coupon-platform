@@ -20,6 +20,7 @@ describe("provider register suite case", () => {
       fcmToken,
       qrURL,
       role,
+      locations,
       _id,
       image,
       ...input
@@ -62,6 +63,7 @@ describe("provider register suite case", () => {
     const {
       logoURL,
       isActive,
+      locations,
       code,
       fcmToken,
       qrURL,

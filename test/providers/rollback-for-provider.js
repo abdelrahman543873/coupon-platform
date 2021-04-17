@@ -1,4 +1,5 @@
 import { rawDeleteCategory } from "../../src/category/category.repository";
+import { rawDeleteCity } from "../../src/city/city.repository";
 import {
   rawDeleteCoupon,
   rawDeleteProviderCustomerCoupon,
@@ -7,7 +8,8 @@ import { rawDeleteProvider } from "../../src/provider/provider.repository";
 import { rawDeleteUser } from "../../src/user/user.repository";
 
 export async function rollbackDbForProvider() {
-  await rawDeleteCategory()
+  await rawDeleteCity();
+  await rawDeleteCategory();
   await rawDeleteProviderCustomerCoupon();
   await rawDeleteCoupon();
   await rawDeleteProvider();

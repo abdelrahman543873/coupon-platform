@@ -22,6 +22,7 @@ describe("admin update provider suite case", () => {
       role,
       isActive,
       code,
+      locations,
       fcmToken,
       logoURL,
       qrURL,
@@ -48,6 +49,7 @@ describe("admin update provider suite case", () => {
       _id,
       isActive,
       code,
+      locations,
       fcmToken,
       logoURL,
       qrURL,
@@ -91,7 +93,15 @@ describe("admin update provider suite case", () => {
       url: REGISTER,
       variables,
     });
-    const { image, isActive, fcmToken, qrURL, logoURL, ...providerInput } = {
+    const {
+      image,
+      locations,
+      isActive,
+      fcmToken,
+      qrURL,
+      logoURL,
+      ...providerInput
+    } = {
       ...(await buildProviderParams()),
     };
     delete providerInput.role;

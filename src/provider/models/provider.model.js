@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import { UserRoleEnum } from "../../user/user-role.enum.js";
+import { type } from "../../city/city.enum.js";
+const pointSchema = new mongoose.Schema(
+  {
+    type: {
+      type: String,
+      default: type[1],
+      required: true,
+    },
+    coordinates: {
+      type: [[Number]],
+      required: true,
+    },
+  },
+  { versionKey: false, _id: false }
+);
 export const provider = mongoose.Schema(
   {
     name: {
@@ -22,6 +37,9 @@ export const provider = mongoose.Schema(
     },
     phone: {
       type: String,
+    },
+    locations: {
+      type: pointSchema,
     },
     slogan: {
       type: String,

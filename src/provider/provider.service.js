@@ -27,7 +27,7 @@ import {
 } from "./provider.repository.js";
 import { deleteCoupon } from "../coupon/coupon.repository.js";
 import { findCategoryRepository } from "../category/category.repository.js";
-
+import { findPointCities } from "../city/city.repository.js";
 export const providerRegisterService = async (req, res, next) => {
   try {
     const existingUser = await findProviderByEmailForLogin({
@@ -231,6 +231,27 @@ export const getProvidersService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: providers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addLocationService = async (req, res, next) => {
+  try {
+    const city = await findPointCities([req.body.long, req.body.lat]);
+    if (city.length === 0) throw new BaseHttpError(639);
+    const provider = await updateProviderRepository(req.currentUser._id, {
+      // created like this not to cause conflicts with locations value in the
+      // model if it were to be place inside the updateProviderRepository
+      // when expanding the object
+      $addToSet: {
+        "locations.coordinates": [req.body.long, req.body.lat],
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data: provider,
     });
   } catch (error) {
     next(error);
