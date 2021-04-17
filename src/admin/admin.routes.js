@@ -62,6 +62,9 @@ import {
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
 import { TogglePaymentTypeInput } from "../../src/payment/inputs/toggle-payment-type.input.js";
 import { ConfirmPaymentInput } from "../payment/inputs/confirm-payment.input.js";
+import { addCityService } from "../city/city.service.js";
+import { AddCityInput } from "../city/inputs/add-city.input.js";
+
 const adminRouter = express.Router();
 
 adminRouter
@@ -301,6 +304,15 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getUnconfirmedPaymentsService
+  );
+
+adminRouter
+  .route("/addCity")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddCityInput),
+    addCityService
   );
 
 export { adminRouter };

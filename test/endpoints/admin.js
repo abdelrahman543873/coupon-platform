@@ -27,3 +27,4 @@ export const TOGGLE_PAYMENT_TYPE = "/admin-management/togglePaymentType";
 export const CONFIRM_PAYMENT = "/admin-management/confirmPayment";
 export const GET_UNCONFIRMED_PAYMENTS =
   "/admin-management/getUnconfirmedPayments";
+export const ADD_CITY = "/admin-management/addCity";
