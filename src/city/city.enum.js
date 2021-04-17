@@ -1,1 +1,1 @@
-export const type = ["Polygon", "Point"];
+export const type = ["Polygon", "Point", "MultiPoint"];
