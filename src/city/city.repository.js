@@ -4,6 +4,13 @@ export const addCityRepository = async (city) => {
   return await CityModel.create({ ...city, area: { coordinates: city.area } });
 };
 
+export const getCitiesRepository = async (offset = 0, limit = 15) => {
+  return await CityModel.paginate(
+    {},
+    { offset: offset * limit, limit, sort: "-createdAt" }
+  );
+};
+
 export const rawDeleteCity = async () => {
   return await CityModel.deleteMany({});
 };
