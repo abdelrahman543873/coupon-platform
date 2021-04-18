@@ -125,7 +125,6 @@ export const socialRegisterService = async (req, res, next) => {
       user: user.id,
       ...req.body,
       isVerified: true,
-      isSocialMediaVerified: true,
     });
     const data = {
       ...user.toJSON(),
@@ -176,6 +175,7 @@ export const getCustomersCouponsService = async (req, res, next) => {
     let data;
     req.query.section === "bestSeller" &&
       (data = await getMostSellingCouponRepository(
+        req.query.category,
         req.query.offset,
         req.query.limit
       ));

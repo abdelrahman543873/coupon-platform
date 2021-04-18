@@ -4,6 +4,7 @@ import { providerCustomerCouponModel } from "./models/provider-customer-coupon.m
 import dotenv from "dotenv";
 import { ProviderModel } from "../provider/models/provider.model.js";
 import { CategoryModel } from "../category/models/category.model.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -171,6 +172,7 @@ export const getRecentlyAdddedCouponsRepository = async (
 };
 
 export const getMostSellingCouponRepository = async (
+  category,
   offset = 0,
   limit = 15
 ) => {
@@ -188,6 +190,15 @@ export const getMostSellingCouponRepository = async (
     },
     {
       $unwind: "$coupon",
+    },
+    {
+      // in case no category is passed
+      ...(category && {
+        $match: { "coupon.category": new mongoose.Types.ObjectId(category) },
+      }),
+      ...(!category && {
+        $match: {},
+      }),
     },
     {
       $lookup: {
@@ -212,7 +223,7 @@ export const getMostSellingCouponRepository = async (
       $unwind: "$coupon.category",
     },
     {
-      $project: { _id: 0, count: 0 },
+      $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
     },
     { $replaceRoot: { newRoot: "$coupon" } },
   ]);
