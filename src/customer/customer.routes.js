@@ -8,7 +8,6 @@ import {
 } from "../_common/upload/uploader.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
-  addFavCouponService,
   CustomerRegisterService,
   getCouponService,
   getCustomerHomeService,
@@ -23,6 +22,7 @@ import {
   socialRegisterService,
   subscribeService,
   syncCouponsService,
+  toggleFavCouponService,
   updateCustomerService,
   verifyOTPService,
 } from "./customer.service.js";
@@ -61,10 +61,7 @@ customersRouter
 
 customersRouter
   .route("/social-register")
-  .post(
-    ValidationMiddleware(SocialRegisterInput),
-    socialRegisterService
-  );
+  .post(ValidationMiddleware(SocialRegisterInput), socialRegisterService);
 
 customersRouter.route("/home").get(getCustomerHomeService);
 
@@ -104,12 +101,12 @@ customersRouter
   );
 
 customersRouter
-  .route("/addFavCoupon")
+  .route("/toggleFavCoupon")
   .post(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(AddFavCouponInput),
-    addFavCouponService
+    toggleFavCouponService
   );
 
 customersRouter

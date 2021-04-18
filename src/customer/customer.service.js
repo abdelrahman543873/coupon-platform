@@ -34,6 +34,7 @@ import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
   addFavCouponRepository,
+  removeFavCouponRepository,
   addFavCouponsRepository,
   CustomerRegisterRepository,
   getCustomerBySocialLoginRepository,
@@ -123,6 +124,8 @@ export const socialRegisterService = async (req, res, next) => {
     const customer = await CustomerRegisterRepository({
       user: user.id,
       ...req.body,
+      isVerified: true,
+      isSocialMediaVerified: true,
     });
     const data = {
       ...user.toJSON(),
@@ -273,15 +276,26 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
   }
 };
 
-export const addFavCouponService = async (req, res, next) => {
+export const toggleFavCouponService = async (req, res, next) => {
   try {
-    const customer = await addFavCouponRepository({
-      user: req.currentUser._id,
-      couponId: req.body.coupon,
+    const favCoupons = (
+      await getCustomerRepository(req.currentUser._id)
+    ).favCoupons.map((coupon) => {
+      return coupon.toString();
     });
+    const exists = favCoupons.includes(req.body.coupon);
+    exists
+      ? await removeFavCouponRepository({
+          user: req.currentUser._id,
+          couponId: req.body.coupon,
+        })
+      : await addFavCouponRepository({
+          user: req.currentUser._id,
+          couponId: req.body.coupon,
+        });
     res.status(200).json({
       success: true,
-      data: customer,
+      data: true,
     });
   } catch (error) {
     next(error);
