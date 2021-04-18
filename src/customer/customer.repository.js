@@ -74,4 +74,4 @@ export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
     {},
     { populate: [{ path: "user", select: { password: 0 } }], lean: true }
   );
-};
+}
