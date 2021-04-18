@@ -214,8 +214,8 @@ export const verifyOTPService = async (req, res, next) => {
         user: {
           ...updatedCustomer,
           ...req.currentUser.toJSON(),
-          authToken: generateToken(req.currentUser._id, req.currentUser.role),
         },
+        authToken: generateToken(req.currentUser._id, req.currentUser.role),
       },
     });
   } catch (error) {
