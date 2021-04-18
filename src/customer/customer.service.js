@@ -37,6 +37,7 @@ import {
   addFavCouponsRepository,
   CustomerRegisterRepository,
   getCustomerBySocialLoginRepository,
+  getCustomerFavCoupons,
   getCustomerRepository,
   updateCustomerRepository,
 } from "./customer.repository.js";
@@ -289,10 +290,10 @@ export const addFavCouponService = async (req, res, next) => {
 
 export const getFavCouponsService = async (req, res, next) => {
   try {
-    const customer = await getCustomerRepository(req.currentUser._id);
+    const favCoupons = await getCustomerFavCoupons(req.currentUser._id);
     res.status(200).json({
       success: true,
-      data: customer.favCoupons,
+      data: favCoupons.favCoupons,
     });
   } catch (error) {
     next(error);

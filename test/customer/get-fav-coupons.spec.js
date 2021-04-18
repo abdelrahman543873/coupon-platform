@@ -16,6 +16,8 @@ describe("get fav coupons suite case", () => {
       url: GET_FAV_COUPONS,
       token: customer.token,
     });
+    expect(res.body.data[0].category.enName).toBeTruthy();
+    expect(res.body.data[0].provider.password).toBeFalsy();
     expect(res.body.data.length).toBe(1);
   });
 });
