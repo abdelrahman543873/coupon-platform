@@ -23,7 +23,7 @@ export const adminAddCouponService = async (req, res, next) => {
     });
     return res.status(200).json({
       success: true,
-      data: coupon,
+      data: await getCoupon({ _id: coupon.id }),
     });
   } catch (error) {
     next(error);
