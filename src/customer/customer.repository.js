@@ -46,6 +46,14 @@ export const addFavCouponRepository = async ({ user, couponId }) => {
   );
 };
 
+export const removeFavCouponRepository = async ({ user, couponId }) => {
+  return await CustomerModel.findOneAndUpdate(
+    { user },
+    { $pull: { favCoupons: couponId } },
+    { new: true }
+  );
+};
+
 export const addFavCouponsRepository = async ({ user, coupons }) => {
   return await CustomerModel.findOneAndUpdate(
     { user },
