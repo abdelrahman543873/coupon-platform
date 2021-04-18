@@ -64,6 +64,6 @@ describe("add city suite case", () => {
       },
       token: admin.token,
     });
-    expect(res.body.statusCode).toBe(400);
+    expect(res.body.statusCode).toBe(400)
   });
 });
