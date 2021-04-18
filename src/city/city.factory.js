@@ -1,15 +1,17 @@
 import faker from "faker";
+import { type } from "./city.enum.js";
 import { CityModel } from "./model/city.model.js";
 
 export const buildCityParams = (obj = {}) => {
   const polygonPoints = [];
   for (let i = 0; i < 3; i++) {
-    polygonPoints.push([faker.address.longitude(), faker.address.latitude()]);
+    polygonPoints.push([+faker.address.longitude(), +faker.address.latitude()]);
   }
   return {
     enName: obj.enName || faker.datatype.uuid(),
     arName: obj.arName || faker.datatype.uuid(),
     area: obj.area || {
+      type: type[2],
       coordinates: polygonPoints,
     },
     isActive: obj.isActive || true,

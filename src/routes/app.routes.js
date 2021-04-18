@@ -14,6 +14,7 @@ import { getInfoRouter } from "../get-info/get-info.routes.js";
 import { searchRouter } from "../search/search.routes.js";
 import { testingRouter } from "../testing/testing.routes.js";
 import { resetPassword } from "../reset-password/reset-password.routes.js";
+import { cityRouter } from "../city/city.routes.js";
 
 const router = express.Router();
 
@@ -32,5 +33,6 @@ router.use("/getInfo", getInfoRouter);
 router.use("/search", searchRouter);
 router.use("/testing", testingRouter);
 router.use("/reset-password", resetPassword);
+router.use("/getCities", cityRouter);
 
 export { router };

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { type } from "../city.enum.js";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 // done according to the mongoose specification here https://mongoosejs.com/docs/geojson.html
 const polygonSchema = new mongoose.Schema(
@@ -17,7 +18,7 @@ const polygonSchema = new mongoose.Schema(
   { versionKey: false, _id: false }
 );
 
-let city = mongoose.Schema(
+const city = mongoose.Schema(
   {
     enName: {
       type: String,
@@ -41,4 +42,5 @@ let city = mongoose.Schema(
   { versionKey: false }
 );
 
+city.plugin(mongoosePaginate);
 export const CityModel = mongoose.model("City", city);
