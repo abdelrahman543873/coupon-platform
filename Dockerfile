@@ -1,12 +1,10 @@
-FROM node:12
+FROM node:15
 
 WORKDIR ./
 
 COPY package.json package.json
 
 RUN yarn
-
-RUN yarn global add nodemon
 
 COPY . .
 

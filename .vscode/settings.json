@@ -1,19 +1,14 @@
 {
-    "workbench.editorAssociations": [
-    
-    ],
-    "files.watcherExclude": {
-        "**/dist": true
-    },
-    "search.exclude": {
-        "**/dist": true
-    },
-    "files.exclude": {
-        "**/dist": true,
-        "**/node_modules": true
-    },
-    "cSpell.words": [
-        "fieldname",
-        "originalname"
-    ]
+  "workbench.editorAssociations": [],
+  "files.watcherExclude": {
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/dist": true
+  },
+  "files.exclude": {
+    "**/dist": false,
+    "**/node_modules": false
+  },
+  "cSpell.words": ["fieldname", "originalname"]
 }
