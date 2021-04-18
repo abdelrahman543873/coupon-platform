@@ -1,5 +1,6 @@
 import { CustomerModel } from "./models/customer.model.js";
 import dotenv from "dotenv";
+import { CouponModel } from "../coupon/models/coupon.model.js";
 
 dotenv.config();
 export const CustomerRegisterRepository = async (customer) => {
@@ -19,6 +20,22 @@ export const rawDeleteCustomer = async () => {
 
 export const getCustomerRepository = async (user) => {
   return await CustomerModel.findOne({ user }, { _id: 0 }, { lean: true });
+};
+
+export const getCustomerFavCoupons = async (user) => {
+  return await CustomerModel.findOne(
+    { user },
+    { _id: 0, favCoupons: 1 },
+    {
+      lean: true,
+      populate: [
+        {
+          path: "favCoupons",
+          populate: { path: "category provider", select: { password: 0 } },
+        },
+      ],
+    }
+  );
 };
 
 export const addFavCouponRepository = async ({ user, couponId }) => {
@@ -57,4 +74,4 @@ export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
     {},
     { populate: [{ path: "user", select: { password: 0 } }], lean: true }
   );
-};
+}
