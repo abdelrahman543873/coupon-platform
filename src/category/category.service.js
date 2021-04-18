@@ -45,17 +45,13 @@ export const updateCategoryService = async (req, res, next) => {
   try {
     const category = await findCategoryRepository(req.body.category);
     if (!category) throw new BaseHttpError(627);
-    // solve problem with . operator in es6
-    const input = req.files
-      ? {
-          ...req.body,
-          selected: req.files.selected[0],
-          unselected: req.files.unSelected[0],
-        }
-      : { ...req.body };
     const updatedCategory = await updateCategoryRepository({
       _id: category.id,
-      category: input,
+      category: {
+        ...req.body,
+        selected: req.files?.selected?.[0],
+        unselected: req.files?.unSelected?.[0],
+      },
     });
     res.status(200).json({
       success: true,

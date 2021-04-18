@@ -11,7 +11,6 @@ export const buildCityParams = (obj = {}) => {
     enName: obj.enName || faker.datatype.uuid(),
     arName: obj.arName || faker.datatype.uuid(),
     area: obj.area || {
-      type: type[2],
       coordinates: polygonPoints,
     },
     isActive: obj.isActive || true,
@@ -21,7 +20,11 @@ export const buildCityParams = (obj = {}) => {
 export const citiesFactory = async (count = 10, obj = {}) => {
   const cities = [];
   for (let i = 0; i < count; i++) {
-    cities.push(buildCityParams(obj));
+    const city = buildCityParams(obj);
+    city.area.type = type[0];
+    city.area.coordinates.push(city.area.coordinates[0]);
+    city.area.coordinates = [city.area.coordinates];
+    cities.push(city);
   }
   return await CityModel.collection.insertMany(cities);
 };

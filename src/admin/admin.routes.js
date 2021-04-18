@@ -62,8 +62,14 @@ import {
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
 import { TogglePaymentTypeInput } from "../../src/payment/inputs/toggle-payment-type.input.js";
 import { ConfirmPaymentInput } from "../payment/inputs/confirm-payment.input.js";
-import { addCityService } from "../city/city.service.js";
+import {
+  addCityService,
+  toggleCityService,
+  updateCityService,
+} from "../city/city.service.js";
 import { AddCityInput } from "../city/inputs/add-city.input.js";
+import { UpdateCityInput } from "../city/inputs/update-city.input.js";
+import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
 
 const adminRouter = express.Router();
 
@@ -313,6 +319,24 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AddCityInput),
     addCityService
+  );
+
+adminRouter
+  .route("/updateCity")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(UpdateCityInput),
+    updateCityService
+  );
+
+adminRouter
+  .route("/toggleCity")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(toggleCityInput),
+    toggleCityService
   );
 
 export { adminRouter };
