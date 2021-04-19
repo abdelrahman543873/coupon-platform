@@ -230,28 +230,79 @@ export const getRecentlyAdddedCouponsRepository = async (
   provider,
   category,
   offset = 0,
-  limit = 15
+  limit = 15,
+  subscriptions = [],
+  favCoupons = []
 ) => {
-  return await CouponModel.paginate(
-    { ...(provider && { provider }), ...(category && { category }) },
+  const aggregation = CouponModel.aggregate([
     {
-      populate: [
-        { path: "category" },
-        { path: "provider", select: { password: 0 } },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-      projection: { "provider.password": 0 },
-      lean: true,
-    }
-  );
+      // in case no category is passed
+      ...(category && {
+        $match: { category: new mongoose.Types.ObjectId(category) },
+      }),
+      ...(!category && {
+        $match: {},
+      }),
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      ...(provider && {
+        $match: {
+          "$provider._id": new mongoose.Types.ObjectId(provider),
+        },
+      }),
+      ...(!provider && {
+        $match: {},
+      }),
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+    {
+      $addFields: {
+        isSubscribe: {
+          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
+        },
+        isFav: {
+          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
+        },
+      },
+    },
+    {
+      $project: { count: 0, "provider.password": 0 },
+    },
+  ]);
+  return await CouponModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+    lean: true,
+  });
 };
 
 export const getMostSellingCouponRepository = async (
   category,
   offset = 0,
-  limit = 15
+  limit = 15,
+  subscriptions = [],
+  favCoupons = []
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
@@ -303,6 +354,16 @@ export const getMostSellingCouponRepository = async (
       $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
     },
     { $replaceRoot: { newRoot: "$coupon" } },
+    {
+      $addFields: {
+        isSubscribe: {
+          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
+        },
+        isFav: {
+          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
+        },
+      },
+    },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
     offset,
