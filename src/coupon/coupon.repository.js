@@ -181,12 +181,14 @@ export const getSubscriptionRepository = async ({
   _id,
   provider,
   customer,
+  coupon,
 }) => {
   return await providerCustomerCouponModel.findOne(
     {
       ...(_id && { _id }),
       ...(provider && { provider }),
       ...(customer && { customer }),
+      ...(coupon && { coupon }),
     },
     {},
     {
