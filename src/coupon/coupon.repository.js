@@ -83,13 +83,11 @@ export const getAdminSubscriptionsRepository = async (
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
-      // in case no category is passed
-      ...(provider && {
-        $match: { provider: new mongoose.Types.ObjectId(provider) },
-      }),
-      ...(!provider && {
-        $match: {},
-      }),
+      $match: {
+        ...(provider && {
+          provider: new mongoose.Types.ObjectId(provider),
+        }),
+      },
     },
     {
       $lookup: {
@@ -114,13 +112,7 @@ export const getAdminSubscriptionsRepository = async (
       $unwind: "$paymentType",
     },
     {
-      // in case no category is passed
-      ...(paymentType && {
-        $match: { "paymentType.key": paymentType },
-      }),
-      ...(!paymentType && {
-        $match: {},
-      }),
+      $match: { ...(paymentType && { "paymentType.key": paymentType }) },
     },
     {
       $lookup: {
@@ -164,12 +156,11 @@ export const getCustomerSubscriptionsRepository = async (
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
-      ...(customer && {
-        $match: { customer: new mongoose.Types.ObjectId(customer) },
-      }),
-      ...(!customer && {
-        $match: {},
-      }),
+      $match: {
+        ...(customer && {
+          customer: new mongoose.Types.ObjectId(customer),
+        }),
+      },
     },
     {
       $lookup: {
@@ -371,13 +362,9 @@ export const getRecentlyAdddedCouponsRepository = async (
 ) => {
   const aggregation = CouponModel.aggregate([
     {
-      // in case no category is passed
-      ...(category && {
-        $match: { category: new mongoose.Types.ObjectId(category) },
-      }),
-      ...(!category && {
-        $match: {},
-      }),
+      $match: {
+        ...(category && { category: new mongoose.Types.ObjectId(category) }),
+      },
     },
     {
       $lookup: {
@@ -391,14 +378,11 @@ export const getRecentlyAdddedCouponsRepository = async (
       $unwind: "$provider",
     },
     {
-      ...(provider && {
-        $match: {
+      $match: {
+        ...(provider && {
           "$provider._id": new mongoose.Types.ObjectId(provider),
-        },
-      }),
-      ...(!provider && {
-        $match: {},
-      }),
+        }),
+      },
     },
     {
       $lookup: {
@@ -456,12 +440,11 @@ export const getMostSellingCouponRepository = async (
     },
     {
       // in case no category is passed
-      ...(category && {
-        $match: { "coupon.category": new mongoose.Types.ObjectId(category) },
-      }),
-      ...(!category && {
-        $match: {},
-      }),
+      $match: {
+        ...(category && {
+          "coupon.category": new mongoose.Types.ObjectId(category),
+        }),
+      },
     },
     {
       $lookup: {
