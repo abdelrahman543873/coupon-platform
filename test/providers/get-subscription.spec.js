@@ -22,6 +22,10 @@ describe("get subscription suite case", () => {
       token: provider.token,
       variables: { subscription: subscriptions.ops[0]._id },
     });
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.paymentType._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data._id).toBe(
       decodeURI(encodeURI(subscriptions.ops[0]._id))
     );

@@ -165,14 +165,19 @@ export const getCustomerSubscriptionsRepository = async (
     {
       populate: [
         { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
+        {
+          path: "coupon",
+          populate: [
+            { path: "provider", select: { password: 0 } },
+            { path: "category" },
+          ],
+        },
         { path: "paymentType" },
       ],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      projection: { "provider.password": 0 },
+      projection: { provider: 0 },
     }
   );
 };
@@ -190,12 +195,17 @@ export const getSubscriptionRepository = async ({
       ...(customer && { customer }),
       ...(coupon && { coupon }),
     },
-    {},
+    { provider: 0 },
     {
       populate: [
         { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
+        {
+          path: "coupon",
+          populate: [
+            { path: "provider", select: { password: 0 } },
+            { path: "category" },
+          ],
+        },
         { path: "paymentType" },
       ],
       lean: true,

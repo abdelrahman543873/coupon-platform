@@ -24,7 +24,7 @@ describe("get customers subscriptions suite case", () => {
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.docs[0].customer._id).toBeTruthy();
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
-    expect(res.body.data.docs[0].provider._id).toBeTruthy();
+    expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
 });
