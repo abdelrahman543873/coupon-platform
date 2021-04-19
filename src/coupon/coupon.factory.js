@@ -44,6 +44,7 @@ export const buildProviderCustomerCouponParams = async (
     paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
+    total: couponObj.total || faker.datatype.number(),
   };
 };
 

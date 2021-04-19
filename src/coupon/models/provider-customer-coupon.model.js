@@ -51,6 +51,7 @@ const providerCustomerCoupon = mongoose.Schema(
       default: "",
     },
     image: { type: String },
+    total: { type: Number },
   },
   {
     timestamps: true,
