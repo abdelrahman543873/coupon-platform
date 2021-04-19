@@ -31,7 +31,7 @@ export const getPaymentTypesService = async (req, res, next) => {
     );
     res.status(200).json({
       success: true,
-      data: { payments },
+      data: payments,
     });
   } catch (error) {
     next(error);
