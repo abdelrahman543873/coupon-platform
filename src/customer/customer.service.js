@@ -194,7 +194,9 @@ export const getCustomersCouponsService = async (req, res, next) => {
       });
     else {
       const customer = await getCustomerRepository(req.currentUser._id);
-      const favCoupons = customer.favCoupons;
+      const favCoupons = customer.favCoupons.map((coupon) => {
+        return coupon.toString();
+      });
       const subscribedCoupons = await getCustomerSubscribedCoupons(
         customer.user
       );

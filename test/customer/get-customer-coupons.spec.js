@@ -37,6 +37,7 @@ describe("get customer coupons suite case", () => {
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
       token: customer.token,
     });
+    expect(res.body.data.docs[res.body.data.docs.length - 1].isFav).toBe(true);
     expect(res.body.data.docs[0].isSubscribe).toBe(true);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(11);
