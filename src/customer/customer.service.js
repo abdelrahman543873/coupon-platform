@@ -266,10 +266,24 @@ export const resendCodeService = async (req, res, next) => {
 
 export const getCustomerSubscriptionsService = async (req, res, next) => {
   try {
+    const subscriptionsIds = [];
+    const favCoupons = [];
+    const subscribedCoupons = await getCustomerSubscribedCoupons(
+      req.currentUser._id
+    );
+    subscribedCoupons.forEach((coupon) => {
+      subscriptionsIds.push(coupon.coupon);
+    });
+    const customer = await getCustomerRepository(req.currentUser._id);
+    customer.favCoupons.forEach((coupon) => {
+      favCoupons.push(coupon);
+    });
     const subscriptions = await getCustomerSubscriptionsRepository(
       req.currentUser._id,
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      subscriptionsIds,
+      favCoupons
     );
     res.status(200).json({
       success: true,

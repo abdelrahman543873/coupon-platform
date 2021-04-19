@@ -158,28 +158,97 @@ export const getAdminSubscriptionsRepository = async (
 export const getCustomerSubscriptionsRepository = async (
   customer,
   offset = 0,
-  limit = 15
+  limit = 15,
+  subscriptions = [],
+  favCoupons = []
 ) => {
-  return await providerCustomerCouponModel.paginate(
-    { customer },
+  const aggregation = providerCustomerCouponModel.aggregate([
     {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        {
-          path: "coupon",
-          populate: [
-            { path: "provider", select: { password: 0 } },
-            { path: "category" },
-          ],
+      ...(customer && {
+        $match: { customer: new mongoose.Types.ObjectId(customer) },
+      }),
+      ...(!customer && {
+        $match: {},
+      }),
+    },
+    {
+      $lookup: {
+        from: UserModel.collection.name,
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $lookup: {
+        from: PaymentModel.collection.name,
+        localField: "paymentType",
+        foreignField: "_id",
+        as: "paymentType",
+      },
+    },
+    {
+      $unwind: "$paymentType",
+    },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "coupon",
+        foreignField: "_id",
+        as: "coupon",
+      },
+    },
+    {
+      $unwind: "$coupon",
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "coupon.provider",
+        foreignField: "_id",
+        as: "coupon.provider",
+      },
+    },
+    {
+      $unwind: "$coupon.provider",
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "coupon.category",
+        foreignField: "_id",
+        as: "coupon.category",
+      },
+    },
+    {
+      $unwind: "$coupon.category",
+    },
+    {
+      $addFields: {
+        "coupon.isSubscribe": {
+          $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
         },
-        { path: "paymentType" },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-      projection: { provider: 0 },
-    }
-  );
+        "coupon.isFav": {
+          $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
+        },
+      },
+    },
+    {
+      $project: {
+        count: 0,
+        "coupon.provider.password": 0,
+        "customer.password": 0,
+        provider: 0,
+      },
+    },
+  ]);
+  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+  });
 };
 
 export const getSubscriptionRepository = async ({
