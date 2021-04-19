@@ -35,7 +35,7 @@ import { AddFavCouponsInput } from "./inputs/add-fav-coupons.input.js";
 import { MarkCouponUsedInput } from "./inputs/mark-coupon-used.input.js";
 import { UpdateCustomerInput } from "./inputs/update-customer.input.js";
 import { SubscribeInput } from "./inputs/subscribe.input.js";
-
+import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
 const customersRouter = express.Router();
 
 customersRouter
@@ -65,7 +65,9 @@ customersRouter
 
 customersRouter.route("/home").get(getCustomerHomeService);
 
-customersRouter.route("/getCoupons").get(getCustomersCouponsService);
+customersRouter
+  .route("/getCoupons")
+  .get(semiAuthenticationMiddleware, getCustomersCouponsService);
 
 customersRouter
   .route("/verifyOTP")

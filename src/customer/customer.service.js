@@ -9,6 +9,7 @@ import {
   findCoupons,
   createSubscriptionRepository,
   updateCouponById,
+  getCustomerSubscribedCoupons,
 } from "../coupon/coupon.repository.js";
 import { PaymentEnum } from "../payment/payment.enum.js";
 import { findPayment } from "../payment/payment.repository.js";
@@ -186,6 +187,26 @@ export const getCustomersCouponsService = async (req, res, next) => {
         req.query.offset,
         req.query.limit
       ));
+    if (req.currentUser === null)
+      data.docs.forEach((coupon) => {
+        coupon.isFav = false;
+        coupon.isSubscribe = false;
+      });
+    else {
+      const customer = await getCustomerRepository(req.currentUser._id);
+      const favCoupons = customer.favCoupons;
+      const subscribedCoupons = await getCustomerSubscribedCoupons(
+        customer.user
+      );
+      const subscriptionsIds = [];
+      subscribedCoupons.forEach((coupon) => {
+        subscriptionsIds.push(coupon.coupon.toString());
+      });
+      data.docs.forEach((coupon) => {
+        coupon.isFav = favCoupons.includes(coupon._id.toString());
+        coupon.isSubscribe = subscriptionsIds.includes(coupon._id.toString());
+      });
+    }
     return res.status(200).json({
       success: true,
       data,
