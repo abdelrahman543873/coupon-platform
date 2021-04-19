@@ -69,13 +69,14 @@ export const getAllCouponsService = async (req, res, next) => {
 export const getAllSubscriptionsService = async (req, res, next) => {
   try {
     const subscriptions = await getAdminSubscriptionsRepository(
+      req.query.paymentType,
       req.query.provider,
       req.query.offset,
       req.query.limit
     );
     res.status(200).json({
       success: true,
-      data: { subscriptions },
+      data: subscriptions,
     });
   } catch (error) {
     next(error);
