@@ -21,6 +21,10 @@ describe("get customers subscriptions suite case", () => {
       url: GET_CUSTOMER_SUBSCRIPTIONS,
       token: customer.token,
     });
+    const subscribed = res.body.data.docs.filter((subscription) => {
+      return subscription.coupon.isSubscribe === true;
+    });
+    expect(subscribed.length).toBe(10);
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.docs[0].customer._id).toBeTruthy();
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
