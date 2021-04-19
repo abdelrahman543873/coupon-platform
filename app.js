@@ -12,9 +12,7 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 connectDB(dbUrl)
   .then(() => {
     server.listen(process.env.COUPONAT_N_PORT, () => {
-      console.log(
-        "Couponat platform is running on port: " + process.env.COUPONAT_N_PORT
-      );
+      console.log("coupons platform is running ");
     });
     cron.schedule("0 0 */4 * * *", async () => {
       console.log("Here now");

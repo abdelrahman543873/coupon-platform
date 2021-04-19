@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 import { ProviderModel } from "../provider/models/provider.model.js";
 import { CategoryModel } from "../category/models/category.model.js";
 import mongoose from "mongoose";
+import { CustomerModel } from "../customer/models/customer.model.js";
+import { PaymentModel } from "../payment/models/payment.model.js";
+import { UserModel } from "../user/models/user.model.js";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -73,24 +76,83 @@ export const getSubscriptionsRepository = async (
 };
 
 export const getAdminSubscriptionsRepository = async (
+  paymentType,
   provider,
   offset = 0,
   limit = 15
 ) => {
-  return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }) },
+  const aggregation = providerCustomerCouponModel.aggregate([
     {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-      projection: { "provider.password": 0 },
-    }
-  );
+      // in case no category is passed
+      ...(provider && {
+        $match: { provider: new mongoose.Types.ObjectId(provider) },
+      }),
+      ...(!provider && {
+        $match: {},
+      }),
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      $lookup: {
+        from: PaymentModel.collection.name,
+        localField: "paymentType",
+        foreignField: "_id",
+        as: "paymentType",
+      },
+    },
+    {
+      $unwind: "$paymentType",
+    },
+    {
+      // in case no category is passed
+      ...(paymentType && {
+        $match: { "paymentType.key": paymentType },
+      }),
+      ...(!paymentType && {
+        $match: {},
+      }),
+    },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "coupon",
+        foreignField: "_id",
+        as: "coupon",
+      },
+    },
+    {
+      $unwind: "$coupon",
+    },
+    {
+      $lookup: {
+        from: UserModel.collection.name,
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $project: { _id: 0, "provider.password": 0, "customer.password": 0 },
+    },
+  ]);
+  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+    sort: "-createdAt",
+  });
 };
 
 export const getCustomerSubscriptionsRepository = async (
