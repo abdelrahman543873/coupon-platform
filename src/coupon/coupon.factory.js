@@ -38,7 +38,6 @@ export const buildProviderCustomerCouponParams = async (
     note: subscriptionObj.note || faker.random.words(),
     image: subscriptionObj.imgURL || faker.internet.url(),
     isConfirmed: subscriptionObj.isConfirmed || false,
-    isPaid: subscriptionObj.isPaid || false,
     isUsed: subscriptionObj.isUsed || false,
     provider: providerObj.provider || (await providerFactory(providerObj))._id,
     paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,

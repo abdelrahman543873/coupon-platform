@@ -31,9 +31,9 @@ describe("subscribe suite case", () => {
       },
     });
     expect(res.body.data.total).toBe(params.total);
-    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
-    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();
     expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
@@ -62,9 +62,9 @@ describe("subscribe suite case", () => {
     });
     const afterSubscription = (await getCoupon({ _id: coupon.id })).amount;
     expect(res.body.data.total).toBe(params.total);
-    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
-    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();
     expect(afterSubscription).toBe(coupon.amount - 1);
     expect(res.body.data.customer._id).toBe(
@@ -115,9 +115,9 @@ describe("subscribe suite case", () => {
       filePath,
     });
     expect(res.body.data.total).toBe(params.total);
-    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
-    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();
     expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
@@ -147,9 +147,9 @@ describe("subscribe suite case", () => {
       filePath,
     });
     expect(res.body.data.total).toBe(params.total);
-    expect(res.body.data.provider.password).toBeFalsy();
+    expect(res.body.data.coupon.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
-    expect(res.body.data.provider._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();
     expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
