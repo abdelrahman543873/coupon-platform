@@ -1,3 +1,4 @@
+import { categoryFactory } from "../../src/category/category.factory";
 import { couponFactory } from "../../src/coupon/coupon.factory";
 import { rollbackDbForCoupon } from "../coupon/rollback-for-coupon";
 import { SEARCH } from "../endpoints/search";
@@ -14,6 +15,18 @@ describe("add coupon suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=${coupon.enName}`,
+    });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+  });
+
+  it("should search for exact word by category", async () => {
+    const category = await categoryFactory();
+    const coupon = await couponFactory({ category: category._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH}?name=${coupon.enName}&category=${category._id}`,
     });
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
