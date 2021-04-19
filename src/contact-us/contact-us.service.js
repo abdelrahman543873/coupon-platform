@@ -66,7 +66,7 @@ export const adminSendContactsUsMessage = async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      data: { updatedMessage },
+      data: updatedMessage,
     });
   } catch {
     next(error);

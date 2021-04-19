@@ -22,7 +22,7 @@ describe("admin send contact us messages suite case", () => {
       token: admin.token,
       variables: { reply: params.reply.message, messageId: message.id },
     });
-    expect(res.body.data.updatedMessage.reply.message).toBe(
+    expect(res.body.data.reply.message).toBe(
       params.reply.message
     );
   });
