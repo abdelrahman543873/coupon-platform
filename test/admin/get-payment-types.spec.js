@@ -17,6 +17,6 @@ describe("get payment types suite case", () => {
       url: GET_PAYMENT_TYPES,
       token: admin.token,
     });
-    expect(res.body.data.payments.docs.length).toBe(10);
+    expect(res.body.data.docs.length).toBe(10);
   });
 });
