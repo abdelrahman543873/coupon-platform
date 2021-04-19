@@ -288,7 +288,9 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
   try {
     const subscription = await getSubscriptionRepository({
       customer: req.currentUser._id,
-      _id: req.query.coupon,
+      _id: req.query.subscription,
+      coupon: req.query.coupon,
+      provider: req.query.provider,
     });
     res.status(200).json({
       success: true,
