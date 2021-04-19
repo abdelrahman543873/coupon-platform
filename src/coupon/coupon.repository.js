@@ -164,8 +164,10 @@ export const getCustomerSubscriptionsRepository = async (
     { customer },
     {
       populate: [
+        { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },
+        { path: "paymentType" },
       ],
       offset: offset * limit,
       limit,
