@@ -8,7 +8,8 @@ export const searchCouponsService = async (req, res, next) => {
     const searchResult = await searchCouponsRepository(
       req.query.name,
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.category
     );
     res.status(200).json({
       success: true,
