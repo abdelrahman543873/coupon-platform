@@ -145,7 +145,7 @@ export const getAdminSubscriptionsRepository = async (
       $unwind: "$customer",
     },
     {
-      $project: { _id: 0, "provider.password": 0, "customer.password": 0 },
+      $project: { "provider.password": 0, "customer.password": 0 },
     },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
