@@ -408,6 +408,7 @@ export const subscribeService = async (req, res, next) => {
         image: req.file,
         account: req.body.account,
         transactionId: req.body.transactionId,
+        total: req.body.total,
       },
     });
     await updateCouponById(coupon._id, {

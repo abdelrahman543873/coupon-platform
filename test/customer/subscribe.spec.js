@@ -27,8 +27,10 @@ describe("subscribe suite case", () => {
         coupon: params.coupon,
         provider: params.provider,
         paymentType: paymentType.id,
+        total: params.total,
       },
     });
+    expect(res.body.data.total).toBe(params.total);
     expect(res.body.data.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.provider._id).toBeTruthy();
@@ -55,9 +57,11 @@ describe("subscribe suite case", () => {
         coupon: params.coupon,
         provider: params.provider,
         paymentType: paymentType.id,
+        total: params.total,
       },
     });
     const afterSubscription = (await getCoupon({ _id: coupon.id })).amount;
+    expect(res.body.data.total).toBe(params.total);
     expect(res.body.data.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.provider._id).toBeTruthy();
@@ -83,6 +87,7 @@ describe("subscribe suite case", () => {
         coupon: params.coupon,
         provider: params.provider,
         paymentType: paymentType.id,
+        total: params.total,
       },
     });
     expect(res.body.statusCode).toBe(636);
@@ -104,10 +109,12 @@ describe("subscribe suite case", () => {
         paymentType: paymentType.id,
         account: customer.id,
         transactionId: "1234",
+        total: params.total,
       },
       fileParam: "image",
       filePath,
     });
+    expect(res.body.data.total).toBe(params.total);
     expect(res.body.data.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.provider._id).toBeTruthy();
@@ -134,10 +141,12 @@ describe("subscribe suite case", () => {
         paymentType: paymentType.id,
         account: customer.id,
         transactionId: "1234",
+        total: params.total,
       },
       fileParam: "image",
       filePath,
     });
+    expect(res.body.data.total).toBe(params.total);
     expect(res.body.data.provider.password).toBeFalsy();
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.provider._id).toBeTruthy();

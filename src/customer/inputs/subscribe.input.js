@@ -12,4 +12,5 @@ export const SubscribeInput = Joi.object({
     .required(),
   account: Joi.string().regex(/^[0-9a-fA-F]{24}$/),
   transactionId: Joi.string(),
+  total: Joi.number().required(),
 });
