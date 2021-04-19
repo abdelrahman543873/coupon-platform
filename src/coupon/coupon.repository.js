@@ -231,6 +231,7 @@ export const getRecentlyAdddedCouponsRepository = async (
       limit,
       sort: "-createdAt",
       projection: { "provider.password": 0 },
+      lean: true,
     }
   );
 };
@@ -294,6 +295,7 @@ export const getMostSellingCouponRepository = async (
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
     offset,
     limit,
+    lean: true,
   });
 };
 export const getProviderHomeRepository = async (provider) => {
@@ -450,6 +452,14 @@ export const countSubscriptionsRepository = async (createdAt) => {
   return await providerCustomerCouponModel.countDocuments({
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
+};
+
+export const getCustomerSubscribedCoupons = async (customer) => {
+  return await providerCustomerCouponModel.find(
+    { customer },
+    { coupon: 1, _id: 0 },
+    { lean: true }
+  );
 };
 
 export const createSubscriptionRepository = async ({ subscription }) => {

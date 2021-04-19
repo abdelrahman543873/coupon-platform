@@ -4,6 +4,7 @@ import {
   providerCustomerCouponFactory,
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
+import { customerFactory } from "../../src/customer/customer.factory";
 import { GET_CUSTOMERS_COUPONS } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
@@ -21,6 +22,24 @@ describe("get customer coupons suite case", () => {
     });
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
+  });
+
+  it("get logged in customers coupons service", async () => {
+    const customer = await customerFactory();
+    await providerCustomerCouponsFactory(
+      10,
+      {},
+      { customer: customer.user },
+      {}
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs.length).toBe(11);
   });
 
   it("should get coupons by category filter", async () => {
