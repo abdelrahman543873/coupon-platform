@@ -256,30 +256,96 @@ export const getSubscriptionRepository = async ({
   provider,
   customer,
   coupon,
+  subscriptions = [],
+  favCoupons = [],
 }) => {
-  return await providerCustomerCouponModel.findOne(
-    {
-      ...(_id && { _id }),
-      ...(provider && { provider }),
-      ...(customer && { customer }),
-      ...(coupon && { coupon }),
-    },
-    { provider: 0 },
-    {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        {
-          path: "coupon",
-          populate: [
-            { path: "provider", select: { password: 0 } },
-            { path: "category" },
-          ],
+  // we only need the first element in the aggregation
+  return (
+    await providerCustomerCouponModel.aggregate([
+      {
+        $match: {
+          ...(_id && { _id: new mongoose.Types.ObjectId(_id) }),
+          ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
+          ...(customer && { customer: new mongoose.Types.ObjectId(customer) }),
+          ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
         },
-        { path: "paymentType" },
-      ],
-      lean: true,
-    }
-  );
+      },
+      { $limit: 1 },
+      {
+        $lookup: {
+          from: UserModel.collection.name,
+          localField: "customer",
+          foreignField: "_id",
+          as: "customer",
+        },
+      },
+      {
+        $unwind: "$customer",
+      },
+      {
+        $lookup: {
+          from: PaymentModel.collection.name,
+          localField: "paymentType",
+          foreignField: "_id",
+          as: "paymentType",
+        },
+      },
+      {
+        $unwind: "$paymentType",
+      },
+      {
+        $lookup: {
+          from: CouponModel.collection.name,
+          localField: "coupon",
+          foreignField: "_id",
+          as: "coupon",
+        },
+      },
+      {
+        $unwind: "$coupon",
+      },
+      {
+        $lookup: {
+          from: ProviderModel.collection.name,
+          localField: "coupon.provider",
+          foreignField: "_id",
+          as: "coupon.provider",
+        },
+      },
+      {
+        $unwind: "$coupon.provider",
+      },
+      {
+        $lookup: {
+          from: CategoryModel.collection.name,
+          localField: "coupon.category",
+          foreignField: "_id",
+          as: "coupon.category",
+        },
+      },
+      {
+        $unwind: "$coupon.category",
+      },
+      {
+        $addFields: {
+          "coupon.isSubscribe": {
+            $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
+          },
+          "coupon.isFav": {
+            $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
+          },
+        },
+      },
+      {
+        $project: {
+          count: 0,
+          "coupon.provider.password": 0,
+          "customer.password": 0,
+          provider: 0,
+        },
+      },
+    ])
+  )[0];
 };
 
 export const getCustomerSubscriptionRepository = async (_id, customer) => {

@@ -296,11 +296,27 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
 
 export const getCustomerSubscriptionService = async (req, res, next) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.query.subscription))
+      throw new BaseHttpError(631);
+    const subscriptionsIds = [];
+    const favCoupons = [];
+    const subscribedCoupons = await getCustomerSubscribedCoupons(
+      req.currentUser._id
+    );
+    subscribedCoupons.forEach((coupon) => {
+      subscriptionsIds.push(coupon.coupon);
+    });
+    const customer = await getCustomerRepository(req.currentUser._id);
+    customer.favCoupons.forEach((coupon) => {
+      favCoupons.push(coupon);
+    });
     const subscription = await getSubscriptionRepository({
-      customer: req.currentUser._id,
       _id: req.query.subscription,
       coupon: req.query.coupon,
+      customer: req.currentUser._id,
       provider: req.query.provider,
+      subscriptions: subscriptionsIds,
+      favCoupons,
     });
     res.status(200).json({
       success: true,
