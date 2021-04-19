@@ -174,41 +174,37 @@ export const getCustomersCouponsService = async (req, res, next) => {
     )
       throw new BaseHttpError(631);
     let data;
+    const subscriptionsIds = [];
+    const favCoupons = [];
+    if (req.currentUser) {
+      const subscribedCoupons = await getCustomerSubscribedCoupons(
+        req.currentUser._id
+      );
+      subscribedCoupons.forEach((coupon) => {
+        subscriptionsIds.push(coupon.coupon);
+      });
+      const customer = await getCustomerRepository(req.currentUser._id);
+      customer.favCoupons.forEach((coupon) => {
+        favCoupons.push(coupon);
+      });
+    }
     req.query.section === "bestSeller" &&
       (data = await getMostSellingCouponRepository(
         req.query.category,
         req.query.offset,
-        req.query.limit
+        req.query.limit,
+        subscriptionsIds,
+        favCoupons
       ));
     !data &&
       (data = await getRecentlyAdddedCouponsRepository(
         req.query.provider,
         req.query.category,
         req.query.offset,
-        req.query.limit
+        req.query.limit,
+        subscriptionsIds,
+        favCoupons
       ));
-    if (req.currentUser === null)
-      data.docs.forEach((coupon) => {
-        coupon.isFav = false;
-        coupon.isSubscribe = false;
-      });
-    else {
-      const customer = await getCustomerRepository(req.currentUser._id);
-      const favCoupons = customer.favCoupons.map((coupon) => {
-        return coupon.toString();
-      });
-      const subscribedCoupons = await getCustomerSubscribedCoupons(
-        customer.user
-      );
-      const subscriptionsIds = [];
-      subscribedCoupons.forEach((coupon) => {
-        subscriptionsIds.push(coupon.coupon.toString());
-      });
-      data.docs.forEach((coupon) => {
-        coupon.isFav = favCoupons.includes(coupon._id.toString());
-        coupon.isSubscribe = subscriptionsIds.includes(coupon._id.toString());
-      });
-    }
     return res.status(200).json({
       success: true,
       data,

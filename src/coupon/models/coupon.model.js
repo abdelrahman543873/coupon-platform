@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 const coupon = mongoose.Schema(
   {
     enName: {
@@ -57,5 +58,6 @@ const coupon = mongoose.Schema(
     versionKey: false,
   }
 );
+coupon.plugin(aggregatePaginate);
 coupon.plugin(mongoosePaginate);
 export const CouponModel = mongoose.model("Coupon", coupon);

@@ -34,11 +34,35 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs.length).toBe(10);
+  });
+
+  it("get logged in customers coupons service for newest", async () => {
+    const customer = await customerFactory();
+    await providerCustomerCouponsFactory(
+      10,
+      {},
+      { customer: customer.user },
+      {}
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
       token: customer.token,
     });
-    expect(res.body.data.docs[res.body.data.docs.length - 1].isFav).toBe(true);
-    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    const fav = res.body.data.docs.filter((coupon) => {
+      return coupon._id === customer.favCoupons[0].toString();
+    });
+    const subscribed = res.body.data.docs.filter((coupon) => {
+      return coupon.isSubscribe === true;
+    });
+    expect(fav.length).toBe(1);
+    expect(subscribed.length).toBe(10);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs.length).toBe(11);
   });
