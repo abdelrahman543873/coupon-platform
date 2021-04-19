@@ -380,9 +380,15 @@ export const rawDeleteProviderCustomerCoupon = async () => {
   return await providerCustomerCouponModel.deleteMany({});
 };
 
-export const searchCouponsRepository = async (name, offset = 0, limit = 15) => {
+export const searchCouponsRepository = async (
+  name,
+  offset = 0,
+  limit = 15,
+  category
+) => {
   return await CouponModel.paginate(
     {
+      ...(category && { category }),
       $or: [
         { enName: { $regex: name, $options: "i" } },
         { arName: { $regex: name, $options: "i" } },
