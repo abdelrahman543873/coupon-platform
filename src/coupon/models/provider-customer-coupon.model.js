@@ -41,11 +41,6 @@ const providerCustomerCoupon = mongoose.Schema(
     account: {
       type: mongoose.Schema.Types.ObjectId,
     },
-    isPaid: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
     note: {
       type: String,
       default: "",
