@@ -491,7 +491,8 @@ export const getMostSellingCouponRepository = async (
   offset = 0,
   limit = 15,
   subscriptions = [],
-  favCoupons = []
+  favCoupons = [],
+  provider
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
@@ -509,7 +510,6 @@ export const getMostSellingCouponRepository = async (
       $unwind: "$coupon",
     },
     {
-      // in case no category is passed
       $match: {
         ...(category && {
           "coupon.category": new mongoose.Types.ObjectId(category),
@@ -526,6 +526,13 @@ export const getMostSellingCouponRepository = async (
     },
     {
       $unwind: "$coupon.provider",
+    },
+    {
+      $match: {
+        ...(provider && {
+          "coupon.provider._id": new mongoose.Types.ObjectId(provider),
+        }),
+      },
     },
     {
       $lookup: {

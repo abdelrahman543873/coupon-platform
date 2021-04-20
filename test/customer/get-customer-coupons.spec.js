@@ -118,6 +118,26 @@ describe("get customer coupons suite case", () => {
       decodeURI(encodeURI(additionalCoupon.coupon))
     );
   });
+  it("customer get best seller coupons successfully and filter by provider", async () => {
+    const providerCustomerCoupons = await providerCustomerCouponsFactory();
+    // increasing the number of a coupon to check most sold
+    const additionalCoupon = await providerCustomerCouponFactory(
+      {
+        provider: providerCustomerCoupons.ops[0].provider,
+      },
+      { customer: providerCustomerCoupons.ops[0].customer },
+      { coupon: providerCustomerCoupons.ops[0].coupon }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&provider=${providerCustomerCoupons.ops[0].provider}`,
+    });
+    console.log(res.body);
+    // expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    // expect(res.body.data.docs[0]._id).toBe(
+    //   decodeURI(encodeURI(additionalCoupon.coupon))
+    // );
+  });
 
   it("should filter by best seller and category", async () => {
     const category = await categoryFactory();

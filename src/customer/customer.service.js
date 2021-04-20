@@ -194,7 +194,8 @@ export const getCustomersCouponsService = async (req, res, next) => {
         req.query.offset,
         req.query.limit,
         subscriptionsIds,
-        favCoupons
+        favCoupons,
+        req.query.provider
       ));
     !data &&
       (data = await getRecentlyAdddedCouponsRepository(
