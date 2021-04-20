@@ -55,6 +55,17 @@ export const getCompletelySoldCouponsRepository = async (
   );
 };
 
+export const getNotCompletelySoldCouponsRepository = async (
+  provider,
+  offset = 0,
+  limit = 15
+) => {
+  return await CouponModel.paginate(
+    { ...(provider && { provider }), amount: { $gt: 0 } },
+    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
+  );
+};
+
 export const getSubscriptionsRepository = async (
   provider,
   offset = 0,
