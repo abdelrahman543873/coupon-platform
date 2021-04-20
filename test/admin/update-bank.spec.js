@@ -19,17 +19,13 @@ describe("update bank suite case", () => {
       variables: { bank: bank._id },
       token: admin.token,
     });
-    const queriedBank = await BankModel.findOne({ _id: bank._id });
-    expect(res.body.data).toBe(true);
-    expect(queriedBank.isActive).toBe(false);
+    expect(res.body.data).toBe(false);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: TOGGLE_BANK,
       variables: { bank: bank._id },
       token: admin.token,
     });
-    const queriedBank1 = await BankModel.findOne({ _id: bank._id });
     expect(res1.body.data).toBe(true);
-    expect(queriedBank1.isActive).toBe(true);
   });
 });
