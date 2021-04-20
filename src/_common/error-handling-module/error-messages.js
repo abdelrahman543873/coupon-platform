@@ -147,4 +147,8 @@ export const LocalizedErrorMessages = {
     EN: "we don't support this location",
     AR: "we don't support this location",
   },
+  640: {
+    EN: "you have no subscriptions with this provider",
+    AR: "you have no subscriptions with this provider",
+  },
 };
