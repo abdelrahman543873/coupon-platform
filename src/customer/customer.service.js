@@ -10,6 +10,7 @@ import {
   createSubscriptionRepository,
   updateCouponById,
   getCustomerSubscribedCoupons,
+  getCustomerCouponNotUsedSubscriptionRepository,
 } from "../coupon/coupon.repository.js";
 import { PaymentEnum } from "../payment/payment.enum.js";
 import { findPayment } from "../payment/payment.repository.js";
@@ -318,7 +319,7 @@ export const getCustomerHomeSubscriptionsService = async (req, res, next) => {
       req.query.limit,
       subscriptionsIds,
       favCoupons,
-      req.body.code,
+      req.body.code
     );
     if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
     res.status(200).json({
@@ -490,6 +491,14 @@ export const subscribeService = async (req, res, next) => {
     const coupon = await getCoupon({ _id: req.body.coupon });
     if (!coupon) throw new BaseHttpError(618);
     if (coupon.amount === 0) throw new BaseHttpError(636);
+    const existingSubscriptionSameCoupon = await getCustomerCouponNotUsedSubscriptionRepository(
+      {
+        customer: req.currentUser._id,
+        coupon: coupon._id,
+        provider: provider._id,
+      }
+    );
+    if (existingSubscriptionSameCoupon) throw new BaseHttpError(641);
     const paymentType = await findPayment({ _id: req.body.paymentType });
     if (!paymentType) throw new BaseHttpError(633);
     if (

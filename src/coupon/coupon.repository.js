@@ -437,6 +437,17 @@ export const getCustomerSubscriptionRepository = async (_id, customer) => {
   );
 };
 
+export const getCustomerCouponNotUsedSubscriptionRepository = async ({
+  customer,
+  coupon,
+  provider,
+}) => {
+  return await providerCustomerCouponModel.findOne(
+    { customer, provider, coupon, isUsed: false },
+    {}
+  );
+};
+
 export const getRecentlyAdddedCouponsRepository = async (
   provider,
   category,
