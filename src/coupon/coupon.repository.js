@@ -317,6 +317,9 @@ export const getCustomerSubscriptionsRepository = async (
         provider: 0,
       },
     },
+    {
+      $sort: { createdAt: -1 },
+    },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
     offset: offset * limit,
