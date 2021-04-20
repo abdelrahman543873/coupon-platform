@@ -321,7 +321,6 @@ export const getCustomerHomeSubscriptionsService = async (req, res, next) => {
       favCoupons,
       req.body.code
     );
-    if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
     res.status(200).json({
       success: true,
       data: subscriptions,

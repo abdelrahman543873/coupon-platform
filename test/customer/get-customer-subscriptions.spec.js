@@ -77,6 +77,6 @@ describe("get customers subscriptions suite case", () => {
       url: GET_CUSTOMER_SUBSCRIPTIONS,
       token: customer.token,
     });
-    expect(res.body.statusCode).not.toBe(640);
+    expect(res.body.data.docs.length).toBe(0);
   });
 });
