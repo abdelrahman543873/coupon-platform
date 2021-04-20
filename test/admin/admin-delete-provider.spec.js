@@ -1,6 +1,5 @@
 import { testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
-import path from "path";
 import { providerCustomerCouponsFactory } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ADMIN_DELETE_PROVIDER } from "../endpoints/admin.js";
