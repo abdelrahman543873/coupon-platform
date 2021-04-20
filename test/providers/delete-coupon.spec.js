@@ -1,4 +1,5 @@
 import { couponFactory } from "../../src/coupon/coupon.factory";
+import { CouponModel } from "../../src/coupon/models/coupon.model";
 import { providerFactory } from "../../src/provider/provider.factory";
 import { DELETE_COUPON } from "../endpoints/provider";
 import { testRequest } from "../request";
@@ -18,6 +19,8 @@ describe("delete coupon suite case", () => {
       token: provider.token,
       variables: { coupon: coupon._id },
     });
-    expect(res.body.data.coupon._id).toBe(decodeURI(encodeURI(coupon._id)));
+    const deletedCoupon = await CouponModel.findOne({ _id: coupon._id });
+    expect(deletedCoupon).toBe(null);
+    expect(res.body.data).toBe(true);
   });
 });
