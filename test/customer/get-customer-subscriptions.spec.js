@@ -69,4 +69,14 @@ describe("get customers subscriptions suite case", () => {
     });
     expect(res2.body.data.docs[0].coupon.isSubscribe).toBe(false);
   });
+
+  it("isSubscribe should evaluate to false when isUsed is true", async () => {
+    const customer = await customerFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: customer.token,
+    });
+    expect(res.body.statusCode).not.toBe(640);
+  });
 });

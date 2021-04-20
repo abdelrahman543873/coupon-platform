@@ -757,7 +757,6 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
     { isUsed: true },
     {
       new: true,
-      projection: { coupon: 1, _id: 0 },
       populate: [
         {
           path: "coupon",
