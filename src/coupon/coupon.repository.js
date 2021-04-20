@@ -84,6 +84,7 @@ export const getRecentlySoldCouponsRepository = async (
       $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
     },
     { $replaceRoot: { newRoot: "$coupon" } },
+    { $sort: { createdAt: -1 } },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
     offset,
