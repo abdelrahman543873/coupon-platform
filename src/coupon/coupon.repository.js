@@ -571,10 +571,12 @@ export const searchCouponsRepository = async (
     {
       $match: {
         ...(category && { category: new mongoose.Types.ObjectId(category) }),
-        $or: [
-          { enName: { $regex: name, $options: "i" } },
-          { arName: { $regex: name, $options: "i" } },
-        ],
+        ...(name && {
+          $or: [
+            { enName: { $regex: name, $options: "i" } },
+            { arName: { $regex: name, $options: "i" } },
+          ],
+        }),
       },
     },
     {
