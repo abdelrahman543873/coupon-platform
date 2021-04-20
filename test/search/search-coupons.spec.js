@@ -1,5 +1,10 @@
 import { categoryFactory } from "../../src/category/category.factory";
-import { couponFactory } from "../../src/coupon/coupon.factory";
+import {
+  couponFactory,
+  providerCustomerCouponsFactory,
+} from "../../src/coupon/coupon.factory";
+import { CouponModel } from "../../src/coupon/models/coupon.model";
+import { customerFactory } from "../../src/customer/customer.factory";
 import { rollbackDbForCoupon } from "../coupon/rollback-for-coupon";
 import { SEARCH } from "../endpoints/search";
 import { testRequest } from "../request";
@@ -16,6 +21,26 @@ describe("add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=${coupon.enName}`,
     });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+  });
+
+  it("should search for exact word and return correct isSubscribe and isFav", async () => {
+    const customer = await customerFactory();
+    const coupons = await providerCustomerCouponsFactory(
+      10,
+      {},
+      { customer: customer.user },
+      {}
+    );
+    const coupon = await CouponModel.findOne({ _id: coupons.ops[0].coupon });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH}?name=${coupon.enName}`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0].enName).toBe(coupon.enName);
