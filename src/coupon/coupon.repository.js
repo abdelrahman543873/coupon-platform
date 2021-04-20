@@ -485,6 +485,9 @@ export const getRecentlyAdddedCouponsRepository = async (
     {
       $project: { count: 0, "provider.password": 0 },
     },
+    {
+      $sort: { createdAt: -1 },
+    },
   ]);
   return await CouponModel.aggregatePaginate(aggregation, {
     offset: offset * limit,
