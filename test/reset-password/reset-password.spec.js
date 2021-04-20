@@ -1,5 +1,5 @@
 import { UserRoleEnum } from "../../src/user/user-role.enum";
-import { userFactory } from "../../src/user/user.factory";
+import { buildUserParams, userFactory } from "../../src/user/user.factory";
 import { RESET_PASSWORD, CHANGE_PASSWORD } from "../endpoints/reset-password";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
@@ -20,6 +20,26 @@ describe("reset password suite case", () => {
     });
     expect(res.body.success).toBe(true);
     expect(res.body.data).toBe(true);
+  });
+
+  it("reset password for non existing user by phone", async () => {
+    const admin = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { phone: admin.phone },
+    });
+    expect(res.body.statusCode).toBe(611);
+  });
+
+  it("reset password for non existing user by email", async () => {
+    const admin = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { email: admin.email },
+    });
+    expect(res.body.statusCode).toBe(611);
   });
 
   it("customer reset password with phone", async () => {

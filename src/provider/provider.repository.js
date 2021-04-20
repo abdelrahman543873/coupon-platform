@@ -37,6 +37,16 @@ export const findProviderByEmailForLogin = async ({ provider }) => {
   });
 };
 
+export const findProviderByEmail = async ({ email }) => {
+  return await ProviderModel.findOne(
+    {
+      email,
+    },
+    { password: 0 },
+    { lean: true }
+  );
+};
+
 export const getRecentlySoldCouponsRepository = async (
   provider,
   offset = 0,
