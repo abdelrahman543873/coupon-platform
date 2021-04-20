@@ -298,6 +298,38 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
   }
 };
 
+export const getCustomerHomeSubscriptionsService = async (req, res, next) => {
+  try {
+    const subscriptionsIds = [];
+    const favCoupons = [];
+    const subscribedCoupons = await getCustomerSubscribedCoupons(
+      req.currentUser._id
+    );
+    subscribedCoupons.forEach((coupon) => {
+      subscriptionsIds.push(coupon.coupon);
+    });
+    const customer = await getCustomerRepository(req.currentUser._id);
+    customer.favCoupons.forEach((coupon) => {
+      favCoupons.push(coupon);
+    });
+    const subscriptions = await getCustomerSubscriptionsRepository(
+      req.currentUser._id,
+      req.query.offset,
+      req.query.limit,
+      subscriptionsIds,
+      favCoupons,
+      req.body.code,
+    );
+    if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
+    res.status(200).json({
+      success: true,
+      data: subscriptions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getCustomerSubscriptionService = async (req, res, next) => {
   try {
     if (req.query.coupon && !mongoose.Types.ObjectId.isValid(req.query.coupon))

@@ -11,6 +11,7 @@ import {
   CustomerRegisterService,
   getCouponService,
   getCustomerHomeService,
+  getCustomerHomeSubscriptionsService,
   getCustomersCouponsService,
   getCustomerService,
   getCustomerSubscriptionService,
@@ -92,7 +93,7 @@ customersRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
-    getCustomerSubscriptionsService
+    getCustomerHomeSubscriptionsService
   );
 
 customersRouter
