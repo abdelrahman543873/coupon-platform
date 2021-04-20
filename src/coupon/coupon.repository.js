@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import { ProviderModel } from "../provider/models/provider.model.js";
 import { CategoryModel } from "../category/models/category.model.js";
 import mongoose from "mongoose";
-import { CustomerModel } from "../customer/models/customer.model.js";
 import { PaymentModel } from "../payment/models/payment.model.js";
 import { UserModel } from "../user/models/user.model.js";
 
@@ -215,7 +214,8 @@ export const getCustomerSubscriptionsRepository = async (
   offset = 0,
   limit = 15,
   subscriptions = [],
-  favCoupons = []
+  favCoupons = [],
+  code
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
@@ -268,6 +268,13 @@ export const getCustomerSubscriptionsRepository = async (
     },
     {
       $unwind: "$coupon.provider",
+    },
+    {
+      $match: {
+        ...(code && {
+          "coupon.provider.code": new mongoose.Types.ObjectId(code),
+        }),
+      },
     },
     {
       $lookup: {

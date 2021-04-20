@@ -36,6 +36,7 @@ import { MarkCouponUsedInput } from "./inputs/mark-coupon-used.input.js";
 import { UpdateCustomerInput } from "./inputs/update-customer.input.js";
 import { SubscribeInput } from "./inputs/subscribe.input.js";
 import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
+import { ScanInput } from "../customer/inputs/scan.input.js";
 const customersRouter = express.Router();
 
 customersRouter
@@ -167,6 +168,14 @@ customersRouter
     fileValidationMiddleWare,
     ValidationMiddleware(SubscribeInput),
     subscribeService
+  );
+customersRouter
+  .route("/scan")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(ScanInput),
+    getCustomerSubscriptionsService
   );
 
 export { customersRouter };
