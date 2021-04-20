@@ -223,11 +223,15 @@ export const getCustomerSubscriptionsRepository = async (
   limit = 15,
   subscriptions = [],
   favCoupons = [],
-  code
+  code,
+  isUsed
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
       $match: {
+        ...(isUsed !== undefined && {
+          isUsed,
+        }),
         ...(customer && {
           customer: new mongoose.Types.ObjectId(customer),
         }),
