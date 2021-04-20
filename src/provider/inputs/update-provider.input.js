@@ -5,10 +5,12 @@ export const UpdateProviderInput = Joi.object({
   password: Joi.string()
     .min(8)
     .optional()
-    .when("email", { then: Joi.string().min(8).required() })
     .when("newPassword", {
       then: Joi.string().min(8).disallow(Joi.ref("newPassword")).required(),
     }),
+  verificationCode: Joi.string().when("email", {
+    then: Joi.string().required(),
+  }),
   slogan: Joi.string().min(10).optional(),
   websiteLink: Joi.string().allow("").min(3).optional(),
   facebookLink: Joi.string().allow("").min(3).optional(),

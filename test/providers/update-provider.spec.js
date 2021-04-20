@@ -8,6 +8,8 @@ import {
 import { buildUserParams } from "../../src/user/user.factory.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
+import { verificationFactory } from "../../src/verification/verification.factory.js";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -26,6 +28,7 @@ describe("update provider suite case", () => {
       user,
       image,
       locations,
+      email,
       ...input
     } = providerInput;
     input.password = "12345678";
@@ -50,6 +53,7 @@ describe("update provider suite case", () => {
       role,
       locations,
       image,
+      email,
       password,
       ...input
     } = providerInput;
@@ -74,6 +78,7 @@ describe("update provider suite case", () => {
       isActive,
       code,
       fcmToken,
+      email,
       locations,
       logoURL,
       qrURL,
@@ -97,7 +102,7 @@ describe("update provider suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, phone, role, ...input } = providerInput;
+    const { password, email, phone, role, ...input } = providerInput;
     input.password = "12345678";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -113,7 +118,7 @@ describe("update provider suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, phone, ...input } = providerInput;
+    const { password, role, email, phone, ...input } = providerInput;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
@@ -123,17 +128,32 @@ describe("update provider suite case", () => {
     expect(res.body.statusCode).toBe(607);
   });
 
-  it("successfully change email when right password entered", async () => {
-    const mockUser = await providerFactory({ password: "12345678" });
-    const providerInput = await buildUserParams();
-    const { password, role, phone, ...input } = providerInput;
+  it("successfully change email when right otp is entered", async () => {
+    const provider = await providerFactory();
+    const params = await buildUserParams();
+    const verification = await verificationFactory({
+      email: provider.email,
+      code: "12345",
+    });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
-      variables: { ...input, password: "12345678" },
-      token: mockUser.token,
+      variables: { email: params.email, verificationCode: verification.code },
+      token: provider.token,
     });
-    expect(res.body.data.provider.email).toBe(input.email);
+    expect(res.body.data.provider.email).toBe(params.email);
+  });
+
+  it("should throw error if code doesn't exist", async () => {
+    const provider = await providerFactory();
+    const params = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: PROVIDER_MODIFICATION,
+      variables: { email: params.email, verificationCode: "randomCode" },
+      token: provider.token,
+    });
+    expect(res.body.statusCode).toBe(617);
   });
 
   it("error if phone without password is entered", async () => {
@@ -166,6 +186,7 @@ describe("update provider suite case", () => {
       logoURL,
       image,
       locations,
+      email,
       code,
       ...providerInput
     } = await buildProviderParams();

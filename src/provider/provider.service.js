@@ -15,7 +15,10 @@ import {
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
-import { addVerificationCode } from "../verification/verification.repository.js";
+import {
+  addVerificationCode,
+  verifyOTPRepository,
+} from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
@@ -83,6 +86,13 @@ export const updateProviderService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
+    if (req.body.verificationCode) {
+      const verification = await verifyOTPRepository({
+        code: req.body.verificationCode,
+        email: req.currentUser.email,
+      });
+      if (!verification) throw new BaseHttpError(617);
+    }
     const provider = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
       image: req.file,
