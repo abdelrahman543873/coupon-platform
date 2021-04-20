@@ -71,7 +71,11 @@ import { AddCityInput } from "../city/inputs/add-city.input.js";
 import { UpdateCityInput } from "../city/inputs/update-city.input.js";
 import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
 import { AddBankAccountInput } from "../../src/bank/inputs/add-bank-account.input.js";
-import { addBankAccountService } from "../../src/bank/bank.service.js";
+import {
+  addBankAccountService,
+  toggleBankAccountService,
+} from "../../src/bank/bank.service.js";
+import { toggleBankAccountInput } from "../../src/bank/inputs/toggle-bank-account.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -347,6 +351,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AddBankAccountInput),
     addBankAccountService
+  );
+
+adminRouter
+  .route("/toggleBankAccount")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(toggleBankAccountInput),
+    toggleBankAccountService
   );
 
 export { adminRouter };

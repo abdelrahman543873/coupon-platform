@@ -132,11 +132,10 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&provider=${providerCustomerCoupons.ops[0].provider}`,
     });
-    console.log(res.body);
-    // expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    // expect(res.body.data.docs[0]._id).toBe(
-    //   decodeURI(encodeURI(additionalCoupon.coupon))
-    // );
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0]._id).toBe(
+      decodeURI(encodeURI(additionalCoupon.coupon))
+    );
   });
 
   it("should filter by best seller and category", async () => {
