@@ -166,7 +166,7 @@ export const deleteCouponService = async (req, res, next) => {
     const deletedCoupon = await deleteCoupon(coupon.id);
     res.status(200).json({
       success: true,
-      data: { coupon: deletedCoupon },
+      data: true,
     });
   } catch (error) {
     next(error);
