@@ -296,7 +296,12 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
 
 export const getCustomerSubscriptionService = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.coupon))
+    if (req.query.coupon && !mongoose.Types.ObjectId.isValid(req.query.coupon))
+      throw new BaseHttpError(631);
+    if (
+      req.query.provider &&
+      !mongoose.Types.ObjectId.isValid(req.query.provider)
+    )
       throw new BaseHttpError(631);
     const subscriptionsIds = [];
     const favCoupons = [];
