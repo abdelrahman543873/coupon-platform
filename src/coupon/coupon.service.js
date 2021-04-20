@@ -125,10 +125,9 @@ export const adminUpdateProfileService = async (req, res, next) => {
     if (req.body.code) {
       const verification = await verifyOTPRepository({
         code: req.body.code,
+        email: req.currentUser.email,
       });
       if (!verification) throw new BaseHttpError(617);
-      const user = findUserByEmailOrPhone({ email: verification.email });
-      if (!user) throw new BaseHttpError(611);
     }
     //if user wants to change anything else
     const user = await updateUser(req.currentUser._id, req.body);
