@@ -30,3 +30,4 @@ export const GET_UNCONFIRMED_PAYMENTS =
 export const ADD_CITY = "/admin-management/addCity";
 export const UPDATE_CITY = "/admin-management/updateCity";
 export const TOGGLE_CITY = "/admin-management/toggleCity";
+export const ADD_BANK = "/admin-management/addBankAccount";

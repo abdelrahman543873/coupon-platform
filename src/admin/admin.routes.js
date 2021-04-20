@@ -70,7 +70,8 @@ import {
 import { AddCityInput } from "../city/inputs/add-city.input.js";
 import { UpdateCityInput } from "../city/inputs/update-city.input.js";
 import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
-
+import { AddBankAccountInput } from "../../src/bank/inputs/add-bank-account.input.js";
+import { addBankAccountService } from "../../src/bank/bank.service.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -337,6 +338,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(toggleCityInput),
     toggleCityService
+  );
+
+adminRouter
+  .route("/addBankAccount")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddBankAccountInput),
+    addBankAccountService
   );
 
 export { adminRouter };
