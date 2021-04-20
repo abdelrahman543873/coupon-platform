@@ -38,7 +38,6 @@ describe("get my coupons suite case", () => {
       url: `${GET_MY_COUPONS}?recentlySold=true`,
       token: provider.token,
     });
-    console.log(res.body.data.docs[0]);
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.password).toBeFalsy();
     expect(res.body.data.docs.length).toBe(10);
