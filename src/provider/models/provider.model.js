@@ -56,6 +56,12 @@ export const provider = mongoose.Schema(
     twitterLink: { type: String },
     fcmToken: { type: String },
     qrURL: { type: String },
+    code: {
+      type: mongoose.Schema.Types.ObjectId,
+      index: true,
+      required: true,
+      auto: true,
+    },
   },
   {
     timestamps: true,

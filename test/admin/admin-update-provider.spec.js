@@ -99,6 +99,7 @@ describe("admin update provider suite case", () => {
       isActive,
       fcmToken,
       qrURL,
+      code,
       logoURL,
       ...providerInput
     } = {
