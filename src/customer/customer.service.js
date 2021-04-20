@@ -283,7 +283,8 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
       req.query.offset,
       req.query.limit,
       subscriptionsIds,
-      favCoupons
+      favCoupons,
+      req.body.code
     );
     res.status(200).json({
       success: true,
