@@ -55,6 +55,24 @@ describe("get my coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
+  it("get unsold coupons", async () => {
+    const provider = await providerFactory();
+    const coupons = await couponsFactory(10, {
+      provider: provider._id,
+      amount: 5,
+    });
+    await couponFactory({
+      amount: 0,
+      provider: provider._id,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_MY_COUPONS}?sold=false`,
+      token: provider.token,
+    });
+    expect(res.body.data.docs.length).toBe(10);
+  });
+
   it("get sold coupons", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {

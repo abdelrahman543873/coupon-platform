@@ -10,6 +10,7 @@ import {
   updateCoupon,
   getCompletelySoldCouponsRepository,
   getCoupon,
+  getNotCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
@@ -106,6 +107,12 @@ export const getMyCouponsService = async (req, res, next) => {
       ));
     req.query.sold == "true" &&
       (data = await getCompletelySoldCouponsRepository(
+        req.currentUser._id,
+        req.query.offset,
+        req.query.limit
+      ));
+    req.query.sold == "false" &&
+      (data = await getNotCompletelySoldCouponsRepository(
         req.currentUser._id,
         req.query.offset,
         req.query.limit
