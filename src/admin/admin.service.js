@@ -97,8 +97,8 @@ export const generateProviderQrCodeService = async (req, res, next) => {
       fs.mkdirSync(path);
     }
     await QRCode.toFile(
-      `${path}${provider._id}.png`,
-      decodeURI(encodeURI(provider._id)),
+      `${path}${provider.code}.png`,
+      decodeURI(encodeURI(provider.code)),
       {
         type: "png",
         color: {
@@ -108,7 +108,7 @@ export const generateProviderQrCodeService = async (req, res, next) => {
       }
     );
     const updatedProvider = await updateProviderRepository(provider._id, {
-      qrURL: `${path}${provider._id}.png`,
+      qrURL: `${path}${provider.code}.png`,
     });
     res.status(200).json({
       success: true,
