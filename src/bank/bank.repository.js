@@ -11,6 +11,18 @@ export const updateBankAccountRepository = async ({ _id, bank }) => {
   });
 };
 
+export const getBankAccountsRepository = async (limit = 10, offset = 0) => {
+  return await BankModel.paginate(
+    {},
+    {
+      limit,
+      lean: true,
+      sort: "-createdAt",
+      offset: offset * limit,
+    }
+  );
+};
+
 export const getBankAccountRepository = async ({ _id }) => {
   return await BankModel.findOne({ _id }, {}, { lean: true });
 };

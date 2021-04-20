@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const bank = mongoose.Schema(
   {
@@ -33,5 +34,5 @@ const bank = mongoose.Schema(
     versionKey: false,
   }
 );
-
+bank.plugin(mongoosePaginate);
 export const BankModel = mongoose.model("bank", bank);

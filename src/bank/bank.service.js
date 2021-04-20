@@ -1,6 +1,7 @@
 import {
   addBankAccountRepository,
   getBankAccountRepository,
+  getBankAccountsRepository,
   updateBankAccountRepository,
 } from "./bank.repository.js";
 export const addBankAccountService = async (req, res, next) => {
@@ -25,6 +26,21 @@ export const toggleBankAccountService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getBankAccountsService = async (req, res, next) => {
+  try {
+    const banks = await getBankAccountsRepository(
+      req.query.limit,
+      req.query.offset
+    );
+    res.status(200).json({
+      success: true,
+      data: banks,
     });
   } catch (error) {
     next(error);
