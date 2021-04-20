@@ -1,9 +1,5 @@
 import { testRequest } from "../request.js";
-import { GET_SUBSCRIPTION } from "../endpoints/provider.js";
-import {
-  providerCustomerCouponFactory,
-  providerCustomerCouponsFactory,
-} from "../../src/coupon/coupon.factory.js";
+import { providerCustomerCouponFactory } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
