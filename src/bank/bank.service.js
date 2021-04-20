@@ -25,7 +25,7 @@ export const toggleBankAccountService = async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      data: updatedBank.isActive,
+      data: updatedBank,
     });
   } catch (error) {
     next(error);

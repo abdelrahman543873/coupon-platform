@@ -19,13 +19,13 @@ describe("update bank suite case", () => {
       variables: { bank: bank._id },
       token: admin.token,
     });
-    expect(res.body.data).toBe(false);
+    expect(res.body.data.isActive).toBe(false);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: TOGGLE_BANK,
       variables: { bank: bank._id },
       token: admin.token,
     });
-    expect(res1.body.data).toBe(true);
+    expect(res1.body.data.isActive).toBe(true);
   });
 });
