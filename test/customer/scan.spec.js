@@ -34,4 +34,16 @@ describe("get customers subscriptions suite case", () => {
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
+
+  it("error if no subscriptions", async () => {
+    const customer = await customerFactory();
+    const provider = await providerFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: customer.token,
+      variables: { code: provider.code },
+    });
+    expect(res.body.statusCode).toBe(640);
+  });
 });
