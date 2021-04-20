@@ -77,7 +77,6 @@ import {
   toggleBankAccountService,
 } from "../../src/bank/bank.service.js";
 import { toggleBankAccountInput } from "../../src/bank/inputs/toggle-bank-account.input.js";
-import { getBankAccountsRepository } from "../bank/bank.repository.js";
 const adminRouter = express.Router();
 
 adminRouter
