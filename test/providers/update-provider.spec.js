@@ -9,7 +9,6 @@ import { buildUserParams } from "../../src/user/user.factory.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -27,6 +26,7 @@ describe("update provider suite case", () => {
       qrURL,
       user,
       image,
+      metadata,
       locations,
       email,
       ...input
@@ -52,6 +52,7 @@ describe("update provider suite case", () => {
       qrURL,
       role,
       locations,
+      metadata,
       image,
       email,
       password,
@@ -83,6 +84,7 @@ describe("update provider suite case", () => {
       logoURL,
       qrURL,
       user,
+      metadata,
       image,
       role,
       ...input
@@ -187,6 +189,7 @@ describe("update provider suite case", () => {
       image,
       locations,
       email,
+      metadata,
       code,
       ...providerInput
     } = await buildProviderParams();

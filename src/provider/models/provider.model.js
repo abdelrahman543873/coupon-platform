@@ -41,6 +41,15 @@ export const provider = mongoose.Schema(
     locations: {
       type: pointSchema,
     },
+    metaData: [
+      {
+        formattedAddressAr: String,
+        formattedAddressEn: String,
+        level2longAr: String,
+        level2longEn: String,
+        googlePlaceId: String,
+      },
+    ],
     slogan: {
       type: String,
     },

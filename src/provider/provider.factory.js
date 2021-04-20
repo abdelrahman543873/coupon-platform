@@ -29,6 +29,15 @@ export const buildProviderParams = async (obj = {}) => {
     locations: obj.locations || {
       coordinates: [faker.address.longitude(), faker.address.latitude()],
     },
+    metadata: obj.metadata || [
+      {
+        formattedAddressAr: faker.address.streetAddress(),
+        formattedAddressEn: faker.address.streetAddress(),
+        level2longAr: faker.address.streetPrefix(),
+        level2longEn: faker.address.streetPrefix(),
+        googlePlaceId: faker.address.zipCode(),
+      },
+    ],
     code: obj.code || mongoose.Types.ObjectId(),
   };
 };
