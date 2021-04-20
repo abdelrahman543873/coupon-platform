@@ -166,6 +166,7 @@ describe("update provider suite case", () => {
       logoURL,
       image,
       locations,
+      code,
       ...providerInput
     } = await buildProviderParams();
     delete providerInput.role;

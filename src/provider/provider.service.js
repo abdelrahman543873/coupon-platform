@@ -205,7 +205,8 @@ export const getSubscriptionsService = async (req, res, next) => {
     const subscribers = await getSubscriptionsRepository(
       req.currentUser._id,
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.coupon
     );
     res.status(200).json({
       success: true,

@@ -69,10 +69,11 @@ export const getNotCompletelySoldCouponsRepository = async (
 export const getSubscriptionsRepository = async (
   provider,
   offset = 0,
-  limit = 15
+  limit = 15,
+  coupon
 ) => {
   return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }) },
+    { ...(provider && { provider }), ...(coupon && { coupon }) },
     {
       populate: [
         { path: "customer", select: { password: 0 } },
