@@ -23,13 +23,10 @@ export const getMyCouponsRepository = async (
       isActive: true,
     },
     {
+      populate: [{ path: "provider category", select: { password: 0 } }],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      populate: [
-        { path: "provider", select: { password: 0 } },
-        { path: "category" },
-      ],
     }
   );
 };
@@ -41,7 +38,18 @@ export const getRecentlySoldCouponsRepository = async (
 ) => {
   return await providerCustomerCouponModel.paginate(
     { ...(provider && { provider }) },
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
+    {
+      projection: { coupon: 1, _id: 0 },
+      populate: [
+        {
+          path: "coupon",
+          populate: [{ path: "provider category", select: { password: 0 } }],
+        },
+      ],
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
   );
 };
 export const getCompletelySoldCouponsRepository = async (
@@ -51,7 +59,12 @@ export const getCompletelySoldCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     { ...(provider && { provider }), amount: 0 },
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
+    {
+      populate: [{ path: "provider category", select: { password: 0 } }],
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
   );
 };
 
@@ -62,7 +75,12 @@ export const getNotCompletelySoldCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     { ...(provider && { provider }), amount: { $gt: 0 } },
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
+    {
+      populate: [{ path: "provider category", select: { password: 0 } }],
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
   );
 };
 
