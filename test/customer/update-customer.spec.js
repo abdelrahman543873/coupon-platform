@@ -9,6 +9,7 @@ import {
 import { CUSTOMER_REGISTER, UPDATE_CUSTOMER } from "./../endpoints/customer.js";
 import { rollbackDbForCustomer } from "./../customer/rollback-for-customer.js";
 import path from "path";
+import { verificationFactory } from "../../src/verification/verification.factory.js";
 describe("update customer suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -32,6 +33,8 @@ describe("update customer suite case", () => {
       favCoupons,
       profilePictureURL,
       fcmToken,
+      email,
+      phone,
       user,
       ...input
     } = providerInput;
@@ -72,7 +75,7 @@ describe("update customer suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, ...input } = providerInput;
+    const { password, role, email,phone, ...input } = providerInput;
     input.password = "12345678";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -80,45 +83,43 @@ describe("update customer suite case", () => {
       variables: input,
       token: mockUser.token,
     });
+    expect(res.body.data.user.name).toBe(input.name);
+  });
+
+  it("error if otp is wrong when changing the phone", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[1],
+    });
+    await customerFactory({ user: mockUser._id });
+    const { role, email, password, ...input } = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_CUSTOMER,
+      variables: { ...input, code: "random" },
+      token: mockUser.token,
+    });
+    expect(res.body.statusCode).toBe(617);
+  });
+
+  it("successfully change phone and email when right password entered", async () => {
+    const user = await userFactory({
+      role: UserRoleEnum[1],
+    });
+    await customerFactory({ user: user._id });
+    const something = await verificationFactory({
+      email: user.email,
+      phone: user.phone,
+      code: "12345",
+    });
+    const { password, role, ...input } = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_CUSTOMER,
+      variables: { ...input, code: "12345" },
+      token: user.token,
+    });
+    expect(res.body.data.user.phone).toBe(input.phone);
     expect(res.body.data.user.email).toBe(input.email);
-    expect(res.body.data.user.phone).toBe(input.phone);
-  });
-
-  it("error if password is wrong when changing the phone", async () => {
-    const mockUser = await userFactory({
-      role: UserRoleEnum[1],
-    });
-    await customerFactory({ user: mockUser._id });
-    const providerInput = {
-      ...(await buildUserParams()),
-    };
-    const { role, ...input } = providerInput;
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: UPDATE_CUSTOMER,
-      variables: input,
-      token: mockUser.token,
-    });
-    expect(res.body.statusCode).toBe(607);
-  });
-
-  it("successfully change phone when right password entered", async () => {
-    const mockUser = await userFactory({
-      role: UserRoleEnum[1],
-      password: "12345678",
-    });
-    await customerFactory({ user: mockUser._id });
-    const providerInput = {
-      ...(await buildUserParams()),
-    };
-    const { password, role, ...input } = providerInput;
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: UPDATE_CUSTOMER,
-      variables: { ...input, password: "12345678" },
-      token: mockUser.token,
-    });
-    expect(res.body.data.user.phone).toBe(input.phone);
   });
 
   it("error if phone without password is entered", async () => {

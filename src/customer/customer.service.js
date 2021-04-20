@@ -428,6 +428,14 @@ export const updateCustomerService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
+    if (req.body.code) {
+      const verification = await verifyOTPRepository({
+        code: req.body.code,
+        ...(req.currentUser.phone && { phone: req.currentUser.phone }),
+        ...(req.currentUser.email && { email: req.currentUser.email }),
+      });
+      if (!verification) throw new BaseHttpError(617);
+    }
     const user = await updateUser(req.currentUser._id, req.body);
     const customer = await updateCustomerRepository(req.currentUser._id, {
       ...req.body,
