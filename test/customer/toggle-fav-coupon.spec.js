@@ -24,6 +24,20 @@ describe("add fav coupon suite case", () => {
     expect(favCoupons.length).toBe(2);
   });
 
+  it("add fav coupon successfully where fav coupons are empty", async () => {
+    const customer = await customerFactory({ favCoupons: [null] });
+    const coupon = await couponFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_FAV_COUPON,
+      variables: { coupon: coupon._id },
+      token: customer.token,
+    });
+    const favCoupons = (await CustomerModel.findOne({ _id: customer._id }))
+      .favCoupons;
+    expect(favCoupons.length).toBe(1);
+  });
+
   it("remove fav coupon successfully", async () => {
     const customer = await customerFactory();
     const coupon = await couponFactory();

@@ -6,5 +6,5 @@ export const AddBankAccountInput = Joi.object({
   agentName: Joi.string().required(),
   city: Joi.string().required(),
   country: Joi.string().required(),
-  swiftCode: Joi.string(),
+  swiftCode: Joi.string().required(),
 });
