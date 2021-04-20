@@ -30,6 +30,13 @@ export const getMyCouponsRepository = async (
   );
 };
 
+export const getProviderSoldCoupons = async (provider) => {
+  return await providerCustomerCouponModel.find(
+    { provider },
+    {},
+    { lean: true }
+  );
+};
 export const getRecentlySoldCouponsRepository = async (
   provider,
   offset = 0,
@@ -496,6 +503,13 @@ export const getMostSellingCouponRepository = async (
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
+      $match: {
+        ...(provider && {
+          provider: new mongoose.Types.ObjectId(provider),
+        }),
+      },
+    },
+    {
       $sortByCount: "$coupon",
     },
     {
@@ -526,13 +540,6 @@ export const getMostSellingCouponRepository = async (
     },
     {
       $unwind: "$coupon.provider",
-    },
-    {
-      $match: {
-        ...(provider && {
-          "coupon.provider._id": new mongoose.Types.ObjectId(provider),
-        }),
-      },
     },
     {
       $lookup: {

@@ -18,6 +18,7 @@ import {
   deleteProviderCouponsRepository,
   findCouponByCategory,
   findProviderCouponsRepository,
+  getProviderSoldCoupons,
   getRecentlySoldCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
@@ -136,10 +137,8 @@ export const adminUpdateProviderService = async (req, res, next) => {
 
 export const adminDeleteProviderService = async (req, res, next) => {
   try {
-    const soldCoupons = await getRecentlySoldCouponsRepository(
-      req.body.provider
-    );
-    if (soldCoupons.docs.length !== 0) throw new BaseHttpError(628);
+    const soldCoupons = await getProviderSoldCoupons(req.body.provider);
+    if (soldCoupons.length !== 0) throw new BaseHttpError(628);
     await deleteProviderCouponsRepository(req.body.provider);
     const provider = await adminDeleteProviderRepository(req.body.provider);
     return res.status(200).json({

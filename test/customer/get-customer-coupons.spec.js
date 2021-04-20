@@ -5,6 +5,7 @@ import {
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { customerFactory } from "../../src/customer/customer.factory";
+import { providerFactory } from "../../src/provider/provider.factory";
 import { GET_CUSTOMERS_COUPONS } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
@@ -91,6 +92,19 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
+  it("should get coupons by provider filter and newest", async () => {
+    const category = await categoryFactory();
+    const provider = await providerFactory();
+    await couponsFactory(12, { provider: provider._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?provider=${provider._id}`,
+    });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs.length).toBe(12);
+  });
+
   it("error if not newest or best seller ", async () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -130,8 +144,9 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&provider=${providerCustomerCoupons.ops[0].provider}`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&provider=${additionalCoupon.provider}`,
     });
+    expect(res.body.data.docs.length).toBe(1);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
