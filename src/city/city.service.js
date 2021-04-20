@@ -51,13 +51,13 @@ export const updateCityService = async (req, res, next) => {
 export const toggleCityService = async (req, res, next) => {
   try {
     const city = await findCityRepository({ _id: req.body.city });
-    await updateCityRepository({
+    const updatedCity = await updateCityRepository({
       _id: city._id,
       city: { isActive: !city.isActive },
     });
     res.status(200).json({
       success: true,
-      data: true,
+      data: updatedCity,
     });
   } catch (error) {
     next(error);
