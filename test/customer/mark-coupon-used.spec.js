@@ -26,7 +26,9 @@ describe("mark coupon used suite case", () => {
       variables: { coupon: coupon._id },
       token: customer.token,
     });
-    expect(res.body.data.isUsed).toBe(true);
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
+    expect(res.body.data.coupon.category._id).toBeTruthy();
   });
 
   it("error customer isn't subscribed to this coupon", async () => {

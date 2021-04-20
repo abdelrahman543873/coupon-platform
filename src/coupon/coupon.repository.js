@@ -737,7 +737,19 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
     { customer, coupon },
     { isUsed: true },
-    { new: true }
+    {
+      new: true,
+      projection: { coupon: 1, _id: 0 },
+      populate: [
+        {
+          path: "coupon",
+          populate: {
+            path: "provider category",
+            select: { password: 0 },
+          },
+        },
+      ],
+    }
   );
 };
 
