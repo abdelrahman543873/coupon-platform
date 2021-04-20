@@ -791,7 +791,7 @@ export const countSubscriptionsRepository = async (createdAt) => {
 
 export const getCustomerSubscribedCoupons = async (customer) => {
   return await providerCustomerCouponModel.find(
-    { customer },
+    { customer, isUsed: false },
     { coupon: 1, _id: 0 },
     { lean: true }
   );
