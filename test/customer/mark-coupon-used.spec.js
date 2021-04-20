@@ -2,6 +2,7 @@ import {
   couponFactory,
   providerCustomerCouponFactory,
 } from "../../src/coupon/coupon.factory";
+import { providerCustomerCouponModel } from "../../src/coupon/models/provider-customer-coupon.model";
 import { customerFactory } from "../../src/customer/customer.factory";
 import { MARK_COUPON_USED } from "../endpoints/customer";
 import { testRequest } from "../request";
@@ -26,6 +27,10 @@ describe("mark coupon used suite case", () => {
       variables: { coupon: coupon._id },
       token: customer.token,
     });
+    const subscriptionQuery = await providerCustomerCouponModel.findOne({
+      coupon: coupon._id,
+    });
+    expect(subscriptionQuery.isUsed).toBe(true);
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.coupon.provider._id).toBeTruthy();
     expect(res.body.data.coupon.category._id).toBeTruthy();
