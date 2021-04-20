@@ -1,11 +1,13 @@
-import { getCustomerSubscribedCoupons, searchCouponsRepository } from "../coupon/coupon.repository.js";
+import {
+  getCustomerSubscribedCoupons,
+  searchCouponsRepository,
+} from "../coupon/coupon.repository.js";
 import { getCustomerRepository } from "../customer/customer.repository.js";
 import { searchProvidersRepository } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 
 export const searchCouponsService = async (req, res, next) => {
   try {
-    if (!req.query.name) throw new BaseHttpError(620);
     const subscriptionsIds = [];
     const favCoupons = [];
     if (req.currentUser) {

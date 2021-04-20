@@ -1,6 +1,7 @@
 import { categoryFactory } from "../../src/category/category.factory";
 import {
   couponFactory,
+  couponsFactory,
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { CouponModel } from "../../src/coupon/models/coupon.model";
@@ -69,13 +70,13 @@ describe("add coupon suite case", () => {
     expect(res.body.data.docs[0].enName).toBe(coupon.enName);
   });
 
-  it("shouldn't return if string is empty", async () => {
-    const coupon = await couponFactory();
+  it("should return elements if string is empty", async () => {
+    const coupon = await couponsFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=`,
     });
-    expect(res.body.statusCode).toBe(620);
+    expect(res.body.data.docs.length).toBe(10);
   });
 
   it("shouldn't return if string doesn't match", async () => {
