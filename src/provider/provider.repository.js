@@ -63,9 +63,9 @@ export const getProviders = async (offset = 0, limit = 15) => {
     {
       offset: offset * limit,
       limit,
-      sort: "-createdAt",
       lean: true,
       projection: { password: 0 },
+      sort: { createdAt: -1 },
     }
   );
 };
