@@ -450,7 +450,7 @@ export const getRecentlyAdddedCouponsRepository = async (
     {
       $match: {
         ...(provider && {
-          "$provider._id": new mongoose.Types.ObjectId(provider),
+          "provider._id": new mongoose.Types.ObjectId(provider),
         }),
       },
     },
