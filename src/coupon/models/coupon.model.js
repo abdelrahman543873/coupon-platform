@@ -8,14 +8,12 @@ const coupon = mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
-      sparse: true,
     },
     arName: {
       type: String,
       required: true,
       trim: true,
       unique: true,
-      sparse: true,
     },
     enDescription: {
       type: String,
