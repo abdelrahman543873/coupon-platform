@@ -1,5 +1,5 @@
 import { findProviderById } from "../provider/provider.repository.js";
-import { updateUser } from "../user/user.repository.js";
+import { findUserByEmailOrPhone, updateUser } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   addCouponRepository,
@@ -12,6 +12,7 @@ import {
 import mongoose from "mongoose";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { findCategoryRepository } from "../category/category.repository.js";
+import { verifyOTPRepository } from "../verification/verification.repository.js";
 
 export const adminAddCouponService = async (req, res, next) => {
   try {
@@ -120,6 +121,16 @@ export const adminUpdateProfileService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
+    //if user wants to change email , there is going to be code and if this code isn't true an error will be thrown
+    if (req.body.code) {
+      const verification = await verifyOTPRepository({
+        code: req.body.code,
+      });
+      if (!verification) throw new BaseHttpError(617);
+      const user = findUserByEmailOrPhone({ email: verification.email });
+      if (!user) throw new BaseHttpError(611);
+    }
+    //if user wants to change anything else
     const user = await updateUser(req.currentUser._id, req.body);
     return res.status(200).json({
       success: true,

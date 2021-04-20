@@ -56,8 +56,8 @@ export const LocalizedErrorMessages = {
     AR: "provider doesn't exists",
   },
   617: {
-    EN: "expired OTP",
-    AR: "export OTP",
+    EN: "incorrect OTP",
+    AR: "incorrect OTP",
   },
   618: {
     EN: "coupon doesn't exist",

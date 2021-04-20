@@ -365,10 +365,6 @@ adminRouter
 
 adminRouter
   .route("/getBankAccounts")
-  .get(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
-    getBankAccountsService
-  );
+  .get(authenticationMiddleware, getBankAccountsService);
 
 export { adminRouter };

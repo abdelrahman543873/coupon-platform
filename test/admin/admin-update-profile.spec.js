@@ -4,17 +4,17 @@ import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { UPDATE_ADMIN } from "./../endpoints/admin.js";
 import { rollbackDbForCustomer } from "./../customer/rollback-for-customer.js";
-import path from "path";
+import { verificationFactory } from "../../src/verification/verification.factory.js";
 describe("update customer suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
   });
-  it("successfully update customer if all data is entered", async () => {
+  it("successfully change password", async () => {
     const user = await userFactory({
       role: UserRoleEnum[2],
       password: "12345678",
     });
-    const { role, ...variables } = await buildUserParams();
+    const { role, phone, email, ...variables } = await buildUserParams();
     variables.newPassword = variables.password;
     variables.password = "12345678";
     const res = await testRequest({
@@ -24,7 +24,6 @@ describe("update customer suite case", () => {
       token: user.token,
     });
     expect(res.body.data.user.name).toBe(variables.name);
-    expect(res.body.data.user.phone).toBe(variables.phone);
   });
 
   it("no error if only correct password is entered", async () => {
@@ -41,21 +40,34 @@ describe("update customer suite case", () => {
     expect(res.body.data.user._id).toBe(user.id);
   });
 
-  it("error if password is wrong when changing the phone", async () => {
+  it("should update email if otp provided", async () => {
     const user = await userFactory({
       role: UserRoleEnum[2],
-      password: "12345678",
     });
-    const { role, ...variables } = await buildUserParams();
-    variables.newPassword = variables.password;
-    variables.password = "123456789";
+    await verificationFactory({ email: user.email, code: "12345" });
+    const params = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_ADMIN,
-      variables,
+      variables: { email: params.email, code: "12345" },
       token: user.token,
     });
-    expect(res.body.statusCode).toBe(607);
+    expect(res.body.data.user.email).toBe(params.email);
+  });
+
+  it("should error if otp is wrong", async () => {
+    const user = await userFactory({
+      role: UserRoleEnum[2],
+    });
+    await verificationFactory({ email: user.email, code: "12345" });
+    const params = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_ADMIN,
+      variables: { email: params.email, code: "123456" },
+      token: user.token,
+    });
+    expect(res.body.statusCode).toBe(617);
   });
 
   it("error if phone without password is entered", async () => {
