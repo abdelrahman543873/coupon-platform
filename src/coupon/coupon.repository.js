@@ -36,21 +36,54 @@ export const getRecentlySoldCouponsRepository = async (
   offset = 0,
   limit = 15
 ) => {
-  return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }) },
+  const aggregation = providerCustomerCouponModel.aggregate([
+    { $match: { ...(provider && { provider }) } },
     {
-      projection: { coupon: 1, _id: 0 },
-      populate: [
-        {
-          path: "coupon",
-          populate: [{ path: "provider category", select: { password: 0 } }],
-        },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-    }
-  );
+      $sortByCount: "$coupon",
+    },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "_id",
+        foreignField: "_id",
+        as: "coupon",
+      },
+    },
+    {
+      $unwind: "$coupon",
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "coupon.provider",
+        foreignField: "_id",
+        as: "coupon.provider",
+      },
+    },
+    {
+      $unwind: "$coupon.provider",
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "coupon.category",
+        foreignField: "_id",
+        as: "coupon.category",
+      },
+    },
+    {
+      $unwind: "$coupon.category",
+    },
+    {
+      $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
+    },
+    { $replaceRoot: { newRoot: "$coupon" } },
+  ]);
+  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
+    offset,
+    limit,
+    lean: true,
+  });
 };
 export const getCompletelySoldCouponsRepository = async (
   provider,
