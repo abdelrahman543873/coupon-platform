@@ -81,6 +81,7 @@ import { AddCreditInput } from "../credit/inputs/add-credit.input.js";
 import { UpdateCreditInput } from "../credit/inputs/update-credit.input.js";
 import {
   addCreditService,
+  getCreditService,
   updateCreditService,
 } from "../credit/credit.service.js";
 
@@ -390,6 +391,14 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AddCreditInput),
     addCreditService
+  );
+
+adminRouter
+  .route("/getCredit")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    getCreditService
   );
 
 export { adminRouter };

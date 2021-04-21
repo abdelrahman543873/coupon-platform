@@ -2,6 +2,7 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import {
   updateCreditRepository,
   addCreditRepository,
+  getCreditRepository,
 } from "./credit.repository.js";
 
 export const updateCreditService = async (req, res, next) => {
@@ -31,6 +32,18 @@ export const addCreditService = async (req, res, next) => {
         merchantEmail: req.body.merchantEmail,
       },
     });
+    res.status(200).json({
+      success: true,
+      data: credit,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCreditService = async (req, res, next) => {
+  try {
+    const credit = await getCreditRepository();
     res.status(200).json({
       success: true,
       data: credit,

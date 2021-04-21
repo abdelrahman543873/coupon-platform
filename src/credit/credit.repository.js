@@ -7,6 +7,10 @@ export const updateCreditRepository = async ({ bank }) => {
   });
 };
 
+export const getCreditRepository = async () => {
+  return await CreditModel.find({}, {}, { lean: true });
+};
+
 export const addCreditRepository = async ({ bank }) => {
   return await CreditModel.create(bank);
 };

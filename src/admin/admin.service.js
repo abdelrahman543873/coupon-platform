@@ -93,12 +93,15 @@ export const generateProviderQrCodeService = async (req, res, next) => {
   try {
     const provider = await getProvider(req.body.provider);
     if (!provider) throw new BaseHttpError(625);
-    const path = "./public/provider-qr-codes/";
-    if (!fs.existsSync(path)) {
+    const path = "public/provider-qr-codes/";
+    // this is done so that we can have an online url in the manage manageProviderStatusRepository
+    // and be able to create the directory if it doesn't exist on the server
+    if (!fs.existsSync(`./${path}`)) {
       fs.mkdirSync(path);
     }
     await QRCode.toFile(
-      `${path}${provider.code}.png`,
+      //here the same issue
+      `./${path}${provider.code}.png`,
       decodeURI(encodeURI(provider.code)),
       {
         type: "png",

@@ -22,6 +22,9 @@ export const updateProviderRepository = async (_id, providerData) => {
       ...(providerData.image && {
         image: process.env.SERVER_IP + providerData.image.path,
       }),
+      ...(providerData.qrURL && {
+        qrURL: process.env.SERVER_IP + providerData.qrURL,
+      }),
       ...(providerData.newPassword && {
         password: await hashPass(providerData.newPassword),
       }),

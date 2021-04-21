@@ -35,3 +35,4 @@ export const TOGGLE_BANK = "/admin-management/toggleBankAccount";
 export const GET_BANK_ACCOUNTS = "/admin-management/getBankAccounts";
 export const ADD_CREDIT = "/admin-management/addCredit";
 export const UPDATE_CREDIT = "/admin-management/updateCredit";
+export const GET_CREDIT = "/admin-management/getCredit";
