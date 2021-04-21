@@ -19,6 +19,7 @@ import path from "path";
 import { getCoupon } from "../../src/coupon/coupon.repository.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { buildUserParams } from "../../src/user/user.factory.js";
+import { ADD_COUPON } from "../endpoints/provider.js";
 describe("subscribe suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -72,8 +73,22 @@ describe("subscribe suite case", () => {
     expect(res.body.data.totalDocs).toBe(1);
   });
 
-  it("should register and subscribe and get subscriptions", async () => {
-    const coupon = await couponFactory();
+  it("should add coupon register and subscribe and get subscriptions", async () => {
+    const mockProvider = await providerFactory();
+    const {
+      provider,
+      isActive,
+      logoURL,
+      code,
+      ...variables0
+    } = await buildCouponParams();
+    const res0 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_COUPON,
+      token: mockProvider.token,
+      variables: variables0,
+    });
+    const coupon = res0.body.data;
     const paymentType = await paymentFactory({ key: PaymentEnum[2] });
     const { role, ...variables } = await buildUserParams();
     const res = await testRequest({
@@ -88,7 +103,7 @@ describe("subscribe suite case", () => {
       token: res.body.data.authToken,
       variables: {
         coupon: coupon._id,
-        provider: coupon.provider,
+        provider: coupon.provider._id,
         paymentType: paymentType.id,
         total: "55",
       },
