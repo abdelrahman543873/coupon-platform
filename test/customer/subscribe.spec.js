@@ -5,7 +5,11 @@ import {
 } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { rollbackDbForCustomer } from "./rollback-for-customer.js";
-import { MARK_COUPON_USED, SUBSCRIBE } from "../endpoints/customer.js";
+import {
+  GET_CUSTOMER_SUBSCRIPTIONS,
+  MARK_COUPON_USED,
+  SUBSCRIBE,
+} from "../endpoints/customer.js";
 import { paymentFactory } from "../../src/payment/payment.factory.js";
 import { PaymentEnum } from "../../src/payment/payment.enum.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
@@ -39,6 +43,30 @@ describe("subscribe suite case", () => {
     expect(res.body.data.customer._id).toBe(
       decodeURI(encodeURI(customer.user))
     );
+  });
+
+  it("should subscribe and get subscriptions", async () => {
+    const customer = await customerFactory();
+    const params = await buildProviderCustomerCouponParams();
+    const paymentType = await paymentFactory({ key: PaymentEnum[2] });
+    await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: SUBSCRIBE,
+      token: customer.token,
+      variables: {
+        coupon: params.coupon,
+        provider: params.provider,
+        paymentType: paymentType.id,
+        total: params.total,
+      },
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.totalDocs).toBe(1);
   });
 
   it("should decrease the amount of coupon sold successfully", async () => {

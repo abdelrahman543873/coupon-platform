@@ -138,9 +138,9 @@ export const socialRegisterService = async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: {
-        ...data,
+        user: { ...data },
+        authToken: generateToken(user._id, "CLIENT"),
       },
-      authToken: generateToken(user._id, "CLIENT"),
     });
   } catch (error) {
     next(error);
