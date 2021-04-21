@@ -923,7 +923,11 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
             select: { password: 0 },
           },
         },
+        {
+          path: "paymentType",
+        },
       ],
+      projection: { provider: 0 },
     }
   );
 };
