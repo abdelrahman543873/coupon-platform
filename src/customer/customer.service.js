@@ -108,7 +108,7 @@ export const socialLoginService = async (req, res, next) => {
       success: true,
       data: {
         user: { ...data },
-        authToken: generateToken(customer.user.id),
+        authToken: generateToken(customer.user._id),
       },
     });
   } catch (error) {
