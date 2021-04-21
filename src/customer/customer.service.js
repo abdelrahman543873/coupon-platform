@@ -11,6 +11,7 @@ import {
   updateCouponById,
   getCustomerSubscribedCoupons,
   getCustomerCouponNotUsedSubscriptionRepository,
+  getCustomerSubscriptionRepository,
 } from "../coupon/coupon.repository.js";
 import { PaymentEnum } from "../payment/payment.enum.js";
 import { findPayment } from "../payment/payment.repository.js";
@@ -340,24 +341,18 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
     )
       throw new BaseHttpError(631);
     const subscriptionsIds = [];
-    const favCoupons = [];
     const subscribedCoupons = await getCustomerSubscribedCoupons(
       req.currentUser._id
     );
     subscribedCoupons.forEach((coupon) => {
       subscriptionsIds.push(coupon.coupon);
     });
-    const customer = await getCustomerRepository(req.currentUser._id);
-    customer.favCoupons.forEach((coupon) => {
-      favCoupons.push(coupon);
-    });
-    const subscription = await getSubscriptionRepository({
+    const subscription = await getCustomerSubscriptionRepository({
       _id: req.query.subscription,
       coupon: req.query.coupon,
       customer: req.currentUser._id,
       provider: req.query.provider,
       subscriptions: subscriptionsIds,
-      favCoupons,
     });
     res.status(200).json({
       success: true,

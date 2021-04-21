@@ -7,6 +7,7 @@ import { CategoryModel } from "../category/models/category.model.js";
 import mongoose from "mongoose";
 import { PaymentModel } from "../payment/models/payment.model.js";
 import { UserModel } from "../user/models/user.model.js";
+import { CustomerModel } from "../customer/models/customer.model.js";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -327,13 +328,12 @@ export const getCustomerSubscriptionsRepository = async (
   });
 };
 
-export const getSubscriptionRepository = async ({
+export const getCustomerSubscriptionRepository = async ({
   _id,
   provider,
   customer,
   coupon,
   subscriptions = [],
-  favCoupons = [],
 }) => {
   // we only need the first element in the aggregation
   return (
@@ -403,14 +403,116 @@ export const getSubscriptionRepository = async ({
         $unwind: "$coupon.category",
       },
       {
+        $lookup: {
+          from: CustomerModel.collection.name,
+          as: "user",
+          pipeline: [
+            {
+              $match: {
+                $expr: { user: "$customer.user" },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
         $addFields: {
           "coupon.isSubscribe": {
             $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
           },
           "coupon.isFav": {
-            $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
+            $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
           },
         },
+      },
+      {
+        $project: {
+          count: 0,
+          "coupon.provider.password": 0,
+          "customer.password": 0,
+          provider: 0,
+          user: 0,
+        },
+      },
+    ])
+  )[0];
+};
+
+export const getSubscriptionRepository = async ({
+  _id,
+  provider,
+  customer,
+  coupon,
+}) => {
+  // we only need the first element in the aggregation
+  return (
+    await providerCustomerCouponModel.aggregate([
+      {
+        $match: {
+          ...(_id && { _id: new mongoose.Types.ObjectId(_id) }),
+          ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
+          ...(customer && { customer: new mongoose.Types.ObjectId(customer) }),
+          ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
+        },
+      },
+      { $limit: 1 },
+      {
+        $lookup: {
+          from: UserModel.collection.name,
+          localField: "customer",
+          foreignField: "_id",
+          as: "customer",
+        },
+      },
+      {
+        $unwind: "$customer",
+      },
+      {
+        $lookup: {
+          from: PaymentModel.collection.name,
+          localField: "paymentType",
+          foreignField: "_id",
+          as: "paymentType",
+        },
+      },
+      {
+        $unwind: "$paymentType",
+      },
+      {
+        $lookup: {
+          from: CouponModel.collection.name,
+          localField: "coupon",
+          foreignField: "_id",
+          as: "coupon",
+        },
+      },
+      {
+        $unwind: "$coupon",
+      },
+      {
+        $lookup: {
+          from: ProviderModel.collection.name,
+          localField: "coupon.provider",
+          foreignField: "_id",
+          as: "coupon.provider",
+        },
+      },
+      {
+        $unwind: "$coupon.provider",
+      },
+      {
+        $lookup: {
+          from: CategoryModel.collection.name,
+          localField: "coupon.category",
+          foreignField: "_id",
+          as: "coupon.category",
+        },
+      },
+      {
+        $unwind: "$coupon.category",
       },
       {
         $project: {
@@ -422,19 +524,6 @@ export const getSubscriptionRepository = async ({
       },
     ])
   )[0];
-};
-
-export const getCustomerSubscriptionRepository = async (_id, customer) => {
-  return await providerCustomerCouponModel.findOne(
-    { _id, provider },
-    {},
-    {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-      ],
-    }
-  );
 };
 
 export const getCustomerCouponNotUsedSubscriptionRepository = async ({
