@@ -10,10 +10,7 @@ import {
   addCouponService,
   deleteCouponService,
   getMyCouponsService,
-  getProviderHomeService,
   getProviderService,
-  getSubscriptionService,
-  getSubscriptionsService,
   providerRegisterService,
   updateCouponService,
   updateProviderService,
@@ -28,7 +25,11 @@ import { getCategoriesService } from "../category/category.service.js";
 import { DeleteCouponInput } from "../admin/inputs/delete-coupon.input.js";
 import { addLocationService } from "./provider.service.js";
 import { AddLocationInput } from "./inputs/add-location.input.js";
-
+import {
+  getProviderHomeService,
+  getSubscriptionsService,
+} from "../subscription/subscription.service.js";
+import { getSubscriptionService } from "../subscription/subscription.service.js";
 const providersRouter = express.Router();
 
 providersRouter

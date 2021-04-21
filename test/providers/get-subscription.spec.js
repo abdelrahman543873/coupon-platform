@@ -18,9 +18,8 @@ describe("get subscription suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_SUBSCRIPTION}?coupon=${subscriptions.ops[0].coupon}`,
+      url: `${GET_SUBSCRIPTION}?subscription=${subscriptions.ops[0]._id}`,
       token: provider.token,
-      variables: { subscription: subscriptions.ops[0]._id },
     });
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();

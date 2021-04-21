@@ -9,8 +9,6 @@ import {
   adminUpdateCouponService,
   adminUpdateProfileService,
   getAllCouponsService,
-  getAllSubscriptionsService,
-  getSubscriptionService,
 } from "../coupon/coupon.service.js";
 import { getProvidersService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
@@ -54,9 +52,7 @@ import {
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
-  confirmPaymentService,
   getPaymentTypesService,
-  getUnconfirmedPaymentsService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
@@ -84,7 +80,12 @@ import {
   getCreditService,
   updateCreditService,
 } from "../credit/credit.service.js";
-
+import {
+  confirmPaymentService,
+  getAllSubscriptionsService,
+  getSubscriptionService,
+  getUnconfirmedPaymentsService,
+} from "../subscription/subscription.service.js";
 const adminRouter = express.Router();
 
 adminRouter

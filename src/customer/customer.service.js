@@ -1,24 +1,10 @@
 import { getCategories } from "../category/category.repository.js";
 import {
-  getMostSellingCouponRepository,
   getRecentlyAdddedCouponsRepository,
-  getCustomerSubscriptionsRepository,
-  getSubscriptionRepository,
   getCoupon,
-  markCouponUsedRepository,
   findCoupons,
-  createSubscriptionRepository,
-  updateCouponById,
-  getCustomerSubscribedCoupons,
-  getCustomerCouponNotUsedSubscriptionRepository,
-  getCustomerSubscriptionRepository,
 } from "../coupon/coupon.repository.js";
-import { PaymentEnum } from "../payment/payment.enum.js";
-import { findPayment } from "../payment/payment.repository.js";
-import {
-  findProviderById,
-  getProviders,
-} from "../provider/provider.repository.js";
+import { getProviders } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
   createUser,
@@ -46,6 +32,11 @@ import {
   updateCustomerRepository,
 } from "./customer.repository.js";
 import mongoose from "mongoose";
+import {
+  getCustomerSubscribedCoupons,
+  getCustomerSubscriptionRepository,
+  getMostSellingCouponRepository,
+} from "../subscription/subscription.repository.js";
 
 export const CustomerRegisterService = async (req, res, next) => {
   try {
@@ -267,66 +258,6 @@ export const resendCodeService = async (req, res, next) => {
   }
 };
 
-export const getCustomerSubscriptionsService = async (req, res, next) => {
-  try {
-    const subscriptions = await getCustomerSubscriptionsRepository(
-      req.currentUser._id,
-      req.query.offset,
-      req.query.limit,
-      req.body.code,
-      false
-    );
-    if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
-    res.status(200).json({
-      success: true,
-      data: subscriptions,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getCustomerHomeSubscriptionsService = async (req, res, next) => {
-  try {
-    const subscriptions = await getCustomerSubscriptionsRepository(
-      req.currentUser._id,
-      req.query.offset,
-      req.query.limit,
-      req.body.code
-    );
-    res.status(200).json({
-      success: true,
-      data: subscriptions,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getCustomerSubscriptionService = async (req, res, next) => {
-  try {
-    if (req.query.coupon && !mongoose.Types.ObjectId.isValid(req.query.coupon))
-      throw new BaseHttpError(631);
-    if (
-      req.query.provider &&
-      !mongoose.Types.ObjectId.isValid(req.query.provider)
-    )
-      throw new BaseHttpError(631);
-    const subscription = await getCustomerSubscriptionRepository({
-      _id: req.query.subscription,
-      coupon: req.query.coupon,
-      customer: req.currentUser._id,
-      provider: req.query.provider,
-    });
-    res.status(200).json({
-      success: true,
-      data: subscription,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const toggleFavCouponService = async (req, res, next) => {
   try {
     const favCoupons = (
@@ -398,25 +329,6 @@ export const getCouponService = async (req, res, next) => {
   }
 };
 
-export const markCouponUsedService = async (req, res, next) => {
-  try {
-    const subscription = await getCustomerCouponNotUsedSubscriptionRepository({
-      customer: req.currentUser._id,
-      _id: req.body.subscription,
-    });
-    if (!subscription) throw new BaseHttpError(642);
-    const coupon = await markCouponUsedRepository({
-      _id: req.body.subscription,
-    });
-    res.status(200).json({
-      success: true,
-      data: coupon,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const updateCustomerService = async (req, res, next) => {
   try {
     const passwordValidation = req.body.password
@@ -445,48 +357,24 @@ export const updateCustomerService = async (req, res, next) => {
   }
 };
 
-export const subscribeService = async (req, res, next) => {
+export const getCustomerSubscriptionService = async (req, res, next) => {
   try {
-    const provider = await findProviderById(req.body.provider);
-    if (!provider) throw new BaseHttpError(625);
-    const coupon = await getCoupon({ _id: req.body.coupon });
-    if (!coupon) throw new BaseHttpError(618);
-    if (coupon.amount === 0) throw new BaseHttpError(636);
-    const existingSubscriptionSameCoupon = await getCustomerCouponNotUsedSubscriptionRepository(
-      {
-        customer: req.currentUser._id,
-        coupon: coupon._id,
-        provider: provider._id,
-      }
-    );
-    if (existingSubscriptionSameCoupon) throw new BaseHttpError(641);
-    const paymentType = await findPayment({ _id: req.body.paymentType });
-    if (!paymentType) throw new BaseHttpError(633);
+    if (req.query.coupon && !mongoose.Types.ObjectId.isValid(req.query.coupon))
+      throw new BaseHttpError(631);
     if (
-      paymentType.key !== PaymentEnum[2] &&
-      (!req.body.account || !req.body.transactionId)
+      req.query.provider &&
+      !mongoose.Types.ObjectId.isValid(req.query.provider)
     )
-      throw new BaseHttpError(634);
-    if (paymentType.key == PaymentEnum[1] && !req.file)
-      throw new BaseHttpError(635);
-    const subscription = await createSubscriptionRepository({
-      subscription: {
-        coupon: coupon._id,
-        provider: provider._id,
-        paymentType: paymentType._id,
-        customer: req.currentUser._id,
-        image: req.file,
-        account: req.body.account,
-        transactionId: req.body.transactionId,
-        total: req.body.total,
-      },
-    });
-    await updateCouponById(coupon._id, {
-      input: { amount: coupon.amount - 1 },
+      throw new BaseHttpError(631);
+    const subscription = await getCustomerSubscriptionRepository({
+      _id: req.query.subscription,
+      coupon: req.query.coupon,
+      customer: req.currentUser._id,
+      provider: req.query.provider,
     });
     res.status(200).json({
       success: true,
-      data: { ...(await getSubscriptionRepository({ _id: subscription._id })) },
+      data: subscription,
     });
   } catch (error) {
     next(error);

@@ -1,12 +1,10 @@
 import { rawDeleteCategory } from "../../src/category/category.repository";
-import {
-  rawDeleteCoupon,
-  rawDeleteProviderCustomerCoupon,
-} from "../../src/coupon/coupon.repository";
+import { rawDeleteCoupon } from "../../src/coupon/coupon.repository";
 import { rawDeleteCustomer } from "../../src/customer/customer.repository";
 import { rawDeleteProvider } from "../../src/provider/provider.repository";
 import { rawDeleteUser } from "../../src/user/user.repository";
 import { rawDeleteVerification } from "../../src/verification/verification.repository";
+import { rawDeleteProviderCustomerCoupon } from "../../src/subscription/subscription.repository.js";
 
 export async function rollbackDbForCustomer() {
   await rawDeleteVerification();

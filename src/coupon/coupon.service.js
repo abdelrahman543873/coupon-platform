@@ -1,13 +1,11 @@
 import { findProviderById } from "../provider/provider.repository.js";
-import { findUserByEmailOrPhone, updateUser } from "../user/user.repository.js";
+import { updateUser } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import {
   addCouponRepository,
   getCoupon,
   getMyCouponsRepository,
   updateCouponById,
-  getAdminSubscriptionsRepository,
-  getSubscriptionRepository,
 } from "./coupon.repository.js";
 import mongoose from "mongoose";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
@@ -61,39 +59,6 @@ export const getAllCouponsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { coupons },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getAllSubscriptionsService = async (req, res, next) => {
-  try {
-    const subscriptions = await getAdminSubscriptionsRepository(
-      req.query.paymentType,
-      req.query.provider,
-      req.query.offset,
-      req.query.limit
-    );
-    res.status(200).json({
-      success: true,
-      data: subscriptions,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getSubscriptionService = async (req, res, next) => {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.id))
-      throw new BaseHttpError(631);
-    const subscription = await getSubscriptionRepository({
-      _id: req.query.id,
-    });
-    res.status(200).json({
-      success: true,
-      data: { subscription },
     });
   } catch (error) {
     next(error);

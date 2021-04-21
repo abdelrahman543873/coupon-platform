@@ -11,17 +11,13 @@ import {
   CustomerRegisterService,
   getCouponService,
   getCustomerHomeService,
-  getCustomerHomeSubscriptionsService,
   getCustomersCouponsService,
   getCustomerService,
   getCustomerSubscriptionService,
-  getCustomerSubscriptionsService,
   getFavCouponsService,
-  markCouponUsedService,
   resendCodeService,
   socialLoginService,
   socialRegisterService,
-  subscribeService,
   syncCouponsService,
   toggleFavCouponService,
   updateCustomerService,
@@ -38,6 +34,12 @@ import { UpdateCustomerInput } from "./inputs/update-customer.input.js";
 import { SubscribeInput } from "./inputs/subscribe.input.js";
 import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
 import { ScanInput } from "../customer/inputs/scan.input.js";
+import {
+  getCustomerHomeSubscriptionsService,
+  getCustomerSubscriptionsService,
+  markCouponUsedService,
+  subscribeService,
+} from "../subscription/subscription.service.js";
 const customersRouter = express.Router();
 
 customersRouter
@@ -179,4 +181,4 @@ customersRouter
     getCustomerSubscriptionsService
   );
 
-export { customersRouter }
+export { customersRouter };

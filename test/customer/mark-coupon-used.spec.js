@@ -2,7 +2,7 @@ import {
   couponFactory,
   providerCustomerCouponFactory,
 } from "../../src/coupon/coupon.factory";
-import { providerCustomerCouponModel } from "../../src/coupon/models/provider-customer-coupon.model";
+import { providerCustomerCouponModel } from "../../src/subscription/models/provider-customer-coupon.model.js";
 import { customerFactory } from "../../src/customer/customer.factory";
 import { MARK_COUPON_USED } from "../endpoints/customer";
 import { testRequest } from "../request";

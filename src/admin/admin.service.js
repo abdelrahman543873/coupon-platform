@@ -11,19 +11,21 @@ import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
-  checkIfCouponWasSold,
   countCouponsRepository,
-  countSubscriptionsRepository,
   deleteCoupon,
   deleteProviderCouponsRepository,
   findCouponByCategory,
   findProviderCouponsRepository,
-  getProviderSoldCoupons,
-  getRecentlySoldCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import fs from "fs";
 import { deleteCategory } from "../category/category.repository.js";
+import {
+  checkIfCouponWasSold,
+  countSubscriptionsRepository,
+  getProviderSoldCoupons,
+} from "../subscription/subscription.repository.js";
+
 export const addAdminService = async (req, res, next) => {
   try {
     const existingUser = await findUserByEmailOrPhone(req.body);
