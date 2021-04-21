@@ -77,6 +77,13 @@ import {
   toggleBankAccountService,
 } from "../../src/bank/bank.service.js";
 import { toggleBankAccountInput } from "../../src/bank/inputs/toggle-bank-account.input.js";
+import { AddCreditInput } from "../credit/inputs/add-credit.input.js";
+import { UpdateCreditInput } from "../credit/inputs/update-credit.input.js";
+import {
+  addCreditService,
+  updateCreditService,
+} from "../credit/credit.service.js";
+
 const adminRouter = express.Router();
 
 adminRouter
@@ -366,5 +373,23 @@ adminRouter
 adminRouter
   .route("/getBankAccounts")
   .get(authenticationMiddleware, getBankAccountsService);
+
+adminRouter
+  .route("/updateCredit")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(UpdateCreditInput),
+    updateCreditService
+  );
+
+adminRouter
+  .route("/addCredit")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddCreditInput),
+    addCreditService
+  );
 
 export { adminRouter };

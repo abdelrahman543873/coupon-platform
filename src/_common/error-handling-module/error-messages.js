@@ -159,4 +159,8 @@ export const LocalizedErrorMessages = {
     EN: "you are not subscribed to any coupons with this provider",
     AR: "you are not subscribed to any coupons with this provider",
   },
+  643: {
+    EN: "credit doesn't exist",
+    AR: "credit doesn't exist",
+  },
 };

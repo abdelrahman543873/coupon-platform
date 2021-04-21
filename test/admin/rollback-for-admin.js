@@ -10,7 +10,9 @@ import { rawDeletePayments } from "../../src/payment/payment.repository";
 import { rawDeleteProvider } from "../../src/provider/provider.repository";
 import { rawDeleteUser } from "../../src/user/user.repository";
 import { rawDeleteBank } from "../../src/bank/bank.repository";
+import { rawDeleteCredit } from "../../src/credit/credit.repository";
 export async function rollbackDbForAdmin() {
+  await rawDeleteCredit();
   await rawDeleteBank();
   await rawDeleteCity();
   await rawDeletePayments();

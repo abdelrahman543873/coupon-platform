@@ -33,3 +33,5 @@ export const TOGGLE_CITY = "/admin-management/toggleCity";
 export const ADD_BANK = "/admin-management/addBankAccount";
 export const TOGGLE_BANK = "/admin-management/toggleBankAccount";
 export const GET_BANK_ACCOUNTS = "/admin-management/getBankAccounts";
+export const ADD_CREDIT = "/admin-management/addCredit";
+export const UPDATE_CREDIT = "/admin-management/updateCredit";
