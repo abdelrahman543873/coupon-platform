@@ -264,7 +264,7 @@ adminRouter
 
 adminRouter
   .route("/getContactUsMessages")
-  .delete(
+  .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getContactUsMessagesService

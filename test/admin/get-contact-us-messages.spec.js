@@ -13,7 +13,7 @@ describe("get contact us messages suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     await contactUsMessagesFactory();
     const res = await testRequest({
-      method: HTTP_METHODS_ENUM.DELETE,
+      method: HTTP_METHODS_ENUM.GET,
       url: GET_CONTACT_US_MESSAGES,
       token: admin.token,
     });
