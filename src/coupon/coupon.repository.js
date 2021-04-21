@@ -222,8 +222,6 @@ export const getCustomerSubscriptionsRepository = async (
   customer,
   offset = 0,
   limit = 15,
-  subscriptions = [],
-  favCoupons = [],
   code,
   isUsed
 ) => {
@@ -301,12 +299,52 @@ export const getCustomerSubscriptionsRepository = async (
       $unwind: "$coupon.category",
     },
     {
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              $expr: { user: "$customer.user" },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              $expr: { customer: "$customer.user" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
       $addFields: {
         "coupon.isSubscribe": {
-          $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
+          $cond: [
+            { $in: ["$coupon._id", "$subscriptions.coupon"] },
+            true,
+            false,
+          ],
         },
         "coupon.isFav": {
-          $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
+          $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
         },
       },
     },
@@ -316,6 +354,8 @@ export const getCustomerSubscriptionsRepository = async (
         "coupon.provider.password": 0,
         "customer.password": 0,
         provider: 0,
+        user: 0,
+        subscriptions: 0,
       },
     },
     {
