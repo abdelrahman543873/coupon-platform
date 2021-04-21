@@ -402,12 +402,11 @@ export const markCouponUsedService = async (req, res, next) => {
   try {
     const subscription = await getCustomerCouponNotUsedSubscriptionRepository({
       customer: req.currentUser._id,
-      coupon: req.body.coupon,
+      _id: req.body.subscription,
     });
     if (!subscription) throw new BaseHttpError(642);
     const coupon = await markCouponUsedRepository({
-      customer: req.currentUser._id,
-      coupon: req.body.coupon,
+      _id: req.body.subscription,
     });
     res.status(200).json({
       success: true,

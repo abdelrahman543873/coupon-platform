@@ -59,7 +59,7 @@ describe("get customers subscriptions suite case", () => {
     await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
-      variables: { coupon: subscription.coupon },
+      variables: { subscription: subscription._id },
       token: customer.token,
     });
     const res2 = await testRequest({

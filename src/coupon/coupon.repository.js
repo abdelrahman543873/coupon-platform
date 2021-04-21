@@ -595,9 +595,11 @@ export const getCustomerCouponNotUsedSubscriptionRepository = async ({
   customer,
   coupon,
   provider,
+  _id,
 }) => {
   return await providerCustomerCouponModel.findOne(
     {
+      ...(_id && { _id }),
       ...(customer && { customer }),
       ...(coupon && { coupon }),
       ...(provider && { provider }),
@@ -910,9 +912,9 @@ export const findProviderCouponsRepository = async (provider) => {
   return await CouponModel.find({ provider }, {}, { lean: true });
 };
 
-export const markCouponUsedRepository = async ({ coupon, customer }) => {
+export const markCouponUsedRepository = async ({ coupon, customer, _id }) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
-    { customer, coupon },
+    { ...(customer && { customer }), ...(coupon && { coupon }), _id },
     { isUsed: true },
     {
       new: true,

@@ -24,7 +24,7 @@ describe("mark coupon used suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
-      variables: { coupon: coupon._id },
+      variables: { subscription: subscription._id },
       token: customer.token,
     });
     const subscriptionQuery = await providerCustomerCouponModel.findOne({
@@ -42,14 +42,10 @@ describe("mark coupon used suite case", () => {
   it("error customer isn't subscribed to this coupon", async () => {
     const customer = await customerFactory();
     const coupon = await couponFactory();
-    const subscription = await providerCustomerCouponFactory(
-      {},
-      { customer: customer.user }
-    );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
-      variables: { coupon: coupon._id },
+      variables: { subscription: customer._id },
       token: customer.token,
     });
     expect(res.body.statusCode).toBe(642);
@@ -58,7 +54,7 @@ describe("mark coupon used suite case", () => {
   it("should throw error if customer has no unused coupons", async () => {
     const customer = await customerFactory();
     const coupon = await couponFactory();
-    await providerCustomerCouponFactory(
+    const subscription = await providerCustomerCouponFactory(
       {},
       { customer: customer.user },
       {},
@@ -67,7 +63,7 @@ describe("mark coupon used suite case", () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
-      variables: { coupon: coupon._id },
+      variables: { subscription: subscription._id },
       token: customer.token,
     });
     expect(res.body.statusCode).toBe(642);

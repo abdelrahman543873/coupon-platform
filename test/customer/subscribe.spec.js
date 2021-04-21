@@ -194,7 +194,7 @@ describe("subscribe suite case", () => {
       { coupon: coupon._id }
     );
     const paymentType = await paymentFactory({ key: PaymentEnum[2] });
-    await testRequest({
+    const res0 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: SUBSCRIBE,
       token: customer.token,
@@ -208,7 +208,7 @@ describe("subscribe suite case", () => {
     await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
-      variables: { coupon: coupon._id },
+      variables: { subscription: res0.body.data._id },
       token: customer.token,
     });
     const res = await testRequest({
