@@ -135,6 +135,7 @@ export const getSubscriptionsRepository = async (
     { ...(provider && { provider }), ...(coupon && { coupon }) },
     {
       populate: [
+        { path: "paymentType" },
         { path: "customer", select: { password: 0 } },
         { path: "coupon" },
         { path: "provider", select: { password: 0 } },

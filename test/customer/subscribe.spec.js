@@ -1,11 +1,13 @@
 import { testRequest } from "../request.js";
 import {
+  buildCouponParams,
   buildProviderCustomerCouponParams,
   couponFactory,
 } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 import {
+  CUSTOMER_REGISTER,
   GET_CUSTOMER_SUBSCRIPTIONS,
   MARK_COUPON_USED,
   SUBSCRIBE,
@@ -16,6 +18,7 @@ import { customerFactory } from "../../src/customer/customer.factory.js";
 import path from "path";
 import { getCoupon } from "../../src/coupon/coupon.repository.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
+import { buildUserParams } from "../../src/user/user.factory.js";
 describe("subscribe suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -67,6 +70,36 @@ describe("subscribe suite case", () => {
     });
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.totalDocs).toBe(1);
+  });
+
+  it("should register and subscribe and get subscriptions", async () => {
+    const coupon = await couponFactory();
+    const paymentType = await paymentFactory({ key: PaymentEnum[2] });
+    const { role, ...variables } = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_REGISTER,
+      variables,
+    });
+    expect(res.body.data.authToken).toBeTruthy();
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: SUBSCRIBE,
+      token: res.body.data.authToken,
+      variables: {
+        coupon: coupon._id,
+        provider: coupon.provider,
+        paymentType: paymentType.id,
+        total: "55",
+      },
+    });
+    expect(res1.body.data.coupon._id).toBeTruthy();
+    const res2 = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: res.body.data.authToken,
+    });
+    expect(res2.body.data.docs.length).toBe(1);
   });
 
   it("should decrease the amount of coupon sold successfully", async () => {

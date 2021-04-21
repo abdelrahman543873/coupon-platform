@@ -21,6 +21,9 @@ describe("get subscribers suite case", () => {
       url: GET_SUBSCRIBERS,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.docs[0].customer._id).toBeTruthy();
+    expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
   });
 
@@ -37,6 +40,9 @@ describe("get subscribers suite case", () => {
       url: `${GET_SUBSCRIBERS}?coupon=${coupons.ops[0].coupon}`,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.docs[0].customer._id).toBeTruthy();
+    expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(1);
   });
 });
