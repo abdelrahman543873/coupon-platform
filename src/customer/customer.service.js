@@ -340,19 +340,11 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
       !mongoose.Types.ObjectId.isValid(req.query.provider)
     )
       throw new BaseHttpError(631);
-    const subscriptionsIds = [];
-    const subscribedCoupons = await getCustomerSubscribedCoupons(
-      req.currentUser._id
-    );
-    subscribedCoupons.forEach((coupon) => {
-      subscriptionsIds.push(coupon.coupon);
-    });
     const subscription = await getCustomerSubscriptionRepository({
       _id: req.query.subscription,
       coupon: req.query.coupon,
       customer: req.currentUser._id,
       provider: req.query.provider,
-      subscriptions: subscriptionsIds,
     });
     res.status(200).json({
       success: true,
