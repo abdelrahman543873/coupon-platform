@@ -155,4 +155,8 @@ export const LocalizedErrorMessages = {
     EN: "you can't subscribe to the same coupon before using it",
     AR: "you can't subscribe to the same coupon before using it",
   },
+  642: {
+    EN: "you are not subscribed to any coupons with this provider",
+    AR: "you are not subscribed to any coupons with this provider",
+  },
 };

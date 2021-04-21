@@ -400,11 +400,15 @@ export const getCouponService = async (req, res, next) => {
 
 export const markCouponUsedService = async (req, res, next) => {
   try {
+    const subscription = await getCustomerCouponNotUsedSubscriptionRepository({
+      customer: req.currentUser._id,
+      coupon: req.body.coupon,
+    });
+    if (!subscription) throw new BaseHttpError(642);
     const coupon = await markCouponUsedRepository({
       customer: req.currentUser._id,
       coupon: req.body.coupon,
     });
-    if (!coupon) throw new BaseHttpError(623);
     res.status(200).json({
       success: true,
       data: coupon,

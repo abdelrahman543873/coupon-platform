@@ -596,7 +596,12 @@ export const getCustomerCouponNotUsedSubscriptionRepository = async ({
   provider,
 }) => {
   return await providerCustomerCouponModel.findOne(
-    { customer, provider, coupon, isUsed: false },
+    {
+      ...(customer && { customer }),
+      ...(coupon && { coupon }),
+      ...(provider && { provider }),
+      isUsed: false,
+    },
     {}
   );
 };
