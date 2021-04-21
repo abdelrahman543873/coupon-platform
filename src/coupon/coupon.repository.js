@@ -316,33 +316,9 @@ export const getCustomerSubscriptionsRepository = async (
       $unwind: "$user",
     },
     {
-      $lookup: {
-        from: providerCustomerCouponModel.collection.name,
-        as: "subscriptions",
-        pipeline: [
-          {
-            $match: {
-              isUsed: false,
-              $expr: { customer: "$customer.user" },
-            },
-          },
-          {
-            $project: {
-              coupon: 1,
-              _id: 0,
-            },
-          },
-        ],
-      },
-    },
-    {
       $addFields: {
         "coupon.isSubscribe": {
-          $cond: [
-            { $in: ["$coupon._id", "$subscriptions.coupon"] },
-            true,
-            false,
-          ],
+          $cond: { if: { $eq: ["$isUsed", true] }, then: false, else: true },
         },
         "coupon.isFav": {
           $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
@@ -459,33 +435,9 @@ export const getCustomerSubscriptionRepository = async ({
         $unwind: "$user",
       },
       {
-        $lookup: {
-          from: providerCustomerCouponModel.collection.name,
-          as: "subscriptions",
-          pipeline: [
-            {
-              $match: {
-                isUsed: false,
-                $expr: { customer: "$customer.user" },
-              },
-            },
-            {
-              $project: {
-                coupon: 1,
-                _id: 0,
-              },
-            },
-          ],
-        },
-      },
-      {
         $addFields: {
           "coupon.isSubscribe": {
-            $cond: [
-              { $in: ["$coupon._id", "$subscriptions.coupon"] },
-              true,
-              false,
-            ],
+            $cond: { if: { $eq: ["$isUsed", true] }, then: false, else: true },
           },
           "coupon.isFav": {
             $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
