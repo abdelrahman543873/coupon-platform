@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { PaymentModel } from "../payment/models/payment.model.js";
 import { UserModel } from "../user/models/user.model.js";
 import { CustomerModel } from "../customer/models/customer.model.js";
+import { providerCustomerCouponModel } from "../subscription/models/provider-customer-coupon.model.js";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -66,8 +67,7 @@ export const getRecentlyAdddedCouponsRepository = async (
   category,
   offset = 0,
   limit = 15,
-  subscriptions = [],
-  favCoupons = []
+  user
 ) => {
   const aggregation = CouponModel.aggregate([
     {
@@ -105,17 +105,51 @@ export const getRecentlyAdddedCouponsRepository = async (
       $unwind: "$category",
     },
     {
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              user: user?._id,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: user?._id,
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
       $addFields: {
         isSubscribe: {
-          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
         },
         isFav: {
-          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
+          $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
         },
       },
     },
     {
-      $project: { count: 0, "provider.password": 0 },
+      $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
     },
     {
       $sort: { createdAt: -1 },

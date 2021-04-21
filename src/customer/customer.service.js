@@ -33,7 +33,6 @@ import {
 } from "./customer.repository.js";
 import mongoose from "mongoose";
 import {
-  getCustomerSubscribedCoupons,
   getCustomerSubscriptionRepository,
   getMostSellingCouponRepository,
 } from "../subscription/subscription.repository.js";
@@ -167,28 +166,13 @@ export const getCustomersCouponsService = async (req, res, next) => {
     )
       throw new BaseHttpError(631);
     let data;
-    const subscriptionsIds = [];
-    const favCoupons = [];
-    if (req.currentUser) {
-      const subscribedCoupons = await getCustomerSubscribedCoupons(
-        req.currentUser._id
-      );
-      subscribedCoupons.forEach((coupon) => {
-        subscriptionsIds.push(coupon.coupon);
-      });
-      const customer = await getCustomerRepository(req.currentUser._id);
-      customer.favCoupons.forEach((coupon) => {
-        favCoupons.push(coupon);
-      });
-    }
     req.query.section === "bestSeller" &&
       (data = await getMostSellingCouponRepository(
         req.query.category,
         req.query.offset,
         req.query.limit,
-        subscriptionsIds,
-        favCoupons,
-        req.query.provider
+        req.query.provider,
+        req.currentUser
       ));
     !data &&
       (data = await getRecentlyAdddedCouponsRepository(
@@ -196,8 +180,7 @@ export const getCustomersCouponsService = async (req, res, next) => {
         req.query.category,
         req.query.offset,
         req.query.limit,
-        subscriptionsIds,
-        favCoupons
+        req.currentUser
       ));
     return res.status(200).json({
       success: true,

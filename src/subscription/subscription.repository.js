@@ -503,9 +503,8 @@ export const getMostSellingCouponRepository = async (
   category,
   offset = 0,
   limit = 15,
-  subscriptions = [],
-  favCoupons = [],
-  provider
+  provider,
+  user
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
@@ -558,18 +557,57 @@ export const getMostSellingCouponRepository = async (
     {
       $unwind: "$coupon.category",
     },
-    {
-      $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
-    },
     { $replaceRoot: { newRoot: "$coupon" } },
+    {
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              user: user?._id,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: user?._id,
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
     {
       $addFields: {
         isSubscribe: {
-          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
         },
         isFav: {
-          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
+          $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
         },
+      },
+    },
+    {
+      $project: {
+        count: 0,
+        "coupon.provider.password": 0,
+        subscription: 0,
+        user: 0,
       },
     },
   ]);
