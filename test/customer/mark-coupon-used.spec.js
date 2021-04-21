@@ -32,6 +32,7 @@ describe("mark coupon used suite case", () => {
     });
     expect(res.body.data.provider).toBeFalsy();
     expect(res.body.data.paymentType._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
     expect(subscriptionQuery.isUsed).toBe(true);
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.coupon.provider._id).toBeTruthy();

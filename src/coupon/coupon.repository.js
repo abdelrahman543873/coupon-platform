@@ -926,6 +926,9 @@ export const markCouponUsedRepository = async ({ coupon, customer }) => {
         {
           path: "paymentType",
         },
+        {
+          path: "customer",
+        },
       ],
       projection: { provider: 0 },
     }
