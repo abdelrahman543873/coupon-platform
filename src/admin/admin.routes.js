@@ -10,7 +10,7 @@ import {
   adminUpdateProfileService,
   getAllCouponsService,
 } from "../coupon/coupon.service.js";
-import { getProvidersService } from "../provider/provider.service.js";
+import { addLocationService, getProvidersService } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { addProviderService } from "../user/user.service.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
@@ -86,6 +86,7 @@ import {
   getSubscriptionService,
   getUnconfirmedPaymentsService,
 } from "../subscription/subscription.service.js";
+import { AdminAddLocationInput } from "../admin/inputs/admin-add-location.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -400,6 +401,15 @@ adminRouter
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     getCreditService
+  );
+
+adminRouter
+  .route("/addLocation")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminAddLocationInput),
+    addLocationService
   );
 
 export { adminRouter };

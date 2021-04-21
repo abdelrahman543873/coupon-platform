@@ -48,6 +48,7 @@ export const provider = mongoose.Schema(
         level2longAr: String,
         level2longEn: String,
         googlePlaceId: String,
+        _id: false,
       },
     ],
     slogan: {

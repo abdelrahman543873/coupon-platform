@@ -29,6 +29,8 @@ import { deleteCoupon } from "../coupon/coupon.repository.js";
 import { findCategoryRepository } from "../category/category.repository.js";
 import { findPointCities } from "../city/city.repository.js";
 import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
+import { formattedGeo } from "../_common/helpers/geo-encoder.js";
+
 export const providerRegisterService = async (req, res, next) => {
   try {
     const existingUser = await findProviderByEmailForLogin({
@@ -211,14 +213,22 @@ export const addLocationService = async (req, res, next) => {
   try {
     const city = await findPointCities([req.body.long, req.body.lat]);
     if (city.length === 0) throw new BaseHttpError(639);
-    const provider = await updateProviderRepository(req.currentUser._id, {
-      // created like this not to cause conflicts with locations value in the
-      // model if it were to be place inside the updateProviderRepository
-      // when expanding the object
-      $addToSet: {
-        "locations.coordinates": [req.body.long, req.body.lat],
-      },
-    });
+    // to allow the same function to work for both admin and provider
+    const provider = await updateProviderRepository(
+      req.body.provider || req.currentUser._id,
+      {
+        // created like this not to cause conflicts with locations value in the
+        // model if it were to be place inside the updateProviderRepository
+        // when expanding the object
+        $addToSet: {
+          "locations.coordinates": [req.body.long, req.body.lat],
+          metaData: await formattedGeo({
+            lat: req.body.lat,
+            lon: req.body.long,
+          }),
+        },
+      }
+    );
     res.status(200).json({
       success: true,
       data: provider,

@@ -25,6 +25,7 @@ import {
   countSubscriptionsRepository,
   getProviderSoldCoupons,
 } from "../subscription/subscription.repository.js";
+import { findPointCities } from "../city/city.repository.js";
 
 export const addAdminService = async (req, res, next) => {
   try {
