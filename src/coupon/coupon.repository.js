@@ -111,7 +111,7 @@ export const getRecentlyAdddedCouponsRepository = async (
         pipeline: [
           {
             $match: {
-              user: user?._id,
+              user: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
           },
         ],
@@ -125,7 +125,7 @@ export const getRecentlyAdddedCouponsRepository = async (
           {
             $match: {
               isUsed: false,
-              customer: user?._id,
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
               $expr: { coupon: "$_id" },
             },
           },

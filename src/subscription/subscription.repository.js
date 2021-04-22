@@ -277,7 +277,11 @@ export const getCustomerSubscriptionsRepository = async (
     {
       $addFields: {
         "coupon.isSubscribe": {
-          $cond: [{ $in: ["$coupon._id", "$subscriptions.coupon"] }, true, false],
+          $cond: [
+            { $in: ["$coupon._id", "$subscriptions.coupon"] },
+            true,
+            false,
+          ],
         },
         "coupon.isFav": {
           $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
@@ -417,7 +421,11 @@ export const getCustomerSubscriptionRepository = async ({
       {
         $addFields: {
           "coupon.isSubscribe": {
-            $cond: [{ $in: ["$coupon._id", "$subscriptions.coupon"] }, true, false],
+            $cond: [
+              { $in: ["$coupon._id", "$subscriptions.coupon"] },
+              true,
+              false,
+            ],
           },
           "coupon.isFav": {
             $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
@@ -607,7 +615,7 @@ export const getMostSellingCouponRepository = async (
         pipeline: [
           {
             $match: {
-              user: user?._id,
+              user: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
           },
         ],
@@ -621,7 +629,7 @@ export const getMostSellingCouponRepository = async (
           {
             $match: {
               isUsed: false,
-              customer: user?._id,
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
               $expr: { coupon: "$_id" },
             },
           },
