@@ -135,14 +135,6 @@ customersRouter
   );
 
 customersRouter
-  .route("/getFavCoupons")
-  .get(
-    authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[1]),
-    getFavCouponsService
-  );
-
-customersRouter
   .route("/syncFavCoupons")
   .post(
     authenticationMiddleware,

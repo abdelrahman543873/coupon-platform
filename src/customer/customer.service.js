@@ -272,7 +272,7 @@ export const getFavCouponsService = async (req, res, next) => {
     const favCoupons = await getCustomerFavCoupons(req.currentUser._id);
     res.status(200).json({
       success: true,
-      data: favCoupons.favCoupons,
+      data: favCoupons,
     });
   } catch (error) {
     next(error);
