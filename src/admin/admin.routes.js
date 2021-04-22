@@ -13,6 +13,7 @@ import {
 import {
   addLocationService,
   getProvidersService,
+  addLocationsService,
 } from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { addProviderService } from "../user/user.service.js";
@@ -91,6 +92,7 @@ import {
   getUnconfirmedPaymentsService,
 } from "../subscription/subscription.service.js";
 import { AdminAddLocationInput } from "../admin/inputs/admin-add-location.input.js";
+import { AdminAddLocationsInput } from "../admin/inputs/admin-add-locations.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -408,6 +410,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AdminAddLocationInput),
     addLocationService
+  );
+
+adminRouter
+  .route("/addLocations")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminAddLocationsInput),
+    addLocationsService
   );
 
 adminRouter

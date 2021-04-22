@@ -27,7 +27,7 @@ import {
 } from "./provider.repository.js";
 import { deleteCoupon } from "../coupon/coupon.repository.js";
 import { findCategoryRepository } from "../category/category.repository.js";
-import { findPointCities } from "../city/city.repository.js";
+import { findPointCities, findPointsCities } from "../city/city.repository.js";
 import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
 import { formattedGeo } from "../_common/helpers/geo-encoder.js";
 
@@ -229,6 +229,33 @@ export const addLocationService = async (req, res, next) => {
         },
       }
     );
+    res.status(200).json({
+      success: true,
+      data: provider,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addLocationsService = async (req, res, next) => {
+  try {
+    const convertedLocations = [];
+    for (let i = 0; i < req.body.locations.length; i++) {
+      const city = await findPointCities(req.body.locations[i]);
+      if (city.length === 0) throw new BaseHttpError(639);
+      const formattedAddress = await formattedGeo({
+        lat: req.body.locations[i][1],
+        lon: req.body.locations[i][0],
+      });
+      convertedLocations.push(formattedAddress);
+    }
+    const provider = await updateProviderRepository(req.body.provider, {
+      $addToSet: {
+        "locations.coordinates": { $each: req.body.locations },
+        metaData: { $each: convertedLocations },
+      },
+    });
     res.status(200).json({
       success: true,
       data: provider,

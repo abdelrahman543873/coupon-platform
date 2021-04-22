@@ -38,3 +38,4 @@ export const UPDATE_CREDIT = "/admin-management/updateCredit";
 export const GET_CREDIT = "/admin-management/getCredit";
 export const ADMIN_ADD_LOCATION = "/admin-management/addLocation";
 export const GET_PROVIDERS_PDF = "/admin-management/getProvidersPdf";
+export const ADMIN_ADD_LOCATIONS = "/admin-management/addLocations";

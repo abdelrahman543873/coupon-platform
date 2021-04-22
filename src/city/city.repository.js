@@ -36,3 +36,12 @@ export const findPointCities = async (point) => {
     isActive: true,
   });
 };
+
+export const findPointsCities = async (coordinates) => {
+  return await CityModel.find({
+    area: {
+      $geoIntersects: { $geometry: { type: type[2], coordinates } },
+    },
+    isActive: true,
+  });
+};
