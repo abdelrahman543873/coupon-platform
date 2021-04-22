@@ -208,7 +208,7 @@ export const getStatisticsService = async (req, res, next) => {
 export const generateProvidersPdf = async (req, res, next) => {
   try {
     const providers = await getAllProvidersWithQrUrlRepository();
-    if (providers) throw BaseHttpError(645);
+    if (providers) throw new BaseHttpError(645);
     const path = "./public/providers-pdf/";
     const pdfDoc = new PDFDocument();
     const name = "AllProviders.pdf";
