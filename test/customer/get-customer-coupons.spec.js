@@ -1,5 +1,6 @@
 import { categoryFactory } from "../../src/category/category.factory";
 import {
+  couponFactory,
   couponsFactory,
   providerCustomerCouponFactory,
   providerCustomerCouponsFactory,
@@ -177,5 +178,60 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
     );
+  });
+
+  it("get logged in customers coupons favorite service for newest", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(true);
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+  });
+
+  it("subscribe and isFav evaluates to false if no user is logged in", async () => {
+    const coupon = await couponFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
+  });
+
+  it("subscribe and isFav evaluates to true if user is logged in for best selling", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(true);
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+  });
+
+  it("subscribe and isFav evaluates to false if no user is logged in for best selling", async () => {
+    const coupon = await couponFactory();
+    await providerCustomerCouponFactory({}, {}, { coupon: coupon._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
   });
 });

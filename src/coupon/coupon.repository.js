@@ -76,6 +76,13 @@ export const getRecentlyAdddedCouponsRepository = async (
       },
     },
     {
+      $match: {
+        ...(provider && {
+          provider: new mongoose.Types.ObjectId(provider),
+        }),
+      },
+    },
+    {
       $lookup: {
         from: ProviderModel.collection.name,
         localField: "provider",
@@ -85,13 +92,6 @@ export const getRecentlyAdddedCouponsRepository = async (
     },
     {
       $unwind: "$provider",
-    },
-    {
-      $match: {
-        ...(provider && {
-          "provider._id": new mongoose.Types.ObjectId(provider),
-        }),
-      },
     },
     {
       $lookup: {
@@ -113,6 +113,12 @@ export const getRecentlyAdddedCouponsRepository = async (
             $match: {
               user: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
+          },
+          {
+            $project: { favCoupons: 1, _id: 0 },
+          },
+          {
+            $unwind: "$favCoupons",
           },
         ],
       },
@@ -148,9 +154,9 @@ export const getRecentlyAdddedCouponsRepository = async (
         },
       },
     },
-    {
-      $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
-    },
+    // {
+    //   $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+    // },
     {
       $sort: { createdAt: -1 },
     },

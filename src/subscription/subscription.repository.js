@@ -618,6 +618,12 @@ export const getMostSellingCouponRepository = async (
               user: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
           },
+          {
+            $project: { favCoupons: 1, _id: 0 },
+          },
+          {
+            $unwind: "$favCoupons",
+          },
         ],
       },
     },
