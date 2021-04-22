@@ -175,4 +175,8 @@ export const LocalizedErrorMessages = {
     EN: "providers aren't verified yet or don't exist",
     AR: "providers aren't verified yet or don't exist",
   },
+  646: {
+    EN: "first credit isn't initialized",
+    AR: "first credit isn't initialized",
+  },
 };

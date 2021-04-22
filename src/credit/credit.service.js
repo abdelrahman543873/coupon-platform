@@ -7,9 +7,11 @@ import {
 
 export const updateCreditService = async (req, res, next) => {
   try {
-    const credit = await updateCreditRepository({
+    const credit = await getCreditRepository();
+    if (!credit) throw new BaseHttpError(646);
+    const updatedCredit = await updateCreditRepository({
       bank: {
-        _id: req.body.credit,
+        _id: credit._id,
         secretKey: req.body.secretKey,
         merchantEmail: req.body.merchantEmail,
       },
@@ -17,7 +19,7 @@ export const updateCreditService = async (req, res, next) => {
     if (!credit) throw new BaseHttpError(643);
     res.status(200).json({
       success: true,
-      data: credit,
+      data: updatedCredit,
     });
   } catch (error) {
     next(error);
@@ -46,7 +48,7 @@ export const getCreditService = async (req, res, next) => {
     const credit = await getCreditRepository();
     res.status(200).json({
       success: true,
-      data: credit[0],
+      data: credit,
     });
   } catch (error) {
     next(error);

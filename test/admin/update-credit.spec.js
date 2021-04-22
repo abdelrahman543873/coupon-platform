@@ -14,15 +14,27 @@ describe("update credit suite case", () => {
   });
   it("should update credit", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const credit = await creditFactory();
+    await creditFactory();
     const params = await buildCreditParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CREDIT,
-      variables: { credit: credit._id, ...params },
+      variables: { ...params },
       token: admin.token,
     });
     expect(res.body.data.merchantEmail).toBe(params.merchantEmail);
     expect(res.body.data.secretKey).toBe(params.secretKey);
+  });
+
+  it("should throw error if credit doesn't exist", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const params = await buildCreditParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_CREDIT,
+      variables: { ...params },
+      token: admin.token,
+    });
+    expect(res.body.statusCode).toBe(646);
   });
 });
