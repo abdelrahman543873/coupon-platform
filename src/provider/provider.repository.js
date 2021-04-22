@@ -97,6 +97,10 @@ export const rawDeleteProvider = async () => {
   return await ProviderModel.deleteMany({});
 };
 
+export const getAllProvidersWithQrUrlRepository = async () => {
+  return await ProviderModel.find({ qrURL: { $exists: true } });
+};
+
 export const countProvidersRepository = async (createdAt) => {
   return await ProviderModel.countDocuments({
     ...(createdAt && { createdAt: { $gte: createdAt } }),

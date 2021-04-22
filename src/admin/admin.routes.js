@@ -32,6 +32,7 @@ import {
   adminDeleteCouponService,
   adminDeleteCategoryService,
   getStatisticsService,
+  generateProvidersPdf,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
@@ -398,12 +399,7 @@ adminRouter
     addCreditService
   );
 
-adminRouter
-  .route("/getCredit")
-  .get(
-    authenticationMiddleware,
-    getCreditService
-  );
+adminRouter.route("/getCredit").get(authenticationMiddleware, getCreditService);
 
 adminRouter
   .route("/addLocation")
@@ -412,6 +408,14 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AdminAddLocationInput),
     addLocationService
+  );
+
+adminRouter
+  .route("/getProvidersPdf")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    generateProvidersPdf
   );
 
 export { adminRouter };

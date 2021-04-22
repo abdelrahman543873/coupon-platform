@@ -5,6 +5,7 @@ import {
   getProvider,
   manageProviderStatusRepository,
   updateProviderRepository,
+  getAllProvidersWithQrUrlRepository,
 } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
@@ -25,8 +26,10 @@ import {
   countSubscriptionsRepository,
   getProviderSoldCoupons,
 } from "../subscription/subscription.repository.js";
-import { findPointCities } from "../city/city.repository.js";
+import PDFDocument from "pdfkit";
+import dotenv from "dotenv";
 
+dotenv.config();
 export const addAdminService = async (req, res, next) => {
   try {
     const existingUser = await findUserByEmailOrPhone(req.body);
@@ -196,6 +199,54 @@ export const getStatisticsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { providers, coupons, subscriptions },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const generateProvidersPdf = async (req, res, next) => {
+  try {
+    const providers = await getAllProvidersWithQrUrlRepository();
+    if (providers) throw BaseHttpError(645);
+    const path = "./public/providers-pdf/";
+    const pdfDoc = new PDFDocument();
+    const name = "AllProviders.pdf";
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    pdfDoc.pipe(fs.createWriteStream(path + name));
+    pdfDoc.moveDown(25);
+    pdfDoc.fillColor("red").text("Couponat El Madina", { align: "center" });
+    providers.map((provider) => {
+      pdfDoc.addPage();
+      const segment_array = provider.qrURL.split("/");
+      const last_segment = segment_array.pop();
+      const arabic = /[\u0600-\u06FF]/;
+      const name = arabic.test(provider.name)
+        ? provider.name.split(" ").reverse().join(" ")
+        : provider.name;
+      pdfDoc
+        .fillColor("blue")
+        .font("./assets/fonts/Tajawal-Bold.ttf")
+        .fontSize(20)
+        .text("Provider: ", {
+          continued: true,
+        })
+        .fillColor("black")
+        .fontSize(20)
+        .text(name, { rtl: true });
+      pdfDoc.moveDown(0.5);
+      pdfDoc.image("./public/provider-qr-codes/" + last_segment, {
+        align: "center",
+        width: 300,
+        height: 300,
+      });
+    });
+    pdfDoc.end();
+    return res.status(200).send({
+      success: true,
+      data: process.env.SERVER_IP + path + name,
     });
   } catch (error) {
     next(error);

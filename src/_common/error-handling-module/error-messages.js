@@ -171,4 +171,8 @@ export const LocalizedErrorMessages = {
     EN: "terms and conditions doesn't exist",
     AR: "terms and conditions doesn't exist",
   },
+  645: {
+    EN: "providers aren't verified yet or don't exist",
+    AR: "providers aren't verified yet or don't exist",
+  },
 };
