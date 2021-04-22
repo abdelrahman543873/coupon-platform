@@ -40,6 +40,9 @@ import {
   markCouponUsedService,
   subscribeService,
 } from "../subscription/subscription.service.js";
+import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
+import { GetCustomersCouponsInput } from "./inputs/get-coupons.input.js";
+import { GetCustomersCouponInput } from "./inputs/get-coupon.input.js";
 const customersRouter = express.Router();
 
 customersRouter
@@ -67,11 +70,17 @@ customersRouter
   .route("/social-register")
   .post(ValidationMiddleware(SocialRegisterInput), socialRegisterService);
 
-customersRouter.route("/home").get(getCustomerHomeService);
+customersRouter
+  .route("/home")
+  .get(ValidationMiddleware(offSetLimitInput), getCustomerHomeService);
 
 customersRouter
   .route("/getCoupons")
-  .get(semiAuthenticationMiddleware, getCustomersCouponsService);
+  .get(
+    semiAuthenticationMiddleware,
+    ValidationMiddleware(GetCustomersCouponsInput),
+    getCustomersCouponsService
+  );
 
 customersRouter
   .route("/verifyOTP")
@@ -143,7 +152,9 @@ customersRouter
     syncCouponsService
   );
 
-customersRouter.route("/getCoupon").get(getCouponService);
+customersRouter
+  .route("/getCoupon")
+  .get(ValidationMiddleware(GetCustomersCouponInput), getCouponService);
 
 customersRouter
   .route("/markCouponUsed")

@@ -154,17 +154,6 @@ export const getCustomerHomeService = async (req, res, next) => {
 
 export const getCustomersCouponsService = async (req, res, next) => {
   try {
-    if (
-      req.query.section &&
-      req.query.section !== "newest" &&
-      req.query.section !== "bestSeller"
-    )
-      throw new BaseHttpError(616);
-    if (
-      req.query.category &&
-      !mongoose.Types.ObjectId.isValid(req.query.category)
-    )
-      throw new BaseHttpError(631);
     let data;
     req.query.section === "bestSeller" &&
       (data = await getMostSellingCouponRepository(

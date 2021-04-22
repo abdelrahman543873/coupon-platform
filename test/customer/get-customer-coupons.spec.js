@@ -111,7 +111,7 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=new`,
     });
-    expect(res.body.statusCode).toBe(616);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("customer get best seller coupons successfully", async () => {

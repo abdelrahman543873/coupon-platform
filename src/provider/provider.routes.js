@@ -30,6 +30,8 @@ import {
   getSubscriptionsService,
 } from "../subscription/subscription.service.js";
 import { getSubscriptionService } from "../subscription/subscription.service.js";
+import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
+
 const providersRouter = express.Router();
 
 providersRouter
@@ -128,6 +130,8 @@ providersRouter
     addLocationService
   );
 
-providersRouter.route("/getCategories").get(getCategoriesService);
+providersRouter
+  .route("/getCategories")
+  .get(ValidationMiddleware(offSetLimitInput), getCategoriesService);
 
 export { providersRouter };

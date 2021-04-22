@@ -28,6 +28,6 @@ describe("admin get provider register suite case", () => {
       url: `${GET_PROVIDER}?provider=wrongId`,
       token: admin.token,
     });
-    expect(res.body.statusCode).toBe(631);
+    expect(res.body.statusCode).toBe(400);
   });
 });

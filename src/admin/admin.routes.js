@@ -93,6 +93,10 @@ import {
 } from "../subscription/subscription.service.js";
 import { AdminAddLocationInput } from "../admin/inputs/admin-add-location.input.js";
 import { AdminAddLocationsInput } from "../admin/inputs/admin-add-locations.input.js";
+import { AdminGetSubscriptionsInput } from "../admin/inputs/admin-get-subscriptions.input.js";
+import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
+import { adminGetProviderInput } from "./inputs/admin-get-provider.input.js";
+import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -233,6 +237,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(GetCouponsInput),
     getAllCouponsService
   );
 
@@ -241,6 +246,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminGetSubscriptionsInput),
     getAllSubscriptionsService
   );
 
@@ -249,6 +255,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(adminGetProviderInput),
     adminGetProviderService
   );
 
@@ -275,6 +282,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(offSetLimitInput),
     getContactUsMessagesService
   );
 
@@ -381,7 +389,11 @@ adminRouter
 
 adminRouter
   .route("/getBankAccounts")
-  .get(authenticationMiddleware, getBankAccountsService);
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(offSetLimitInput),
+    getBankAccountsService
+  );
 
 adminRouter
   .route("/updateCredit")

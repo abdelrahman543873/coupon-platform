@@ -67,8 +67,6 @@ export const getAllCouponsService = async (req, res, next) => {
 
 export const adminGetProviderService = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.provider))
-      throw new BaseHttpError(631);
     const provider = await findProviderById(req.query.provider);
     if (!provider) throw new BaseHttpError(611);
     res.status(200).json({
