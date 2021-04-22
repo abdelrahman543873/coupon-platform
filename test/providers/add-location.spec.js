@@ -3,7 +3,7 @@ import {
   buildProviderParams,
   providerFactory,
 } from "../../src/provider/provider.factory.js";
-import { ADD_LOCATION, PROVIDER_LOGIN } from "../endpoints/provider.js";
+import { ADD_LOCATION } from "../endpoints/provider.js";
 import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { cityFactory } from "../../src/city/city.factory.js";
@@ -134,6 +134,6 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res1.body.data.locations.coordinates.length).toBe(2);
+    expect(res1.body.statusCode).toBe(644);
   });
 });

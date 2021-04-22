@@ -163,4 +163,8 @@ export const LocalizedErrorMessages = {
     EN: "credit doesn't exist",
     AR: "credit doesn't exist",
   },
+  644: {
+    EN: "location already exists",
+    AR: "location already exists",
+  },
 };
