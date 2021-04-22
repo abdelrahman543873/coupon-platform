@@ -16,6 +16,7 @@ describe("get customers subscriptions suite case", () => {
   });
   it("get customers subscriptions successfully", async () => {
     const customer = await customerFactory();
+    const customer1 = await customerFactory();
     await providerCustomerCouponsFactory(
       10,
       {},
@@ -36,6 +37,23 @@ describe("get customers subscriptions suite case", () => {
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
+  });
+
+  it("shouldn't duplicate values", async () => {
+    const customer = await customerFactory();
+    const customer1 = await customerFactory();
+    await providerCustomerCouponsFactory(
+      10,
+      {},
+      { customer: customer.user },
+      {}
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: customer.token,
+    });
+    expect(res.body.data.totalDocs).toBe(10);
   });
 
   it("isSubscribe should evaluate to false when isUsed is true", async () => {

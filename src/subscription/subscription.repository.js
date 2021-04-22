@@ -244,7 +244,7 @@ export const getCustomerSubscriptionsRepository = async (
         pipeline: [
           {
             $match: {
-              $expr: { user: "$customer.user" },
+              user: new mongoose.Types.ObjectId(customer),
             },
           },
         ],
@@ -363,7 +363,7 @@ export const getCustomerSubscriptionRepository = async ({
           pipeline: [
             {
               $match: {
-                $expr: { user: "$customer.user" },
+                user: new mongoose.Types.ObjectId(customer),
               },
             },
           ],
