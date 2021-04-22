@@ -46,7 +46,7 @@ export const getCreditService = async (req, res, next) => {
     const credit = await getCreditRepository();
     res.status(200).json({
       success: true,
-      data: credit,
+      data: credit[0],
     });
   } catch (error) {
     next(error);

@@ -17,6 +17,6 @@ describe("update credit suite case", () => {
       url: GET_CREDIT,
       token: admin.token,
     });
-    expect(res.body.data.length).toBe(10);
+    expect(res.body.data._id).toBeTruthy();
   });
 });
