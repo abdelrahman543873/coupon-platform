@@ -6,27 +6,13 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 
 export const searchCouponsService = async (req, res, next) => {
   try {
-    const subscriptionsIds = [];
-    const favCoupons = [];
-    if (req.currentUser) {
-      const subscribedCoupons = await getCustomerSubscribedCoupons(
-        req.currentUser._id
-      );
-      subscribedCoupons.forEach((coupon) => {
-        subscriptionsIds.push(coupon.coupon);
-      });
-      const customer = await getCustomerRepository(req.currentUser._id);
-      customer.favCoupons.forEach((coupon) => {
-        favCoupons.push(coupon);
-      });
-    }
     const searchResult = await searchCouponsRepository(
-      req.query.name,
+      req.query.category,
+      req.query.provider,
       req.query.offset,
       req.query.limit,
-      req.query.category,
-      subscriptionsIds,
-      favCoupons
+      req.currentUser,
+      req.query.name
     );
     res.status(200).json({
       success: true,

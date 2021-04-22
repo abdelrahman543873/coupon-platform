@@ -154,9 +154,9 @@ export const getRecentlyAdddedCouponsRepository = async (
         },
       },
     },
-    // {
-    //   $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
-    // },
+    {
+      $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+    },
     {
       $sort: { createdAt: -1 },
     },
@@ -220,17 +220,18 @@ export const rawDeleteCoupon = async () => {
 };
 
 export const searchCouponsRepository = async (
-  name,
+  category,
+  provider,
   offset = 0,
   limit = 15,
-  category,
-  subscriptions,
-  favCoupons
+  user,
+  name
 ) => {
   const aggregation = CouponModel.aggregate([
     {
       $match: {
         ...(category && { category: new mongoose.Types.ObjectId(category) }),
+        ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
         ...(name && {
           $or: [
             { enName: { $regex: name, $options: "i" } },
@@ -262,17 +263,60 @@ export const searchCouponsRepository = async (
       $unwind: "$category",
     },
     {
-      $addFields: {
-        isSubscribe: {
-          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
-        },
-        isFav: {
-          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
-        },
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              user: user ? new mongoose.Types.ObjectId(user._id) : user,
+            },
+          },
+          {
+            $project: { favCoupons: 1, _id: 0 },
+          },
+          {
+            $unwind: "$favCoupons",
+          },
+        ],
       },
     },
     {
-      $project: { count: 0, "provider.password": 0 },
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        isSubscribe: {
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
+        },
+        isFav: {
+          $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
+        },
+      },
+    },
+    // {
+    // $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+    // },
+    {
+      $sort: { createdAt: -1 },
     },
   ]);
   return await CouponModel.aggregatePaginate(aggregation, {

@@ -2,10 +2,12 @@ import { categoryFactory } from "../../src/category/category.factory";
 import {
   couponFactory,
   couponsFactory,
+  providerCustomerCouponFactory,
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { CouponModel } from "../../src/coupon/models/coupon.model";
 import { customerFactory } from "../../src/customer/customer.factory";
+import { userFactory } from "../../src/user/user.factory";
 import { rollbackDbForCoupon } from "../coupon/rollback-for-coupon";
 import { SEARCH } from "../endpoints/search";
 import { testRequest } from "../request";
@@ -22,6 +24,54 @@ describe("add coupon suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${SEARCH}?name=${coupon.enName}`,
     });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+  });
+
+  it("should search and return isSubscribe and isFav correctly for logged in user", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH}?name=${coupon.enName}`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(true);
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+  });
+
+  it("should search and return isSubscribe and isFav false for non logged in user", async () => {
+    const coupon = await couponFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH}?name=${coupon.enName}`,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+  });
+
+  it("should work for admin", async () => {
+    const coupon = await couponFactory();
+    const admin = await userFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${SEARCH}?name=${coupon.enName}`,
+      token: admin.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0].enName).toBe(coupon.enName);
