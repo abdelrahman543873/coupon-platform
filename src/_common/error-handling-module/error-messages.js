@@ -167,4 +167,8 @@ export const LocalizedErrorMessages = {
     EN: "location already exists",
     AR: "location already exists",
   },
+  645: {
+    EN: "terms and conditions doesn't exist",
+    AR: "terms and conditions doesn't exist",
+  },
 };

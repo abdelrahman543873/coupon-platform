@@ -10,7 +10,10 @@ import {
   adminUpdateProfileService,
   getAllCouponsService,
 } from "../coupon/coupon.service.js";
-import { addLocationService, getProvidersService } from "../provider/provider.service.js";
+import {
+  addLocationService,
+  getProvidersService,
+} from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { addProviderService } from "../user/user.service.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
@@ -399,7 +402,6 @@ adminRouter
   .route("/getCredit")
   .get(
     authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
     getCreditService
   );
 
