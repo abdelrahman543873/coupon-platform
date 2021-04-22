@@ -213,14 +213,6 @@ export const addLocationService = async (req, res, next) => {
   try {
     const city = await findPointCities([req.body.long, req.body.lat]);
     if (city.length === 0) throw new BaseHttpError(639);
-    const coordinates = req.currentUser?.locations?.coordinates;
-    coordinates
-      ? coordinates.forEach((coordinate) => {
-          if (coordinate[0] === req.body.long && coordinate[1] === req.body.lat)
-            throw new BaseHttpError(644);
-          return coordinate;
-        })
-      : null;
     // to allow the same function to work for both admin and provider
     const provider = await updateProviderRepository(
       req.body.provider || req.currentUser._id,
@@ -230,8 +222,6 @@ export const addLocationService = async (req, res, next) => {
         // when expanding the object
         $addToSet: {
           "locations.coordinates": [req.body.long, req.body.lat],
-        },
-        $push: {
           metaData: await formattedGeo({
             lat: req.body.lat,
             lon: req.body.long,

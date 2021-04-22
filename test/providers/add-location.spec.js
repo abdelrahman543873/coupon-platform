@@ -107,7 +107,7 @@ describe("add location suite case", () => {
   });
 
   it("only unique values added", async () => {
-    const provider = await providerFactory({ password: "something" });
+    const provider = await providerFactory({ locations: {} });
     const params = await buildProviderParams();
     const city = await cityFactory({
       enName: "alex",
@@ -125,7 +125,7 @@ describe("add location suite case", () => {
       token: provider.token,
     });
 
-    const res1 = await testRequest({
+    const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_LOCATION,
       variables: {
@@ -134,6 +134,7 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res1.body.statusCode).toBe(644);
+    expect(res.body.data.locations.coordinates.length).toBe(1);
+    expect(res.body.data.metaData.length).toBe(1);
   });
 });

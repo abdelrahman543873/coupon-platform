@@ -28,6 +28,8 @@ export const formattedGeo = async ({ lat, lon }) => {
     lon,
   });
   return {
+    lat,
+    long: lon,
     formattedAddressAr: geoInfoAr[0].formattedAddress,
     formattedAddressEn: geoInfoEn[0].formattedAddress,
     level2longAr: geoInfoAr[0].administrativeLevels.level2long,
