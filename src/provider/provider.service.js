@@ -222,6 +222,8 @@ export const addLocationService = async (req, res, next) => {
         // when expanding the object
         $addToSet: {
           "locations.coordinates": [req.body.long, req.body.lat],
+        },
+        $push: {
           metaData: await formattedGeo({
             lat: req.body.lat,
             lon: req.body.long,

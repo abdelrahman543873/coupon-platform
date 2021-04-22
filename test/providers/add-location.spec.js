@@ -55,6 +55,37 @@ describe("add location suite case", () => {
     expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
   });
 
+  it("should add slightly modified locations", async () => {
+    const provider = await providerFactory({ password: "something" });
+    const city = await cityFactory({
+      enName: "alex",
+      arName: "Alexandria",
+      area: { coordinates: alexCoordinates },
+    });
+    const AlexLocation = [29.909118589546985, 31.201643509821597];
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_LOCATION,
+      variables: {
+        long: AlexLocation[0],
+        lat: AlexLocation[1],
+      },
+      token: provider.token,
+    });
+    expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
+    const AlexLocationModified = [29.90911858954698, 31.20164350982159];
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_LOCATION,
+      variables: {
+        long: AlexLocationModified[0],
+        lat: AlexLocationModified[1],
+      },
+      token: provider.token,
+    });
+    expect(res1.body.data.metaData.length).toBe(2);
+  });
+
   it("should throw error if outside alex", async () => {
     const provider = await providerFactory({ password: "something" });
     const city = await cityFactory({
