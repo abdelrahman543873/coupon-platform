@@ -254,9 +254,30 @@ export const getCustomerSubscriptionsRepository = async (
       $unwind: "$user",
     },
     {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: new mongoose.Types.ObjectId(customer),
+              $expr: { coupon: "$coupon._id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
       $addFields: {
         "coupon.isSubscribe": {
-          $cond: { if: { $eq: ["$isUsed", true] }, then: false, else: true },
+          $cond: [{ $in: ["$coupon._id", "$subscriptions.coupon"] }, true, false],
         },
         "coupon.isFav": {
           $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
@@ -373,9 +394,30 @@ export const getCustomerSubscriptionRepository = async ({
         $unwind: "$user",
       },
       {
+        $lookup: {
+          from: providerCustomerCouponModel.collection.name,
+          as: "subscriptions",
+          pipeline: [
+            {
+              $match: {
+                isUsed: false,
+                customer: new mongoose.Types.ObjectId(customer),
+                $expr: { coupon: "$coupon._id" },
+              },
+            },
+            {
+              $project: {
+                coupon: 1,
+                _id: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
         $addFields: {
           "coupon.isSubscribe": {
-            $cond: { if: { $eq: ["$isUsed", true] }, then: false, else: true },
+            $cond: [{ $in: ["$coupon._id", "$subscriptions.coupon"] }, true, false],
           },
           "coupon.isFav": {
             $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
