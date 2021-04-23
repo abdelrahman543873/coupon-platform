@@ -28,9 +28,12 @@ describe("customer social register suite case", () => {
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
     });
-    expect(res.body.data.user).toBeFalsy();
-    expect(res.body.data.profilePictureURL).toBe(variables.profilePictureURL);
-    expect(res.body.data.name).toBe(variables.name);
+    expect(res.body.data.user.password).toBeFalsy();
+    expect(res.body.data.user.user).toBeFalsy();
+    expect(res.body.data.user.profilePictureURL).toBe(
+      variables.profilePictureURL
+    );
+    expect(res.body.data.user.name).toBe(variables.name);
   });
 
   it("customer social register with email only", async () => {
@@ -53,7 +56,12 @@ describe("customer social register suite case", () => {
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
     });
-    expect(res.body.data.name).toBe(variables.name);
+    expect(res.body.data.user.password).toBeFalsy();
+    expect(res.body.data.user.user).toBeFalsy();
+    expect(res.body.data.user.profilePictureURL).toBe(
+      variables.profilePictureURL
+    );
+    expect(res.body.data.user.name).toBe(variables.name);
   });
 
   it("should register twice with email only", async () => {
@@ -84,10 +92,16 @@ describe("customer social register suite case", () => {
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_SOCIAL_REGISTER,
-      variables: { email: variables2.email, name: variables2.name },
+      variables: {
+        email: variables2.email,
+        name: variables2.name,
+        socialMediaId: "something",
+        socialMediaType:"FACEBOOK"
+      },
     });
-    expect(res2.body.data.name).toBe(variables2.name);
-    expect(res.body.data.name).toBe(variables.name);
+    expect(res2.body.data.user.password).toBeFalsy();
+    expect(res2.body.data.user.user).toBeFalsy();
+    expect(res2.body.data.user.name).toBe(variables2.name);
   });
 
   it("error if customer register with same email", async () => {

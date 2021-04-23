@@ -39,6 +39,26 @@ describe("admin get subscriptions suite case", () => {
     });
     expect(res.body.data.docs.length).toBe(10);
   });
+
+  it("should throw error if invalid provider", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${ADMIN_GET_SUBSCRIPTIONS}?provider=something`,
+      token: admin.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
+  it("should throw error if invalid provider", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${ADMIN_GET_SUBSCRIPTIONS}?provider=something`,
+      token: admin.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
   it("should return zero if there is no provider", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
@@ -76,19 +96,11 @@ describe("admin get subscriptions suite case", () => {
 
   it("should get zero matches cause of the payment type", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const paymentType = await paymentFactory({ key: PaymentEnum[2] });
-    await providerCustomerCouponsFactory(
-      10,
-      {},
-      {},
-      {},
-      { paymentType: paymentType._id }
-    );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${ADMIN_GET_SUBSCRIPTIONS}?paymentType=something`,
       token: admin.token,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    expect(res.body.statusCode).toBe(400);
   });
 });

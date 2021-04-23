@@ -18,6 +18,9 @@ describe("generate pdf suite case", () => {
       variables: { provider: provider._id },
       token: admin.token,
     });
+    expect(res.body.data.qrURL).toContain(
+      "http://api2.couponat.alefsoftware.com/public/provider-qr-codes"
+    );
     expect(res.body.data.qrURL).toContain(".png");
   });
 });

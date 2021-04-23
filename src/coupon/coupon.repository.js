@@ -1,13 +1,12 @@
-import { nanoid } from "nanoid";
 import { CouponModel } from "./models/coupon.model.js";
-import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 import dotenv from "dotenv";
 import { ProviderModel } from "../provider/models/provider.model.js";
 import { CategoryModel } from "../category/models/category.model.js";
 import mongoose from "mongoose";
-import { CustomerModel } from "../customer/models/customer.model.js";
 import { PaymentModel } from "../payment/models/payment.model.js";
 import { UserModel } from "../user/models/user.model.js";
+import { CustomerModel } from "../customer/models/customer.model.js";
+import { providerCustomerCouponModel } from "../subscription/models/provider-customer-coupon.model.js";
 
 dotenv.config();
 export const getMyCouponsRepository = async (
@@ -23,27 +22,14 @@ export const getMyCouponsRepository = async (
       isActive: true,
     },
     {
+      populate: [{ path: "provider category", select: { password: 0 } }],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
-      populate: [
-        { path: "provider", select: { password: 0 } },
-        { path: "category" },
-      ],
     }
   );
 };
 
-export const getRecentlySoldCouponsRepository = async (
-  provider,
-  offset = 0,
-  limit = 15
-) => {
-  return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }) },
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
-  );
-};
 export const getCompletelySoldCouponsRepository = async (
   provider,
   offset = 0,
@@ -51,23 +37,8 @@ export const getCompletelySoldCouponsRepository = async (
 ) => {
   return await CouponModel.paginate(
     { ...(provider && { provider }), amount: 0 },
-    { populate: "coupon", offset: offset * limit, limit, sort: "-createdAt" }
-  );
-};
-
-export const getSubscriptionsRepository = async (
-  provider,
-  offset = 0,
-  limit = 15
-) => {
-  return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }) },
     {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
-      ],
+      populate: [{ path: "provider category", select: { password: 0 } }],
       offset: offset * limit,
       limit,
       sort: "-createdAt",
@@ -75,13 +46,35 @@ export const getSubscriptionsRepository = async (
   );
 };
 
-export const getAdminSubscriptionsRepository = async (
-  paymentType,
+export const getNotCompletelySoldCouponsRepository = async (
   provider,
   offset = 0,
   limit = 15
 ) => {
-  const aggregation = providerCustomerCouponModel.aggregate([
+  return await CouponModel.paginate(
+    { ...(provider && { provider }), amount: { $gt: 0 } },
+    {
+      populate: [{ path: "provider category", select: { password: 0 } }],
+      offset: offset * limit,
+      limit,
+      sort: "-createdAt",
+    }
+  );
+};
+
+export const getRecentlyAdddedCouponsRepository = async (
+  provider,
+  category,
+  offset = 0,
+  limit = 15,
+  user
+) => {
+  const aggregation = CouponModel.aggregate([
+    {
+      $match: {
+        ...(category && { category: new mongoose.Types.ObjectId(category) }),
+      },
+    },
     {
       $match: {
         ...(provider && {
@@ -102,290 +95,6 @@ export const getAdminSubscriptionsRepository = async (
     },
     {
       $lookup: {
-        from: PaymentModel.collection.name,
-        localField: "paymentType",
-        foreignField: "_id",
-        as: "paymentType",
-      },
-    },
-    {
-      $unwind: "$paymentType",
-    },
-    {
-      $match: { ...(paymentType && { "paymentType.key": paymentType }) },
-    },
-    {
-      $lookup: {
-        from: CouponModel.collection.name,
-        localField: "coupon",
-        foreignField: "_id",
-        as: "coupon",
-      },
-    },
-    {
-      $unwind: "$coupon",
-    },
-    {
-      $lookup: {
-        from: UserModel.collection.name,
-        localField: "customer",
-        foreignField: "_id",
-        as: "customer",
-      },
-    },
-    {
-      $unwind: "$customer",
-    },
-    {
-      $project: { "provider.password": 0, "customer.password": 0 },
-    },
-  ]);
-  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
-    offset: offset * limit,
-    limit,
-    sort: "-createdAt",
-  });
-};
-
-export const getCustomerSubscriptionsRepository = async (
-  customer,
-  offset = 0,
-  limit = 15,
-  subscriptions = [],
-  favCoupons = []
-) => {
-  const aggregation = providerCustomerCouponModel.aggregate([
-    {
-      $match: {
-        ...(customer && {
-          customer: new mongoose.Types.ObjectId(customer),
-        }),
-      },
-    },
-    {
-      $lookup: {
-        from: UserModel.collection.name,
-        localField: "customer",
-        foreignField: "_id",
-        as: "customer",
-      },
-    },
-    {
-      $unwind: "$customer",
-    },
-    {
-      $lookup: {
-        from: PaymentModel.collection.name,
-        localField: "paymentType",
-        foreignField: "_id",
-        as: "paymentType",
-      },
-    },
-    {
-      $unwind: "$paymentType",
-    },
-    {
-      $lookup: {
-        from: CouponModel.collection.name,
-        localField: "coupon",
-        foreignField: "_id",
-        as: "coupon",
-      },
-    },
-    {
-      $unwind: "$coupon",
-    },
-    {
-      $lookup: {
-        from: ProviderModel.collection.name,
-        localField: "coupon.provider",
-        foreignField: "_id",
-        as: "coupon.provider",
-      },
-    },
-    {
-      $unwind: "$coupon.provider",
-    },
-    {
-      $lookup: {
-        from: CategoryModel.collection.name,
-        localField: "coupon.category",
-        foreignField: "_id",
-        as: "coupon.category",
-      },
-    },
-    {
-      $unwind: "$coupon.category",
-    },
-    {
-      $addFields: {
-        "coupon.isSubscribe": {
-          $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
-        },
-        "coupon.isFav": {
-          $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
-        },
-      },
-    },
-    {
-      $project: {
-        count: 0,
-        "coupon.provider.password": 0,
-        "customer.password": 0,
-        provider: 0,
-      },
-    },
-  ]);
-  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
-    offset: offset * limit,
-    limit,
-  });
-};
-
-export const getSubscriptionRepository = async ({
-  _id,
-  provider,
-  customer,
-  coupon,
-  subscriptions = [],
-  favCoupons = [],
-}) => {
-  // we only need the first element in the aggregation
-  return (
-    await providerCustomerCouponModel.aggregate([
-      {
-        $match: {
-          ...(_id && { _id: new mongoose.Types.ObjectId(_id) }),
-          ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
-          ...(customer && { customer: new mongoose.Types.ObjectId(customer) }),
-          ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
-        },
-      },
-      { $limit: 1 },
-      {
-        $lookup: {
-          from: UserModel.collection.name,
-          localField: "customer",
-          foreignField: "_id",
-          as: "customer",
-        },
-      },
-      {
-        $unwind: "$customer",
-      },
-      {
-        $lookup: {
-          from: PaymentModel.collection.name,
-          localField: "paymentType",
-          foreignField: "_id",
-          as: "paymentType",
-        },
-      },
-      {
-        $unwind: "$paymentType",
-      },
-      {
-        $lookup: {
-          from: CouponModel.collection.name,
-          localField: "coupon",
-          foreignField: "_id",
-          as: "coupon",
-        },
-      },
-      {
-        $unwind: "$coupon",
-      },
-      {
-        $lookup: {
-          from: ProviderModel.collection.name,
-          localField: "coupon.provider",
-          foreignField: "_id",
-          as: "coupon.provider",
-        },
-      },
-      {
-        $unwind: "$coupon.provider",
-      },
-      {
-        $lookup: {
-          from: CategoryModel.collection.name,
-          localField: "coupon.category",
-          foreignField: "_id",
-          as: "coupon.category",
-        },
-      },
-      {
-        $unwind: "$coupon.category",
-      },
-      {
-        $addFields: {
-          "coupon.isSubscribe": {
-            $cond: [{ $in: ["$coupon._id", subscriptions] }, true, false],
-          },
-          "coupon.isFav": {
-            $cond: [{ $in: ["$coupon._id", favCoupons] }, true, false],
-          },
-        },
-      },
-      {
-        $project: {
-          count: 0,
-          "coupon.provider.password": 0,
-          "customer.password": 0,
-          provider: 0,
-        },
-      },
-    ])
-  )[0];
-};
-
-export const getCustomerSubscriptionRepository = async (_id, customer) => {
-  return await providerCustomerCouponModel.findOne(
-    { _id, provider },
-    {},
-    {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-      ],
-    }
-  );
-};
-
-export const getRecentlyAdddedCouponsRepository = async (
-  provider,
-  category,
-  offset = 0,
-  limit = 15,
-  subscriptions = [],
-  favCoupons = []
-) => {
-  const aggregation = CouponModel.aggregate([
-    {
-      $match: {
-        ...(category && { category: new mongoose.Types.ObjectId(category) }),
-      },
-    },
-    {
-      $lookup: {
-        from: ProviderModel.collection.name,
-        localField: "provider",
-        foreignField: "_id",
-        as: "provider",
-      },
-    },
-    {
-      $unwind: "$provider",
-    },
-    {
-      $match: {
-        ...(provider && {
-          "$provider._id": new mongoose.Types.ObjectId(provider),
-        }),
-      },
-    },
-    {
-      $lookup: {
         from: CategoryModel.collection.name,
         localField: "category",
         foreignField: "_id",
@@ -396,17 +105,60 @@ export const getRecentlyAdddedCouponsRepository = async (
       $unwind: "$category",
     },
     {
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              user: user ? new mongoose.Types.ObjectId(user._id) : user,
+            },
+          },
+          {
+            $project: { favCoupons: 1, _id: 0 },
+          },
+          {
+            $unwind: "$favCoupons",
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
       $addFields: {
         isSubscribe: {
-          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
         },
         isFav: {
-          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
+          $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
         },
       },
     },
     {
-      $project: { count: 0, "provider.password": 0 },
+      $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+    },
+    {
+      $sort: { createdAt: -1 },
     },
   ]);
   return await CouponModel.aggregatePaginate(aggregation, {
@@ -414,94 +166,6 @@ export const getRecentlyAdddedCouponsRepository = async (
     limit,
     lean: true,
   });
-};
-
-export const getMostSellingCouponRepository = async (
-  category,
-  offset = 0,
-  limit = 15,
-  subscriptions = [],
-  favCoupons = []
-) => {
-  const aggregation = providerCustomerCouponModel.aggregate([
-    {
-      $sortByCount: "$coupon",
-    },
-    {
-      $lookup: {
-        from: CouponModel.collection.name,
-        localField: "_id",
-        foreignField: "_id",
-        as: "coupon",
-      },
-    },
-    {
-      $unwind: "$coupon",
-    },
-    {
-      // in case no category is passed
-      $match: {
-        ...(category && {
-          "coupon.category": new mongoose.Types.ObjectId(category),
-        }),
-      },
-    },
-    {
-      $lookup: {
-        from: ProviderModel.collection.name,
-        localField: "coupon.provider",
-        foreignField: "_id",
-        as: "coupon.provider",
-      },
-    },
-    {
-      $unwind: "$coupon.provider",
-    },
-    {
-      $lookup: {
-        from: CategoryModel.collection.name,
-        localField: "coupon.category",
-        foreignField: "_id",
-        as: "coupon.category",
-      },
-    },
-    {
-      $unwind: "$coupon.category",
-    },
-    {
-      $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
-    },
-    { $replaceRoot: { newRoot: "$coupon" } },
-    {
-      $addFields: {
-        isSubscribe: {
-          $cond: [{ $in: ["$_id", subscriptions] }, true, false],
-        },
-        isFav: {
-          $cond: [{ $in: ["$_id", favCoupons] }, true, false],
-        },
-      },
-    },
-  ]);
-  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
-    offset,
-    limit,
-    lean: true,
-  });
-};
-export const getProviderHomeRepository = async (provider) => {
-  const numberOfSoldCoupons = await providerCustomerCouponModel
-    .distinct("coupon", {
-      provider,
-    })
-    .countDocuments();
-
-  const numberOfCoupons = await CouponModel.countDocuments({ provider });
-  return {
-    numberOfSoldCoupons,
-    numberOfCoupons,
-    remainingCoupons: numberOfCoupons - numberOfSoldCoupons,
-  };
 };
 
 export const addCouponRepository = async (coupon) => {
@@ -555,33 +219,111 @@ export const rawDeleteCoupon = async () => {
   return await CouponModel.deleteMany({});
 };
 
-export const rawDeleteProviderCustomerCoupon = async () => {
-  return await providerCustomerCouponModel.deleteMany({});
-};
-
 export const searchCouponsRepository = async (
-  name,
+  category,
+  provider,
   offset = 0,
   limit = 15,
-  category
+  user,
+  name
 ) => {
-  return await CouponModel.paginate(
+  const aggregation = CouponModel.aggregate([
     {
-      ...(category && { category }),
-      $or: [
-        { enName: { $regex: name, $options: "i" } },
-        { arName: { $regex: name, $options: "i" } },
-      ],
+      $match: {
+        ...(category && { category: new mongoose.Types.ObjectId(category) }),
+        ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
+        ...(name && {
+          $or: [
+            { enName: { $regex: name, $options: "i" } },
+            { arName: { $regex: name, $options: "i" } },
+          ],
+        }),
+      },
     },
     {
-      limit,
-      offset,
-      populate: [
-        { path: "category" },
-        { path: "provider", select: { password: 0 } },
-      ],
-    }
-  );
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+    {
+      $lookup: {
+        from: CustomerModel.collection.name,
+        as: "user",
+        pipeline: [
+          {
+            $match: {
+              user: user ? new mongoose.Types.ObjectId(user._id) : user,
+            },
+          },
+          {
+            $project: { favCoupons: 1, _id: 0 },
+          },
+          {
+            $unwind: "$favCoupons",
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        isSubscribe: {
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
+        },
+        isFav: {
+          $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
+        },
+      },
+    },
+    // {
+    // $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+    // },
+    {
+      $sort: { createdAt: -1 },
+    },
+  ]);
+  return await CouponModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+    lean: true,
+  });
 };
 
 export const getCoupon = async ({ _id }) => {
@@ -607,30 +349,6 @@ export const findProviderCouponsRepository = async (provider) => {
   return await CouponModel.find({ provider }, {}, { lean: true });
 };
 
-export const markCouponUsedRepository = async ({ coupon, customer }) => {
-  return await providerCustomerCouponModel.findOneAndUpdate(
-    { customer, coupon },
-    { isUsed: true },
-    { new: true }
-  );
-};
-
-export const confirmCouponPayment = async ({ _id }) => {
-  return await providerCustomerCouponModel.findOneAndUpdate(
-    { _id },
-    { isConfirmed: true },
-    { new: true }
-  );
-};
-
-export const checkIfCouponWasSold = async ({ coupon }) => {
-  return await providerCustomerCouponModel.findOne(
-    { coupon },
-    {},
-    { lean: true }
-  );
-};
-
 export const findCouponByCategory = async ({ category }) => {
   return await CouponModel.findOne({ category }, {}, { lean: true });
 };
@@ -643,46 +361,4 @@ export const countCouponsRepository = async (createdAt) => {
   return await CouponModel.countDocuments({
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
-};
-
-export const countSubscriptionsRepository = async (createdAt) => {
-  return await providerCustomerCouponModel.countDocuments({
-    ...(createdAt && { createdAt: { $gte: createdAt } }),
-  });
-};
-
-export const getCustomerSubscribedCoupons = async (customer) => {
-  return await providerCustomerCouponModel.find(
-    { customer },
-    { coupon: 1, _id: 0 },
-    { lean: true }
-  );
-};
-
-export const createSubscriptionRepository = async ({ subscription }) => {
-  return await providerCustomerCouponModel.create({
-    ...subscription,
-    ...(subscription.image && {
-      image: process.env.SERVER_IP + subscription.image.path,
-    }),
-  });
-};
-
-export const getUnconfirmedPaymentsRepository = async (
-  offset = 0,
-  limit = 15
-) => {
-  return await providerCustomerCouponModel.paginate(
-    { isConfirmed: false },
-    {
-      populate: [
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-    }
-  );
 };

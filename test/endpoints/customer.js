@@ -18,3 +18,4 @@ export const UPDATE_CUSTOMER = "/customers-management/updateProfile";
 export const SUBSCRIBE = "/customers-management/subscribe";
 export const GET_CUSTOMER_SUBSCRIPTION =
   "/customers-management/getSubscription";
+export const SCAN = "/customers-management/scan";

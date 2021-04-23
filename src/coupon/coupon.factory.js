@@ -3,8 +3,9 @@ import { categoryFactory } from "../category/category.factory.js";
 import { providerFactory } from "../provider/provider.factory.js";
 import { userFactory } from "../user/user.factory.js";
 import { CouponModel } from "./models/coupon.model.js";
-import { providerCustomerCouponModel } from "./models/provider-customer-coupon.model.js";
 import { paymentFactory } from "../payment/payment.factory.js";
+import { providerCustomerCouponModel } from "../../src/subscription/models/provider-customer-coupon.model.js";
+
 export const buildCouponParams = async (obj = {}) => {
   const amount =
     obj.amount === null || obj.amount === undefined

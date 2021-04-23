@@ -16,12 +16,14 @@ export const semiAuthenticationMiddleware = async (req, res, next) => {
         if (error) verificationError = true;
         if (decoded) user = decoded;
       });
-      if (verificationError) throw new BaseHttpError(613);
-      const authenticatedUser =
-        (await UserModel.findById(user.id)) ||
-        (await ProviderModel.findById(user.id));
-      if (!authenticatedUser) throw new BaseHttpError(614);
-      req.currentUser = authenticatedUser;
+      if (verificationError) req.currentUser === null;
+      else {
+        const authenticatedUser =
+          (await UserModel.findById(user.id)) ||
+          (await ProviderModel.findById(user.id));
+        if (!authenticatedUser) throw new BaseHttpError(614);
+        req.currentUser = authenticatedUser;
+      }
     }
     next();
   } catch (err) {

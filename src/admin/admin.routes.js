@@ -9,10 +9,12 @@ import {
   adminUpdateCouponService,
   adminUpdateProfileService,
   getAllCouponsService,
-  getAllSubscriptionsService,
-  getSubscriptionService,
 } from "../coupon/coupon.service.js";
-import { getProvidersService } from "../provider/provider.service.js";
+import {
+  addLocationService,
+  getProvidersService,
+  addLocationsService,
+} from "../provider/provider.service.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { addProviderService } from "../user/user.service.js";
 import { authenticationMiddleware } from "../_common/helpers/authentication.js";
@@ -31,6 +33,7 @@ import {
   adminDeleteCouponService,
   adminDeleteCategoryService,
   getStatisticsService,
+  generateProvidersPdf,
 } from "./admin.service.js";
 import { AddAdminInput } from "./inputs/add-admin.input.js";
 import { AddCategoryInput } from "./inputs/add-category.input.js";
@@ -54,9 +57,7 @@ import {
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
-  confirmPaymentService,
   getPaymentTypesService,
-  getUnconfirmedPaymentsService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
 import { AddPaymentTypeInput } from "../../src/payment/inputs/add-payment-type.input.js";
@@ -70,7 +71,32 @@ import {
 import { AddCityInput } from "../city/inputs/add-city.input.js";
 import { UpdateCityInput } from "../city/inputs/update-city.input.js";
 import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
-
+import { AddBankAccountInput } from "../../src/bank/inputs/add-bank-account.input.js";
+import {
+  addBankAccountService,
+  getBankAccountsService,
+  toggleBankAccountService,
+} from "../../src/bank/bank.service.js";
+import { toggleBankAccountInput } from "../../src/bank/inputs/toggle-bank-account.input.js";
+import { AddCreditInput } from "../credit/inputs/add-credit.input.js";
+import { UpdateCreditInput } from "../credit/inputs/update-credit.input.js";
+import {
+  addCreditService,
+  getCreditService,
+  updateCreditService,
+} from "../credit/credit.service.js";
+import {
+  confirmPaymentService,
+  getAllSubscriptionsService,
+  getSubscriptionService,
+  getUnconfirmedPaymentsService,
+} from "../subscription/subscription.service.js";
+import { AdminAddLocationInput } from "../admin/inputs/admin-add-location.input.js";
+import { AdminAddLocationsInput } from "../admin/inputs/admin-add-locations.input.js";
+import { AdminGetSubscriptionsInput } from "../admin/inputs/admin-get-subscriptions.input.js";
+import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
+import { adminGetProviderInput } from "./inputs/admin-get-provider.input.js";
+import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -211,6 +237,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(GetCouponsInput),
     getAllCouponsService
   );
 
@@ -219,6 +246,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminGetSubscriptionsInput),
     getAllSubscriptionsService
   );
 
@@ -227,6 +255,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(adminGetProviderInput),
     adminGetProviderService
   );
 
@@ -250,9 +279,10 @@ adminRouter
 
 adminRouter
   .route("/getContactUsMessages")
-  .delete(
+  .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(offSetLimitInput),
     getContactUsMessagesService
   );
 
@@ -337,6 +367,78 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(toggleCityInput),
     toggleCityService
+  );
+
+adminRouter
+  .route("/addBankAccount")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddBankAccountInput),
+    addBankAccountService
+  );
+
+adminRouter
+  .route("/toggleBankAccount")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(toggleBankAccountInput),
+    toggleBankAccountService
+  );
+
+adminRouter
+  .route("/getBankAccounts")
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(offSetLimitInput),
+    getBankAccountsService
+  );
+
+adminRouter
+  .route("/updateCredit")
+  .put(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(UpdateCreditInput),
+    updateCreditService
+  );
+
+adminRouter
+  .route("/addCredit")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AddCreditInput),
+    addCreditService
+  );
+
+adminRouter.route("/getCredit").get(authenticationMiddleware, getCreditService);
+
+adminRouter
+  .route("/addLocation")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminAddLocationInput),
+    addLocationService
+  );
+
+adminRouter
+  .route("/addLocations")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(AdminAddLocationsInput),
+    addLocationsService
+  );
+
+adminRouter
+  .route("/getProvidersPdf")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    generateProvidersPdf
   );
 
 export { adminRouter };

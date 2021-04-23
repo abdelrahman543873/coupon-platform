@@ -1,10 +1,12 @@
 import { categoryFactory } from "../../src/category/category.factory";
 import {
+  couponFactory,
   couponsFactory,
   providerCustomerCouponFactory,
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { customerFactory } from "../../src/customer/customer.factory";
+import { providerFactory } from "../../src/provider/provider.factory";
 import { GET_CUSTOMERS_COUPONS } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
@@ -91,12 +93,25 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
+  it("should get coupons by provider filter and newest", async () => {
+    const category = await categoryFactory();
+    const provider = await providerFactory();
+    await couponsFactory(12, { provider: provider._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?provider=${provider._id}`,
+    });
+    expect(res.body.data.docs[0].category.enName).toBeTruthy();
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs.length).toBe(12);
+  });
+
   it("error if not newest or best seller ", async () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=new`,
     });
-    expect(res.body.statusCode).toBe(616);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("customer get best seller coupons successfully", async () => {
@@ -113,6 +128,26 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
+    expect(res.body.data.docs[0].provider.name).toBeTruthy();
+    expect(res.body.data.docs[0]._id).toBe(
+      decodeURI(encodeURI(additionalCoupon.coupon))
+    );
+  });
+  it("customer get best seller coupons successfully and filter by provider", async () => {
+    const providerCustomerCoupons = await providerCustomerCouponsFactory();
+    // increasing the number of a coupon to check most sold
+    const additionalCoupon = await providerCustomerCouponFactory(
+      {
+        provider: providerCustomerCoupons.ops[0].provider,
+      },
+      { customer: providerCustomerCoupons.ops[0].customer },
+      { coupon: providerCustomerCoupons.ops[0].coupon }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&provider=${additionalCoupon.provider}`,
+    });
+    expect(res.body.data.docs.length).toBe(1);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
     expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
@@ -143,5 +178,60 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
     );
+  });
+
+  it("get logged in customers coupons favorite service for newest", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(true);
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+  });
+
+  it("subscribe and isFav evaluates to false if no user is logged in", async () => {
+    const coupon = await couponFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
+  });
+
+  it("subscribe and isFav evaluates to true if user is logged in for best selling", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(true);
+    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+  });
+
+  it("subscribe and isFav evaluates to false if no user is logged in for best selling", async () => {
+    const coupon = await couponFactory();
+    await providerCustomerCouponFactory({}, {}, { coupon: coupon._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+    });
+    expect(res.body.data.docs[0].isFav).toBe(false);
+    expect(res.body.data.docs[0].isSubscribe).toBe(false);
   });
 });

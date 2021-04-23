@@ -22,6 +22,7 @@ describe("provider register suite case", () => {
       role,
       locations,
       _id,
+      metadata,
       image,
       ...input
     } = providerInput;
@@ -64,6 +65,7 @@ describe("provider register suite case", () => {
       logoURL,
       isActive,
       locations,
+      metadata,
       code,
       fcmToken,
       qrURL,

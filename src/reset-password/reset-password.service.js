@@ -10,14 +10,14 @@ import { sendMessage } from "../_common/helpers/twilio.js";
 import { generateToken } from "../utils/JWTHelper.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { getCustomerRepository } from "../customer/customer.repository.js";
-import { findProviderById } from "../provider/provider.repository.js";
+import { findProviderByEmail } from "../provider/provider.repository.js";
 export const resetPasswordService = async (req, res, next) => {
   try {
     const user =
       (await findUserByEmailOrPhone({
         ...(req.body.phone && { phone: req.body.phone }),
         ...(req.body.email && { email: req.body.email }),
-      })) || (await findProviderById(req.body.email));
+      })) || (await findProviderByEmail({ email: req.body.email }));
     if (!user) throw new BaseHttpError(611);
     if (req.body.code) {
       const verification = await verifyOTPRepository({

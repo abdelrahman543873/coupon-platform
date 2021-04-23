@@ -5,24 +5,31 @@ import {
   getProvider,
   manageProviderStatusRepository,
   updateProviderRepository,
+  getAllProvidersWithQrUrlRepository,
 } from "../provider/provider.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { createUser, findUserByEmailOrPhone } from "../user/user.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import QRCode from "qrcode";
 import {
-  checkIfCouponWasSold,
   countCouponsRepository,
-  countSubscriptionsRepository,
   deleteCoupon,
   deleteProviderCouponsRepository,
   findCouponByCategory,
   findProviderCouponsRepository,
-  getRecentlySoldCouponsRepository,
   updateCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import fs from "fs";
 import { deleteCategory } from "../category/category.repository.js";
+import {
+  checkIfCouponWasSold,
+  countSubscriptionsRepository,
+  getProviderSoldCoupons,
+} from "../subscription/subscription.repository.js";
+import PDFDocument from "pdfkit";
+import dotenv from "dotenv";
+
+dotenv.config();
 export const addAdminService = async (req, res, next) => {
   try {
     const existingUser = await findUserByEmailOrPhone(req.body);
@@ -51,8 +58,8 @@ export const manageProviderStatusService = async (req, res, next) => {
       }
       await QRCode.toFile(
         //here the same issue
-        `./${path}${provider._id}.png`,
-        decodeURI(encodeURI(provider._id)),
+        `./${path}${provider.code}.png`,
+        decodeURI(encodeURI(provider.code)),
         {
           type: "png",
           color: {
@@ -61,7 +68,7 @@ export const manageProviderStatusService = async (req, res, next) => {
           },
         }
       );
-      qrURL = `${path}${provider._id}.png`;
+      qrURL = `${path}${provider.code}.png`;
     }
     const updatedProvider = await manageProviderStatusRepository(
       provider._id,
@@ -92,13 +99,16 @@ export const generateProviderQrCodeService = async (req, res, next) => {
   try {
     const provider = await getProvider(req.body.provider);
     if (!provider) throw new BaseHttpError(625);
-    const path = "./public/provider-qr-codes/";
-    if (!fs.existsSync(path)) {
+    const path = "public/provider-qr-codes/";
+    // this is done so that we can have an online url in the manage manageProviderStatusRepository
+    // and be able to create the directory if it doesn't exist on the server
+    if (!fs.existsSync(`./${path}`)) {
       fs.mkdirSync(path);
     }
     await QRCode.toFile(
-      `${path}${provider._id}.png`,
-      decodeURI(encodeURI(provider._id)),
+      //here the same issue
+      `./${path}${provider.code}.png`,
+      decodeURI(encodeURI(provider.code)),
       {
         type: "png",
         color: {
@@ -108,7 +118,7 @@ export const generateProviderQrCodeService = async (req, res, next) => {
       }
     );
     const updatedProvider = await updateProviderRepository(provider._id, {
-      qrURL: `${path}${provider._id}.png`,
+      qrURL: `${path}${provider.code}.png`,
     });
     res.status(200).json({
       success: true,
@@ -136,10 +146,8 @@ export const adminUpdateProviderService = async (req, res, next) => {
 
 export const adminDeleteProviderService = async (req, res, next) => {
   try {
-    const soldCoupons = await getRecentlySoldCouponsRepository(
-      req.body.provider
-    );
-    if (soldCoupons.docs.length !== 0) throw new BaseHttpError(628);
+    const soldCoupons = await getProviderSoldCoupons(req.body.provider);
+    if (soldCoupons.length !== 0) throw new BaseHttpError(628);
     await deleteProviderCouponsRepository(req.body.provider);
     const provider = await adminDeleteProviderRepository(req.body.provider);
     return res.status(200).json({
@@ -191,6 +199,54 @@ export const getStatisticsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: { providers, coupons, subscriptions },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const generateProvidersPdf = async (req, res, next) => {
+  try {
+    const providers = await getAllProvidersWithQrUrlRepository();
+    if (!providers) throw new BaseHttpError(645);
+    const path = "./public/providers-pdf/";
+    const pdfDoc = new PDFDocument();
+    const name = "AllProviders.pdf";
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    pdfDoc.pipe(fs.createWriteStream(path + name));
+    pdfDoc.moveDown(25);
+    pdfDoc.fillColor("red").text("Couponat El Madina", { align: "center" });
+    providers.map((provider) => {
+      pdfDoc.addPage();
+      const segment_array = provider.qrURL.split("/");
+      const last_segment = segment_array.pop();
+      const arabic = /[\u0600-\u06FF]/;
+      const name = arabic.test(provider.name)
+        ? provider.name.split(" ").reverse().join(" ")
+        : provider.name;
+      pdfDoc
+        .fillColor("blue")
+        .font("./assets/fonts/Tajawal-Bold.ttf")
+        .fontSize(20)
+        .text("Provider: ", {
+          continued: true,
+        })
+        .fillColor("black")
+        .fontSize(20)
+        .text(name, { rtl: true });
+      pdfDoc.moveDown(0.5);
+      pdfDoc.image("./public/provider-qr-codes/" + last_segment, {
+        align: "center",
+        width: 300,
+        height: 300,
+      });
+    });
+    pdfDoc.end();
+    return res.status(200).send({
+      success: true,
+      data: process.env.SERVER_IP + path + name,
     });
   } catch (error) {
     next(error);

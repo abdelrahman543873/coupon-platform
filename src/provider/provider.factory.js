@@ -4,6 +4,7 @@ import { userFactory } from "../user/user.factory";
 import { hashPass } from "../utils/bcryptHelper";
 import { generateToken } from "../utils/JWTHelper";
 import { ProviderModel } from "./models/provider.model.js";
+import mongoose from "mongoose";
 
 export const buildProviderParams = async (obj = {}) => {
   const qrURL =
@@ -28,6 +29,16 @@ export const buildProviderParams = async (obj = {}) => {
     locations: obj.locations || {
       coordinates: [faker.address.longitude(), faker.address.latitude()],
     },
+    metadata: obj.metadata || [
+      {
+        formattedAddressAr: faker.address.streetAddress(),
+        formattedAddressEn: faker.address.streetAddress(),
+        level2longAr: faker.address.streetPrefix(),
+        level2longEn: faker.address.streetPrefix(),
+        googlePlaceId: faker.address.zipCode(),
+      },
+    ],
+    code: obj.code || mongoose.Types.ObjectId(),
   };
 };
 

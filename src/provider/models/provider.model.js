@@ -41,6 +41,21 @@ export const provider = mongoose.Schema(
     locations: {
       type: pointSchema,
     },
+    //lat and long are repeated here so that when adding a new point that is very close to the previous
+    //one the object is considered unique and it could be added successfully by the $addToSet method of
+    //mongodb
+    metaData: [
+      {
+        lat: String,
+        long: String,
+        formattedAddressAr: String,
+        formattedAddressEn: String,
+        level2longAr: String,
+        level2longEn: String,
+        googlePlaceId: String,
+        _id: false,
+      },
+    ],
     slogan: {
       type: String,
     },
@@ -56,6 +71,12 @@ export const provider = mongoose.Schema(
     twitterLink: { type: String },
     fcmToken: { type: String },
     qrURL: { type: String },
+    code: {
+      type: mongoose.Schema.Types.ObjectId,
+      index: true,
+      required: true,
+      auto: true,
+    },
   },
   {
     timestamps: true,

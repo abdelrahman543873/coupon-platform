@@ -22,6 +22,9 @@ export const updateProviderRepository = async (_id, providerData) => {
       ...(providerData.image && {
         image: process.env.SERVER_IP + providerData.image.path,
       }),
+      ...(providerData.qrURL && {
+        qrURL: process.env.SERVER_IP + providerData.qrURL,
+      }),
       ...(providerData.newPassword && {
         password: await hashPass(providerData.newPassword),
       }),
@@ -35,6 +38,16 @@ export const findProviderByEmailForLogin = async ({ provider }) => {
   return await ProviderModel.findOne({
     email: provider.email.toLowerCase(),
   });
+};
+
+export const findProviderByEmail = async ({ email }) => {
+  return await ProviderModel.findOne(
+    {
+      email,
+    },
+    { password: 0 },
+    { lean: true }
+  );
 };
 
 export const getRecentlySoldCouponsRepository = async (
@@ -53,9 +66,9 @@ export const getProviders = async (offset = 0, limit = 15) => {
     {
       offset: offset * limit,
       limit,
-      sort: "-createdAt",
       lean: true,
-      projection: { _id: 0, password: 0 },
+      projection: { password: 0 },
+      sort: { createdAt: -1 },
     }
   );
 };
@@ -82,6 +95,10 @@ export const adminDeleteProviderRepository = async (_id) => {
 
 export const rawDeleteProvider = async () => {
   return await ProviderModel.deleteMany({});
+};
+
+export const getAllProvidersWithQrUrlRepository = async () => {
+  return await ProviderModel.find({ qrURL: { $exists: true } });
 };
 
 export const countProvidersRepository = async (createdAt) => {

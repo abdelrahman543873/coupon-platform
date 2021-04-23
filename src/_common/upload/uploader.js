@@ -25,6 +25,7 @@ export const uploadHelper = (dest) => {
   const upload = multer({
     storage,
     fileFilter,
+    limits: { fileSize: 1000000 },
   });
   return upload;
 };

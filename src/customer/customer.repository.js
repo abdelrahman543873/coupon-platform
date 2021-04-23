@@ -1,6 +1,10 @@
 import { CustomerModel } from "./models/customer.model.js";
 import dotenv from "dotenv";
 import { CouponModel } from "../coupon/models/coupon.model.js";
+import mongoose from "mongoose";
+import { CategoryModel } from "../category/models/category.model.js";
+import { ProviderModel } from "../provider/models/provider.model.js";
+import { providerCustomerCouponModel } from "../subscription/models/provider-customer-coupon.model.js";
 
 dotenv.config();
 export const CustomerRegisterRepository = async (customer) => {
@@ -23,19 +27,85 @@ export const getCustomerRepository = async (user) => {
 };
 
 export const getCustomerFavCoupons = async (user) => {
-  return await CustomerModel.findOne(
-    { user },
-    { _id: 0, favCoupons: 1 },
+  return await CustomerModel.aggregate([
     {
-      lean: true,
-      populate: [
-        {
-          path: "favCoupons",
-          populate: { path: "category provider", select: { password: 0 } },
+      $match: {
+        user: new mongoose.Types.ObjectId(user),
+      },
+    },
+    {
+      $project: { favCoupons: 1, _id: 0 },
+    },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "favCoupons",
+        foreignField: "_id",
+        as: "favCoupons",
+      },
+    },
+    {
+      $unwind: "$favCoupons",
+    },
+    { $replaceRoot: { newRoot: "$favCoupons" } },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "subscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              customer: new mongoose.Types.ObjectId(user),
+              $expr: { coupon: "$_id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        isSubscribe: {
+          $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
         },
-      ],
-    }
-  );
+        isFav: true,
+      },
+    },
+    {
+      $project: { count: 0, "provider.password": 0, subscriptions: 0 },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+  ]);
 };
 
 export const addFavCouponRepository = async ({ user, couponId }) => {
@@ -82,4 +152,4 @@ export const getCustomerBySocialLoginRepository = async (socialMediaId) => {
     {},
     { populate: [{ path: "user", select: { password: 0 } }], lean: true }
   );
-}
+};

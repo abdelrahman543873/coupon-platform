@@ -21,6 +21,28 @@ describe("get subscribers suite case", () => {
       url: GET_SUBSCRIBERS,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.docs[0].customer._id).toBeTruthy();
+    expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(10);
+  });
+
+  it("get subscribers successfully filtered by coupons", async () => {
+    const provider = await providerFactory();
+    const coupons = await providerCustomerCouponsFactory(
+      10,
+      { provider: provider._id },
+      {},
+      { provider: provider._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_SUBSCRIBERS}?coupon=${coupons.ops[0].coupon}`,
+      token: provider.token,
+    });
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.docs[0].customer._id).toBeTruthy();
+    expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
+    expect(res.body.data.docs.length).toBe(1);
   });
 });

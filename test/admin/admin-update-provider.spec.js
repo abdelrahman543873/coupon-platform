@@ -24,6 +24,7 @@ describe("admin update provider suite case", () => {
       code,
       locations,
       fcmToken,
+      metadata,
       logoURL,
       qrURL,
       image,
@@ -49,6 +50,7 @@ describe("admin update provider suite case", () => {
       _id,
       isActive,
       code,
+      metadata,
       locations,
       fcmToken,
       logoURL,
@@ -99,6 +101,8 @@ describe("admin update provider suite case", () => {
       isActive,
       fcmToken,
       qrURL,
+      code,
+      metadata,
       logoURL,
       ...providerInput
     } = {

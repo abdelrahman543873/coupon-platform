@@ -1,10 +1,12 @@
 import { BaseHttpError } from "./error-handling-module/error-handler.js";
-
-const ValidationMiddleware = (schema) => {
+export const ValidationMiddleware = (schema) => {
   return (req, res, next) => {
-    const { error } = schema.validate(req.body);
-    if (error) throw new BaseHttpError(400, error.details[0].message);
-    next();
+    try {
+      const { error } = schema.validate({ ...req.body, ...req.query });
+      if (error) throw new BaseHttpError(400, error.details[0].message);
+      next();
+    } catch (error) {
+      next(error);
+    }
   };
 };
-export { ValidationMiddleware };

@@ -14,10 +14,10 @@ describe("admin get subscription suite case", () => {
     const subscription = await providerCustomerCouponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${ADMIN_GET_SUBSCRIPTION}?id=${subscription.id}`,
+      url: `${ADMIN_GET_SUBSCRIPTION}?subscription=${subscription._id}`,
       token: admin.token,
     });
-    expect(res.body.data.subscription._id).toBe(subscription.id);
+    expect(res.body.data._id).toBe(subscription.id);
   });
 
   it("should get error if malformed id", async () => {
@@ -25,7 +25,7 @@ describe("admin get subscription suite case", () => {
     const subscription = await providerCustomerCouponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${ADMIN_GET_SUBSCRIPTION}?id=something`,
+      url: `${ADMIN_GET_SUBSCRIPTION}?subscription=something`,
       token: admin.token,
     });
     expect(res.body.statusCode).toBe(631);

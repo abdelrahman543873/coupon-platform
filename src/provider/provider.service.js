@@ -3,18 +3,18 @@ import {
   addCouponRepository,
   findCouponByIdAndProvider,
   getMyCouponsRepository,
-  getProviderHomeRepository,
-  getRecentlySoldCouponsRepository,
-  getSubscriptionsRepository,
-  getSubscriptionRepository,
   updateCoupon,
   getCompletelySoldCouponsRepository,
   getCoupon,
+  getNotCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { generateToken } from "../utils/JWTHelper.js";
-import { addVerificationCode } from "../verification/verification.repository.js";
+import {
+  addVerificationCode,
+  verifyOTPRepository,
+} from "../verification/verification.repository.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
@@ -27,7 +27,10 @@ import {
 } from "./provider.repository.js";
 import { deleteCoupon } from "../coupon/coupon.repository.js";
 import { findCategoryRepository } from "../category/category.repository.js";
-import { findPointCities } from "../city/city.repository.js";
+import { findPointCities, findPointsCities } from "../city/city.repository.js";
+import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
+import { formattedGeo } from "../_common/helpers/geo-encoder.js";
+
 export const providerRegisterService = async (req, res, next) => {
   try {
     const existingUser = await findProviderByEmailForLogin({
@@ -82,6 +85,13 @@ export const updateProviderService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
+    if (req.body.verificationCode) {
+      const verification = await verifyOTPRepository({
+        code: req.body.verificationCode,
+        email: req.currentUser.email,
+      });
+      if (!verification) throw new BaseHttpError(617);
+    }
     const provider = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
       image: req.file,
@@ -110,6 +120,12 @@ export const getMyCouponsService = async (req, res, next) => {
         req.query.offset,
         req.query.limit
       ));
+    req.query.sold == "false" &&
+      (data = await getNotCompletelySoldCouponsRepository(
+        req.currentUser._id,
+        req.query.offset,
+        req.query.limit
+      ));
     !data &&
       (data = await getMyCouponsRepository(
         req.currentUser._id,
@@ -120,18 +136,6 @@ export const getMyCouponsService = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getProviderHomeService = async (req, res, next) => {
-  try {
-    const home = await getProviderHomeRepository(req.currentUser._id);
-    return res.status(200).json({
-      success: true,
-      data: home,
     });
   } catch (error) {
     next(error);
@@ -166,7 +170,7 @@ export const deleteCouponService = async (req, res, next) => {
     const deletedCoupon = await deleteCoupon(coupon.id);
     res.status(200).json({
       success: true,
-      data: { coupon: deletedCoupon },
+      data: true,
     });
   } catch (error) {
     next(error);
@@ -193,38 +197,6 @@ export const updateCouponService = async (req, res, next) => {
   }
 };
 
-export const getSubscriptionsService = async (req, res, next) => {
-  try {
-    const subscribers = await getSubscriptionsRepository(
-      req.currentUser._id,
-      req.query.offset,
-      req.query.limit
-    );
-    res.status(200).json({
-      success: true,
-      data: subscribers,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getSubscriptionService = async (req, res, next) => {
-  try {
-    const subscription = await getSubscriptionRepository({
-      _id: req.body.subscription,
-      provider: req.currentUser._id,
-    });
-    if (!subscription) throw new BaseHttpError(619);
-    res.status(200).json({
-      success: true,
-      data: subscription,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const getProvidersService = async (req, res, next) => {
   try {
     const providers = await getProviders(req.query.offset, req.query.limit);
@@ -241,12 +213,47 @@ export const addLocationService = async (req, res, next) => {
   try {
     const city = await findPointCities([req.body.long, req.body.lat]);
     if (city.length === 0) throw new BaseHttpError(639);
-    const provider = await updateProviderRepository(req.currentUser._id, {
-      // created like this not to cause conflicts with locations value in the
-      // model if it were to be place inside the updateProviderRepository
-      // when expanding the object
+    // to allow the same function to work for both admin and provider
+    const provider = await updateProviderRepository(
+      req.body.provider || req.currentUser._id,
+      {
+        // created like this not to cause conflicts with locations value in the
+        // model if it were to be place inside the updateProviderRepository
+        // when expanding the object
+        $addToSet: {
+          "locations.coordinates": [req.body.long, req.body.lat],
+          metaData: await formattedGeo({
+            lat: req.body.lat,
+            lon: req.body.long,
+          }),
+        },
+      }
+    );
+    res.status(200).json({
+      success: true,
+      data: provider,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addLocationsService = async (req, res, next) => {
+  try {
+    const convertedLocations = [];
+    for (let i = 0; i < req.body.locations.length; i++) {
+      const city = await findPointCities(req.body.locations[i]);
+      if (city.length === 0) throw new BaseHttpError(639);
+      const formattedAddress = await formattedGeo({
+        lat: req.body.locations[i][1],
+        lon: req.body.locations[i][0],
+      });
+      convertedLocations.push(formattedAddress);
+    }
+    const provider = await updateProviderRepository(req.body.provider, {
       $addToSet: {
-        "locations.coordinates": [req.body.long, req.body.lat],
+        "locations.coordinates": { $each: req.body.locations },
+        metaData: { $each: convertedLocations },
       },
     });
     res.status(200).json({

@@ -56,8 +56,8 @@ export const LocalizedErrorMessages = {
     AR: "provider doesn't exists",
   },
   617: {
-    EN: "expired OTP",
-    AR: "export OTP",
+    EN: "incorrect OTP",
+    AR: "incorrect OTP",
   },
   618: {
     EN: "coupon doesn't exist",
@@ -146,5 +146,37 @@ export const LocalizedErrorMessages = {
   639: {
     EN: "we don't support this location",
     AR: "we don't support this location",
+  },
+  640: {
+    EN: "you have no subscriptions with this provider",
+    AR: "you have no subscriptions with this provider",
+  },
+  641: {
+    EN: "you can't subscribe to the same coupon before using it",
+    AR: "you can't subscribe to the same coupon before using it",
+  },
+  642: {
+    EN: "you are not subscribed to any coupons with this provider",
+    AR: "you are not subscribed to any coupons with this provider",
+  },
+  643: {
+    EN: "credit doesn't exist",
+    AR: "credit doesn't exist",
+  },
+  644: {
+    EN: "location already exists",
+    AR: "location already exists",
+  },
+  645: {
+    EN: "terms and conditions doesn't exist",
+    AR: "terms and conditions doesn't exist",
+  },
+  645: {
+    EN: "providers aren't verified yet or don't exist",
+    AR: "providers aren't verified yet or don't exist",
+  },
+  646: {
+    EN: "first credit isn't initialized",
+    AR: "first credit isn't initialized",
   },
 };

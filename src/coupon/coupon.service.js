@@ -6,12 +6,11 @@ import {
   getCoupon,
   getMyCouponsRepository,
   updateCouponById,
-  getAdminSubscriptionsRepository,
-  getSubscriptionRepository,
 } from "./coupon.repository.js";
 import mongoose from "mongoose";
 import { bcryptCheckPass } from "../utils/bcryptHelper.js";
 import { findCategoryRepository } from "../category/category.repository.js";
+import { verifyOTPRepository } from "../verification/verification.repository.js";
 
 export const adminAddCouponService = async (req, res, next) => {
   try {
@@ -66,43 +65,8 @@ export const getAllCouponsService = async (req, res, next) => {
   }
 };
 
-export const getAllSubscriptionsService = async (req, res, next) => {
-  try {
-    const subscriptions = await getAdminSubscriptionsRepository(
-      req.query.paymentType,
-      req.query.provider,
-      req.query.offset,
-      req.query.limit
-    );
-    res.status(200).json({
-      success: true,
-      data: subscriptions,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getSubscriptionService = async (req, res, next) => {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.id))
-      throw new BaseHttpError(631);
-    const subscription = await getSubscriptionRepository({
-      _id: req.query.id,
-    });
-    res.status(200).json({
-      success: true,
-      data: { subscription },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const adminGetProviderService = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.provider))
-      throw new BaseHttpError(631);
     const provider = await findProviderById(req.query.provider);
     if (!provider) throw new BaseHttpError(611);
     res.status(200).json({
@@ -120,6 +84,15 @@ export const adminUpdateProfileService = async (req, res, next) => {
       ? await bcryptCheckPass(req.body.password, req.currentUser.password)
       : true;
     if (!passwordValidation) throw new BaseHttpError(607);
+    //if user wants to change email , there is going to be code and if this code isn't true an error will be thrown
+    if (req.body.code) {
+      const verification = await verifyOTPRepository({
+        code: req.body.code,
+        email: req.currentUser.email,
+      });
+      if (!verification) throw new BaseHttpError(617);
+    }
+    //if user wants to change anything else
     const user = await updateUser(req.currentUser._id, req.body);
     return res.status(200).json({
       success: true,

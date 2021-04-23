@@ -10,10 +10,7 @@ import {
   addCouponService,
   deleteCouponService,
   getMyCouponsService,
-  getProviderHomeService,
   getProviderService,
-  getSubscriptionService,
-  getSubscriptionsService,
   providerRegisterService,
   updateCouponService,
   updateProviderService,
@@ -28,6 +25,12 @@ import { getCategoriesService } from "../category/category.service.js";
 import { DeleteCouponInput } from "../admin/inputs/delete-coupon.input.js";
 import { addLocationService } from "./provider.service.js";
 import { AddLocationInput } from "./inputs/add-location.input.js";
+import {
+  getProviderHomeService,
+  getSubscriptionsService,
+} from "../subscription/subscription.service.js";
+import { getSubscriptionService } from "../subscription/subscription.service.js";
+import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
 
 const providersRouter = express.Router();
 
@@ -127,6 +130,8 @@ providersRouter
     addLocationService
   );
 
-providersRouter.route("/getCategories").get(getCategoriesService);
+providersRouter
+  .route("/getCategories")
+  .get(ValidationMiddleware(offSetLimitInput), getCategoriesService);
 
 export { providersRouter };
