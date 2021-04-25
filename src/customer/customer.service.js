@@ -118,6 +118,7 @@ export const socialRegisterService = async (req, res, next) => {
       user: user.id,
       ...req.body,
       isVerified: true,
+      isSocialMediaVerified: true,
     });
     const data = {
       ...user.toJSON(),
