@@ -13,7 +13,6 @@ describe("add city suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: GET_CITIES,
     });
-    console.log(res.body.data.docs);
     expect(res.body.data.docs.length).toBe(10);
   });
 });
