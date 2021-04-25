@@ -26,7 +26,7 @@ describe("update provider suite case", () => {
       qrURL,
       user,
       image,
-      metadata,
+      metaData,
       locations,
       email,
       ...input
@@ -39,7 +39,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.provider.name).toBe(input.name);
+    expect(res.body.data.user.name).toBe(input.name);
   });
 
   it("only update provider", async () => {
@@ -52,7 +52,7 @@ describe("update provider suite case", () => {
       qrURL,
       role,
       locations,
-      metadata,
+      metaData,
       image,
       email,
       password,
@@ -66,7 +66,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.provider.name).toBe(input.name);
+    expect(res.body.data.user.name).toBe(input.name);
   });
 
   it("no error if only correct password is entered", async () => {
@@ -84,7 +84,7 @@ describe("update provider suite case", () => {
       logoURL,
       qrURL,
       user,
-      metadata,
+      metaData,
       image,
       role,
       ...input
@@ -96,7 +96,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.provider.slogan).toBe(input.slogan);
+    expect(res.body.data.user.slogan).toBe(input.slogan);
   });
 
   it("only update user", async () => {
@@ -112,7 +112,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.provider.name).toBe(input.name);
+    expect(res.body.data.user.name).toBe(input.name);
   });
 
   it("error if password is wrong when changing the phone", async () => {
@@ -143,7 +143,7 @@ describe("update provider suite case", () => {
       variables: { email: params.email, verificationCode: verification.code },
       token: provider.token,
     });
-    expect(res.body.data.provider.email).toBe(params.email);
+    expect(res.body.data.user.email).toBe(params.email);
   });
 
   it("should throw error if code doesn't exist", async () => {
@@ -189,7 +189,7 @@ describe("update provider suite case", () => {
       image,
       locations,
       email,
-      metadata,
+      metaData,
       code,
       ...providerInput
     } = await buildProviderParams();
@@ -201,7 +201,7 @@ describe("update provider suite case", () => {
       variables: providerInput,
       token: mockUser.body.data.authToken,
     });
-    expect(res2.body.data.provider.slogan).toBe(providerInput.slogan);
+    expect(res2.body.data.user.slogan).toBe(providerInput.slogan);
   });
 
   it("successful file upload", async () => {
@@ -215,7 +215,7 @@ describe("update provider suite case", () => {
       fileParam: "image",
       filePath,
     });
-    expect(res.body.data.provider.image).toContain(".jpg");
+    expect(res.body.data.user.image).toContain(".jpg");
   });
 
   it("successful validation with file upload", async () => {

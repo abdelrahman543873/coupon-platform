@@ -93,13 +93,13 @@ export const updateProviderService = async (req, res, next) => {
       });
       if (!verification) throw new BaseHttpError(617);
     }
-    const provider = await updateProviderRepository(req.currentUser._id, {
+    const user = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
       image: req.file,
     });
     return res.status(200).json({
       success: true,
-      data: { provider },
+      data: { user },
     });
   } catch (error) {
     next(error);
