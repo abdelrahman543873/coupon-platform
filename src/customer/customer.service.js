@@ -365,9 +365,16 @@ export const changePhoneService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
+    const response = {
+      ...req.currentUser.toJSON(),
+      ...(await getCustomerRepository(req.currentUser._id)),
+    };
+    delete response.password;
     res.status(200).json({
       success: true,
-      data: req.currentUser,
+      data: {
+        user: response,
+      },
     });
   } catch (error) {
     next(error);
