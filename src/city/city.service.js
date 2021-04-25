@@ -4,6 +4,7 @@ import {
   getCitiesRepository,
   updateCityRepository,
 } from "./city.repository.js";
+import polylabel from "polylabel";
 
 export const addCityService = async (req, res, next) => {
   try {
@@ -22,6 +23,9 @@ export const addCityService = async (req, res, next) => {
 export const getCitiesService = async (req, res, next) => {
   try {
     const cities = await getCitiesRepository(req.body);
+    cities.docs.forEach((city) => {
+      city.center = polylabel(city.area.coordinates);
+    });
     res.status(200).json({
       success: true,
       data: cities,

@@ -8,7 +8,7 @@ export const addCityRepository = async (city) => {
 export const getCitiesRepository = async (offset = 0, limit = 15) => {
   return await CityModel.paginate(
     {},
-    { offset: offset * limit, limit, sort: "-createdAt" }
+    { offset: offset * limit, limit, sort: "-createdAt", lean: true }
   );
 };
 
