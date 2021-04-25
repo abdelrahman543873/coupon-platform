@@ -234,4 +234,14 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs[0].isFav).toBe(false);
     expect(res.body.data.docs[0].isSubscribe).toBe(false);
   });
+
+  it("should get all coupons if category is empty", async () => {
+    const coupon = await couponFactory();
+    await providerCustomerCouponFactory({}, {}, { coupon: coupon._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&category=`,
+    });
+    expect(res.body.data.totalDocs).toBe(1);
+  });
 });
