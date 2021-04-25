@@ -75,7 +75,7 @@ describe("update customer suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, email,phone, ...input } = providerInput;
+    const { password, role, email, phone, ...input } = providerInput;
     input.password = "12345678";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -224,6 +224,23 @@ describe("update customer suite case", () => {
     await customerFactory({ user: mockUser.id });
     const input = {
       password: "12345678",
+      newPassword: "12345678",
+    };
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: UPDATE_CUSTOMER,
+      variables: input,
+      token: mockUser.token,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
+
+  it("error if new password entered without password", async () => {
+    const mockUser = await userFactory({
+      role: UserRoleEnum[1],
+    });
+    await customerFactory({ user: mockUser.id });
+    const input = {
       newPassword: "12345678",
     };
     const res = await testRequest({
