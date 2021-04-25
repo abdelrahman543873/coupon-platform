@@ -28,6 +28,7 @@ describe("customer social register suite case", () => {
       url: CUSTOMER_SOCIAL_REGISTER,
       variables,
     });
+    expect(res.body.data.user.isSocialMediaVerified).toBe(true);
     expect(res.body.data.user.password).toBeFalsy();
     expect(res.body.data.user.user).toBeFalsy();
     expect(res.body.data.user.profilePictureURL).toBe(
@@ -96,7 +97,7 @@ describe("customer social register suite case", () => {
         email: variables2.email,
         name: variables2.name,
         socialMediaId: "something",
-        socialMediaType:"FACEBOOK"
+        socialMediaType: "FACEBOOK",
       },
     });
     expect(res2.body.data.user.password).toBeFalsy();
