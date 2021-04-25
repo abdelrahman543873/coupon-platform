@@ -9,6 +9,7 @@ import { AddCouponInput } from "./inputs/add-coupon.input.js";
 import {
   addCouponService,
   deleteCouponService,
+  deleteLocationService,
   getMyCouponsService,
   getProviderService,
   providerRegisterService,
@@ -133,5 +134,14 @@ providersRouter
 providersRouter
   .route("/getCategories")
   .get(ValidationMiddleware(offSetLimitInput), getCategoriesService);
+
+providersRouter
+  .route("/deleteLocation")
+  .delete(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[0]),
+    ValidationMiddleware(AddLocationInput),
+    deleteLocationService
+  );
 
 export { providersRouter };

@@ -11,3 +11,4 @@ export const GET_SUBSCRIBERS = "/providers-management/getSubscriptions";
 export const GET_SUBSCRIPTION = "/providers-management/getSubscription";
 export const GET_CATEGORIES = "/providers-management/getCategories";
 export const ADD_LOCATION = "/providers-management/addLocation";
+export const DELETE_LOCATION = "/providers-management/deleteLocation";

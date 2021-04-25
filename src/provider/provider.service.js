@@ -19,6 +19,7 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
+  deleteProviderLocation,
   findProviderByEmailForLogin,
   findProviderById,
   getProviders,
@@ -259,6 +260,27 @@ export const addLocationsService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: provider,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteLocationService = async (req, res, next) => {
+  try {
+    const locations = req.currentUser.locations;
+    const filteredLocations = locations.coordinates.filter(
+      (location) =>
+        location[0] === req.body.long && location[1] === req.body.lat
+    );
+    if (filteredLocations.length === 0) throw new BaseHttpError(647);
+    await deleteProviderLocation({
+      _id: req.currentUser._id,
+      location: filteredLocations[0],
+    });
+    res.status(200).json({
+      success: true,
+      data: true,
     });
   } catch (error) {
     next(error);

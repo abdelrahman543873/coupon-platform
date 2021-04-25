@@ -106,3 +106,16 @@ export const countProvidersRepository = async (createdAt) => {
     ...(createdAt && { createdAt: { $gte: createdAt } }),
   });
 };
+
+export const deleteProviderLocation = async ({ _id, location }) => {
+  return await ProviderModel.findOneAndUpdate(
+    { _id },
+    {
+      $pull: {
+        "locations.coordinates": location,
+        metaData: { long: location[0], lat: location[1] },
+      },
+    },
+    { new: true, lean: true }
+  );
+};

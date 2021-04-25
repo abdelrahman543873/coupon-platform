@@ -61,3 +61,4 @@ export const updateCategoryService = async (req, res, next) => {
     next(error);
   }
 };
+

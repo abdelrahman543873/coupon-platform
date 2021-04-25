@@ -11,6 +11,7 @@ export const buildProviderParams = async (obj = {}) => {
     obj.qrURL === null || typeof obj.qrURL === "string"
       ? obj.qrURL
       : faker.internet.url();
+  const location = [+faker.address.longitude(), +faker.address.latitude()];
   return {
     name: obj.name || faker.name.firstName(),
     email: obj.email || faker.internet.email().toLowerCase(),
@@ -27,10 +28,12 @@ export const buildProviderParams = async (obj = {}) => {
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     locations: obj.locations || {
-      coordinates: [faker.address.longitude(), faker.address.latitude()],
+      coordinates: [location],
     },
-    metadata: obj.metadata || [
+    metaData: obj.metaData || [
       {
+        long: location[0],
+        lat: location[1],
         formattedAddressAr: faker.address.streetAddress(),
         formattedAddressEn: faker.address.streetAddress(),
         level2longAr: faker.address.streetPrefix(),

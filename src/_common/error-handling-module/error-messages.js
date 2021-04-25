@@ -179,4 +179,8 @@ export const LocalizedErrorMessages = {
     EN: "first credit isn't initialized",
     AR: "first credit isn't initialized",
   },
+  647: {
+    EN: "location doesn't exist",
+    AR: "location type doesn't exist",
+  },
 };
