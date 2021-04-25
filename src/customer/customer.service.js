@@ -352,3 +352,24 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
     next(error);
   }
 };
+
+export const changePhoneService = async (req, res, next) => {
+  try {
+    const verificationCode = await addVerificationCode({
+      ...createVerificationCode(),
+      user: req.currentUser._id,
+      ...(req.currentUser.phone && { phone: req.currentUser.phone }),
+      ...(req.currentUser.email && { email: req.currentUser.email }),
+    });
+    await sendMessage({
+      to: req.body.phone,
+      text: verificationCode.code,
+    });
+    res.status(200).json({
+      success: true,
+      data: req.currentUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -8,6 +8,7 @@ import {
 } from "../_common/upload/uploader.js";
 import { ValidationMiddleware } from "../_common/validation.middleware.js";
 import {
+  changePhoneService,
   CustomerRegisterService,
   getCouponService,
   getCustomerHomeService,
@@ -43,6 +44,8 @@ import {
 import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
 import { GetCustomersCouponsInput } from "./inputs/get-coupons.input.js";
 import { GetCustomersCouponInput } from "./inputs/get-coupon.input.js";
+import { ChangePhoneInput } from "./inputs/change-phone.input.js";
+
 const customersRouter = express.Router();
 
 customersRouter
@@ -182,6 +185,15 @@ customersRouter
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(ScanInput),
     getCustomerSubscriptionsService
+  );
+
+customersRouter
+  .route("/changePhone")
+  .post(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(ChangePhoneInput),
+    changePhoneService
   );
 
 export { customersRouter };

@@ -17,7 +17,7 @@ export const updateUser = async (_id, user) => {
       ...user,
       ...(user.newPassword && { password: await hashPass(user.newPassword) }),
     },
-    { new: true, projection: { password: 0 } }
+    { new: true, projection: { password: 0, user: 0 } }
   );
 };
 
