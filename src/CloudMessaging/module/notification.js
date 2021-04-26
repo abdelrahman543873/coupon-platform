@@ -1,9 +1,9 @@
-import { NotificationModel } from "../model/notification.js";
 import { AdminModel } from "../../Admin/models/admin.js";
 import { ClientModel } from "../../Users/models/client.js";
 import { TokensModel } from "../model/tokens.js";
 import * as admin from "firebase-admin";
 import { serviceAccount } from "../service-account-file.js";
+import { NotificationModel } from "../../notification/models/notification.model.js";
 let NotificationModule = {
   domain: "http://couponat.alefsoftware.com/",
   async newCouponNotification(coupon, lang, providerName) {
