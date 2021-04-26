@@ -13,7 +13,7 @@ describe("admin add location suite case", () => {
   });
   it("admin add locations", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const provider = await providerFactory({ locations: {} });
+    const provider = await providerFactory({ locations: {}, metaData: [] });
     await cityFactory({
       enName: "alex",
       arName: "Alexandria",
