@@ -1,10 +1,12 @@
 import faker from "faker";
 import { termsAndConditionsModel } from "./models/terms-and-conditions.model.js";
+import { TermsAndConditionsEnum } from "./terms-and-conditions.enum.js";
 
 export const buildTermsAndConditionsParams = (obj = {}) => {
   return {
     enDescription: obj.enDescription || faker.commerce.productDescription(),
     arDescription: obj.arDescription || faker.commerce.productDescription(),
+    key: obj.key || faker.random.arrayElement(TermsAndConditionsEnum),
   };
 };
 

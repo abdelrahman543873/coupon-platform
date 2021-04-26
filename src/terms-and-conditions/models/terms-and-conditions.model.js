@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import { TermsAndConditionsEnum } from "../terms-and-conditions.enum.js";
 const termsAndConditions = mongoose.Schema(
   {
     enDescription: {
@@ -9,6 +9,10 @@ const termsAndConditions = mongoose.Schema(
     arDescription: {
       type: String,
       required: true,
+    },
+    key: {
+      type: String,
+      enum: TermsAndConditionsEnum,
     },
   },
   {
