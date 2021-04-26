@@ -14,7 +14,7 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[2],
       password: "12345678",
     });
-    const { role, phone, email, ...variables } = await buildUserParams();
+    const { role, phone, email, fcmToken,...variables } = await buildUserParams();
     variables.newPassword = variables.password;
     variables.password = "12345678";
     const res = await testRequest({
@@ -75,7 +75,7 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[2],
       password: "12345678",
     });
-    const { role, password, ...variables } = await buildUserParams();
+    const { role, password, fcmToken,...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_ADMIN,

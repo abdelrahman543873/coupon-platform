@@ -1,3 +1,4 @@
+import { ProviderModel } from "../provider/models/provider.model.js";
 import { hashPass } from "../utils/bcryptHelper.js";
 import { UserModel } from "./models/user.model.js";
 import { UserRoleEnum } from "./user-role.enum.js";
@@ -17,7 +18,7 @@ export const updateUser = async (_id, user) => {
       ...user,
       ...(user.newPassword && { password: await hashPass(user.newPassword) }),
     },
-    { new: true, projection: { password: 0 } }
+    { new: true, projection: { password: 0, user: 0 } }
   );
 };
 
@@ -62,10 +63,10 @@ export const searchProvidersRepository = async (
   offset = 0,
   limit = 15
 ) => {
-  return await UserModel.paginate(
+  return await ProviderModel.paginate(
     {
       role: UserRoleEnum[0],
-      name: { $regex: name, $options: "i" },
+      ...(name && { name: { $regex: name, $options: "i" } }),
     },
     { limit, offset, project: { password: 0 } }
   );

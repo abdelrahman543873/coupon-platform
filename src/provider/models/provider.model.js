@@ -46,8 +46,8 @@ export const provider = mongoose.Schema(
     //mongodb
     metaData: [
       {
-        lat: String,
-        long: String,
+        lat: Number,
+        long: Number,
         formattedAddressAr: String,
         formattedAddressEn: String,
         level2longAr: String,

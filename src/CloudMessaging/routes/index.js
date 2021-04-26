@@ -16,4 +16,4 @@ notificationRouter
   .route("/notifications")
   .get(notificationsController.getNotifications);
 
-export { notificationRouter };
+// export { notificationRouter };

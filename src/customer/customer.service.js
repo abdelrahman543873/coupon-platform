@@ -118,6 +118,7 @@ export const socialRegisterService = async (req, res, next) => {
       user: user.id,
       ...req.body,
       isVerified: true,
+      isSocialMediaVerified: true,
     });
     const data = {
       ...user.toJSON(),
@@ -347,6 +348,34 @@ export const getCustomerSubscriptionService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePhoneService = async (req, res, next) => {
+  try {
+    const verificationCode = await addVerificationCode({
+      ...createVerificationCode(),
+      user: req.currentUser._id,
+      ...(req.currentUser.phone && { phone: req.currentUser.phone }),
+      ...(req.currentUser.email && { email: req.currentUser.email }),
+    });
+    await sendMessage({
+      to: req.body.phone,
+      text: verificationCode.code,
+    });
+    const response = {
+      ...req.currentUser.toJSON(),
+      ...(await getCustomerRepository(req.currentUser._id)),
+    };
+    delete response.password;
+    res.status(200).json({
+      success: true,
+      data: {
+        user: response,
+      },
     });
   } catch (error) {
     next(error);

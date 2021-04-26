@@ -25,7 +25,6 @@ export const searchCouponsService = async (req, res, next) => {
 
 export const searchProviderService = async (req, res, next) => {
   try {
-    if (!req.query.name) throw new BaseHttpError(620);
     const searchResult = await searchProvidersRepository(
       req.query.name,
       req.query.offset,

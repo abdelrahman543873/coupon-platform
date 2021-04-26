@@ -19,6 +19,7 @@ import { BaseHttpError } from "../_common/error-handling-module/error-handler.js
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
 import {
+  deleteProviderLocation,
   findProviderByEmailForLogin,
   findProviderById,
   getProviders,
@@ -27,7 +28,7 @@ import {
 } from "./provider.repository.js";
 import { deleteCoupon } from "../coupon/coupon.repository.js";
 import { findCategoryRepository } from "../category/category.repository.js";
-import { findPointCities, findPointsCities } from "../city/city.repository.js";
+import { findPointCities } from "../city/city.repository.js";
 import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
 import { formattedGeo } from "../_common/helpers/geo-encoder.js";
 
@@ -92,13 +93,13 @@ export const updateProviderService = async (req, res, next) => {
       });
       if (!verification) throw new BaseHttpError(617);
     }
-    const provider = await updateProviderRepository(req.currentUser._id, {
+    const user = await updateProviderRepository(req.currentUser._id, {
       ...req.body,
       image: req.file,
     });
     return res.status(200).json({
       success: true,
-      data: { provider },
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -212,7 +213,7 @@ export const getProvidersService = async (req, res, next) => {
 export const addLocationService = async (req, res, next) => {
   try {
     const city = await findPointCities([req.body.long, req.body.lat]);
-    if (city.length === 0) throw new BaseHttpError(639);
+    if (!city) throw new BaseHttpError(639);
     // to allow the same function to work for both admin and provider
     const provider = await updateProviderRepository(
       req.body.provider || req.currentUser._id,
@@ -243,7 +244,7 @@ export const addLocationsService = async (req, res, next) => {
     const convertedLocations = [];
     for (let i = 0; i < req.body.locations.length; i++) {
       const city = await findPointCities(req.body.locations[i]);
-      if (city.length === 0) throw new BaseHttpError(639);
+      if (!city) throw new BaseHttpError(639);
       const formattedAddress = await formattedGeo({
         lat: req.body.locations[i][1],
         lon: req.body.locations[i][0],
@@ -259,6 +260,27 @@ export const addLocationsService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: provider,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteLocationService = async (req, res, next) => {
+  try {
+    const locations = req.currentUser.locations;
+    const filteredLocations = locations.coordinates.filter(
+      (location) =>
+        location[0] === req.body.long && location[1] === req.body.lat
+    );
+    if (filteredLocations.length === 0) throw new BaseHttpError(647);
+    await deleteProviderLocation({
+      _id: req.currentUser._id,
+      location: filteredLocations[0],
+    });
+    res.status(200).json({
+      success: true,
+      data: true,
     });
   } catch (error) {
     next(error);

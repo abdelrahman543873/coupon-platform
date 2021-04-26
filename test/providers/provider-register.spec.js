@@ -18,7 +18,7 @@ describe("provider register suite case", () => {
       image,
       isActive,
       code,
-      metadata,
+      metaData,
       fcmToken,
       locations,
       qrURL,

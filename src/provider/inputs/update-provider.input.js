@@ -4,7 +4,6 @@ export const UpdateProviderInput = Joi.object({
   email: Joi.string().email().lowercase().optional(),
   password: Joi.string()
     .min(8)
-    .optional()
     .when("newPassword", {
       then: Joi.string().min(8).disallow(Joi.ref("newPassword")).required(),
     }),

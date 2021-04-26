@@ -15,6 +15,7 @@ export const loginService = async (req, res, next) => {
       (await findUserByEmailOrPhoneForLogin(req.body)) ||
       (await findProviderByEmailForLogin({ provider: req.body }));
     if (!user) throw new BaseHttpError(603);
+    if (!user.password) throw new BaseHttpError(603);
     const passwordValidation = await bcryptCheckPass(
       req.body.password,
       user.password

@@ -43,4 +43,4 @@ let notificationSchema = mongoose.Schema(
 
 let NotificationModel = mongoose.model("Notification", notificationSchema);
 
-export { NotificationModel };
+// export { NotificationModel };

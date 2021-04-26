@@ -8,7 +8,7 @@ describe("verify otp suite case", () => {
     await rollbackDbForCustomer();
   });
   it("verify otp service", async () => {
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,

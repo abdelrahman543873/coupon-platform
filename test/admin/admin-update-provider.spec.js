@@ -24,7 +24,7 @@ describe("admin update provider suite case", () => {
       code,
       locations,
       fcmToken,
-      metadata,
+      metaData,
       logoURL,
       qrURL,
       image,
@@ -50,7 +50,7 @@ describe("admin update provider suite case", () => {
       _id,
       isActive,
       code,
-      metadata,
+      metaData,
       locations,
       fcmToken,
       logoURL,
@@ -74,7 +74,7 @@ describe("admin update provider suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory({ password: "12345678" });
     const providerInput = await buildUserParams();
-    const { password, role, phone, ...input } = providerInput;
+    const { password, role, phone, fcmToken, ...input } = providerInput;
     input.provider = provider._id;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -88,7 +88,7 @@ describe("admin update provider suite case", () => {
 
   it("register and update", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const { role, phone, ...variables } = await buildUserParams();
+    const { role, phone, fcmToken, ...variables } = await buildUserParams();
     variables.slogan = "this is a long slogan ";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
@@ -99,16 +99,16 @@ describe("admin update provider suite case", () => {
       image,
       locations,
       isActive,
-      fcmToken,
       qrURL,
       code,
-      metadata,
+      metaData,
       logoURL,
       ...providerInput
     } = {
       ...(await buildProviderParams()),
     };
     delete providerInput.role;
+    delete providerInput.fcmToken;
     providerInput.provider = res.body.data.user._id;
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
