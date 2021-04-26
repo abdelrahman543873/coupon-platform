@@ -1,5 +1,10 @@
 import { buildUserParams, userFactory } from "../../src/user/user.factory";
-import { CHANGE_PHONE, CUSTOMER_SOCIAL_REGISTER, UPDATE_CUSTOMER } from "../endpoints/customer";
+import {
+  CHANGE_PHONE,
+  CUSTOMER_LOGIN,
+  CUSTOMER_SOCIAL_REGISTER,
+  UPDATE_CUSTOMER,
+} from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
 import { rollbackDbForCustomer } from "./rollback-for-customer";
@@ -35,6 +40,40 @@ describe("customer social register suite case", () => {
       variables.profilePictureURL
     );
     expect(res.body.data.user.name).toBe(variables.name);
+  });
+
+  it("customer social register successfully and then login trial", async () => {
+    const {
+      role,
+      user,
+      isVerified,
+      isSocialMediaVerified,
+      favCoupons,
+      fcmToken,
+      password,
+      ...variables
+    } = {
+      ...(await buildUserParams()),
+      ...(await buildCustomerParams()),
+    };
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_SOCIAL_REGISTER,
+      variables,
+    });
+    expect(res.body.data.user.isSocialMediaVerified).toBe(true);
+    expect(res.body.data.user.password).toBeFalsy();
+    expect(res.body.data.user.user).toBeFalsy();
+    expect(res.body.data.user.profilePictureURL).toBe(
+      variables.profilePictureURL
+    );
+    expect(res.body.data.user.name).toBe(variables.name);
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_LOGIN,
+      variables: { email: res.body.data.user.email, password: "something" },
+    });
+    expect(res1.body.statusCode).toBe(603);
   });
 
   it("customer social register successfully and then add a phone", async () => {
