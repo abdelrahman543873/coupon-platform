@@ -104,7 +104,7 @@ describe("update provider suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, email, phone, role, ...input } = providerInput;
+    const { password, fcmToken, email, phone, role, ...input } = providerInput;
     input.password = "12345678";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -120,7 +120,7 @@ describe("update provider suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, email, phone, ...input } = providerInput;
+    const { password, role, fcmToken, email, phone, ...input } = providerInput;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
@@ -172,7 +172,7 @@ describe("update provider suite case", () => {
   });
 
   it("register and update", async () => {
-    const { role, phone, ...variables } = await buildUserParams({
+    const { role, phone, fcmToken, ...variables } = await buildUserParams({
       password: "12345678",
     });
     variables.slogan = "this is very long slogan";
@@ -183,7 +183,6 @@ describe("update provider suite case", () => {
     });
     const {
       isActive,
-      fcmToken,
       qrURL,
       logoURL,
       image,
@@ -194,6 +193,7 @@ describe("update provider suite case", () => {
       ...providerInput
     } = await buildProviderParams();
     delete providerInput.role;
+    delete providerInput.fcmToken;
     providerInput.password = "12345678";
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,

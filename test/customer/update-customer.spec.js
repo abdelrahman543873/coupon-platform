@@ -75,7 +75,7 @@ describe("update customer suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, email, phone, ...input } = providerInput;
+    const { password, role, email, fcmToken, phone, ...input } = providerInput;
     input.password = "12345678";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -91,7 +91,13 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[1],
     });
     await customerFactory({ user: mockUser._id });
-    const { role, email, password, ...input } = await buildUserParams();
+    const {
+      role,
+      email,
+      password,
+      fcmToken,
+      ...input
+    } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CUSTOMER,
@@ -111,7 +117,7 @@ describe("update customer suite case", () => {
       phone: user.phone,
       code: "12345",
     });
-    const { password, role, ...input } = await buildUserParams();
+    const { password, role, fcmToken, ...input } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CUSTOMER,
@@ -130,7 +136,7 @@ describe("update customer suite case", () => {
     const providerInput = {
       ...(await buildUserParams()),
     };
-    const { password, role, ...input } = providerInput;
+    const { password, fcmToken, role, ...input } = providerInput;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CUSTOMER,
@@ -141,7 +147,7 @@ describe("update customer suite case", () => {
   });
 
   it("register and update", async () => {
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const mockUser = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
@@ -151,6 +157,7 @@ describe("update customer suite case", () => {
       ...(await buildUserParams()),
     };
     delete variables1.role;
+    delete variables1.fcmToken;
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CUSTOMER,

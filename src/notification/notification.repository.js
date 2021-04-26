@@ -1,4 +1,6 @@
 import { NotificationModel } from "./models/notification.model.js";
+import { TokenModel } from "./models/fcm-token.model.js";
+
 export const getNotificationsRepository = async (
   user,
   offset = 0,
@@ -11,6 +13,10 @@ export const getNotificationsRepository = async (
       limit,
     }
   );
+};
+
+export const addTokenRepository = async (fcmToken) => {
+  return await TokenModel.create(fcmToken);
 };
 
 export const rawDeleteNotification = async () => {

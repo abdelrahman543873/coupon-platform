@@ -9,7 +9,7 @@ describe("customer register suite case", () => {
     await rollbackDbForCustomer();
   });
   it("customer register", async () => {
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
@@ -19,7 +19,7 @@ describe("customer register suite case", () => {
   });
 
   it("should register register two customers", async () => {
-    const { role, email, ...variables } = await buildUserParams();
+    const { role, email, fcmToken, ...variables } = await buildUserParams();
     const variables2 = await buildUserParams();
     await testRequest({
       method: HTTP_METHODS_ENUM.POST,
@@ -28,6 +28,7 @@ describe("customer register suite case", () => {
     });
     delete variables2.email;
     delete variables2.role;
+    delete variables2.fcmToken;
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
@@ -37,7 +38,7 @@ describe("customer register suite case", () => {
   });
 
   it("customer register with file upload", async () => {
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
     const res = await testRequest({

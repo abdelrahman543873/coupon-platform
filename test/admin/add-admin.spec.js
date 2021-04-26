@@ -10,7 +10,7 @@ describe("add admin suite case", () => {
   });
   it("add admin successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[3] });
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_ADMIN,

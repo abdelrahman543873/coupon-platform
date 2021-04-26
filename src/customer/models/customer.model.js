@@ -28,7 +28,6 @@ const customer = mongoose.Schema(
       enum: socialMediaEnum,
     },
     favCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupon" }],
-    fcmToken: { type: String },
     profilePictureURL: { type: String },
   },
   {

@@ -25,6 +25,7 @@ export const user = mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    fcmToken: { type: String },
   },
   {
     timestamps: true,

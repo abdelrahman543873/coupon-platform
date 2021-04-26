@@ -90,7 +90,7 @@ describe("subscribe suite case", () => {
     });
     const coupon = res0.body.data;
     const paymentType = await paymentFactory({ key: PaymentEnum[2] });
-    const { role, ...variables } = await buildUserParams();
+    const { role, fcmToken,...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
