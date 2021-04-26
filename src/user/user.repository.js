@@ -83,6 +83,10 @@ export const findUserById = async (_id) => {
   return await UserModel.findOne({ _id }, { password: 0 }, { lean: true });
 };
 
+export const getAllUsersTokens = async () => {
+  return await UserModel.distinct("fcmToken");
+};
+
 export const rawDeleteUser = async () => {
   return await UserModel.deleteMany({});
 };

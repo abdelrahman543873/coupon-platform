@@ -18,7 +18,7 @@ export const buildUserParams = async (obj = {}) => {
 export const UsersFactory = async (count = 10, obj = {}) => {
   const users = [];
   for (let i = 0; i < count; i++) {
-    users.push(await buildTermsAndConditionsParams(obj));
+    users.push(await buildUserParams(obj));
   }
   return await UserModel.collection.insertMany(users);
 };

@@ -1,7 +1,12 @@
 import {
   getNotificationsRepository,
   addTokenRepository,
+  getUnregisteredTokens,
 } from "./notification.repository.js";
+import { getAllUsersTokens } from "../user/user.repository.js";
+import * as admin from "firebase-admin";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const getNotificationsService = async (req, res, next) => {
   try {
@@ -37,4 +42,16 @@ export const addeTokenService = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const allUsersNotification = async (message) => {
+  const usersTokens = await getAllUsersTokens();
+  const tokens = await getUnregisteredTokens();
+  usersTokens.concat(tokens);
+  message.tokens = usersTokens;
+  const response =
+    usersTokens.length > 0
+      ? await admin.messaging().sendMulticast(message)
+      : "null array";
+  return response;
 };

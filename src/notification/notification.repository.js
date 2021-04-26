@@ -19,6 +19,11 @@ export const addTokenRepository = async (fcmToken) => {
   return await TokenModel.create(fcmToken);
 };
 
+export const getUnregisteredTokens = async () => {
+  return await TokenModel.distinct("fcmToken");
+};
+
 export const rawDeleteNotification = async () => {
-  return await NotificationModel.deleteMany({});
+  await NotificationModel.deleteMany({});
+  return await TokenModel.deleteMany({});
 };

@@ -5,7 +5,8 @@ import { handleError } from "./_common/error-handling-module/error-handler.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { options } from "../swagger.js";
-let server = express();
+
+const server = express();
 const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
