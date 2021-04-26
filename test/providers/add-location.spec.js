@@ -14,7 +14,8 @@ describe("add location suite case", () => {
   });
   it("add location", async () => {
     const provider = await providerFactory({
-      password: "something",
+      metaData: [],
+      locations: {},
     });
     await buildProviderParams();
     await cityFactory({
@@ -32,12 +33,13 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
+    expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
   });
 
   it("add location and delete location", async () => {
     const provider = await providerFactory({
-      password: "something",
+      metaData: [],
+      locations: {},
     });
     await buildProviderParams();
     await cityFactory({
@@ -55,7 +57,7 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
+    expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.DELETE,
       url: DELETE_LOCATION,
@@ -69,7 +71,10 @@ describe("add location suite case", () => {
   });
 
   it("should add location if inside alex", async () => {
-    const provider = await providerFactory({ password: "something" });
+    const provider = await providerFactory({
+      metaData: [],
+      locations: {},
+    });
     const city = await cityFactory({
       enName: "alex",
       arName: "Alexandria",
@@ -85,14 +90,13 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
+    expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
   });
 
   it("should add slightly modified locations", async () => {
     const provider = await providerFactory({
-      password: "something",
-      locations: {},
       metaData: [],
+      locations: {},
     });
     const city = await cityFactory({
       enName: "alex",
@@ -124,7 +128,10 @@ describe("add location suite case", () => {
   });
 
   it("should throw error if outside alex", async () => {
-    const provider = await providerFactory({ password: "something" });
+    const provider = await providerFactory({
+      metaData: [],
+      locations: {},
+    });
     const city = await cityFactory({
       enName: "alex",
       arName: "Alexandria",
@@ -145,8 +152,8 @@ describe("add location suite case", () => {
 
   it("only unique values added", async () => {
     const provider = await providerFactory({ locations: {}, metaData: [] });
-    const params = await buildProviderParams();
-    const city = await cityFactory({
+    await buildProviderParams();
+    await cityFactory({
       enName: "alex",
       arName: "Alexandria",
       area: { coordinates: alexCoordinates },

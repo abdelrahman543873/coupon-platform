@@ -29,7 +29,7 @@ export const updateCityRepository = async ({ _id, city }) => {
 };
 
 export const findPointCities = async (point) => {
-  return await CityModel.find({
+  return await CityModel.findOne({
     area: {
       $geoIntersects: { $geometry: { type: type[1], coordinates: point } },
     },
