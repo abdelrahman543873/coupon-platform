@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
+    "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand",
+    "test:cov": "jest --coverage --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
   },
   "author": "Abdelrahman Mysara",
   "dependencies": {
