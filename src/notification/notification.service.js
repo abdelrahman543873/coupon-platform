@@ -7,7 +7,7 @@ import {
   getAllAdminsTokens,
   getAllCustomersTokens,
 } from "../user/user.repository.js";
-import * as admin from "firebase-admin";
+import admin from "firebase-admin";
 import dotenv from "dotenv";
 import { getAllProvidersTokens } from "../provider/provider.repository.js";
 import { NotifiedEnum } from "./notification.enum.js";
