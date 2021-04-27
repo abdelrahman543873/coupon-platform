@@ -1,8 +1,7 @@
 import faker from "faker";
 import { UserRoleEnum } from "../user/user-role.enum";
-import { userFactory } from "../user/user.factory";
-import { hashPass } from "../utils/bcryptHelper";
-import { generateToken } from "../utils/JWTHelper";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import { ProviderModel } from "./models/provider.model.js";
 import mongoose from "mongoose";
 
