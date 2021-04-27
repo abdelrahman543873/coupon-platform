@@ -1,6 +1,6 @@
 import { ProviderModel } from "./models/provider.model.js";
 import dotenv from "dotenv";
-import { hashPass } from "../utils/bcryptHelper.js";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
 import mongoose from "mongoose";
 
 dotenv.config();

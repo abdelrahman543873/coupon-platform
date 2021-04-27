@@ -1,7 +1,7 @@
 import { ProviderModel } from "../provider/models/provider.model.js";
-import { hashPass } from "../utils/bcryptHelper.js";
 import { UserModel } from "./models/user.model.js";
 import { UserRoleEnum } from "./user-role.enum.js";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
 
 export const createUser = async (user) => {
   return await UserModel.create({

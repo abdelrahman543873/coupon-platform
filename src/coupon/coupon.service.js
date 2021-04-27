@@ -7,8 +7,7 @@ import {
   getMyCouponsRepository,
   updateCouponById,
 } from "./coupon.repository.js";
-import mongoose from "mongoose";
-import { bcryptCheckPass } from "../utils/bcryptHelper.js";
+import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 import { findCategoryRepository } from "../category/category.repository.js";
 import { verifyOTPRepository } from "../verification/verification.repository.js";
 

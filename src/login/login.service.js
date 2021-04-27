@@ -1,13 +1,10 @@
 import { findUserByEmailOrPhoneForLogin } from "../user/user.repository.js";
-import { bcryptCheckPass } from "../utils/bcryptHelper.js";
+import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { getCustomerRepository } from "../customer/customer.repository.js";
-import {
-  findProviderByEmailForLogin,
-  findProviderById,
-} from "../provider/provider.repository.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { findProviderByEmailForLogin } from "../provider/provider.repository.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 
 export const loginService = async (req, res, next) => {
   try {

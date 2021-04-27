@@ -11,8 +11,7 @@ import {
   findUserByEmailOrPhone,
   updateUser,
 } from "../user/user.repository.js";
-import { bcryptCheckPass } from "../utils/bcryptHelper.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import {
   addVerificationCode,
   resendCodeRepository,
@@ -36,6 +35,7 @@ import {
   getCustomerSubscriptionRepository,
   getMostSellingCouponRepository,
 } from "../subscription/subscription.repository.js";
+import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 
 export const CustomerRegisterService = async (req, res, next) => {
   try {

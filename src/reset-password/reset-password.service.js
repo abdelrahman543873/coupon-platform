@@ -1,5 +1,5 @@
 import { findUserByEmailOrPhone, updateUser } from "../user/user.repository.js";
-import { sendClientMail } from "../utils/nodemailer.js";
+import { sendClientMail } from "../_common/helpers/nodemailer.js";
 import {
   addVerificationCode,
   verifyOTPRepository,
@@ -7,7 +7,7 @@ import {
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
 import { createVerificationCode } from "../_common/helpers/smsOTP.js";
 import { sendMessage } from "../_common/helpers/twilio.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { getCustomerRepository } from "../customer/customer.repository.js";
 import { findProviderByEmail } from "../provider/provider.repository.js";

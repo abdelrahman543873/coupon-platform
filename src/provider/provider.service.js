@@ -8,8 +8,6 @@ import {
   getNotCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { bcryptCheckPass } from "../utils/bcryptHelper.js";
-import { generateToken } from "../utils/JWTHelper.js";
 import {
   addVerificationCode,
   verifyOTPRepository,
@@ -36,6 +34,8 @@ import {
   NewCouponMessage,
   NewProviderMessage,
 } from "../notification/notification.enum.js";
+import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
