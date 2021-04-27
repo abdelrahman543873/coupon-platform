@@ -55,7 +55,11 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
-    await notifyUsers(NewProviderMessage(provider), NotifiedEnum[4]);
+    await notifyUsers(
+      NewProviderMessage(provider),
+      NotifiedEnum[4],
+      provider._id
+    );
     return res.status(201).json({
       success: true,
       data: {
@@ -156,7 +160,8 @@ export const addCouponService = async (req, res, next) => {
     });
     await notifyUsers(
       NewCouponMessage(coupon, req.currentUser),
-      NotifiedEnum[4]
+      NotifiedEnum[4],
+      coupon._id
     );
     return res.status(200).json({
       success: true,

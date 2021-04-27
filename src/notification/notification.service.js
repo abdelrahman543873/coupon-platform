@@ -49,7 +49,7 @@ export const addeTokenService = async (req, res, next) => {
   }
 };
 
-export const notifyUsers = async (message, notified) => {
+export const notifyUsers = async (message, notified, data) => {
   const notifiedUsers = [];
   if (notified === NotifiedEnum[0] || notified === NotifiedEnum[3])
     notifiedUsers.push(...(await getAllProvidersTokens()));
@@ -92,6 +92,9 @@ export const notifyUsers = async (message, notified) => {
     headers: {
       Urgency: "high",
     },
+  };
+  message.data = {
+    id: JSON.stringify(data),
   };
   const response =
     notifiedUsers.length > 0
