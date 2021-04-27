@@ -15,7 +15,6 @@ export const buildCustomerParams = async (obj = {}) => {
     socialMediaType:
       obj.socialMediaType || faker.random.arrayElement(socialMediaEnum),
     favCoupons: obj.favCoupons || [(await couponFactory())._id],
-    fcmToken: obj.fcmToken || faker.random.words(),
     profilePictureURL: obj.profilePictureURL || faker.internet.url(),
   };
 };

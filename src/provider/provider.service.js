@@ -31,8 +31,11 @@ import { findCategoryRepository } from "../category/category.repository.js";
 import { findPointCities } from "../city/city.repository.js";
 import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
 import { formattedGeo } from "../_common/helpers/geo-encoder.js";
-import { allUsersNotification } from "../notification/notification.service.js";
-import { NewCouponMessage } from "../notification/notification.enum.js";
+import { notifyUsers } from "../notification/notification.service.js";
+import {
+  NewCouponMessage,
+  NotifiedEnum,
+} from "../notification/notification.enum.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
@@ -51,10 +54,6 @@ export const providerRegisterService = async (req, res, next) => {
     await sendMessage({
       to: req.body.phone,
       text: verificationCode.code,
-    });
-    await NotificationModule.newProviderNotification(req.headers.lang, {
-      name: provider.name,
-      id: provider._id,
     });
     return res.status(201).json({
       success: true,
@@ -154,7 +153,10 @@ export const addCouponService = async (req, res, next) => {
       logoURL: req.file,
       provider: req.currentUser._id,
     });
-    await allUsersNotification(NewCouponMessage(coupon, req.currentUser));
+    await notifyUsers(
+      NewCouponMessage(coupon, req.currentUser),
+      NotifiedEnum[4]
+    );
     return res.status(200).json({
       success: true,
       data: await getCoupon({ _id: coupon.id }),

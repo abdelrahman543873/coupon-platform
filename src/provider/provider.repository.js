@@ -119,3 +119,7 @@ export const deleteProviderLocation = async ({ _id, location }) => {
     { new: true, lean: true }
   );
 };
+
+export const getAllProvidersTokens = async () => {
+  return await ProviderModel.distinct("fcmToken");
+};

@@ -7,3 +7,11 @@ export const NewCouponMessage = (coupon, provider) => {
     action: "view_coupon",
   };
 };
+
+export const NotifiedEnum = [
+  "PROVIDERS",
+  "CUSTOMERS",
+  "ADMINS",
+  "ALL",
+  "CUSTOMERS&ADMINS",
+];

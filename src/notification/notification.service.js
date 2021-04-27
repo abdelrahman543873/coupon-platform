@@ -3,9 +3,14 @@ import {
   addTokenRepository,
   getUnregisteredTokens,
 } from "./notification.repository.js";
-import { getAllUsersTokens } from "../user/user.repository.js";
+import {
+  getAllAdminsTokens,
+  getAllCustomersTokens,
+} from "../user/user.repository.js";
 import * as admin from "firebase-admin";
 import dotenv from "dotenv";
+import { getAllProvidersTokens } from "../provider/provider.repository.js";
+import { NotifiedEnum } from "./notification.enum.js";
 dotenv.config();
 
 export const getNotificationsService = async (req, res, next) => {
@@ -44,11 +49,26 @@ export const addeTokenService = async (req, res, next) => {
   }
 };
 
-export const allUsersNotification = async (message) => {
-  const usersTokens = await getAllUsersTokens();
-  const tokens = await getUnregisteredTokens();
-  usersTokens.concat(tokens);
-  message.tokens = usersTokens;
+export const notifyUsers = async (message, notified) => {
+  const notifiedUsers = [];
+  if (notified === NotifiedEnum[0] || notified === NotifiedEnum[3])
+    notifiedUsers.push(...(await getAllProvidersTokens()));
+  if (
+    notified === NotifiedEnum[1] ||
+    notified === NotifiedEnum[3] ||
+    notified === NotifiedEnum[4]
+  )
+    notifiedUsers.push(
+      ...(await getAllCustomersTokens()),
+      ...(await getUnregisteredTokens())
+    );
+  if (
+    notified === NotifiedEnum[2] ||
+    notified === NotifiedEnum[3] ||
+    notified === NotifiedEnum[4]
+  )
+    notifiedUsers.push(...(await getAllAdminsTokens()));
+  message.tokens = notifiedUsers;
   message.notification = {
     title: message.enTitle,
     body: message.enBody,
@@ -74,7 +94,7 @@ export const allUsersNotification = async (message) => {
     },
   };
   const response =
-    usersTokens.length > 0
+    notifiedUsers.length > 0
       ? await admin.messaging().sendMulticast(message)
       : "null array";
   return response;
