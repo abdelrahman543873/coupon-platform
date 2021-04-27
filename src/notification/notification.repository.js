@@ -1,5 +1,7 @@
 import { NotificationModel } from "./models/notification.model.js";
 import { TokenModel } from "./models/fcm-token.model.js";
+import { UserRoleEnum } from "../user/user-role.enum.js";
+import { NotifiedEnum } from "./notification.enum.js";
 
 export const getNotificationsRepository = async (
   user,
@@ -7,12 +9,34 @@ export const getNotificationsRepository = async (
   limit = 15
 ) => {
   return await NotificationModel.paginate(
-    { user },
+    {
+      ...(user === UserRoleEnum[0] && {
+        $or: [{ user: NotifiedEnum[0] }, { user: NotifiedEnum[3] }],
+      }),
+      ...(user === UserRoleEnum[1] && {
+        $or: [
+          { user: NotifiedEnum[1] },
+          { user: NotifiedEnum[3] },
+          { user: NotifiedEnum[4] },
+        ],
+      }),
+      ...(user === UserRoleEnum[2] && {
+        $or: [
+          { user: NotifiedEnum[2] },
+          { user: NotifiedEnum[3] },
+          { user: NotifiedEnum[4] },
+        ],
+      }),
+    },
     {
       offset: offset * limit,
       limit,
     }
   );
+};
+
+export const creteNotificationRepository = async (notification) => {
+  return await NotificationModel.create(notification);
 };
 
 export const addTokenRepository = async (fcmToken) => {

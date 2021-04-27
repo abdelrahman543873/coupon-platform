@@ -15,10 +15,7 @@ describe("notify users suite case", () => {
     await customerFactory();
     const coupon = await couponFactory();
     const provider = await providerFactory();
-    const result = await notifyUsers(
-      NewCouponMessage(coupon, provider),
-      NotifiedEnum[3]
-    );
-    expect(result.failureCount).toBe(3);
+    const result = await notifyUsers(NewCouponMessage(coupon, provider));
+    expect(result.failureCount).toBe(1);
   });
 });

@@ -24,7 +24,7 @@ export const buildProviderParams = async (obj = {}) => {
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),
     twitterLink: obj.twitterLink || faker.internet.url(),
-    fcmToken: obj.fcmToken || faker.random.objectElement(),
+    fcmToken: obj.fcmToken || faker.random.word(),
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     locations: obj.locations || {

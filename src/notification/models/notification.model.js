@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import { NotifiedEnum } from "../notification.enum.js";
 const notification = mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
+      enum: NotifiedEnum,
     },
     arTitle: {
       type: String,
@@ -23,7 +25,7 @@ const notification = mongoose.Schema(
       required: true,
     },
     data: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     action: {

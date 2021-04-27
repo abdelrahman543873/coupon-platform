@@ -34,7 +34,6 @@ import { notifyUsers } from "../notification/notification.service.js";
 import {
   NewCouponMessage,
   NewProviderMessage,
-  NotifiedEnum,
 } from "../notification/notification.enum.js";
 
 export const providerRegisterService = async (req, res, next) => {
@@ -55,11 +54,7 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
-    await notifyUsers(
-      NewProviderMessage(provider),
-      NotifiedEnum[4],
-      provider._id
-    );
+    await notifyUsers(NewProviderMessage(provider));
     return res.status(201).json({
       success: true,
       data: {
@@ -158,11 +153,7 @@ export const addCouponService = async (req, res, next) => {
       logoURL: req.file,
       provider: req.currentUser._id,
     });
-    await notifyUsers(
-      NewCouponMessage(coupon, req.currentUser),
-      NotifiedEnum[4],
-      coupon._id
-    );
+    await notifyUsers(NewCouponMessage(coupon, req.currentUser));
     return res.status(200).json({
       success: true,
       data: await getCoupon({ _id: coupon.id }),
