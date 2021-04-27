@@ -8,6 +8,16 @@ export const NewCouponMessage = (coupon, provider) => {
   };
 };
 
+export const NewProviderMessage = (provider) => {
+  return {
+    enTitle: `new provider🥳🥳 ${provider.name}`,
+    arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
+    enBody: `a new provider has just joined coupons ${provider.name}`,
+    arBody: `الي كوبونات${provider.name} انضم`,
+    action: "view_provider",
+  };
+};
+
 export const NotifiedEnum = [
   "PROVIDERS",
   "CUSTOMERS",

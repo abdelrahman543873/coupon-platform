@@ -33,6 +33,7 @@ import { formattedGeo } from "../_common/helpers/geo-encoder.js";
 import { notifyUsers } from "../notification/notification.service.js";
 import {
   NewCouponMessage,
+  NewProviderMessage,
   NotifiedEnum,
 } from "../notification/notification.enum.js";
 
@@ -54,6 +55,7 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
+    await notifyUsers(NewProviderMessage(provider), NotifiedEnum[4]);
     return res.status(201).json({
       success: true,
       data: {
