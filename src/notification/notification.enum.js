@@ -10,9 +10,9 @@ export const NewCouponMessage = (coupon, provider) => {
 
 export const NewProviderMessage = (provider) => {
   return {
-    enTitle: `new provider🥳🥳 ${provider.name}`,
+    enTitle: `new provider ${provider.name} 🥳🥳 `,
     arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
-    enBody: `a new provider has just joined coupons ${provider.name}`,
+    enBody: `A new provider  ${provider.name} has just joined coupons`,
     arBody: `الي كوبونات${provider.name} انضم`,
     action: "view_provider",
   };
