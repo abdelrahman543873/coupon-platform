@@ -49,6 +49,30 @@ export const allUsersNotification = async (message) => {
   const tokens = await getUnregisteredTokens();
   usersTokens.concat(tokens);
   message.tokens = usersTokens;
+  message.notification = {
+    title: message.enTitle,
+    body: message.enBody,
+  };
+  message.android = {
+    notification: {
+      click_action: "view_provider",
+      sound: "default",
+    },
+  };
+  message.apns = {
+    payload: {
+      aps: {
+        category: "view_coupon",
+        sound: "default",
+        badge: 1,
+      },
+    },
+  };
+  message.webpush = {
+    headers: {
+      Urgency: "high",
+    },
+  };
   const response =
     usersTokens.length > 0
       ? await admin.messaging().sendMulticast(message)
