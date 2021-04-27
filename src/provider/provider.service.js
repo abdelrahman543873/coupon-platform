@@ -21,6 +21,7 @@ import {
   deleteProviderLocation,
   findProviderByEmailForLogin,
   findProviderById,
+  getProviderLocationsRepository,
   getProviders,
   providerRegisterRepository,
   updateProviderRepository,
@@ -226,6 +227,8 @@ export const addLocationService = async (req, res, next) => {
         $addToSet: {
           "locations.coordinates": [req.body.long, req.body.lat],
           metaData: await formattedGeo({
+            enName: city.enName,
+            arName: city.arName,
             lat: req.body.lat,
             lon: req.body.long,
           }),
@@ -248,6 +251,7 @@ export const addLocationsService = async (req, res, next) => {
       const city = await findPointCities(req.body.locations[i]);
       if (!city) throw new BaseHttpError(639);
       const formattedAddress = await formattedGeo({
+        city: city.enName,
         lat: req.body.locations[i][1],
         lon: req.body.locations[i][0],
       });
@@ -283,6 +287,20 @@ export const deleteLocationService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProviderLocationsService = async (req, res, next) => {
+  try {
+    const locations = await getProviderLocationsRepository({
+      _id: req.query.provider,
+    });
+    res.status(200).json({
+      success: true,
+      data: locations,
     });
   } catch (error) {
     next(error);

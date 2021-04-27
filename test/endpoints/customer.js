@@ -20,3 +20,5 @@ export const GET_CUSTOMER_SUBSCRIPTION =
   "/customers-management/getSubscription";
 export const SCAN = "/customers-management/scan";
 export const CHANGE_PHONE = "/customers-management/changePhone";
+export const GET_PROVIDER_LOCATIONS =
+  "/customers-management/getProviderLocations";
