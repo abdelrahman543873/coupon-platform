@@ -14,8 +14,8 @@ export const buildCouponParams = async (obj = {}) => {
   return {
     enDescription: obj.enDescription || faker.commerce.productDescription(),
     arDescription: obj.arDescription || faker.commerce.productDescription(),
-    servicePrice: obj.servicePrice || +faker.commerce.price(),
-    offerPrice: obj.offerPrice || +faker.commerce.price(),
+    servicePrice: obj.servicePrice || +faker.commerce.price(11, 20),
+    offerPrice: obj.offerPrice || +faker.commerce.price(0, 10),
     enName: obj.enName || faker.datatype.uuid(),
     arName: obj.arName || faker.datatype.uuid(),
     amount: amount,
