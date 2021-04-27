@@ -1,6 +1,6 @@
 import faker from "faker";
-import { hashPass } from "../utils/bcryptHelper.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import { UserModel } from "./models/user.model.js";
 import { UserRoleEnum } from "./user-role.enum.js";
 

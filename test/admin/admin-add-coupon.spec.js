@@ -44,7 +44,6 @@ describe("admin add coupon suite case", () => {
   it("should throw error if category doesn't exist", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const {
-      provider,
       isActive,
       logoURL,
       code,

@@ -2,6 +2,7 @@ import {
   getNotificationsRepository,
   addTokenRepository,
   getUnregisteredTokens,
+  creteNotificationRepository,
 } from "./notification.repository.js";
 import {
   getAllAdminsTokens,
@@ -16,7 +17,7 @@ dotenv.config();
 export const getNotificationsService = async (req, res, next) => {
   try {
     const notifications = await getNotificationsRepository(
-      req.currentUser._id,
+      req.currentUser.role,
       req.query.offset,
       req.query.limit
     );
@@ -49,26 +50,28 @@ export const addeTokenService = async (req, res, next) => {
   }
 };
 
-export const notifyUsers = async (message, notified) => {
+export const notifyUsers = async (message) => {
   const notifiedUsers = [];
-  if (notified === NotifiedEnum[0] || notified === NotifiedEnum[3])
+  if (message.user === NotifiedEnum[0] || message.user === NotifiedEnum[3])
     notifiedUsers.push(...(await getAllProvidersTokens()));
   if (
-    notified === NotifiedEnum[1] ||
-    notified === NotifiedEnum[3] ||
-    notified === NotifiedEnum[4]
+    message.user === NotifiedEnum[1] ||
+    message.user === NotifiedEnum[3] ||
+    message.user === NotifiedEnum[4]
   )
     notifiedUsers.push(
       ...(await getAllCustomersTokens()),
       ...(await getUnregisteredTokens())
     );
   if (
-    notified === NotifiedEnum[2] ||
-    notified === NotifiedEnum[3] ||
-    notified === NotifiedEnum[4]
+    message.user === NotifiedEnum[2] ||
+    message.user === NotifiedEnum[3] ||
+    message.user === NotifiedEnum[4]
   )
     notifiedUsers.push(...(await getAllAdminsTokens()));
-  message.tokens = notifiedUsers;
+  if (notifiedUsers.length === 0) return null;
+  await creteNotificationRepository(message);
+  message.tokens = Array.from(new Set(notifiedUsers));
   message.notification = {
     title: message.enTitle,
     body: message.enBody,
@@ -93,9 +96,9 @@ export const notifyUsers = async (message, notified) => {
       Urgency: "high",
     },
   };
-  const response =
-    notifiedUsers.length > 0
-      ? await admin.messaging().sendMulticast(message)
-      : "null array";
+  message.data = {
+    id: JSON.stringify(message.data),
+  };
+  const response = await admin.messaging().sendMulticast(message);
   return response;
 };

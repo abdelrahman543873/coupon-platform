@@ -46,14 +46,16 @@ export const provider = mongoose.Schema(
     //mongodb
     metaData: [
       {
+        _id: false,
         lat: Number,
         long: Number,
-        formattedAddressAr: String,
-        formattedAddressEn: String,
+        enName: String,
+        arName: String,
         level2longAr: String,
         level2longEn: String,
         googlePlaceId: String,
-        _id: false,
+        formattedAddressAr: String,
+        formattedAddressEn: String,
       },
     ],
     slogan: {

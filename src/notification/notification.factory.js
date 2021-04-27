@@ -1,10 +1,11 @@
 import faker from "faker";
 import { userFactory } from "../user/user.factory.js";
 import { NotificationModel } from "./models/notification.model.js";
+import { NotifiedEnum } from "./notification.enum.js";
 
 export const buildNotificationParams = async (obj = {}) => {
   return {
-    user: obj.user || (await userFactory())._id,
+    user: obj.user || faker.random.arrayElement(NotifiedEnum),
     arTitle: obj.arTitle || faker.name.title(),
     enTitle: obj.enTitle || faker.name.title(),
     enBody: obj.enBody || faker.commerce.productDescription(),

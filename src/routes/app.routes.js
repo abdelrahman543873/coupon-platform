@@ -1,5 +1,4 @@
 import express from "express";
-import { citiesRouter } from "../Cities/routes/cities.js";
 import { termsAndConditionsRouter } from "../terms-and-conditions/terms-and-condtions.routes.js";
 import { providersRouter } from "../provider/provider.routes.js";
 import { contactUsRouter } from "../contact-us/contact-us.routes.js";
@@ -17,7 +16,6 @@ const router = express.Router();
 
 router.use("/providers-management", providersRouter);
 router.use("/customers-management", customersRouter);
-router.use("/cities-management", citiesRouter);
 router.use("/admin-management", adminRouter);
 router.use("/notification", notificationRouter);
 router.use("/admin-management", termsAndConditionsRouter);

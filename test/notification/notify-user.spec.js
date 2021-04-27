@@ -1,10 +1,7 @@
 import { rollbackDbForNotification } from "./rollback-for-notification.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import { notifyUsers } from "../../src/notification/notification.service.js";
-import {
-  NewCouponMessage,
-  NotifiedEnum,
-} from "../../src/notification/notification.enum.js";
+import { NewCouponMessage } from "../../src/notification/notification.enum.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { couponFactory } from "../../src/coupon/coupon.factory.js";
 describe("notify users suite case", () => {
@@ -15,10 +12,7 @@ describe("notify users suite case", () => {
     await customerFactory();
     const coupon = await couponFactory();
     const provider = await providerFactory();
-    const result = await notifyUsers(
-      NewCouponMessage(coupon, provider),
-      NotifiedEnum[3]
-    );
-    expect(result.failureCount).toBe(3);
+    const result = await notifyUsers(NewCouponMessage(coupon, provider));
+    expect(result.failureCount).toBe(1);
   });
 });

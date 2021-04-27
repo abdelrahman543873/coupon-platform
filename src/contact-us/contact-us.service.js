@@ -1,5 +1,5 @@
-import { sendClientMail } from "../utils/nodemailer.js";
 import { BaseHttpError } from "../_common/error-handling-module/error-handler.js";
+import { sendClientMail } from "../_common/helpers/nodemailer.js";
 import {
   deleteContactUsMessageRepository,
   getContactUsMessagesRepository,

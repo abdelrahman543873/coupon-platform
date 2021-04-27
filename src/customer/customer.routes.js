@@ -45,6 +45,8 @@ import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
 import { GetCustomersCouponsInput } from "./inputs/get-coupons.input.js";
 import { GetCustomersCouponInput } from "./inputs/get-coupon.input.js";
 import { ChangePhoneInput } from "./inputs/change-phone.input.js";
+import { GetProviderLocationsInput } from "../customer/inputs/get-provider-locations.input.js";
+import { getProviderLocationsService } from "../provider/provider.service.js";
 
 const customersRouter = express.Router();
 
@@ -194,6 +196,15 @@ customersRouter
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(ChangePhoneInput),
     changePhoneService
+  );
+
+customersRouter
+  .route("/getProviderLocations")
+  .get(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[1]),
+    ValidationMiddleware(GetProviderLocationsInput),
+    getProviderLocationsService
   );
 
 export { customersRouter };

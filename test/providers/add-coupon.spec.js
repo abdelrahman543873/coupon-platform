@@ -28,6 +28,23 @@ describe("add coupon suite case", () => {
     expect(res.body.data.category.enName).toBeTruthy();
     expect(res.body.data.enName).toBe(variables.enName);
   });
+  it("should throw error if offer is bigger than service", async () => {
+    const mockProvider = await providerFactory();
+    const {
+      provider,
+      isActive,
+      logoURL,
+      code,
+      ...variables
+    } = await buildCouponParams({ servicePrice: 10, offerPrice: 20 });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADD_COUPON,
+      token: mockProvider.token,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
 
   it("should throw error if category doesn't exist", async () => {
     const mockProvider = await providerFactory();

@@ -1,6 +1,7 @@
 import { ProviderModel } from "./models/provider.model.js";
 import dotenv from "dotenv";
-import { hashPass } from "../utils/bcryptHelper.js";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 export const providerRegisterRepository = async (provider) => {
@@ -122,4 +123,23 @@ export const deleteProviderLocation = async ({ _id, location }) => {
 
 export const getAllProvidersTokens = async () => {
   return await ProviderModel.distinct("fcmToken");
+};
+
+export const getProviderLocationsRepository = async ({ _id }) => {
+  return await ProviderModel.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(_id) } },
+    { $unwind: "$metaData" },
+    { $project: { metaData: 1, _id: 0 } },
+    {
+      $group: {
+        _id: {
+          enName: "$metaData.enName",
+          arName: "$metaData.arName",
+        },
+        locations: {
+          $push: "$metaData",
+        },
+      },
+    },
+  ]);
 };

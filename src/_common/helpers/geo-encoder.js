@@ -18,7 +18,7 @@ const optionsAr = {
 const geoEncodeEn = NodeGeocoder(optionsEn);
 const geoEncodeAr = NodeGeocoder(optionsAr);
 
-export const formattedGeo = async ({ lat, lon }) => {
+export const formattedGeo = async ({ lat, lon, city }) => {
   const geoInfoAr = await geoEncodeAr.reverse({
     lat,
     lon,
@@ -29,12 +29,12 @@ export const formattedGeo = async ({ lat, lon }) => {
   });
   return {
     lat,
+    city,
     long: lon,
+    googlePlaceId: geoInfoEn[0].extra.googlePlaceId,
     formattedAddressAr: geoInfoAr[0].formattedAddress,
     formattedAddressEn: geoInfoEn[0].formattedAddress,
     level2longAr: geoInfoAr[0].administrativeLevels.level2long,
     level2longEn: geoInfoEn[0].administrativeLevels.level2long,
-    googlePlaceId:
-      geoInfoAr[0].extra.googlePlaceId || geoInfoEn[0].extra.googlePlaceId,
   };
 };

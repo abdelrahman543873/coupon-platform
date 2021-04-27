@@ -8,8 +8,6 @@ import {
   getNotCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
-import { bcryptCheckPass } from "../utils/bcryptHelper.js";
-import { generateToken } from "../utils/JWTHelper.js";
 import {
   addVerificationCode,
   verifyOTPRepository,
@@ -21,6 +19,7 @@ import {
   deleteProviderLocation,
   findProviderByEmailForLogin,
   findProviderById,
+  getProviderLocationsRepository,
   getProviders,
   providerRegisterRepository,
   updateProviderRepository,
@@ -33,8 +32,10 @@ import { formattedGeo } from "../_common/helpers/geo-encoder.js";
 import { notifyUsers } from "../notification/notification.service.js";
 import {
   NewCouponMessage,
-  NotifiedEnum,
+  NewProviderMessage,
 } from "../notification/notification.enum.js";
+import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
@@ -54,6 +55,7 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
+    await notifyUsers(NewProviderMessage(provider));
     return res.status(201).json({
       success: true,
       data: {
@@ -152,10 +154,7 @@ export const addCouponService = async (req, res, next) => {
       logoURL: req.file,
       provider: req.currentUser._id,
     });
-    await notifyUsers(
-      NewCouponMessage(coupon, req.currentUser),
-      NotifiedEnum[4]
-    );
+    await notifyUsers(NewCouponMessage(coupon, req.currentUser));
     return res.status(200).json({
       success: true,
       data: await getCoupon({ _id: coupon.id }),
@@ -228,6 +227,8 @@ export const addLocationService = async (req, res, next) => {
         $addToSet: {
           "locations.coordinates": [req.body.long, req.body.lat],
           metaData: await formattedGeo({
+            enName: city.enName,
+            arName: city.arName,
             lat: req.body.lat,
             lon: req.body.long,
           }),
@@ -250,6 +251,7 @@ export const addLocationsService = async (req, res, next) => {
       const city = await findPointCities(req.body.locations[i]);
       if (!city) throw new BaseHttpError(639);
       const formattedAddress = await formattedGeo({
+        city: city.enName,
         lat: req.body.locations[i][1],
         lon: req.body.locations[i][0],
       });
@@ -285,6 +287,20 @@ export const deleteLocationService = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProviderLocationsService = async (req, res, next) => {
+  try {
+    const locations = await getProviderLocationsRepository({
+      _id: req.query.provider,
+    });
+    res.status(200).json({
+      success: true,
+      data: locations,
     });
   } catch (error) {
     next(error);

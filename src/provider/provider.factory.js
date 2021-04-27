@@ -1,8 +1,7 @@
 import faker from "faker";
 import { UserRoleEnum } from "../user/user-role.enum";
-import { userFactory } from "../user/user.factory";
-import { hashPass } from "../utils/bcryptHelper";
-import { generateToken } from "../utils/JWTHelper";
+import { hashPass } from "../_common/helpers/bcryptHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import { ProviderModel } from "./models/provider.model.js";
 import mongoose from "mongoose";
 
@@ -24,7 +23,7 @@ export const buildProviderParams = async (obj = {}) => {
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),
     twitterLink: obj.twitterLink || faker.internet.url(),
-    fcmToken: obj.fcmToken || faker.random.objectElement(),
+    fcmToken: obj.fcmToken || faker.random.word(),
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     locations: obj.locations || {
@@ -32,13 +31,15 @@ export const buildProviderParams = async (obj = {}) => {
     },
     metaData: obj.metaData || [
       {
-        long: location[0],
         lat: location[1],
-        formattedAddressAr: faker.address.streetAddress(),
-        formattedAddressEn: faker.address.streetAddress(),
+        long: location[0],
+        enName: faker.address.city(),
+        arName: faker.address.city(),
+        googlePlaceId: faker.address.zipCode(),
         level2longAr: faker.address.streetPrefix(),
         level2longEn: faker.address.streetPrefix(),
-        googlePlaceId: faker.address.zipCode(),
+        formattedAddressAr: faker.address.streetAddress(),
+        formattedAddressEn: faker.address.streetAddress(),
       },
     ],
     code: obj.code || mongoose.Types.ObjectId(),

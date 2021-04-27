@@ -2,7 +2,7 @@ import faker from "faker";
 import { couponFactory } from "../coupon/coupon.factory.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { userFactory } from "../user/user.factory.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 import { CustomerModel } from "./models/customer.model.js";
 import { socialMediaEnum } from "./social-media-type.enum.js";
 

@@ -1,6 +1,6 @@
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { buildUserParams, userFactory } from "../user/user.factory.js";
-import { generateToken } from "../utils/JWTHelper.js";
+import { generateToken } from "../_common/helpers/jwt-helper.js";
 
 export const getAdminTokenService = async (req, res, next) => {
   try {
