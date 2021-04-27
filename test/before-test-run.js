@@ -1,8 +1,8 @@
 import { server } from "../src/server.js";
 import dotenv from "dotenv";
-import { connectDB } from "../src/db/dbConnection.js";
 import admin from "firebase-admin";
 import { serviceAccountConfig } from "../src/notification/service-account-file.js";
+import { connectDB } from "../src/_common/dbConnection.js";
 
 let app;
 beforeAll(async () => {
