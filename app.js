@@ -12,10 +12,10 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 const mongo = await connectDB(dbUrl);
 
 // when dropping database
-await mongo.connection.db.dropDatabase((error, result) => {
-  if (error) console.log(error);
-  console.log("database dropped");
-});
+// await mongo.connection.db.dropDatabase((error, result) => {
+//   if (error) console.log(error);
+//   console.log("database dropped");
+// });
 
 await server.listen(process.env.COUPONAT_N_PORT, () => {
   console.log("coupons platform is running ");
