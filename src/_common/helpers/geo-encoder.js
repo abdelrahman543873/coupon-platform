@@ -18,7 +18,7 @@ const optionsAr = {
 const geoEncodeEn = NodeGeocoder(optionsEn);
 const geoEncodeAr = NodeGeocoder(optionsAr);
 
-export const formattedGeo = async ({ lat, lon, city }) => {
+export const formattedGeo = async ({ lat, lon, enName, arName }) => {
   const geoInfoAr = await geoEncodeAr.reverse({
     lat,
     lon,
@@ -29,7 +29,8 @@ export const formattedGeo = async ({ lat, lon, city }) => {
   });
   return {
     lat,
-    city,
+    enName,
+    arName,
     long: lon,
     googlePlaceId: geoInfoEn[0].extra.googlePlaceId,
     formattedAddressAr: geoInfoAr[0].formattedAddress,

@@ -18,7 +18,7 @@ describe("add location suite case", () => {
       locations: {},
     });
     await buildProviderParams();
-    await cityFactory({
+    const city = await cityFactory({
       enName: "alex",
       arName: "Alexandria",
       area: { coordinates: alexCoordinates },
@@ -33,6 +33,8 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
+    expect(res.body.data.metaData[0].enName).toBe(city.enName);
+    expect(res.body.data.metaData[0].arName).toBe(city.arName);
     expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
   });
 
