@@ -10,7 +10,7 @@ export const connectDB = async (dbURL) => {
     useFindAndModify: false,
   });
   // when dropping database
-  mongo.connection.db.dropDatabase(() => {
+  await mongo.connection.db.dropDatabase(() => {
     console.log("database dropped");
   });
   return mongo;
