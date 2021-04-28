@@ -254,7 +254,6 @@ adminRouter
   .route("/getProvider")
   .get(
     authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(adminGetProviderInput),
     adminGetProviderService
   );
