@@ -202,7 +202,6 @@ customersRouter
   .route("/getProviderLocations")
   .get(
     authenticationMiddleware,
-    authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(GetProviderLocationsInput),
     getProviderLocationsService
   );
