@@ -18,7 +18,7 @@ const optionsAr = {
 const geoEncodeEn = NodeGeocoder(optionsEn);
 const geoEncodeAr = NodeGeocoder(optionsAr);
 
-export const formattedGeo = async ({ lat, lon, enName, arName }) => {
+export const formattedGeo = async ({ lat, lon, enName, arName, center }) => {
   const geoInfoAr = await geoEncodeAr.reverse({
     lat,
     lon,
@@ -29,6 +29,7 @@ export const formattedGeo = async ({ lat, lon, enName, arName }) => {
   });
   return {
     lat,
+    center,
     enName,
     arName,
     long: lon,

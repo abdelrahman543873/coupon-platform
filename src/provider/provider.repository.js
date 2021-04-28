@@ -135,6 +135,7 @@ export const getProviderLocationsRepository = async ({ _id }) => {
         _id: {
           enName: "$metaData.enName",
           arName: "$metaData.arName",
+          center: "$metaData.center",
         },
         locations: {
           $push: "$metaData",

@@ -36,6 +36,7 @@ import {
 } from "../notification/notification.enum.js";
 import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 import { generateToken } from "../_common/helpers/jwt-helper.js";
+import polylabel from "polylabel";
 
 export const providerRegisterService = async (req, res, next) => {
   try {
@@ -231,6 +232,7 @@ export const addLocationService = async (req, res, next) => {
             arName: city.arName,
             lat: req.body.lat,
             lon: req.body.long,
+            center: polylabel(city.area.coordinates),
           }),
         },
       }

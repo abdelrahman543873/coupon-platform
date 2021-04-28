@@ -33,6 +33,7 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
+    expect(res.body.data.metaData[0].center.length).toBe(2);
     expect(res.body.data.metaData[0].enName).toBe(city.enName);
     expect(res.body.data.metaData[0].arName).toBe(city.arName);
     expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);

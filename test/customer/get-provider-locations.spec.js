@@ -41,7 +41,8 @@ describe("get provider locations suite case", () => {
       url: `${GET_PROVIDER_LOCATIONS}?provider=${provider._id}`,
       token: customer.token,
     });
-    expect(res.body.data[0]._id.enName).toBe('alex');
-    expect(res.body.data[0]._id.arName).toBe('alex');
+    expect(res.body.data[0]._id.center).toBeTruthy();
+    expect(res.body.data[0]._id.enName).toBe("alex");
+    expect(res.body.data[0]._id.arName).toBe("alex");
   });
 });

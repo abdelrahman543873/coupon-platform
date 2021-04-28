@@ -51,6 +51,7 @@ export const provider = mongoose.Schema(
         long: Number,
         enName: String,
         arName: String,
+        center: [Number],
         level2longAr: String,
         level2longEn: String,
         googlePlaceId: String,
