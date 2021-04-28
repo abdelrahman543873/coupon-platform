@@ -31,6 +31,7 @@ export const getNotificationsRepository = async (
     {
       offset: offset * limit,
       limit,
+      sort: { createdAt: -1 },
     }
   );
 };
