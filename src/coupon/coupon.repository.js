@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 import { ProviderModel } from "../provider/models/provider.model.js";
 import { CategoryModel } from "../category/models/category.model.js";
 import mongoose from "mongoose";
-import { PaymentModel } from "../payment/models/payment.model.js";
-import { UserModel } from "../user/models/user.model.js";
 import { CustomerModel } from "../customer/models/customer.model.js";
 import { providerCustomerCouponModel } from "../subscription/models/provider-customer-coupon.model.js";
 
@@ -326,19 +324,96 @@ export const searchCouponsRepository = async (
   });
 };
 
-export const getCoupon = async ({ _id }) => {
-  return await CouponModel.findOne(
-    { _id },
-    {},
-    {
-      lean: true,
-      populate: [
-        { path: "category" },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
-      ],
-    }
-  );
+export const getCoupon = async ({ _id, user }) => {
+  return (
+    await CouponModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(_id),
+        },
+      },
+      {
+        $lookup: {
+          from: ProviderModel.collection.name,
+          localField: "provider",
+          foreignField: "_id",
+          as: "provider",
+        },
+      },
+      {
+        $unwind: "$provider",
+      },
+      {
+        $lookup: {
+          from: CategoryModel.collection.name,
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: "$category",
+      },
+      {
+        $lookup: {
+          from: CustomerModel.collection.name,
+          as: "user",
+          pipeline: [
+            {
+              $match: {
+                user: user ? new mongoose.Types.ObjectId(user) : user,
+              },
+            },
+            {
+              $project: { favCoupons: 1, _id: 0 },
+            },
+            {
+              $unwind: "$favCoupons",
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: providerCustomerCouponModel.collection.name,
+          as: "subscriptions",
+          pipeline: [
+            {
+              $match: {
+                isUsed: false,
+                customer: user ? new mongoose.Types.ObjectId(user) : user,
+                $expr: { coupon: "$_id" },
+              },
+            },
+            {
+              $project: {
+                coupon: 1,
+                _id: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          isSubscribe: {
+            $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
+          },
+          isFav: {
+            $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
+          },
+        },
+      },
+      {
+        $project: {
+          count: 0,
+          "provider.password": 0,
+          user: 0,
+          subscriptions: 0,
+        },
+      },
+    ])
+  )[0];
 };
 
 export const findCoupons = async (ids) => {

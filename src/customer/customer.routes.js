@@ -159,7 +159,11 @@ customersRouter
 
 customersRouter
   .route("/getCoupon")
-  .get(ValidationMiddleware(GetCustomersCouponInput), getCouponService);
+  .get(
+    semiAuthenticationMiddleware,
+    ValidationMiddleware(GetCustomersCouponInput),
+    getCouponService
+  );
 
 customersRouter
   .route("/markCouponUsed")

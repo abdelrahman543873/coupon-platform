@@ -291,6 +291,7 @@ export const getCouponService = async (req, res, next) => {
   try {
     const coupon = await getCoupon({
       _id: req.query.coupon,
+      user: req.currentUser?._id,
     });
     if (!coupon) throw new BaseHttpError(621);
     res.status(200).json({
