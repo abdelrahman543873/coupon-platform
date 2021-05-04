@@ -21,6 +21,7 @@ describe("get subscription suite case", () => {
       url: `${GET_SUBSCRIPTION}?subscription=${subscriptions.ops[0]._id}`,
       token: provider.token,
     });
+    expect(res.body.data.coupon.subCount).toBe(1);
     expect(res.body.data.coupon._id).toBeTruthy();
     expect(res.body.data.customer._id).toBeTruthy();
     expect(res.body.data.paymentType._id).toBeTruthy();

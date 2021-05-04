@@ -36,8 +36,6 @@ export const getAllSubscriptionsService = async (req, res, next) => {
 
 export const getSubscriptionService = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.query.subscription))
-      throw new BaseHttpError(631);
     const subscription = await getSubscriptionRepository({
       _id: req.query.subscription,
     });

@@ -548,7 +548,6 @@ export const getSubscriptionRepository = async ({
           ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
         },
       },
-      { $limit: 1 },
       {
         $lookup: {
           from: UserModel.collection.name,
@@ -570,6 +569,14 @@ export const getSubscriptionRepository = async ({
       },
       {
         $unwind: "$paymentType",
+      },
+      {
+        $lookup: {
+          from: providerCustomerCouponModel.collection.name,
+          localField: "coupon",
+          foreignField: "coupon",
+          as: "sales",
+        },
       },
       {
         $lookup: {
@@ -605,11 +612,17 @@ export const getSubscriptionRepository = async ({
         $unwind: "$coupon.category",
       },
       {
+        $addFields: {
+          "coupon.subCount": { $size: "$sales" },
+        },
+      },
+      {
         $project: {
           count: 0,
-          "coupon.provider.password": 0,
-          "customer.password": 0,
+          sales: 0,
           provider: 0,
+          "customer.password": 0,
+          "coupon.provider.password": 0,
         },
       },
     ])
