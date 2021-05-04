@@ -10,10 +10,14 @@ import { CustomerModel } from "../customer/models/customer.model.js";
 export const getRecentlySoldCouponsRepository = async (
   provider,
   offset = 0,
-  limit = 15
+  limit = 15,
+  category,
+  sold
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
-    { $match: { ...(provider && { provider }) } },
+    {
+      $match: { ...(provider && { provider }), ...(category && { category }) },
+    },
     {
       $sortByCount: "$coupon",
     },
@@ -27,6 +31,11 @@ export const getRecentlySoldCouponsRepository = async (
     },
     {
       $unwind: "$coupon",
+    },
+    {
+      $match: {
+        ...(sold === true && { "coupon.amount": 0 }),
+      },
     },
     {
       $lookup: {
@@ -51,7 +60,15 @@ export const getRecentlySoldCouponsRepository = async (
       $unwind: "$coupon.category",
     },
     {
-      $project: { _id: 0, count: 0, "coupon.provider.password": 0 },
+      $addFields: {
+        "coupon.subCount": "$count",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        "coupon.provider.password": 0,
+      },
     },
     { $replaceRoot: { newRoot: "$coupon" } },
     { $sort: { createdAt: -1 } },

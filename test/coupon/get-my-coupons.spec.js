@@ -38,22 +38,37 @@ describe("get my coupons suite case", () => {
       url: `${GET_MY_COUPONS}?recentlySold=true`,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].subCount).toBe(1);
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.password).toBeFalsy();
     expect(res.body.data.docs.length).toBe(10);
   });
 
-  it("get recently sold coupons", async () => {
+  it("get completely sold coupons", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {
       provider: provider._id,
       amount: 0,
     });
+    //checking if the filter is successfully only matching elements with amount of 0
+    await couponFactory({
+      amount: 5,
+      provider: provider._id,
+    });
+    for (let i = 0; i < coupons.ops.length; i++) {
+      await providerCustomerCouponsFactory(
+        2,
+        { provider: provider._id },
+        {},
+        { coupon: coupons.ops[i]._id }
+      );
+    }
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_MY_COUPONS}?sold=true`,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].subCount).toBe(2);
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.password).toBeFalsy();
     expect(res.body.data.docs.length).toBe(10);

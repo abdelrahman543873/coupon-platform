@@ -3,9 +3,7 @@ import {
   findCouponByIdAndProvider,
   getMyCouponsRepository,
   updateCoupon,
-  getCompletelySoldCouponsRepository,
   getCoupon,
-  getNotCompletelySoldCouponsRepository,
 } from "../coupon/coupon.repository.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import {
@@ -112,30 +110,27 @@ export const updateProviderService = async (req, res, next) => {
 export const getMyCouponsService = async (req, res, next) => {
   try {
     let data;
+    const sold =
+      req.query.sold == "true"
+        ? true
+        : req.query.sold == "false"
+        ? false
+        : undefined;
     req.query.recentlySold == "true" &&
       (data = await getRecentlySoldCouponsRepository(
         req.currentUser._id,
         req.query.offset,
-        req.query.limit
-      ));
-    req.query.sold == "true" &&
-      (data = await getCompletelySoldCouponsRepository(
-        req.currentUser._id,
-        req.query.offset,
-        req.query.limit
-      ));
-    req.query.sold == "false" &&
-      (data = await getNotCompletelySoldCouponsRepository(
-        req.currentUser._id,
-        req.query.offset,
-        req.query.limit
+        req.query.limit,
+        req.query.categoryId,
+        sold
       ));
     !data &&
       (data = await getMyCouponsRepository(
         req.currentUser._id,
         req.query.categoryId,
         req.query.offset,
-        req.query.limit
+        req.query.limit,
+        sold
       ));
     return res.status(200).json({
       success: true,
