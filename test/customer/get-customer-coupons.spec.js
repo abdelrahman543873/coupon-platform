@@ -26,6 +26,24 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(10);
   });
 
+  it("shouldn't get the coupons if they are sold out in the newest section", async () => {
+    await couponsFactory(10, { amount: 0 });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+    });
+    expect(res.body.data.docs.length).toBe(0);
+  });
+
+  it("shouldn't get the coupons if they are sold out in the best seller section", async () => {
+    await providerCustomerCouponsFactory(10, {}, {}, { amount: 0 });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+    });
+    expect(res.body.data.docs.length).toBe(0);
+  });
+
   it("get logged in customers coupons service", async () => {
     const customer = await customerFactory();
     await providerCustomerCouponsFactory(

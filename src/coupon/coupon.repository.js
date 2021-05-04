@@ -70,11 +70,8 @@ export const getRecentlyAdddedCouponsRepository = async (
   const aggregation = CouponModel.aggregate([
     {
       $match: {
+        amount: { $gt: 0 },
         ...(category && { category: new mongoose.Types.ObjectId(category) }),
-      },
-    },
-    {
-      $match: {
         ...(provider && {
           provider: new mongoose.Types.ObjectId(provider),
         }),

@@ -580,6 +580,7 @@ export const getMostSellingCouponRepository = async (
     },
     {
       $match: {
+        "coupon.amount": { $gt: 0 },
         ...(category && {
           "coupon.category": new mongoose.Types.ObjectId(category),
         }),
