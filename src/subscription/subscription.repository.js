@@ -751,11 +751,11 @@ export const getUnconfirmedPaymentsRepository = async (
 };
 
 export const getProviderHomeRepository = async (provider) => {
-  const numberOfSoldCoupons = await providerCustomerCouponModel
-    .distinct("coupon", {
+  const numberOfSoldCoupons = (
+    await providerCustomerCouponModel.distinct("coupon", {
       provider,
     })
-    .countDocuments();
+  ).length;
 
   const numberOfCoupons = await CouponModel.countDocuments({ provider });
   return {
