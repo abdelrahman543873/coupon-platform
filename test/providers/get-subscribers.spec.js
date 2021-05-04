@@ -21,6 +21,7 @@ describe("get subscribers suite case", () => {
       url: GET_SUBSCRIBERS,
       token: provider.token,
     });
+    expect(res.body.data.docs[0].coupon.subCount).toBe(1);
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.docs[0].customer._id).toBeTruthy();
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();

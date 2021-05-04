@@ -83,23 +83,91 @@ export const getRecentlySoldCouponsRepository = async (
 export const getSubscriptionsRepository = async (
   provider,
   offset = 0,
-  limit = 15,
-  coupon
+  coupon,
+  limit = 15
 ) => {
-  return await providerCustomerCouponModel.paginate(
-    { ...(provider && { provider }), ...(coupon && { coupon }) },
+  const aggregation = providerCustomerCouponModel.aggregate([
     {
-      populate: [
-        { path: "paymentType" },
-        { path: "customer", select: { password: 0 } },
-        { path: "coupon" },
-        { path: "provider", select: { password: 0 } },
-      ],
-      offset: offset * limit,
-      limit,
-      sort: "-createdAt",
-    }
-  );
+      $match: {
+        ...(provider && { provider: new mongoose.Types.ObjectId(provider) }),
+        ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
+      },
+    },
+    {
+      $lookup: {
+        from: UserModel.collection.name,
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $unwind: "$customer",
+    },
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "provider",
+        foreignField: "_id",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      $lookup: {
+        from: PaymentModel.collection.name,
+        localField: "paymentType",
+        foreignField: "_id",
+        as: "paymentType",
+      },
+    },
+    {
+      $unwind: "$paymentType",
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        localField: "coupon",
+        foreignField: "coupon",
+        as: "sales",
+      },
+    },
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "coupon",
+        foreignField: "_id",
+        as: "coupon",
+      },
+    },
+    {
+      $unwind: "$coupon",
+    },
+    {
+      $lookup: {
+        from: CategoryModel.collection.name,
+        localField: "coupon.category",
+        foreignField: "_id",
+        as: "coupon.category",
+      },
+    },
+    {
+      $unwind: "$coupon.category",
+    },
+    {
+      $addFields: {
+        "coupon.subCount": { $size: "$sales" },
+      },
+    },
+    { $project: { "provider.password": 0, "customer.password": 0, sales: 0 } },
+    { $sort: { createdAt: -1 } },
+  ]);
+  return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+  });
 };
 
 export const getAdminSubscriptionsRepository = async (
