@@ -97,6 +97,8 @@ import { AdminGetSubscriptionsInput } from "../admin/inputs/admin-get-subscripti
 import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
 import { adminGetProviderInput } from "./inputs/admin-get-provider.input.js";
 import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
+import { GetSubscriptionInput } from "../provider/inputs/get-subscription.input.js";
+
 const adminRouter = express.Router();
 
 adminRouter
@@ -299,6 +301,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(GetSubscriptionInput),
     getSubscriptionService
   );
 

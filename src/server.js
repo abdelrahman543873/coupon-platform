@@ -5,6 +5,8 @@ import { handleError } from "./_common/error-handling-module/error-handler.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { options } from "../swagger.js";
+import rateLimit from "express-rate-limit";
+import responseTime from "response-time";
 
 const server = express();
 const corsOptions = {
@@ -14,7 +16,12 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 const swaggerSpec = swaggerJSDoc(options);
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+server.use(responseTime());
+server.use(limiter);
 //used for documenting the api using swagger ui
 server.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -38,18 +45,3 @@ server.all("*", (req, res, next) => {
 server.use(handleError);
 
 export { server };
-
-// server.use("/app", (req, res, next) => {
-//   let agent = req.headers["user-agent"];
-//   console.log(agent);
-//   if (agent.includes("iPhone;") || agent.includes("iPhone"))
-//     res.redirect("https://apps.apple.com/us/app/كوبونات-المدينه/id1539424240");
-//   else if (agent.includes("Android"))
-//     res.redirect(
-//       "https://play.google.com/store/apps/details?id=com.alef.couponalmadena"
-//     );
-//   else
-//     res.redirect(
-//       "https://play.google.com/store/apps/details?id=com.alef.couponsalmadena"
-//     );
-// });

@@ -28,6 +28,6 @@ describe("admin get subscription suite case", () => {
       url: `${ADMIN_GET_SUBSCRIPTION}?subscription=something`,
       token: admin.token,
     });
-    expect(res.body.statusCode).toBe(631);
+    expect(res.body.statusCode).toBe(400);
   });
 });
