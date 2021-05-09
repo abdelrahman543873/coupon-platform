@@ -767,7 +767,7 @@ export const getMostSellingCouponRepository = async (
     },
   ]);
   return await providerCustomerCouponModel.aggregatePaginate(aggregation, {
-    offset,
+    offset: offset * limit,
     limit,
     lean: true,
   });
