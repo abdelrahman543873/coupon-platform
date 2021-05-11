@@ -13,6 +13,14 @@ export const loginService = async (req, res, next) => {
       (await findProviderByEmailForLogin({ provider: req.body }));
     if (!user) throw new BaseHttpError(603);
     if (!user.password) throw new BaseHttpError(603);
+    if (user.role === UserRoleEnum[0]) {
+      if (!user.isVerified) throw new BaseHttpError(648);
+      if (!user.isActive) throw new BaseHttpError(649);
+    }
+    if (user.role === UserRoleEnum[1]) {
+      const customer = await getCustomerRepository(user._id);
+      if (!customer.isVerified) throw new BaseHttpError(648);
+    }
     const passwordValidation = await bcryptCheckPass(
       req.body.password,
       user.password

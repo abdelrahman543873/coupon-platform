@@ -23,6 +23,20 @@ describe("customer login suite case", () => {
     expect(res.body.data.user.name).toBe(user.name);
   });
 
+  it("should throw error if customer isn't verified", async () => {
+    const user = await userFactory({
+      role: UserRoleEnum[1],
+      password: "something",
+    });
+    await customerFactory({ user: user.id, isVerified: false });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_LOGIN,
+      variables: { email: user.email, password: "something" },
+    });
+    expect(res.body.statusCode).toBe(648);
+  });
+
   it("customer login by phone successfully", async () => {
     const user = await userFactory({
       role: UserRoleEnum[1],

@@ -19,6 +19,32 @@ describe("provider login suite case", () => {
     expect(res.body.data.user.name).toBe(provider.name);
   });
 
+  it("should throw error if provider isn't verified", async () => {
+    const provider = await providerFactory({
+      password: "something",
+      isVerified: false,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: PROVIDER_LOGIN,
+      variables: { email: provider.email, password: "something" },
+    });
+    expect(res.body.statusCode).toBe(648);
+  });
+
+  it("should throw error if provider isn't activated", async () => {
+    const provider = await providerFactory({
+      password: "something",
+      isActive: false,
+    });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: PROVIDER_LOGIN,
+      variables: { email: provider.email, password: "something" },
+    });
+    expect(res.body.statusCode).toBe(649);
+  });
+
   it("error if wrong password", async () => {
     const user = await userFactory({
       role: UserRoleEnum[0],
