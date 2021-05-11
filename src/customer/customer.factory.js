@@ -9,7 +9,7 @@ import { socialMediaEnum } from "./social-media-type.enum.js";
 export const buildCustomerParams = async (obj = {}) => {
   return {
     user: obj.user || (await userFactory({ role: UserRoleEnum[1] }))._id,
-    isVerified: obj.isVerified || false,
+    isVerified: obj.isVerified || true,
     isSocialMediaVerified: obj.isSocialMediaVerified || false,
     socialMediaId: obj.socialMediaId || faker.datatype.uuid(),
     socialMediaType:

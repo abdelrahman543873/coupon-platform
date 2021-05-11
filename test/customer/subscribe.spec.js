@@ -20,6 +20,7 @@ import { getCoupon } from "../../src/coupon/coupon.repository.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { buildUserParams } from "../../src/user/user.factory.js";
 import { ADD_COUPON } from "../endpoints/provider.js";
+import { CustomerModel } from "../../src/customer/models/customer.model.js";
 describe("subscribe suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -75,13 +76,8 @@ describe("subscribe suite case", () => {
 
   it("should add coupon register and subscribe and get subscriptions", async () => {
     const mockProvider = await providerFactory();
-    const {
-      provider,
-      isActive,
-      logoURL,
-      code,
-      ...variables0
-    } = await buildCouponParams();
+    const { provider, isActive, logoURL, code, ...variables0 } =
+      await buildCouponParams();
     const res0 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_COUPON,
@@ -90,12 +86,16 @@ describe("subscribe suite case", () => {
     });
     const coupon = res0.body.data;
     const paymentType = await paymentFactory({ key: PaymentEnum[2] });
-    const { role, fcmToken,...variables } = await buildUserParams();
+    const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: CUSTOMER_REGISTER,
       variables,
     });
+    await CustomerModel.updateOne(
+      { _id: res.body.data.user._id },
+      { isVerified: true }
+    );
     expect(res.body.data.authToken).toBeTruthy();
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,

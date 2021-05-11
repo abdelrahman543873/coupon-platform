@@ -22,6 +22,7 @@ describe("provider register suite case", () => {
       role,
       locations,
       _id,
+      isVerified,
       metaData,
       image,
       ...input
@@ -72,6 +73,7 @@ describe("provider register suite case", () => {
       role,
       _id,
       user,
+      isVerified,
       image,
       ...input
     } = providerInput;

@@ -10,6 +10,7 @@ import { CUSTOMER_REGISTER, UPDATE_CUSTOMER } from "./../endpoints/customer.js";
 import { rollbackDbForCustomer } from "./../customer/rollback-for-customer.js";
 import path from "path";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
+import { CustomerModel } from "../../src/customer/models/customer.model.js";
 describe("update customer suite case", () => {
   afterEach(async () => {
     await rollbackDbForCustomer();
@@ -91,13 +92,8 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[1],
     });
     await customerFactory({ user: mockUser._id });
-    const {
-      role,
-      email,
-      password,
-      fcmToken,
-      ...input
-    } = await buildUserParams();
+    const { role, email, password, fcmToken, ...input } =
+      await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CUSTOMER,
@@ -129,10 +125,7 @@ describe("update customer suite case", () => {
   });
 
   it("error if phone without password is entered", async () => {
-    const mockUser = await userFactory({
-      role: UserRoleEnum[1],
-      password: "12345678",
-    });
+    const mockUser = await customerFactory();
     const providerInput = {
       ...(await buildUserParams()),
     };
@@ -153,6 +146,10 @@ describe("update customer suite case", () => {
       url: CUSTOMER_REGISTER,
       variables,
     });
+    await CustomerModel.updateOne(
+      { _id: mockUser.body.data.user._id },
+      { isVerified: true }
+    );
     const { password, phone, email, ...variables1 } = {
       ...(await buildUserParams()),
     };

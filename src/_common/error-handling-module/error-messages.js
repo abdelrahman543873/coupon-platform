@@ -183,4 +183,12 @@ export const LocalizedErrorMessages = {
     EN: "location doesn't exist",
     AR: "location type doesn't exist",
   },
+  648: {
+    EN: "phone isn't verified",
+    AR: "phone isn't verified",
+  },
+  649: {
+    EN: "your account isn't activated yet",
+    AR: "your account isn't activated yet",
+  },
 };

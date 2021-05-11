@@ -27,6 +27,7 @@ describe("admin update provider suite case", () => {
       metaData,
       logoURL,
       qrURL,
+      isVerified,
       image,
       ...input
     } = providerInput;
@@ -56,6 +57,7 @@ describe("admin update provider suite case", () => {
       logoURL,
       qrURL,
       user,
+      isVerified,
       image,
       role,
       ...input
@@ -101,6 +103,7 @@ describe("admin update provider suite case", () => {
       isActive,
       qrURL,
       code,
+      isVerified,
       metaData,
       logoURL,
       ...providerInput

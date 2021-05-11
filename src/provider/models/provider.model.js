@@ -41,6 +41,11 @@ export const provider = mongoose.Schema(
     locations: {
       type: pointSchema,
     },
+    isVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     //lat and long are repeated here so that when adding a new point that is very close to the previous
     //one the object is considered unique and it could be added successfully by the $addToSet method of
     //mongodb

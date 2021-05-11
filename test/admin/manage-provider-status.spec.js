@@ -21,7 +21,7 @@ describe("manage provider status suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.qrURL).toBeTruthy();
-    expect(res.body.data.isActive).toBe(true);
+    expect(res.body.data.isActive).toBe(false);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
@@ -29,7 +29,7 @@ describe("manage provider status suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.qrURL).toBeTruthy();
-    expect(res1.body.data.isActive).toBe(false);
+    expect(res1.body.data.isActive).toBe(true);
   });
 
   it("should deactivate admins coupons when deactivating admin", async () => {
@@ -45,7 +45,7 @@ describe("manage provider status suite case", () => {
     const couponsBeforeDeactivation = await findProviderCouponsRepository(
       provider._id
     );
-    expect(couponsBeforeDeactivation[0].isActive).toBe(true);
+    expect(couponsBeforeDeactivation[0].isActive).toBe(false);
     const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MANAGE_PROVIDER_STATUS,
@@ -55,6 +55,6 @@ describe("manage provider status suite case", () => {
     const couponsAfterDeactivation = await findProviderCouponsRepository(
       provider._id
     );
-    expect(couponsAfterDeactivation[0].isActive).toBe(false);
+    expect(couponsAfterDeactivation[0].isActive).toBe(true);
   });
 });

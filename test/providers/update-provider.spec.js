@@ -9,6 +9,7 @@ import { buildUserParams } from "../../src/user/user.factory.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
+import { ProviderModel } from "../../src/provider/models/provider.model.js";
 describe("update provider suite case", () => {
   afterEach(async () => {
     await rollbackDbForProvider();
@@ -22,6 +23,7 @@ describe("update provider suite case", () => {
       isActive,
       code,
       fcmToken,
+      isVerified,
       logoURL,
       qrURL,
       user,
@@ -53,6 +55,7 @@ describe("update provider suite case", () => {
       role,
       locations,
       metaData,
+      isVerified,
       image,
       email,
       password,
@@ -84,6 +87,7 @@ describe("update provider suite case", () => {
       logoURL,
       qrURL,
       user,
+      isVerified,
       metaData,
       image,
       role,
@@ -181,6 +185,10 @@ describe("update provider suite case", () => {
       url: REGISTER,
       variables,
     });
+    await ProviderModel.updateOne(
+      { _id: mockUser.body.data.user._id },
+      { isVerified: true, isActive: true }
+    );
     const {
       isActive,
       qrURL,
@@ -188,6 +196,7 @@ describe("update provider suite case", () => {
       image,
       locations,
       email,
+      isVerified,
       metaData,
       code,
       ...providerInput
