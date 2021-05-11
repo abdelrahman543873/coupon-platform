@@ -10,6 +10,7 @@ import {
   getTermsAndConditionsService,
   updateTermsAndConditionsService,
 } from "./terms-and-conditions.service.js";
+import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
 
 const termsAndConditionsRouter = express.Router();
 
@@ -33,6 +34,6 @@ termsAndConditionsRouter
 
 termsAndConditionsRouter
   .route("/getTermsAndConditions")
-  .get(getTermsAndConditionsService);
+  .get(semiAuthenticationMiddleware, getTermsAndConditionsService);
 
 export { termsAndConditionsRouter };
