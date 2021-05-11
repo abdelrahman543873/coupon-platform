@@ -32,7 +32,7 @@ import {
 } from "../subscription/subscription.service.js";
 import { getSubscriptionService } from "../subscription/subscription.service.js";
 import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
-
+import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
 const providersRouter = express.Router();
 
 providersRouter
@@ -50,7 +50,7 @@ providersRouter
 providersRouter
   .route("/modification")
   .put(
-    authenticationMiddleware,
+    semiAuthenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     uploadHelper("public/logos").single("image"),
     fileValidationMiddleWare,
