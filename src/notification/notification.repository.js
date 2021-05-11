@@ -10,6 +10,13 @@ export const getNotificationsRepository = async (
 ) => {
   return await NotificationModel.paginate(
     {
+      ...(!user && {
+        $or: [
+          { user: NotifiedEnum[1] },
+          { user: NotifiedEnum[3] },
+          { user: NotifiedEnum[4] },
+        ],
+      }),
       ...(user === UserRoleEnum[0] && {
         $or: [{ user: NotifiedEnum[0] }, { user: NotifiedEnum[3] }],
       }),

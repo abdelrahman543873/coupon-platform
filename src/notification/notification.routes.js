@@ -1,5 +1,4 @@
 import express from "express";
-import { authenticationMiddleware } from "../_common/helpers/authentication.js";
 import {
   addeTokenService,
   getNotificationsService,
@@ -14,7 +13,7 @@ const notificationRouter = express.Router();
 notificationRouter
   .route("/getNotifications")
   .get(
-    authenticationMiddleware,
+    semiAuthenticationMiddleware,
     ValidationMiddleware(offSetLimitInput),
     getNotificationsService
   );

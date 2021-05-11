@@ -17,7 +17,7 @@ dotenv.config();
 export const getNotificationsService = async (req, res, next) => {
   try {
     const notifications = await getNotificationsRepository(
-      req.currentUser.role,
+      req?.currentUser?.role,
       req.query.offset,
       req.query.limit
     );

@@ -5,17 +5,26 @@ import { notificationsFactory } from "../../src/notification/notification.factor
 import { rollbackDbForNotification } from "./rollback-for-notification.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import { NotifiedEnum } from "../../src/notification/notification.enum.js";
-describe("get categories suite case", () => {
+describe("get notifications suite case", () => {
   afterEach(async () => {
     await rollbackDbForNotification();
   });
-  it("get categories successfully", async () => {
+  it("get notifications successfully", async () => {
     const customer = await customerFactory();
     await notificationsFactory(10, { user: NotifiedEnum[1] });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_NOTIFICATIONS,
       token: customer.token,
+    });
+    expect(res.body.data.docs.length).toBe(10);
+  });
+
+  it("get notifications for unregistered users", async () => {
+    await notificationsFactory(10, { user: NotifiedEnum[1] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_NOTIFICATIONS,
     });
     expect(res.body.data.docs.length).toBe(10);
   });
