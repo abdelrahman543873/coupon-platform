@@ -76,7 +76,7 @@ export const notifyUsers = async (message, _id = null) => {
     notifiedUsers.push(...(await getAllAdminsTokens()));
   if (message.user === NotifiedEnum[5]) {
     notifiedUsers.push((await getProviderToken(_id)).fcmToken);
-    message.id = id;
+    message.id = _id;
   }
   if (notifiedUsers.length === 0) return null;
   await creteNotificationRepository(message);
