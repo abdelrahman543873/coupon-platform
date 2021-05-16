@@ -176,16 +176,14 @@ describe("get customer coupons suite case", () => {
   });
 
   it("shouldn't get best seller coupons if unverified", async () => {
-    const providerCustomerCoupons = await providerCustomerCouponsFactory(10, {
-      isVerified: false,
-    });
     // increasing the number of a coupon to check most sold
+    const provider = await providerFactory({ isActive: false });
     const additionalCoupon = await providerCustomerCouponFactory(
       {
-        provider: providerCustomerCoupons.ops[0].provider,
+        provider: provider._id,
       },
-      { customer: providerCustomerCoupons.ops[0].customer },
-      { coupon: providerCustomerCoupons.ops[0].coupon }
+      {},
+      { provider: provider._id }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -193,6 +191,7 @@ describe("get customer coupons suite case", () => {
     });
     expect(res.body.data.docs.length).toBe(0);
   });
+
   it("customer get best seller coupons successfully and filter by provider", async () => {
     const providerCustomerCoupons = await providerCustomerCouponsFactory();
     // increasing the number of a coupon to check most sold
