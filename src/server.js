@@ -6,7 +6,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { options } from "../swagger.js";
 import rateLimit from "express-rate-limit";
-import responseTime from "response-time";
+import compression from "compression";
 
 const server = express();
 const corsOptions = {
@@ -18,10 +18,12 @@ const corsOptions = {
 const swaggerSpec = swaggerJSDoc(options);
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100000, // limit each IP to 1000 requests per windowMs
+  max: 100000, // limit each IP to 100000 requests per windowMs
 });
-server.use(responseTime());
+// protecting server from DOS attacks
 server.use(limiter);
+// security purposes and to lower server overhead
+server.disable("x-powered-by");
 //used for documenting the api using swagger ui
 server.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -33,15 +35,15 @@ server.use(express.urlencoded({ extended: true }));
 // for application/json requests
 server.use(express.json());
 
+// using compression for faster and smaller sized resources and responses
+server.use(compression());
+
 server.use(router);
 
 server.use("/public", express.static("./public"));
-
 // route not found fallback
 server.all("*", (req, res, next) => {
   res.status(404).send("not found!!");
 });
-
 server.use(handleError);
-
 export { server };
