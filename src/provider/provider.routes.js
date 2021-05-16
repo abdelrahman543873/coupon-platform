@@ -32,7 +32,8 @@ import {
 } from "../subscription/subscription.service.js";
 import { getSubscriptionService } from "../subscription/subscription.service.js";
 import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
-import { semiAuthenticationMiddleware } from "../_common/helpers/semi-authentication.js";
+import { noActiveValidationMiddleware } from "../_common/helpers/no-active-validation-auth.js";
+
 const providersRouter = express.Router();
 
 providersRouter
@@ -50,7 +51,7 @@ providersRouter
 providersRouter
   .route("/modification")
   .put(
-    authenticationMiddleware,
+    noActiveValidationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     uploadHelper("public/logos").single("image"),
     fileValidationMiddleWare,
@@ -125,7 +126,7 @@ providersRouter
 providersRouter
   .route("/addLocation")
   .post(
-    authenticationMiddleware,
+    noActiveValidationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     ValidationMiddleware(AddLocationInput),
     addLocationService
