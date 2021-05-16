@@ -30,7 +30,7 @@ const providerCustomerCoupon = mongoose.Schema(
     },
     isConfirmed: {
       type: Boolean,
-      default: true,
+      default: false,
       required: true,
     },
     transactionId: {
