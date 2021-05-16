@@ -2,11 +2,12 @@ import { NotificationModel } from "./models/notification.model.js";
 import { TokenModel } from "./models/fcm-token.model.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 import { NotifiedEnum } from "./notification.enum.js";
-
+import mongoose from "mongoose";
 export const getNotificationsRepository = async (
   user,
   offset = 0,
-  limit = 15
+  limit = 15,
+  id
 ) => {
   return await NotificationModel.paginate(
     {
@@ -18,7 +19,14 @@ export const getNotificationsRepository = async (
         ],
       }),
       ...(user === UserRoleEnum[0] && {
-        $or: [{ user: NotifiedEnum[0] }, { user: NotifiedEnum[3] }],
+        $or: [
+          { user: NotifiedEnum[0] },
+          { user: NotifiedEnum[3] },
+          {
+            user: NotifiedEnum[5],
+            id: id ? new mongoose.Types.ObjectId(id) : null,
+          },
+        ],
       }),
       ...(user === UserRoleEnum[1] && {
         $or: [
@@ -32,6 +40,7 @@ export const getNotificationsRepository = async (
           { user: NotifiedEnum[2] },
           { user: NotifiedEnum[3] },
           { user: NotifiedEnum[4] },
+          { user: NotifiedEnum[5] },
         ],
       }),
     },

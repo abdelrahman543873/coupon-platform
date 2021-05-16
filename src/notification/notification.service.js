@@ -22,7 +22,8 @@ export const getNotificationsService = async (req, res, next) => {
     const notifications = await getNotificationsRepository(
       req?.currentUser?.role,
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req?.currentUser?._id
     );
     res.status(200).json({
       success: true,
@@ -73,8 +74,10 @@ export const notifyUsers = async (message, _id = null) => {
     message.user === NotifiedEnum[5]
   )
     notifiedUsers.push(...(await getAllAdminsTokens()));
-  if (message.user === NotifiedEnum[5])
+  if (message.user === NotifiedEnum[5]) {
     notifiedUsers.push((await getProviderToken(_id)).fcmToken);
+    message.id = id;
+  }
   if (notifiedUsers.length === 0) return null;
   await creteNotificationRepository(message);
   message.tokens = Array.from(new Set(notifiedUsers));
