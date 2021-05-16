@@ -12,11 +12,14 @@ const termsAndConditions = mongoose.Schema(
     },
     key: {
       type: String,
+      unique: true,
+      required: true,
       enum: TermsAndConditionsEnum,
     },
   },
   {
     versionKey: false,
+    timestamps: false,
   }
 );
 

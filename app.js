@@ -4,6 +4,7 @@ import admin from "firebase-admin";
 import { serviceAccountConfig } from "./src/notification/service-account-file.js";
 import { connectDB } from "./src/_common/dbConnection.js";
 import { ProviderModel } from "./src/provider/models/provider.model.js";
+import { termsAndConditionsModel } from "./src/terms-and-conditions/models/terms-and-conditions.model.js";
 dotenv.config();
 
 let dbUrl = process.env.RUN_INSIDE_DOCKER
@@ -17,7 +18,7 @@ const mongo = await connectDB(dbUrl);
 //   if (error) console.log(error);
 //   console.log("database dropped");
 // });
-
+await termsAndConditionsModel.deleteMany({});
 await server.listen(process.env.COUPONAT_N_PORT, () => {
   console.log("coupons platform is running ");
 });
