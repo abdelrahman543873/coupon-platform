@@ -6,6 +6,7 @@ import {
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { customerFactory } from "../../src/customer/customer.factory";
+import { ProviderModel } from "../../src/provider/models/provider.model";
 import { providerFactory } from "../../src/provider/provider.factory";
 import { GET_CUSTOMERS_COUPONS } from "../endpoints/customer";
 import { testRequest } from "../request";
@@ -124,6 +125,28 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs.length).toBe(12);
   });
 
+  it("shouldn't get coupons by newest for inactive providers", async () => {
+    const category = await categoryFactory();
+    const provider = await providerFactory({ isActive: false });
+    await couponsFactory(12, { provider: provider._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}`,
+    });
+    expect(res.body.data.docs.length).toBe(0);
+  });
+
+  it("shouldn't get coupons by newest for unverified providers", async () => {
+    const category = await categoryFactory();
+    const provider = await providerFactory({ isVerified: false });
+    await couponsFactory(12, { provider: provider._id });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}`,
+    });
+    expect(res.body.data.docs.length).toBe(0);
+  });
+
   it("error if not newest or best seller ", async () => {
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -150,6 +173,25 @@ describe("get customer coupons suite case", () => {
     expect(res.body.data.docs[0]._id).toBe(
       decodeURI(encodeURI(additionalCoupon.coupon))
     );
+  });
+
+  it("shouldn't get best seller coupons if unverified", async () => {
+    const providerCustomerCoupons = await providerCustomerCouponsFactory(10, {
+      isVerified: false,
+    });
+    // increasing the number of a coupon to check most sold
+    const additionalCoupon = await providerCustomerCouponFactory(
+      {
+        provider: providerCustomerCoupons.ops[0].provider,
+      },
+      { customer: providerCustomerCoupons.ops[0].customer },
+      { coupon: providerCustomerCoupons.ops[0].coupon }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+    });
+    expect(res.body.data.docs.length).toBe(0);
   });
   it("customer get best seller coupons successfully and filter by provider", async () => {
     const providerCustomerCoupons = await providerCustomerCouponsFactory();

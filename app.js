@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import admin from "firebase-admin";
 import { serviceAccountConfig } from "./src/notification/service-account-file.js";
 import { connectDB } from "./src/_common/dbConnection.js";
+import { ProviderModel } from "./src/provider/models/provider.model.js";
 dotenv.config();
 
 let dbUrl = process.env.RUN_INSIDE_DOCKER
@@ -17,6 +18,7 @@ const mongo = await connectDB(dbUrl);
 //   console.log("database dropped");
 // });
 
+await ProviderModel.updateMany({}, { isActive: true, isVerified: true });
 await server.listen(process.env.COUPONAT_N_PORT, () => {
   console.log("coupons platform is running ");
 });
