@@ -24,4 +24,4 @@ await server.listen(process.env.COUPONAT_N_PORT, () => {
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountConfig),
   databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
+})
