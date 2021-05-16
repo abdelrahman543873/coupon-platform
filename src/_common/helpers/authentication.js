@@ -22,7 +22,7 @@ export const authenticationMiddleware = async (req, res, next) => {
       (await ProviderModel.findById(user.id));
     if (!authenticatedUser) throw new BaseHttpError(614);
     if (authenticatedUser.role === UserRoleEnum[0]) {
-      if (!authenticatedUser.isVerified) throw new BaseHttpError(648);
+      if (!authenticatedUser.isVerified) throw new BaseHttpError(650);
       if (!authenticatedUser.isActive) throw new BaseHttpError(649);
     }
     if (authenticatedUser.role === UserRoleEnum[1]) {

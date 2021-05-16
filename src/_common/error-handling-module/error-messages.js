@@ -191,4 +191,8 @@ export const LocalizedErrorMessages = {
     EN: "your account isn't activated yet",
     AR: "your account isn't activated yet",
   },
+  650: {
+    EN: "email isn't verified",
+    AR: "email isn't verified",
+  },
 };
