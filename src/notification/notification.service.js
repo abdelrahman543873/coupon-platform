@@ -10,7 +10,10 @@ import {
 } from "../user/user.repository.js";
 import admin from "firebase-admin";
 import dotenv from "dotenv";
-import { getAllProvidersTokens } from "../provider/provider.repository.js";
+import {
+  getAllProvidersTokens,
+  getProviderToken,
+} from "../provider/provider.repository.js";
 import { NotifiedEnum } from "./notification.enum.js";
 dotenv.config();
 
@@ -50,13 +53,9 @@ export const addeTokenService = async (req, res, next) => {
   }
 };
 
-export const notifyUsers = async (message) => {
+export const notifyUsers = async (message, _id = null) => {
   const notifiedUsers = [];
-  if (
-    message.user === NotifiedEnum[0] ||
-    message.user === NotifiedEnum[3] ||
-    message.user === NotifiedEnum[5]
-  )
+  if (message.user === NotifiedEnum[0] || message.user === NotifiedEnum[3])
     notifiedUsers.push(...(await getAllProvidersTokens()));
   if (
     message.user === NotifiedEnum[1] ||
@@ -74,6 +73,8 @@ export const notifyUsers = async (message) => {
     message.user === NotifiedEnum[5]
   )
     notifiedUsers.push(...(await getAllAdminsTokens()));
+  if (message.user === NotifiedEnum[5])
+    notifiedUsers.push((await getProviderToken(_id)).fcmToken);
   if (notifiedUsers.length === 0) return null;
   await creteNotificationRepository(message);
   message.tokens = Array.from(new Set(notifiedUsers));

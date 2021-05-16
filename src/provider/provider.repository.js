@@ -140,6 +140,10 @@ export const getAllProvidersTokens = async () => {
   return await ProviderModel.distinct("fcmToken");
 };
 
+export const getProviderToken = async (_id) => {
+  return await ProviderModel.findOne({ _id }, { fcmToken: 1, _id: 0 });
+};
+
 export const getProviderLocationsRepository = async ({ _id }) => {
   return await ProviderModel.aggregate([
     { $match: { _id: new mongoose.Types.ObjectId(_id) } },

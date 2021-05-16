@@ -114,7 +114,10 @@ export const subscribeService = async (req, res, next) => {
     await updateCouponById(coupon._id, {
       input: { amount: coupon.amount - 1 },
     });
-    await notifyUsers(NewSubscriptionMessage(req.currentUser, coupon));
+    await notifyUsers(
+      NewSubscriptionMessage(req.currentUser, coupon),
+      provider._id
+    );
     res.status(200).json({
       success: true,
       data: { ...(await getSubscriptionRepository({ _id: subscription._id })) },

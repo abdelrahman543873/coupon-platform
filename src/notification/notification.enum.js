@@ -40,5 +40,5 @@ export const NotifiedEnum = [
   "ADMINS",
   "ALL",
   "CUSTOMERS&ADMINS",
-  "ADMINS&PROVIDERS",
+  "ADMINS&PROVIDER",
 ];
