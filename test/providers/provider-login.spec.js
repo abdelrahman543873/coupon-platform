@@ -29,7 +29,7 @@ describe("provider login suite case", () => {
       url: PROVIDER_LOGIN,
       variables: { email: provider.email, password: "something" },
     });
-    expect(res.body.statusCode).toBe(648);
+    expect(res.body.statusCode).toBe(650);
   });
 
   it("should throw error if provider isn't activated", async () => {

@@ -19,7 +19,7 @@ export const loginService = async (req, res, next) => {
     );
     if (!passwordValidation) throw new BaseHttpError(603);
     if (user.role === UserRoleEnum[0]) {
-      if (!user.isVerified) throw new BaseHttpError(648);
+      if (!user.isVerified) throw new BaseHttpError(650);
       if (!user.isActive) throw new BaseHttpError(649);
     }
     if (user.role === UserRoleEnum[1]) {
