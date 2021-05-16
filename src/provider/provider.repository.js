@@ -73,6 +73,22 @@ export const getProviders = async (offset = 0, limit = 15) => {
   );
 };
 
+export const getCustomerProvidersRepository = async (
+  offset = 0,
+  limit = 15
+) => {
+  return await ProviderModel.paginate(
+    { isActive: true, isVerified: true },
+    {
+      offset: offset * limit,
+      limit,
+      lean: true,
+      projection: { password: 0 },
+      sort: { createdAt: -1 },
+    }
+  );
+};
+
 export const getProvider = async (_id) => {
   return await ProviderModel.findOne({ _id });
 };

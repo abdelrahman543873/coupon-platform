@@ -22,3 +22,5 @@ export const SCAN = "/customers-management/scan";
 export const CHANGE_PHONE = "/customers-management/changePhone";
 export const GET_PROVIDER_LOCATIONS =
   "/customers-management/getProviderLocations";
+
+export const GET_CUSTOMER_PROVIDERS = "/customers-management/getProviders";

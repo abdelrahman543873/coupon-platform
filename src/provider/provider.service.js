@@ -17,6 +17,7 @@ import {
   deleteProviderLocation,
   findProviderByEmailForLogin,
   findProviderById,
+  getCustomerProvidersRepository,
   getProviderLocationsRepository,
   getProviders,
   providerRegisterRepository,
@@ -200,6 +201,21 @@ export const updateCouponService = async (req, res, next) => {
 export const getProvidersService = async (req, res, next) => {
   try {
     const providers = await getProviders(req.query.offset, req.query.limit);
+    res.status(200).json({
+      success: true,
+      data: providers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCustomerProvidersService = async (req, res, next) => {
+  try {
+    const providers = await getCustomerProvidersRepository(
+      req.query.offset,
+      req.query.limit
+    );
     res.status(200).json({
       success: true,
       data: providers,
