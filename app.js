@@ -18,7 +18,6 @@ const mongo = await connectDB(dbUrl);
 //   if (error) console.log(error);
 //   console.log("database dropped");
 // });
-await termsAndConditionsModel.deleteMany({});
 await server.listen(process.env.COUPONAT_N_PORT, () => {
   console.log("coupons platform is running ");
 });
