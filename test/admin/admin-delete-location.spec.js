@@ -1,0 +1,31 @@
+import { testRequest } from "../request.js";
+import { providerFactory } from "../../src/provider/provider.factory.js";
+import { ADMIN_DELETE_LOCATION } from "../endpoints/admin.js";
+import { rollbackDbForAdmin } from "./rollback-for-admin.js";
+import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
+import { ProviderModel } from "../../src/provider/models/provider.model.js";
+import { userFactory } from "../../src/user/user.factory.js";
+import { UserRoleEnum } from "../../src/user/user-role.enum.js";
+describe("admin delete location suite case", () => {
+  afterEach(async () => {
+    await rollbackDbForAdmin();
+  });
+  it("admin delete location successfully", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const provider = await providerFactory({});
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.DELETE,
+      url: ADMIN_DELETE_LOCATION,
+      variables: {
+        provider: provider._id,
+        long: provider.locations.coordinates[0][0],
+        lat: provider.locations.coordinates[0][1],
+      },
+      token: admin.token,
+    });
+    const providerQuery = await ProviderModel.findOne({ _id: provider._id });
+    expect(providerQuery.locations.coordinates.length).toBe(0);
+    expect(providerQuery.metaData.length).toBe(0);
+    expect(res.body.data).toBe(true);
+  });
+});

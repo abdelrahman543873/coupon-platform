@@ -287,14 +287,17 @@ export const addLocationsService = async (req, res, next) => {
 
 export const deleteLocationService = async (req, res, next) => {
   try {
-    const locations = req.currentUser.locations;
+    // this is done to fit a provider and admin query
+    const locations =
+      req.currentUser.locations ||
+      (await findProviderById(req.body.provider)).locations;
     const filteredLocations = locations.coordinates.filter(
       (location) =>
         location[0] === req.body.long && location[1] === req.body.lat
     );
     if (filteredLocations.length === 0) throw new BaseHttpError(647);
     await deleteProviderLocation({
-      _id: req.currentUser._id,
+      _id: req.body.provider || req.currentUser._id,
       location: filteredLocations[0],
     });
     res.status(200).json({
