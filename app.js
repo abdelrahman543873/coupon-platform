@@ -18,7 +18,6 @@ const mongo = await connectDB(dbUrl);
 //   console.log("database dropped");
 // });
 
-await ProviderModel.updateMany({}, { isActive: true, isVerified: true });
 await server.listen(process.env.COUPONAT_N_PORT, () => {
   console.log("coupons platform is running ");
 });
