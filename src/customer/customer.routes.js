@@ -47,6 +47,7 @@ import { GetCustomersCouponInput } from "./inputs/get-coupon.input.js";
 import { ChangePhoneInput } from "./inputs/change-phone.input.js";
 import { GetProviderLocationsInput } from "../customer/inputs/get-provider-locations.input.js";
 import { getProviderLocationsService } from "../provider/provider.service.js";
+import { noActiveValidationMiddleware } from "../_common/helpers/no-active-validation-auth.js";
 
 const customersRouter = express.Router();
 
@@ -90,7 +91,7 @@ customersRouter
 customersRouter
   .route("/verifyOTP")
   .post(
-    authenticationMiddleware,
+    noActiveValidationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(VerifyOTPInput),
     verifyOTPService
@@ -99,7 +100,7 @@ customersRouter
 customersRouter
   .route("/resendCode")
   .get(
-    authenticationMiddleware,
+    noActiveValidationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     resendCodeService
   );

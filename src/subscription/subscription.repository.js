@@ -696,6 +696,12 @@ export const getMostSellingCouponRepository = async (
       $unwind: "$coupon.provider",
     },
     {
+      $match: {
+        "coupon.provider.isActive": true,
+        "coupon.provider.isVerified": true,
+      },
+    },
+    {
       $lookup: {
         from: CategoryModel.collection.name,
         localField: "coupon.category",

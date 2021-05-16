@@ -1,4 +1,3 @@
-import { CustomerModel } from "../../src/customer/models/customer.model";
 import { buildUserParams } from "../../src/user/user.factory";
 import { CUSTOMER_REGISTER, VERIFY_OTP } from "../endpoints/customer";
 import { testRequest } from "../request";

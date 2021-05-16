@@ -46,8 +46,7 @@ export const findProviderByEmail = async ({ email }) => {
     {
       email,
     },
-    { password: 0 },
-    { lean: true }
+    { password: 0 }
   );
 };
 

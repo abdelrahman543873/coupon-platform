@@ -37,6 +37,12 @@ export const getRecentlyAdddedCouponsRepository = async (
       $unwind: "$provider",
     },
     {
+      $match: {
+        "provider.isActive": true,
+        "provider.isVerified": true,
+      },
+    },
+    {
       $lookup: {
         from: CategoryModel.collection.name,
         localField: "category",
@@ -354,6 +360,12 @@ export const getCoupon = async ({ _id, user }) => {
       },
       {
         $unwind: "$provider",
+      },
+      {
+        $match: {
+          "provider.isActive": true,
+          "provider.isVerified": true,
+        },
       },
       {
         $lookup: {
