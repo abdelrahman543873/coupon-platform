@@ -90,7 +90,7 @@ customersRouter
 customersRouter
   .route("/verifyOTP")
   .post(
-    semiAuthenticationMiddleware,
+    authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     ValidationMiddleware(VerifyOTPInput),
     verifyOTPService
@@ -99,7 +99,7 @@ customersRouter
 customersRouter
   .route("/resendCode")
   .get(
-    semiAuthenticationMiddleware,
+    authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[1]),
     resendCodeService
   );
