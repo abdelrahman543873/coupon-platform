@@ -52,7 +52,11 @@ export const addeTokenService = async (req, res, next) => {
 
 export const notifyUsers = async (message) => {
   const notifiedUsers = [];
-  if (message.user === NotifiedEnum[0] || message.user === NotifiedEnum[3])
+  if (
+    message.user === NotifiedEnum[0] ||
+    message.user === NotifiedEnum[3] ||
+    message.user === NotifiedEnum[5]
+  )
     notifiedUsers.push(...(await getAllProvidersTokens()));
   if (
     message.user === NotifiedEnum[1] ||
@@ -66,7 +70,8 @@ export const notifyUsers = async (message) => {
   if (
     message.user === NotifiedEnum[2] ||
     message.user === NotifiedEnum[3] ||
-    message.user === NotifiedEnum[4]
+    message.user === NotifiedEnum[4] ||
+    message.user === NotifiedEnum[5]
   )
     notifiedUsers.push(...(await getAllAdminsTokens()));
   if (notifiedUsers.length === 0) return null;

@@ -17,6 +17,6 @@ describe("admin get unconfirmed subscriptions suite case", () => {
       url: GET_UNCONFIRMED_PAYMENTS,
       token: admin.token,
     });
-    expect(res.body.data.subscriptions.docs.length).toBe(10);
+    expect(res.body.data.docs.length).toBe(10);
   });
 });

@@ -28,6 +28,8 @@ import {
 } from "../subscription/subscription.repository.js";
 import PDFDocument from "pdfkit";
 import dotenv from "dotenv";
+import { notifyUsers } from "../notification/notification.service.js";
+import { NewProviderMessage } from "../notification/notification.enum.js";
 
 dotenv.config();
 export const addAdminService = async (req, res, next) => {
@@ -86,6 +88,8 @@ export const manageProviderStatusService = async (req, res, next) => {
         ids: providerCouponsIds,
         value: { isActive: !provider.isActive },
       }));
+    if (updatedProvider.isActive)
+      await notifyUsers(NewProviderMessage(updatedProvider));
     res.status(200).json({
       success: true,
       data: updatedProvider,

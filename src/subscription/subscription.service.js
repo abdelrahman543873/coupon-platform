@@ -15,7 +15,8 @@ import {
   getSubscriptionsRepository,
   createSubscriptionRepository,
 } from "./subscription.repository.js";
-import mongoose from "mongoose";
+import { notifyUsers } from "../notification/notification.service.js";
+import { NewSubscriptionMessage } from "../notification/notification.enum.js";
 
 export const getAllSubscriptionsService = async (req, res, next) => {
   try {
@@ -68,7 +69,7 @@ export const getUnconfirmedPaymentsService = async (req, res, next) => {
     );
     res.status(200).json({
       success: true,
-      data: { subscriptions },
+      data: subscriptions,
     });
   } catch (error) {
     next(error);
@@ -82,13 +83,12 @@ export const subscribeService = async (req, res, next) => {
     const coupon = await getCoupon({ _id: req.body.coupon });
     if (!coupon) throw new BaseHttpError(618);
     if (coupon.amount === 0) throw new BaseHttpError(636);
-    const existingSubscriptionSameCoupon = await getCustomerCouponNotUsedSubscriptionRepository(
-      {
+    const existingSubscriptionSameCoupon =
+      await getCustomerCouponNotUsedSubscriptionRepository({
         customer: req.currentUser._id,
         coupon: coupon._id,
         provider: provider._id,
-      }
-    );
+      });
     if (existingSubscriptionSameCoupon) throw new BaseHttpError(641);
     const paymentType = await findPayment({ _id: req.body.paymentType });
     if (!paymentType) throw new BaseHttpError(633);
@@ -114,6 +114,7 @@ export const subscribeService = async (req, res, next) => {
     await updateCouponById(coupon._id, {
       input: { amount: coupon.amount - 1 },
     });
+    await notifyUsers(NewSubscriptionMessage(req.currentUser, coupon));
     res.status(200).json({
       success: true,
       data: { ...(await getSubscriptionRepository({ _id: subscription._id })) },

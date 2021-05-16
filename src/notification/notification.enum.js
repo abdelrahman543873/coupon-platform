@@ -22,10 +22,23 @@ export const NewProviderMessage = (provider) => {
   };
 };
 
+export const NewSubscriptionMessage = (customer, coupon) => {
+  return {
+    user: NotifiedEnum[5],
+    enTitle: `new subscription from ${customer.name} 🥳🥳 `,
+    arTitle: `اشتراك جديد من 🥳🥳 ${customer.name}`,
+    enBody: `A new customer  ${customer.name} has just subscribed to your coupon ${coupon.enName}`,
+    arBody: `${coupon.arName} في كوبونك ${customer.name} اشترك`,
+    action: "view_coupon",
+    data: coupon._id,
+  };
+};
+
 export const NotifiedEnum = [
   "PROVIDERS",
   "CUSTOMERS",
   "ADMINS",
   "ALL",
   "CUSTOMERS&ADMINS",
+  "ADMINS&PROVIDERS",
 ];
