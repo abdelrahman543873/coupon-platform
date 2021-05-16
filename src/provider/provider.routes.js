@@ -50,7 +50,7 @@ providersRouter
 providersRouter
   .route("/modification")
   .put(
-    semiAuthenticationMiddleware,
+    authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     uploadHelper("public/logos").single("image"),
     fileValidationMiddleWare,
