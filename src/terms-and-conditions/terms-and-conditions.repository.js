@@ -1,13 +1,11 @@
-import { UserRoleEnum } from "../user/user-role.enum.js";
 import { termsAndConditionsModel } from "./models/terms-and-conditions.model.js";
 export const addTermsAndConditionsRepository = async (termsAndConditions) => {
   return await termsAndConditionsModel.create(termsAndConditions);
 };
 
-export const getTermsAndConditionsRepository = async (user) => {
+export const getTermsAndConditionsRepository = async (key) => {
   return await termsAndConditionsModel.find({
-    ...(user && { key: user }),
-    ...(!user && { key: UserRoleEnum[1] }),
+    key,
   });
 };
 

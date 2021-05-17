@@ -34,6 +34,6 @@ termsAndConditionsRouter
 
 termsAndConditionsRouter
   .route("/getTermsAndConditions")
-  .get(semiAuthenticationMiddleware, getTermsAndConditionsService);
+  .get(getTermsAndConditionsService);
 
 export { termsAndConditionsRouter };

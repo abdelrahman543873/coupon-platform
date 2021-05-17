@@ -29,7 +29,7 @@ export const updateTermsAndConditionsService = async (req, res, next) => {
 export const getTermsAndConditionsService = async (req, res, next) => {
   try {
     const termsAndConditions = await getTermsAndConditionsRepository(
-      req?.currentUser?.role
+      req.query.key
     );
     res.status(200).json({ success: true, data: termsAndConditions });
   } catch (error) {
