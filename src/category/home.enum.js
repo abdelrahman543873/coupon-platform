@@ -6,4 +6,5 @@ export const home = {
     "http://api.couponat.alefsoftware.com/api/v1/categories-management/categories-images/selected.png",
   unSelected:
     "http://api.couponat.alefsoftware.com/api/v1/categories-management/categories-images/unselected.png",
+  couponsCount: 0,
 };
