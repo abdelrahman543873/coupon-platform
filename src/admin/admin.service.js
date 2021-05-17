@@ -232,7 +232,6 @@ export const generateProvidersPdf = async (req, res, next) => {
         : provider.name;
       pdfDoc
         .fillColor("blue")
-        .font("./assets/fonts/Tajawal-Bold.ttf")
         .fontSize(20)
         .text("Provider: ", {
           continued: true,
