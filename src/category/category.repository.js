@@ -1,12 +1,32 @@
 import { CategoryModel } from "./models/category.model.js";
 import dotenv from "dotenv";
+import { CouponModel } from "../coupon/models/coupon.model.js";
 
 dotenv.config();
 export const getCategories = async (offset = 0, limit = 15) => {
-  return await CategoryModel.paginate(
-    {},
-    { offset: offset * limit, limit, sort: "-createdAt" }
-  );
+  const aggregation = CategoryModel.aggregate([
+    {
+      $lookup: {
+        from: CouponModel.collection.name,
+        localField: "_id",
+        foreignField: "category",
+        as: "coupons",
+      },
+    },
+    {
+      $addFields: {
+        couponsCount: { $size: "$coupons" },
+      },
+    },
+    {
+      $project: { coupons: 0 },
+    },
+  ]);
+  return await CategoryModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+    sort: "-createdAt",
+  });
 };
 
 export const getCategoryByName = async (enName, arName) => {

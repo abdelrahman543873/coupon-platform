@@ -10,7 +10,9 @@ import { home } from "./home.enum.js";
 export const getCategoriesService = async (req, res, next) => {
   try {
     const categories = await getCategories(req.query.offset, req.query.limit);
-    categories.docs.unshift(home);
+    // home category returned only in the first element of the first offset
+    if (!req.query.offset || req.query.offset === 0)
+      categories.docs.unshift(home);
     if (!categories) throw new BaseHttpError(624);
     res.status(200).json({
       success: true,
@@ -61,4 +63,3 @@ export const updateCategoryService = async (req, res, next) => {
     next(error);
   }
 };
-
