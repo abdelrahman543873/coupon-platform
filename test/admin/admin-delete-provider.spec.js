@@ -22,6 +22,17 @@ describe("admin delete provider suite case", () => {
     expect(res.body.data.provider.slogan).toBe(provider.slogan);
   });
 
+  it("should throw error if provider doesn't exist", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.DELETE,
+      url: ADMIN_DELETE_PROVIDER,
+      token: admin.token,
+      variables: { provider: admin._id },
+    });
+    expect(res.body.statusCode).toBe(617);
+  });
+
   it("error if admin has sold coupons", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
