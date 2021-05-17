@@ -192,7 +192,7 @@ export const LocalizedErrorMessages = {
     AR: "email isn't verified",
   },
   651: {
-    EN: "provider doesn't exists",
-    AR: "provider doesn't exists",
+    EN: "provider doesn't exist",
+    AR: "provider doesn't exist",
   },
 };
