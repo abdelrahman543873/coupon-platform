@@ -15,6 +15,8 @@ export const adminAddCouponService = async (req, res, next) => {
   try {
     const category = await findCategoryRepository(req.body.category);
     if (!category) throw new BaseHttpError(638);
+    const provider = await findProviderById(req.body.provider);
+    if (!provider) throw new BaseHttpError(617);
     const coupon = await addCouponRepository({
       ...req.body,
       logoURL: req.file,

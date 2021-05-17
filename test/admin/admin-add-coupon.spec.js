@@ -23,6 +23,19 @@ describe("admin add coupon suite case", () => {
     expect(res.body.data.category.enName).toBeTruthy();
     expect(res.body.data.enName).toBe(variables.enName);
   });
+
+  it("should throw error if provider doesn't exist", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const { isActive, logoURL, code, ...variables } = await buildCouponParams();
+    variables.provider = admin._id;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: ADMIN_ADD_COUPON,
+      token: admin.token,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(617);
+  });
   it("successful admin coupon file upload", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const testFiles = path.resolve(process.cwd(), "test");
@@ -43,13 +56,8 @@ describe("admin add coupon suite case", () => {
 
   it("should throw error if category doesn't exist", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const {
-      isActive,
-      logoURL,
-      code,
-      category,
-      ...variables
-    } = await buildCouponParams();
+    const { isActive, logoURL, code, category, ...variables } =
+      await buildCouponParams();
     variables.category = admin._id;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
