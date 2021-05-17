@@ -72,6 +72,7 @@ describe("reset password suite case", () => {
       url: RESET_PASSWORD,
       variables: { email: res.body.data.user.email, code: "12345" },
     });
+    expect(res1.body.data.user.isVerified).toBe(true);
     expect(res1.body.data.user.email).toBe(res.body.data.user.email);
   });
 

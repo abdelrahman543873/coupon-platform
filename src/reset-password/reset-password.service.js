@@ -28,6 +28,8 @@ export const resetPasswordService = async (req, res, next) => {
       if (!verification) throw new BaseHttpError(617);
       //returning extra user data
       let userData;
+      user.isVerified = true;
+      await user.save();
       user.role === UserRoleEnum[0] && (userData = user.toJSON());
       user.role === UserRoleEnum[1] &&
         (userData = await getCustomerRepository(user._id));
