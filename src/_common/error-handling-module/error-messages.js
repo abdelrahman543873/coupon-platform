@@ -52,10 +52,6 @@ export const LocalizedErrorMessages = {
     AR: "Section Must be newest or bestSeller",
   },
   617: {
-    EN: "provider doesn't exists",
-    AR: "provider doesn't exists",
-  },
-  617: {
     EN: "incorrect OTP",
     AR: "incorrect OTP",
   },
@@ -194,5 +190,9 @@ export const LocalizedErrorMessages = {
   650: {
     EN: "email isn't verified",
     AR: "email isn't verified",
+  },
+  651: {
+    EN: "provider doesn't exists",
+    AR: "provider doesn't exists",
   },
 };

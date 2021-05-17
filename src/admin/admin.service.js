@@ -49,7 +49,7 @@ export const addAdminService = async (req, res, next) => {
 export const manageProviderStatusService = async (req, res, next) => {
   try {
     const provider = await findProviderById(req.body.provider);
-    if (!provider) throw new BaseHttpError(617);
+    if (!provider) throw new BaseHttpError(651);
     let qrURL;
     if (!provider.qrURL) {
       const path = "public/provider-qr-codes/";
@@ -151,7 +151,7 @@ export const adminUpdateProviderService = async (req, res, next) => {
 export const adminDeleteProviderService = async (req, res, next) => {
   try {
     const existingProvider = await findProviderById(req.body.provider);
-    if (!existingProvider) throw new BaseHttpError(617);
+    if (!existingProvider) throw new BaseHttpError(651);
     const soldCoupons = await getProviderSoldCoupons(req.body.provider);
     if (soldCoupons.length !== 0) throw new BaseHttpError(628);
     await deleteProviderCouponsRepository(req.body.provider);

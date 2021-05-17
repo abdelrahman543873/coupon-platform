@@ -30,7 +30,7 @@ describe("admin delete provider suite case", () => {
       token: admin.token,
       variables: { provider: admin._id },
     });
-    expect(res.body.statusCode).toBe(617);
+    expect(res.body.statusCode).toBe(651);
   });
 
   it("error if admin has sold coupons", async () => {

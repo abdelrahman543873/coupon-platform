@@ -34,7 +34,7 @@ describe("admin add coupon suite case", () => {
       token: admin.token,
       variables,
     });
-    expect(res.body.statusCode).toBe(617);
+    expect(res.body.statusCode).toBe(651);
   });
   it("successful admin coupon file upload", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
