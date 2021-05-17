@@ -6,7 +6,11 @@ import { HTTP_METHODS_ENUM } from "../request.methods.enum";
 import { rollbackDbForResetPassword } from "../reset-password/rollback-for-reset-password.js";
 import { verificationFactory } from "../../src/verification/verification.factory";
 import { customerFactory } from "../../src/customer/customer.factory.js";
-import { providerFactory } from "../../src/provider/provider.factory";
+import {
+  buildProviderParams,
+  providerFactory,
+} from "../../src/provider/provider.factory";
+import { REGISTER } from "../endpoints/provider.js";
 describe("reset password suite case", () => {
   afterEach(async () => {
     await rollbackDbForResetPassword();
@@ -40,6 +44,35 @@ describe("reset password suite case", () => {
       variables: { email: admin.email },
     });
     expect(res.body.statusCode).toBe(611);
+  });
+
+  it("should register provider and then verify otp", async () => {
+    const providerInput = await buildProviderParams();
+    const {
+      image,
+      isActive,
+      code,
+      metaData,
+      fcmToken,
+      locations,
+      qrURL,
+      role,
+      isVerified,
+      _id,
+      user,
+      ...input
+    } = providerInput;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: REGISTER,
+      variables: input,
+    });
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: RESET_PASSWORD,
+      variables: { email: res.body.data.user.email, code: "12345" },
+    });
+    expect(res1.body.data.user.email).toBe(res.body.data.user.email);
   });
 
   it("customer reset password with phone", async () => {
