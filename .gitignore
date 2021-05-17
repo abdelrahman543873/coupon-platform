@@ -9,4 +9,6 @@ Customers-Images
 Subscriptions-Images
 /dist
 /public
+/src/notification/service-account-file.js
 /coverage
+/.env
