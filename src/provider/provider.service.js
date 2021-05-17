@@ -47,6 +47,7 @@ export const providerRegisterService = async (req, res, next) => {
     const verificationCode = await addVerificationCode({
       ...createVerificationCode(),
       user: provider._id,
+      email: provider.email,
     });
     await sendMessage({
       to: req.body.phone,
