@@ -13,7 +13,7 @@ export const updateTermsAndConditionsRepository = async ({
   termsAndConditions,
 }) => {
   return await termsAndConditionsModel.findOneAndUpdate(
-    { _id: termsAndConditions.termsAndConditions },
+    { key: termsAndConditions.key },
     termsAndConditions,
     {
       lean: true,

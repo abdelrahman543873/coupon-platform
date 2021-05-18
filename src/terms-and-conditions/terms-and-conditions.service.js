@@ -19,7 +19,7 @@ export const updateTermsAndConditionsService = async (req, res, next) => {
     const termsAndConditions = await updateTermsAndConditionsRepository({
       termsAndConditions: req.body,
     });
-    if (!termsAndConditions) throw new BaseHttpError(645);
+    if (!termsAndConditions) throw new BaseHttpError(652);
     res.status(200).json({ success: true, data: termsAndConditions });
   } catch (error) {
     next(error);

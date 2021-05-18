@@ -22,7 +22,7 @@ export const NewProviderMessage = (provider) => {
   };
 };
 
-export const NewSubscriptionMessage = (customer, coupon) => {
+export const NewSubscriptionMessage = (customer, coupon, subscription) => {
   return {
     user: NotifiedEnum[5],
     enTitle: `new subscription from ${customer.name} 🥳🥳 `,
@@ -30,7 +30,7 @@ export const NewSubscriptionMessage = (customer, coupon) => {
     enBody: `A new customer  ${customer.name} has just subscribed to your coupon ${coupon.enName}`,
     arBody: `${coupon.arName} في كوبونك ${customer.name} اشترك`,
     action: "view_coupon",
-    data: coupon._id,
+    data: subscription._id,
   };
 };
 

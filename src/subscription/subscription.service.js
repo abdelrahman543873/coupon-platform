@@ -115,7 +115,7 @@ export const subscribeService = async (req, res, next) => {
       input: { amount: coupon.amount - 1 },
     });
     await notifyUsers(
-      NewSubscriptionMessage(req.currentUser, coupon),
+      NewSubscriptionMessage(req.currentUser, coupon, subscription),
       provider._id
     );
     res.status(200).json({
