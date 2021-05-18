@@ -457,7 +457,7 @@ adminRouter
 
 adminRouter
   .route("/getContactUsMessage")
-  .delete(
+  .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(DeleteContactUsInput),

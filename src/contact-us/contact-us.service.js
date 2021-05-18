@@ -40,7 +40,7 @@ export const deleteContactUsMessageService = async (req, res, next) => {
 export const getContactUsMessageService = async (req, res, next) => {
   try {
     const Message = await findContactUsMessage({
-      _id: req.body.contactUsMessage,
+      _id: req.query.contactUsMessage,
     });
     res.status(200).json({
       success: true,

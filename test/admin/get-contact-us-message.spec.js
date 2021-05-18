@@ -13,10 +13,9 @@ describe("get contact us suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const message = await contactUsFactory();
     const res = await testRequest({
-      method: HTTP_METHODS_ENUM.DELETE,
-      url: GET_CONTACT_US_MESSAGE,
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CONTACT_US_MESSAGE}?contactUsMessage=${message.id}`,
       token: admin.token,
-      variables: { contactUsMessage: message.id },
     });
     expect(res.body.data.message._id).toBe(message.id);
   });
