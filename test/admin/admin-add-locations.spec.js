@@ -31,6 +31,9 @@ describe("admin add location suite case", () => {
       },
       token: admin.token,
     });
+    expect(res.body.data.metaData[0].enName).toBeTruthy();
+    expect(res.body.data.metaData[0].arName).toBeTruthy();
+    expect(res.body.data.metaData[0].center).toBeTruthy();
     expect(res.body.data.metaData.length).toBe(3);
     expect(res.body.data.locations.coordinates.length).toBe(3);
   });

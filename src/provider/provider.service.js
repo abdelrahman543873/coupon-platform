@@ -261,9 +261,11 @@ export const addLocationsService = async (req, res, next) => {
       const city = await findPointCities(req.body.locations[i]);
       if (!city) throw new BaseHttpError(639);
       const formattedAddress = await formattedGeo({
-        city: city.enName,
+        enName: city.enName,
+        arName: city.arName,
         lat: req.body.locations[i][1],
         lon: req.body.locations[i][0],
+        center: polylabel(city.area.coordinates),
       });
       convertedLocations.push(formattedAddress);
     }
