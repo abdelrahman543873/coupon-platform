@@ -53,6 +53,7 @@ import { DeleteContactUsInput } from "../contact-us/inputs/delete-contact-us.inp
 import {
   adminSendContactsUsMessage,
   deleteContactUsMessageService,
+  getContactUsMessageService,
   getContactUsMessagesService,
 } from "../contact-us/contact-us.service.js";
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
@@ -452,6 +453,15 @@ adminRouter
     authorizationMiddleware(UserRoleEnum[2]),
     ValidationMiddleware(AdminDeleteLocationInput),
     deleteLocationService
+  );
+
+adminRouter
+  .route("/getContactUsMessage")
+  .delete(
+    authenticationMiddleware,
+    authorizationMiddleware(UserRoleEnum[2]),
+    ValidationMiddleware(DeleteContactUsInput),
+    getContactUsMessageService
   );
 
 export { adminRouter };

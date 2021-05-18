@@ -40,3 +40,5 @@ export const ADMIN_ADD_LOCATION = "/admin-management/addLocation";
 export const GET_PROVIDERS_PDF = "/admin-management/getProvidersPdf";
 export const ADMIN_ADD_LOCATIONS = "/admin-management/addLocations";
 export const ADMIN_DELETE_LOCATION = "/admin-management/deleteLocation";
+export const GET_CONTACT_US_MESSAGE =
+  "/admin-management/getContactUsMessage";
