@@ -6,7 +6,10 @@ import {
   NewSubscriptionMessage,
 } from "../../src/notification/notification.enum.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
-import { couponFactory } from "../../src/coupon/coupon.factory.js";
+import {
+  couponFactory,
+  providerCustomerCouponFactory,
+} from "../../src/coupon/coupon.factory.js";
 describe("notify users suite case", () => {
   afterEach(async () => {
     await rollbackDbForNotification();
@@ -23,8 +26,15 @@ describe("notify users suite case", () => {
     const customer = await customerFactory();
     const coupon = await couponFactory();
     const provider = await providerFactory();
+    const subscription = await providerCustomerCouponFactory(
+      {
+        provider: provider._id,
+      },
+      { customer: customer._id },
+      { coupon: coupon._id }
+    );
     const result = await notifyUsers(
-      NewSubscriptionMessage(customer, coupon),
+      NewSubscriptionMessage(customer, coupon, subscription),
       provider._id
     );
     expect(result.failureCount).toBe(1);

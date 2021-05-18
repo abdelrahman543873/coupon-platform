@@ -29,7 +29,7 @@ export const NewSubscriptionMessage = (customer, coupon, subscription) => {
     arTitle: `اشتراك جديد من 🥳🥳 ${customer.name}`,
     enBody: `A new customer  ${customer.name} has just subscribed to your coupon ${coupon.enName}`,
     arBody: `${coupon.arName} في كوبونك ${customer.name} اشترك`,
-    action: "view_coupon",
+    action: "view_subscription",
     data: subscription._id,
   };
 };
