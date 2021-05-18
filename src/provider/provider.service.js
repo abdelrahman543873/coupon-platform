@@ -288,6 +288,7 @@ export const deleteLocationService = async (req, res, next) => {
     const locations =
       req.currentUser.locations ||
       (await findProviderById(req.body.provider)).locations;
+    if (locations.coordinates.length === 1) throw new BaseHttpError(653);
     const filteredLocations = locations.coordinates.filter(
       (location) =>
         location[0] === req.body.long && location[1] === req.body.lat

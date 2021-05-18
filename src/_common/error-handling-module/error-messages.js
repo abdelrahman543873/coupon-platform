@@ -195,4 +195,8 @@ export const LocalizedErrorMessages = {
     EN: "terms and conditions doesn't exist",
     AR: "terms and conditions doesn't exist",
   },
+  653: {
+    EN: "last location can't be deleted",
+    AR: "last location can't be deleted",
+  },
 };
