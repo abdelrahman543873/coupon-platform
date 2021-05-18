@@ -61,16 +61,6 @@ describe("add location suite case", () => {
       token: provider.token,
     });
     expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
-    const res1 = await testRequest({
-      method: HTTP_METHODS_ENUM.DELETE,
-      url: DELETE_LOCATION,
-      variables: {
-        long: AlexLocation[0],
-        lat: AlexLocation[1],
-      },
-      token: provider.token,
-    });
-    expect(res1.body.data).toBe(true);
   });
 
   it("should add location if inside alex", async () => {

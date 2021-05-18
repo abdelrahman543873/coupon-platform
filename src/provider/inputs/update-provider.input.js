@@ -2,11 +2,7 @@ import Joi from "joi";
 export const UpdateProviderInput = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string().email().lowercase().optional(),
-  password: Joi.string()
-    .min(8)
-    .when("newPassword", {
-      then: Joi.string().min(8).disallow(Joi.ref("newPassword")).required(),
-    }),
+  password: Joi.string().min(8).disallow(Joi.ref("newPassword")),
   verificationCode: Joi.string().when("email", {
     then: Joi.string().required(),
   }),
@@ -17,4 +13,6 @@ export const UpdateProviderInput = Joi.object({
   twitterLink: Joi.string().min(3).allow("").optional(),
   newPassword: Joi.string().min(8).optional(),
   phone: Joi.string().regex(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
-});
+})
+  .with("password", "newPassword")
+  .with("newPassword", "password");

@@ -14,7 +14,8 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[2],
       password: "12345678",
     });
-    const { role, phone, email, fcmToken,...variables } = await buildUserParams();
+    const { role, phone, email, fcmToken, ...variables } =
+      await buildUserParams();
     variables.newPassword = variables.password;
     variables.password = "12345678";
     const res = await testRequest({
@@ -26,7 +27,7 @@ describe("update customer suite case", () => {
     expect(res.body.data.user.name).toBe(variables.name);
   });
 
-  it("no error if only correct password is entered", async () => {
+  it("error if only correct password is entered", async () => {
     const user = await userFactory({
       role: UserRoleEnum[2],
       password: "12345678",
@@ -37,7 +38,7 @@ describe("update customer suite case", () => {
       variables: { password: "12345678" },
       token: user.token,
     });
-    expect(res.body.data.user._id).toBe(user.id);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("should update email if otp provided", async () => {
@@ -75,7 +76,7 @@ describe("update customer suite case", () => {
       role: UserRoleEnum[2],
       password: "12345678",
     });
-    const { role, password, fcmToken,...variables } = await buildUserParams();
+    const { role, password, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_ADMIN,

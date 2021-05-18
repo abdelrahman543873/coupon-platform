@@ -50,7 +50,7 @@ describe("update customer suite case", () => {
     expect(res.body.data.user.name).toBe(input.name);
   });
 
-  it("no error if only correct password is entered", async () => {
+  it(" error if only correct password is entered", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[1],
       password: "12345678",
@@ -64,27 +64,7 @@ describe("update customer suite case", () => {
       },
       token: mockUser.token,
     });
-    expect(res.body.data.user._id).toBe(mockUser.id);
-  });
-
-  it("only update user", async () => {
-    const mockUser = await userFactory({
-      role: UserRoleEnum[1],
-      password: "12345678",
-    });
-    await customerFactory({ user: mockUser._id });
-    const providerInput = {
-      ...(await buildUserParams()),
-    };
-    const { password, role, email, fcmToken, phone, ...input } = providerInput;
-    input.password = "12345678";
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: UPDATE_CUSTOMER,
-      variables: input,
-      token: mockUser.token,
-    });
-    expect(res.body.data.user.name).toBe(input.name);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("error if otp is wrong when changing the phone", async () => {
