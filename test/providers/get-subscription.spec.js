@@ -30,4 +30,14 @@ describe("get subscription suite case", () => {
       decodeURI(encodeURI(subscriptions.ops[0]._id))
     );
   });
+
+  it("should throw error if subscription doesn't exist", async () => {
+    const provider = await providerFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_SUBSCRIPTION}?subscription=${provider._id}`,
+      token: provider.token,
+    });
+    expect(res.body.statusCode).toBe(619);
+  });
 });
