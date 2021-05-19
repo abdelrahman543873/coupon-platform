@@ -39,6 +39,7 @@ export const getSubscriptionService = async (req, res, next) => {
   try {
     const subscription = await getSubscriptionRepository({
       _id: req.query.subscription,
+      provider: req.currentUser._id,
     });
     if (!subscription) throw new BaseHttpError(619);
     res.status(200).json({
