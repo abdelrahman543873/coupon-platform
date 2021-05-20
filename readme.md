@@ -11,4 +11,4 @@
 ## description
 coupons is a production ready tested platform that allows providers from 
 different industries to share discounts for their customers , the platform supports both providers and customers and an admin panel 
-allowing for different levels of control on the application and providing lots of functionalities , have a look a leave your feedback when possible
+allowing for different levels of control on the application and providing lots of functionalities , have a look and leave your feedback when possible
