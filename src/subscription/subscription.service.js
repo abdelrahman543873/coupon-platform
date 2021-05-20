@@ -114,6 +114,7 @@ export const subscribeService = async (req, res, next) => {
         account: req.body.account,
         transactionId: req.body.transactionId,
         total: req.body.total,
+        isConfirmed: paymentType.key === PaymentEnum[0],
       },
     });
     await updateCouponById(coupon._id, {

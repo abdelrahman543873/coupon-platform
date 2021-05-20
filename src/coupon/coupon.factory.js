@@ -5,6 +5,7 @@ import { userFactory } from "../user/user.factory.js";
 import { CouponModel } from "./models/coupon.model.js";
 import { paymentFactory } from "../payment/payment.factory.js";
 import { providerCustomerCouponModel } from "../../src/subscription/models/provider-customer-coupon.model.js";
+import { bankFactory } from "../bank/bank.factory.js";
 
 export const buildCouponParams = async (obj = {}) => {
   const amount =
@@ -35,7 +36,7 @@ export const buildProviderCustomerCouponParams = async (
   return {
     transactionId: subscriptionObj.transactionId || faker.datatype.uuid(),
     //change this RED ALERT
-    account: subscriptionObj.account || null,
+    account: subscriptionObj.account || (await bankFactory())._id,
     note: subscriptionObj.note || faker.random.words(),
     image: subscriptionObj.imgURL || faker.internet.url(),
     isConfirmed: subscriptionObj.isConfirmed || false,

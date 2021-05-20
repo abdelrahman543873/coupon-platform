@@ -50,6 +50,39 @@ describe("subscribe suite case", () => {
     );
   });
 
+  it("should subscribe with online successfully and is confirmed to be true", async () => {
+    const customer = await customerFactory();
+    const payment = await paymentFactory({ key: PaymentEnum[0] });
+    const params = await buildProviderCustomerCouponParams(
+      {},
+      {},
+      {},
+      { paymentType: payment._id }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: SUBSCRIBE,
+      token: customer.token,
+      variables: {
+        coupon: params.coupon,
+        provider: params.provider,
+        paymentType: params.paymentType,
+        total: params.total,
+        account: params.account,
+        transactionId: params.transactionId,
+      },
+    });
+    expect(res.body.data.isConfirmed).toBe(true);
+    expect(res.body.data.total).toBe(params.total);
+    expect(res.body.data.coupon.provider.password).toBeFalsy();
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBe(
+      decodeURI(encodeURI(customer.user))
+    );
+  });
+
   it("should subscribe and get subscriptions", async () => {
     const customer = await customerFactory();
     const params = await buildProviderCustomerCouponParams();
