@@ -5,7 +5,7 @@ export const AdminUpdateProviderInput = Joi.object({
     .required(),
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string().email().lowercase().optional(),
-  password: Joi.string().min(8).optional(),
+  newPassword: Joi.string().min(8).optional(),
   slogan: Joi.string().min(10).optional(),
   websiteLink: Joi.string().allow("").min(3).optional(),
   facebookLink: Joi.string().allow("").min(3).optional(),

@@ -1,5 +1,5 @@
 import { testRequest } from "../request.js";
-import { REGISTER } from "../endpoints/provider.js";
+import { PROVIDER_LOGIN, REGISTER } from "../endpoints/provider.js";
 import {
   buildProviderParams,
   providerFactory,
@@ -39,6 +39,25 @@ describe("admin update provider suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.provider.name).toBe(input.name);
+  });
+
+  it("should update provider password", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const provider = await providerFactory({ password: "12345678" });
+    const params = await buildProviderParams();
+    params.provider = provider._id;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: ADMIN_UPDATE_PROVIDER,
+      variables: { provider: provider._id, newPassword: params.password },
+      token: admin.token,
+    });
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: PROVIDER_LOGIN,
+      variables: { email: provider.email, password: params.password },
+    });
+    expect(res1.body.data.user.email).toBe(provider.email);
   });
 
   it("only admin update provider", async () => {
