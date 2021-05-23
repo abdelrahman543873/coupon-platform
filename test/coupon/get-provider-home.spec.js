@@ -11,13 +11,14 @@ describe("get provider home suite case", () => {
   afterEach(async () => {
     await rollbackDbForCoupon();
   });
-  it("get provider home successfully", async () => {
+
+  it("should get the correct amount of sold coupons", async () => {
     const provider = await providerFactory();
     await providerCustomerCouponsFactory(
       10,
       { provider: provider._id },
       {},
-      { provider: provider._id }
+      { provider: provider._id, amount: 10 }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
@@ -25,13 +26,16 @@ describe("get provider home suite case", () => {
       token: provider.token,
     });
     expect(res.body.data.numberOfSoldCoupons).toBe(10);
-    expect(res.body.data.numberOfCoupons).toBe(10);
-    expect(res.body.data.remainingCoupons).toBe(0);
+    expect(res.body.data.numberOfCoupons).toBe(100);
+    expect(res.body.data.remainingCoupons).toBe(90);
   });
 
   it("shouldn't get negative", async () => {
     const provider = await providerFactory();
-    const coupons = await couponsFactory(10, { provider: provider._id });
+    const coupons = await couponsFactory(10, {
+      provider: provider._id,
+      amount: 10,
+    });
     for (let i = 0; i < coupons.ops.length; i++) {
       await providerCustomerCouponsFactory(
         2,
@@ -45,8 +49,8 @@ describe("get provider home suite case", () => {
       url: GET_PROVIDER_HOME,
       token: provider.token,
     });
-    expect(res.body.data.numberOfSoldCoupons).toBe(10);
-    expect(res.body.data.numberOfCoupons).toBe(10);
-    expect(res.body.data.remainingCoupons).toBe(0);
+    expect(res.body.data.numberOfSoldCoupons).toBe(20);
+    expect(res.body.data.numberOfCoupons).toBe(100);
+    expect(res.body.data.remainingCoupons).toBe(80);
   });
 });

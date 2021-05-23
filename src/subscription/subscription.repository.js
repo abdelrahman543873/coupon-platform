@@ -856,13 +856,30 @@ export const getUnconfirmedPaymentsRepository = async (
 };
 
 export const getProviderHomeRepository = async (provider) => {
-  const numberOfSoldCoupons = (
-    await providerCustomerCouponModel.distinct("coupon", {
-      provider,
-    })
-  ).length;
+  const numberOfSoldCoupons = await providerCustomerCouponModel.countDocuments({
+    provider,
+  });
 
-  const numberOfCoupons = await CouponModel.countDocuments({ provider });
+  const numberOfCoupons = (
+    await CouponModel.aggregate([
+      {
+        $match: {
+          provider: new mongoose.Types.ObjectId(provider),
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$amount",
+          },
+        },
+      },
+      {
+        $project: { _id: 0 },
+      },
+    ])
+  )[0].total;
   return {
     numberOfSoldCoupons,
     numberOfCoupons,
