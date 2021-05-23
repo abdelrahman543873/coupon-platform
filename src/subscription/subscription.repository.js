@@ -858,6 +858,7 @@ export const getUnconfirmedPaymentsRepository = async (
 export const getProviderHomeRepository = async (provider) => {
   const numberOfSoldCoupons = await providerCustomerCouponModel.countDocuments({
     provider,
+    isConfirmed: true,
   });
 
   const numberOfCoupons = (
