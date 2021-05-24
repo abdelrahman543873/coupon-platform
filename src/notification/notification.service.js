@@ -81,8 +81,8 @@ export const notifyUsers = async (message, _id = null) => {
   if (notifiedUsers.length === 0) return null;
   await creteNotificationRepository(message);
   message.tokens = Array.from(new Set(notifiedUsers));
-  message.tokens = message.tokens.map((token) => {
-    if (token !== "") return token;
+  message.tokens = message.tokens.filter((value) => {
+    return value !== "";
   });
   message.notification = {
     title: message.enTitle,
@@ -111,6 +111,9 @@ export const notifyUsers = async (message, _id = null) => {
   message.data = {
     id: JSON.stringify(message.data),
   };
-  const response = await admin.messaging().sendMulticast(message);
-  return response;
+  if (message.tokens.length) {
+    const response = await admin.messaging().sendMulticast(message);
+    return response;
+  }
+  return null;
 };

@@ -10,6 +10,8 @@ import {
   couponFactory,
   providerCustomerCouponFactory,
 } from "../../src/coupon/coupon.factory.js";
+import { userFactory } from "../../src/user/user.factory.js";
+import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 describe("notify users suite case", () => {
   afterEach(async () => {
     await rollbackDbForNotification();
@@ -20,6 +22,14 @@ describe("notify users suite case", () => {
     const provider = await providerFactory();
     const result = await notifyUsers(NewCouponMessage(coupon, provider));
     expect(result.failureCount).toBe(1);
+  });
+
+  it("should handle the case of empty token", async () => {
+    await userFactory({ fcmToken: "", role: UserRoleEnum[1] });
+    const coupon = await couponFactory();
+    const provider = await providerFactory();
+    const result = await notifyUsers(NewCouponMessage(coupon, provider));
+    expect(result).toBe(null);
   });
 
   it("should notify provider on coupon subscription", async () => {

@@ -11,7 +11,7 @@ export const buildUserParams = async (obj = {}) => {
     password: obj.password || faker.internet.password(),
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     role: obj.role || faker.random.arrayElement(UserRoleEnum),
-    fcmToken: obj.fcmToken || faker.random.word(),
+    fcmToken: obj.fcmToken ?? faker.random.word(),
   };
 };
 
