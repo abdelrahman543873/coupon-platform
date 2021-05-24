@@ -81,6 +81,9 @@ export const notifyUsers = async (message, _id = null) => {
   if (notifiedUsers.length === 0) return null;
   await creteNotificationRepository(message);
   message.tokens = Array.from(new Set(notifiedUsers));
+  message.tokens = message.tokens.map((token) => {
+    if (token !== "") return token;
+  });
   message.notification = {
     title: message.enTitle,
     body: message.enBody,
