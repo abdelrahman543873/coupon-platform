@@ -11,7 +11,7 @@ import { testingRouter } from "../testing/testing.routes.js";
 import { resetPassword } from "../reset-password/reset-password.routes.js";
 import { cityRouter } from "../city/city.routes.js";
 import { notificationRouter } from "../notification/notification.routes.js";
-
+import { logoutRouter } from "../logout/logout.routes.js";
 const router = express.Router();
 
 router.use("/providers-management", providersRouter);
@@ -26,5 +26,6 @@ router.use("/search", searchRouter);
 router.use("/testing", testingRouter);
 router.use("/reset-password", resetPassword);
 router.use("/getCities", cityRouter);
+router.use("/logout", logoutRouter);
 
 export { router };
