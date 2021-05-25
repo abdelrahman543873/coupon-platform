@@ -171,7 +171,6 @@ describe("add location suite case", () => {
       },
       token: provider.token,
     });
-    expect(res.body.data.locations.coordinates.length).toBe(1);
-    expect(res.body.data.metaData.length).toBe(1);
+    expect(res.body.statusCode).toBe(644);
   });
 });

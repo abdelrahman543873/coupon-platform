@@ -139,7 +139,7 @@ providersRouter
 providersRouter
   .route("/deleteLocation")
   .delete(
-    authenticationMiddleware,
+    noActiveValidationMiddleware,
     authorizationMiddleware(UserRoleEnum[0]),
     ValidationMiddleware(AddLocationInput),
     deleteLocationService
