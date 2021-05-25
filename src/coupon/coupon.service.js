@@ -21,6 +21,7 @@ export const adminAddCouponService = async (req, res, next) => {
       ...req.body,
       logoURL: req?.file,
     });
+    console.log(coupon);
     const couponDetails = await getCoupon({ _id: coupon._id });
     return res.status(200).json({
       success: true,
