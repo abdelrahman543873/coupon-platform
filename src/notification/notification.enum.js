@@ -12,7 +12,7 @@ export const NewCouponMessage = (coupon, provider) => {
 
 export const NewProviderMessage = (provider) => {
   return {
-    user: NotifiedEnum[4],
+    user: NotifiedEnum[0],
     enTitle: `new provider ${provider.name} 🥳🥳 `,
     arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
     enBody: `A new provider  ${provider.name} has just joined coupons`,
