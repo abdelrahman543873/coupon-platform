@@ -30,6 +30,17 @@ describe("get provider home suite case", () => {
     expect(res.body.data.remainingCoupons).toBe(90);
   });
 
+  it("should get 0 if provider doesn't have coupons", async () => {
+    const provider = await providerFactory();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_PROVIDER_HOME,
+      token: provider.token,
+    });
+    expect(res.body.data.numberOfCoupons).toBe(0);
+    expect(res.body.data.remainingCoupons).toBe(0);
+  });
+
   it("shouldn't get negative", async () => {
     const provider = await providerFactory();
     const coupons = await couponsFactory(10, {

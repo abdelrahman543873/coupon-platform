@@ -861,26 +861,27 @@ export const getProviderHomeRepository = async (provider) => {
     isConfirmed: true,
   });
 
-  const numberOfCoupons = (
-    await CouponModel.aggregate([
-      {
-        $match: {
-          provider: new mongoose.Types.ObjectId(provider),
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          total: {
-            $sum: "$amount",
+  const numberOfCoupons =
+    (
+      await CouponModel.aggregate([
+        {
+          $match: {
+            provider: new mongoose.Types.ObjectId(provider),
           },
         },
-      },
-      {
-        $project: { _id: 0 },
-      },
-    ])
-  )[0].total;
+        {
+          $group: {
+            _id: null,
+            total: {
+              $sum: "$amount",
+            },
+          },
+        },
+        {
+          $project: { _id: 0 },
+        },
+      ])
+    )[0]?.total || 0;
   return {
     numberOfSoldCoupons,
     numberOfCoupons,
