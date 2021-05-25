@@ -27,7 +27,7 @@ export const buildProviderParams = async (obj = {}) => {
     fcmToken: obj.fcmToken || faker.random.word(),
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
-    locations: obj.locations || {
+    locations: obj.locations ?? {
       coordinates: [location],
     },
     metaData: obj.metaData || [
