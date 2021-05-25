@@ -72,7 +72,7 @@ describe("update provider suite case", () => {
     expect(res.body.data.user.name).toBe(input.name);
   });
 
-  it("no error if only correct password is entered", async () => {
+  it("error if only correct password is entered", async () => {
     const mockUser = await providerFactory({ password: "12345678" });
     const providerInput = {
       ...(await buildProviderParams()),
@@ -100,7 +100,7 @@ describe("update provider suite case", () => {
       variables: input,
       token: mockUser.token,
     });
-    expect(res.body.data.user.slogan).toBe(input.slogan);
+    expect(res.body.statusCode).toBe(400);
   });
 
   it("only update user", async () => {
@@ -110,6 +110,7 @@ describe("update provider suite case", () => {
     };
     const { password, fcmToken, email, phone, role, ...input } = providerInput;
     input.password = "12345678";
+    input.newPassword = "newPassword";
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,
@@ -117,21 +118,6 @@ describe("update provider suite case", () => {
       token: mockUser.token,
     });
     expect(res.body.data.user.name).toBe(input.name);
-  });
-
-  it("error if password is wrong when changing the phone", async () => {
-    const mockUser = await providerFactory({ password: "12345678" });
-    const providerInput = {
-      ...(await buildUserParams()),
-    };
-    const { password, role, fcmToken, email, phone, ...input } = providerInput;
-    const res = await testRequest({
-      method: HTTP_METHODS_ENUM.PUT,
-      url: PROVIDER_MODIFICATION,
-      variables: { ...input, password: "123456789" },
-      token: mockUser.token,
-    });
-    expect(res.body.statusCode).toBe(607);
   });
 
   it("successfully change email when right otp is entered", async () => {
@@ -204,6 +190,7 @@ describe("update provider suite case", () => {
     delete providerInput.role;
     delete providerInput.fcmToken;
     providerInput.password = "12345678";
+    providerInput.newPassword = "newPassword";
     const res2 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: PROVIDER_MODIFICATION,

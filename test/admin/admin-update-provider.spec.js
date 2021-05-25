@@ -28,6 +28,7 @@ describe("admin update provider suite case", () => {
       logoURL,
       qrURL,
       isVerified,
+      password,
       image,
       ...input
     } = providerInput;
@@ -79,6 +80,7 @@ describe("admin update provider suite case", () => {
       isVerified,
       image,
       role,
+      password,
       ...input
     } = providerInput;
     input.provider = provider._id;
@@ -125,6 +127,7 @@ describe("admin update provider suite case", () => {
       isVerified,
       metaData,
       logoURL,
+      password,
       ...providerInput
     } = {
       ...(await buildProviderParams()),

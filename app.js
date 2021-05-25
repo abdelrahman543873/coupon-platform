@@ -5,6 +5,7 @@ import { serviceAccountConfig } from "./src/notification/service-account-file.js
 import { connectDB } from "./src/_common/dbConnection.js";
 import { UserModel } from "./src/user/models/user.model.js";
 import { ProviderModel } from "./src/provider/models/provider.model.js";
+import { TokenModel } from "./src/notification/models/fcm-token.model.js";
 dotenv.config();
 
 let dbUrl = process.env.RUN_INSIDE_DOCKER
@@ -13,6 +14,9 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 
 const mongo = await connectDB(dbUrl);
 
+await TokenModel.deleteMany({});
+await ProviderModel.updateMany({}, { fcmToken: "" });
+await UserModel.updateMany({}, { fcmToken: "" });
 // when dropping database
 // await mongo.connection.db.dropDatabase((error, result) => {
 //   if (error) console.log(error);
