@@ -13,6 +13,7 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 
 const mongo = await connectDB(dbUrl);
 
+await ProviderModel.updateMany({}, { fcmToken: "" });
 // when dropping database
 // await mongo.connection.db.dropDatabase((error, result) => {
 //   if (error) console.log(error);
@@ -24,4 +25,4 @@ await server.listen(process.env.COUPONAT_N_PORT, () => {
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountConfig),
   databaseURL: process.env.FIREBASE_DATABASE_URL,
-})
+});
