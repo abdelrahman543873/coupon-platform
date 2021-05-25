@@ -230,7 +230,7 @@ export const addLocationService = async (req, res, next) => {
       await req.currentUser?.locations?.coordinates.filter((coordinate) => {
         return coordinate[0] == req.body.long && coordinate[1] == req.body.lat;
       });
-    if (duplicatedLocation.length) throw new BaseHttpError(644);
+    if (duplicatedLocation?.length) throw new BaseHttpError(644);
     // to allow the same function to work for both admin and provider
     const provider = await updateProviderRepository(
       req.body.provider || req.currentUser._id,
