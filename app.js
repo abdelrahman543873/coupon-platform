@@ -4,6 +4,7 @@ import admin from "firebase-admin";
 import { serviceAccountConfig } from "./src/notification/service-account-file.js";
 import { connectDB } from "./src/_common/dbConnection.js";
 import { UserModel } from "./src/user/models/user.model.js";
+import { CustomerModel } from "./src/customer/models/customer.model.js";
 dotenv.config();
 
 let dbUrl = process.env.RUN_INSIDE_DOCKER
@@ -13,6 +14,7 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 const mongo = await connectDB(dbUrl);
 
 await UserModel.updateMany({}, { fcmToken: "" });
+await CustomerModel.updateMany({}, { fcmToken: "" });
 // when dropping database
 // await mongo.connection.db.dropDatabase((error, result) => {
 //   if (error) console.log(error);
