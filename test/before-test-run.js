@@ -16,7 +16,7 @@ beforeAll(async () => {
   });
 });
 
-afterAll((done) => {
-  mongoose.connection.close(done);
-  app.close(done);
+afterAll(async () => {
+  await mongoose.connection.close(true);
+  app.close();
 });

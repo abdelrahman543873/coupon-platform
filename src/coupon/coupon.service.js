@@ -19,7 +19,7 @@ export const adminAddCouponService = async (req, res, next) => {
     if (!provider) throw new BaseHttpError(651);
     const coupon = await addCouponRepository({
       ...req.body,
-      logoURL: req.file,
+      logoURL: req?.file,
     });
     const couponDetails = await getCoupon({ _id: coupon._id });
     return res.status(200).json({
