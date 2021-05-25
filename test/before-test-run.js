@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import admin from "firebase-admin";
 import { serviceAccountConfig } from "../src/notification/service-account-file.js";
 import { connectDB } from "../src/_common/dbConnection.js";
-
+import mongoose from "mongoose";
 let app;
 beforeAll(async () => {
   dotenv.config();
@@ -16,6 +16,7 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async (done) => {
+afterAll((done) => {
+  mongoose.connection.close(done);
   app.close(done);
 });

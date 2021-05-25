@@ -45,7 +45,7 @@
     "firebase-admin": "^9.6.0",
     "fs": "0.0.1-security",
     "is-base64": "^1.1.0",
-    "jest": "^26.6.3",
+    "jest": "^27.0.1",
     "jimp": "^0.16.1",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",

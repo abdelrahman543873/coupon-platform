@@ -21,9 +21,10 @@ export const adminAddCouponService = async (req, res, next) => {
       ...req.body,
       logoURL: req.file,
     });
+    const couponDetails = await getCoupon({ _id: coupon._id });
     return res.status(200).json({
       success: true,
-      data: await getCoupon({ _id: coupon._id }),
+      data: couponDetails,
     });
   } catch (error) {
     next(error);
