@@ -257,11 +257,7 @@ adminRouter
 
 adminRouter
   .route("/getProvider")
-  .get(
-    authenticationMiddleware,
-    ValidationMiddleware(adminGetProviderInput),
-    adminGetProviderService
-  );
+  .get(ValidationMiddleware(adminGetProviderInput), adminGetProviderService);
 
 adminRouter
   .route("/updateProfile")
