@@ -12,7 +12,7 @@ import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 describe("admin add location suite case", () => {
   it("admin add location", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const provider = await providerFactory();
+    const provider = await providerFactory({ metaData: [], locations: {} });
     await cityFactory({
       area: { coordinates: alexCoordinates },
     });
@@ -28,7 +28,7 @@ describe("admin add location suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.metaData[0].googlePlaceId).toBeTruthy();
-    expect(res.body.data.locations.coordinates[1][0]).toBe(AlexLocation[0]);
+    expect(res.body.data.locations.coordinates[0][0]).toBe(AlexLocation[0]);
   });
 
   it("should add location if inside alex", async () => {

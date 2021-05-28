@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules
 Coupons-Images
 Providers-Images
@@ -12,3 +13,18 @@ Subscriptions-Images
 /src/notification/service-account-file.js
 /coverage
 /.env
+=======
+node_modules
+Coupons-Images
+Providers-Images
+service-account-file.JSON
+QR-Images
+externalVolumes
+Categories-Images
+Customers-Images
+Subscriptions-Images
+/dist
+/public
+/coverage
+/test/globalConfig.json
+>>>>>>> Development

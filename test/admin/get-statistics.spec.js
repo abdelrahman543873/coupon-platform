@@ -2,6 +2,7 @@ import { testRequest } from "../request.js";
 import { ADMIN_GET_STATISTICS } from "../endpoints/admin.js";
 import { userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
+import faker from "faker";
 import {
   couponFactory,
   couponsFactory,
@@ -29,7 +30,7 @@ describe("statistics suite case", () => {
     expect(res.body.data.subscriptions).toBeGreaterThanOrEqual(10);
   });
 
-  it("get 0 when applying now date", async () => {
+  it("get 0 when applying future date", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     await couponsFactory();
     await providersFactory();
@@ -38,7 +39,7 @@ describe("statistics suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: ADMIN_GET_STATISTICS,
       token: admin.token,
-      variables: { filtrationDate: new Date().toISOString() },
+      variables: { filtrationDate: faker.date.future() },
     });
     expect(res.body.data.providers).toBe(0);
     expect(res.body.data.coupons).toBe(0);

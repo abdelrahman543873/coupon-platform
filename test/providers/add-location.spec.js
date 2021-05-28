@@ -13,7 +13,6 @@ describe("add location suite case", () => {
       metaData: [],
       locations: {},
     });
-    await buildProviderParams();
     const city = await cityFactory({
       area: { coordinates: alexCoordinates },
     });
@@ -38,7 +37,6 @@ describe("add location suite case", () => {
       metaData: [],
       locations: {},
     });
-    await buildProviderParams();
     await cityFactory({
       area: { coordinates: alexCoordinates },
     });
@@ -116,7 +114,7 @@ describe("add location suite case", () => {
     await cityFactory({
       area: { coordinates: alexCoordinates },
     });
-    const AlexLocation = [30.342228, 31.367271];
+    const AlexLocation = [-106.90051615991236, 40.695193443190384];
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: ADD_LOCATION,

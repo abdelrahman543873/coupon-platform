@@ -17,30 +17,36 @@ describe("get categories suite case", () => {
   });
 
   it("should get category coupons count", async () => {
-    const category = await categoryFactory(1);
+    const category = await categoryFactory();
     await couponsFactory(10, { category: category._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: GET_CATEGORIES,
+      url: `${GET_CATEGORIES}?offset=0&limit=200`,
     });
-    expect(res.body.data.docs[1].couponsCount).toBe(10);
+    const result = res.body.data.docs.filter((categoryElement) => {
+      return categoryElement._id === decodeURI(encodeURI(category._id));
+    })[0];
+    expect(result.couponsCount).toBe(10);
   });
 
-  it("get coupons categories with offset", async () => {
-    const category = await categoryFactory(1);
+  it("should get number of category coupons with offset", async () => {
+    const category = await categoryFactory();
     await couponsFactory(10, { category: category._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CATEGORIES}?offset=0`,
+      url: `${GET_CATEGORIES}?offset=0&limit=200`,
     });
-    expect(res.body.data.docs[1].couponsCount).toBe(10);
+    const categoryResult = res.body.data.docs.filter((categoryElement) => {
+      return categoryElement._id === decodeURI(encodeURI(category._id));
+    })[0];
+    expect(categoryResult.couponsCount).toBe(10);
   });
 
   it("first item is the home item", async () => {
     await categoriesFactory(10);
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: GET_CATEGORIES,
+      url: `${GET_CATEGORIES}?offset=0&limit=200`,
     });
     expect(res.body.data.docs[0]._id).toBe("");
   });

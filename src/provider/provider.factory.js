@@ -24,13 +24,13 @@ export const buildProviderParams = async (obj = {}) => {
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),
     twitterLink: obj.twitterLink || faker.internet.url(),
-    fcmToken: obj.fcmToken || faker.random.word(),
+    fcmToken: obj.fcmToken || "",
     qrURL: qrURL,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     locations: obj.locations ?? {
       coordinates: [location],
     },
-    metaData: obj.metaData || [
+    metaData: obj.metaData ?? [
       {
         lat: location[1],
         long: location[0],

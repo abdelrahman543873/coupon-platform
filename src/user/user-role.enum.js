@@ -1,1 +1,1 @@
-export const UserRoleEnum = ["PROVIDER", "CUSTOMER", "ADMIN","SUPER_ADMIN"];
+export const UserRoleEnum = ["PROVIDER", "CUSTOMER", "ADMIN", "SUPER_ADMIN"];
