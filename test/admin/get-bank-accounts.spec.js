@@ -3,12 +3,8 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { GET_BANK_ACCOUNTS } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { banksFactory } from "../../src/bank/bank.factory";
 describe("get bank accounts suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("get bank accounts", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const banks = await banksFactory();

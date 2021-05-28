@@ -3,7 +3,6 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory";
 import { RESET_PASSWORD, CHANGE_PASSWORD } from "../endpoints/reset-password";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForResetPassword } from "../reset-password/rollback-for-reset-password.js";
 import { verificationFactory } from "../../src/verification/verification.factory";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import {
@@ -12,9 +11,6 @@ import {
 } from "../../src/provider/provider.factory";
 import { REGISTER } from "../endpoints/provider.js";
 describe("reset password suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForResetPassword();
-  });
   it("reset password with phone", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const res = await testRequest({

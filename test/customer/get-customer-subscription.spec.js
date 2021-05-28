@@ -1,7 +1,6 @@
 import { testRequest } from "../request.js";
 import { providerCustomerCouponFactory } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import {
   GET_CUSTOMER_SUBSCRIPTION,
@@ -9,9 +8,6 @@ import {
 } from "../endpoints/customer.js";
 
 describe("get customer subscription suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("get customer subscription successfully", async () => {
     const customer = await customerFactory();
     const subscription = await providerCustomerCouponFactory(

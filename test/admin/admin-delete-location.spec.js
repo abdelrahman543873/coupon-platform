@@ -1,16 +1,12 @@
 import { testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { ADMIN_DELETE_LOCATION } from "../endpoints/admin.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ProviderModel } from "../../src/provider/models/provider.model.js";
 import { userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { alexCoordinates } from "../test-coordinates.js";
 describe("admin delete location suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("admin delete location successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory({

@@ -3,14 +3,10 @@ import {
   buildProviderParams,
   providerFactory,
 } from "../../src/provider/provider.factory.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("provider register suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("provider register", async () => {
     const providerInput = await buildProviderParams();
     const {

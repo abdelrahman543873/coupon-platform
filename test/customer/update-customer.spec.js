@@ -7,14 +7,10 @@ import {
   customerFactory,
 } from "../../src/customer/customer.factory.js";
 import { CUSTOMER_REGISTER, UPDATE_CUSTOMER } from "./../endpoints/customer.js";
-import { rollbackDbForCustomer } from "./../customer/rollback-for-customer.js";
 import path from "path";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
 import { CustomerModel } from "../../src/customer/models/customer.model.js";
 describe("update customer suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("successfully update customer if all data is entered", async () => {
     const mockUser = await userFactory({
       role: UserRoleEnum[1],

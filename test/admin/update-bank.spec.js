@@ -3,13 +3,8 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { TOGGLE_BANK } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
-import { bankFactory, buildBankParams } from "../../src/bank/bank.factory";
-import { BankModel } from "../../src/bank/models/bank.model.js";
+import { bankFactory } from "../../src/bank/bank.factory";
 describe("update bank suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("should update bank account", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const bank = await bankFactory();

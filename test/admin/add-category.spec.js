@@ -4,12 +4,8 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { ADD_CATEGORY } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import path from "path";
 describe("add category suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("error if files aren't uploaded", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const { selected, unSelected, ...category } = await buildCategoryParams();

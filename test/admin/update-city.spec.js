@@ -3,13 +3,9 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { UPDATE_CITY } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { buildCityParams, cityFactory } from "../../src/city/city.factory.js";
 import { CityModel } from "../../src/city/model/city.model.js";
 describe("update city suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("update city successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const { isActive, ...variables } = await buildCityParams();

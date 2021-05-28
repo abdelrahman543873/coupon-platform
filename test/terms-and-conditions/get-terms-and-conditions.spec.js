@@ -3,11 +3,7 @@ import { termsAndConditionsFactory } from "../../src/terms-and-conditions/terms-
 import { GET_TERMS_AND_CONDITIONS } from "../endpoints/terms-and-conditions.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForTermsAndConditions } from "./rollback-for-terms-and-conditions.js";
 describe("get terms and conditions suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForTermsAndConditions();
-  });
   it("get terms and conditions", async () => {
     await termsAndConditionsFactory(1, { key: TermsAndConditionsEnum[0] });
     const res = await testRequest({

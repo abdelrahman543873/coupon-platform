@@ -3,11 +3,7 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { ADD_ADMIN } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 describe("add admin suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("add admin successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[3] });
     const { role, fcmToken, ...variables } = await buildUserParams();

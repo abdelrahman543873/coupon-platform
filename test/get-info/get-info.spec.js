@@ -5,12 +5,8 @@ import { userFactory } from "../../src/user/user.factory";
 import { GET_INFO } from "../endpoints/get-info";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForGetInfo } from "./rollback-for-get-info";
 
 describe("get info suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForGetInfo();
-  });
   it("should get info for customer", async () => {
     const customer = await customerFactory();
     const res = await testRequest({

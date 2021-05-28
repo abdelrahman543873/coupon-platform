@@ -4,11 +4,7 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { GENERATE_PDF } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 describe("generate pdf suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("generate pdf successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();

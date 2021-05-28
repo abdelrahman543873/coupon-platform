@@ -3,12 +3,8 @@ import { providerFactory } from "../../src/provider/provider.factory.js";
 import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { PROVIDER_LOGIN } from "../endpoints/provider.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("provider login suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("provider login by email successfully", async () => {
     const provider = await providerFactory({ password: "something" });
     const res = await testRequest({

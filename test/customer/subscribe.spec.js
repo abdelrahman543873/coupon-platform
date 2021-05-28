@@ -5,7 +5,6 @@ import {
   couponFactory,
 } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 import {
   CUSTOMER_REGISTER,
   GET_CUSTOMER_SUBSCRIPTIONS,
@@ -22,9 +21,6 @@ import { buildUserParams } from "../../src/user/user.factory.js";
 import { ADD_COUPON } from "../endpoints/provider.js";
 import { CustomerModel } from "../../src/customer/models/customer.model.js";
 describe("subscribe suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("should subscribe with cash successfully", async () => {
     const customer = await customerFactory();
     const params = await buildProviderCustomerCouponParams();

@@ -3,13 +3,8 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { ADD_CITY } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
-import { buildPaymentParams } from "../../src/payment/payment.factory.js";
 import { buildCityParams } from "../../src/city/city.factory.js";
 describe("add city suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("add city type successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const { isActive, ...variables } = await buildCityParams();

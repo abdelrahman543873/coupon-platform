@@ -3,12 +3,8 @@ import { providerCustomerCouponFactory } from "../../src/coupon/coupon.factory.j
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ADMIN_GET_SUBSCRIPTION } from "../endpoints/admin.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { userFactory } from "../../src/user/user.factory.js";
 describe("admin get subscription suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("admin get subscription successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const subscription = await providerCustomerCouponFactory();

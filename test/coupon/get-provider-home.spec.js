@@ -1,6 +1,5 @@
 import { testRequest } from "../request.js";
 import { GET_PROVIDER_HOME } from "../endpoints/provider.js";
-import { rollbackDbForCoupon } from "./rollback-for-coupon.js";
 import {
   couponsFactory,
   providerCustomerCouponsFactory,
@@ -8,10 +7,6 @@ import {
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("get provider home suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCoupon();
-  });
-
   it("should get the correct amount of sold coupons", async () => {
     const provider = await providerFactory();
     await providerCustomerCouponsFactory(

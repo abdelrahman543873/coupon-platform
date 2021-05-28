@@ -1,6 +1,5 @@
 import { testRequest } from "../request.js";
 import { PROVIDER_MODIFICATION, REGISTER } from "../endpoints/provider.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import {
   buildProviderParams,
   providerFactory,
@@ -11,9 +10,6 @@ import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
 import { ProviderModel } from "../../src/provider/models/provider.model.js";
 describe("update provider suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
 
   it("successfully update provider if all data is entered", async () => {
     const mockUser = await providerFactory({ password: "12345678" });

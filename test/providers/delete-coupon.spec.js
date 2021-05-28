@@ -4,12 +4,8 @@ import { providerFactory } from "../../src/provider/provider.factory";
 import { DELETE_COUPON } from "../endpoints/provider";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForProvider } from "./rollback-for-provider";
 
 describe("delete coupon suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("delete coupon successfully", async () => {
     const provider = await providerFactory();
     const coupon = await couponFactory({ provider: provider._id });

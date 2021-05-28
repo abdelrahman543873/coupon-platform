@@ -1,14 +1,10 @@
 import { testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { DELETE_LOCATION } from "../endpoints/provider.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ProviderModel } from "../../src/provider/models/provider.model.js";
 import { alexCoordinates } from "../test-coordinates.js";
 describe("delete location suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("delete location successfully", async () => {
     const provider = await providerFactory({
       locations: { coordinates: alexCoordinates },

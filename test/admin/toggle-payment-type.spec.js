@@ -3,12 +3,8 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { TOGGLE_PAYMENT_TYPE } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { paymentFactory } from "../../src/payment/payment.factory.js";
 describe("toggle payment type suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("toggle payment type successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const paymentType = await paymentFactory();

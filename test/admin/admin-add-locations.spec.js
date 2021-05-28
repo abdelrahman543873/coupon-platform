@@ -1,22 +1,16 @@
 import { testRequest } from "../request.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { ADMIN_ADD_LOCATIONS } from "../endpoints/admin.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { cityFactory } from "../../src/city/city.factory.js";
 import { alexCoordinates } from "../test-coordinates.js";
 import { userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 describe("admin add location suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("admin add locations", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory({ locations: {}, metaData: [] });
     await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];
@@ -42,8 +36,6 @@ describe("admin add location suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
     const city = await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [30.342228, 31.367271];
@@ -63,8 +55,6 @@ describe("admin add location suite case", () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
     await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];

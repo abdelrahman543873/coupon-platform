@@ -2,11 +2,7 @@ import { buildUserParams } from "../../src/user/user.factory";
 import { CUSTOMER_REGISTER, VERIFY_OTP } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForCustomer } from "./rollback-for-customer";
 describe("verify otp suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("verify otp service", async () => {
     const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({

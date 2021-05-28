@@ -3,12 +3,8 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { UPDATE_ADMIN } from "./../endpoints/admin.js";
-import { rollbackDbForCustomer } from "./../customer/rollback-for-customer.js";
 import { verificationFactory } from "../../src/verification/verification.factory.js";
 describe("update customer suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("successfully change password", async () => {
     const user = await userFactory({
       role: UserRoleEnum[2],

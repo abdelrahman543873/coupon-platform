@@ -7,13 +7,9 @@ import {
 } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForCustomer } from "./rollback-for-customer";
 import path from "path";
 import { buildCustomerParams } from "../../src/customer/customer.factory";
 describe("customer social register suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("customer social register successfully", async () => {
     const {
       role,

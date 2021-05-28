@@ -74,7 +74,7 @@ export const notifyUsers = async (message, _id = null) => {
     message.user === NotifiedEnum[5]
   )
     notifiedUsers.push(...(await getAllAdminsTokens()));
-  if (message.user === NotifiedEnum[5]) {
+  if (message.user === NotifiedEnum[5] && _id) {
     notifiedUsers.push((await getProviderToken(_id)).fcmToken);
     message.id = _id;
   }

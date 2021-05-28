@@ -7,10 +7,15 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "test": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand",
+    "test": "cross-env NODE_ENV=test jest --forceExit --logHeapUsage --verbose --watchAll=false --maxWorkers=50%",
     "test:cov": "jest --coverage --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
   },
   "author": "Abdelrahman Mysara",
+  "config": {
+    "mongodbMemoryServer": {
+      "arch": "x64"
+    }
+  },
   "dependencies": {
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.13",
@@ -71,5 +76,8 @@
     "swagger-ui-express": "^4.1.6",
     "twilio": "^3.40.0",
     "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^6.9.6"
   }
 }

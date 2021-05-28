@@ -8,12 +8,8 @@ import { buildUserParams, userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import path from "path";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import { ADMIN_UPDATE_PROVIDER } from "../endpoints/admin.js";
 describe("admin update provider suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("successfully admin update provider if all data is entered", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const mockUser = await providerFactory({ password: "12345678" });

@@ -7,11 +7,7 @@ import {
   couponFactory,
 } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 describe("update coupon suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("update coupon successfully", async () => {
     const mockProvider = await providerFactory();
     const coupon = await couponFactory({ provider: mockProvider._id });

@@ -4,14 +4,10 @@ import {
   providerFactory,
 } from "../../src/provider/provider.factory.js";
 import { ADD_LOCATION, DELETE_LOCATION } from "../endpoints/provider.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { cityFactory } from "../../src/city/city.factory.js";
 import { alexCoordinates } from "../test-coordinates.js";
 describe("add location suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("add location", async () => {
     const provider = await providerFactory({
       metaData: [],
@@ -19,8 +15,6 @@ describe("add location suite case", () => {
     });
     await buildProviderParams();
     const city = await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];
@@ -46,8 +40,6 @@ describe("add location suite case", () => {
     });
     await buildProviderParams();
     await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];
@@ -68,9 +60,7 @@ describe("add location suite case", () => {
       metaData: [],
       locations: {},
     });
-    const city = await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
+    await cityFactory({
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];
@@ -91,9 +81,7 @@ describe("add location suite case", () => {
       metaData: [],
       locations: {},
     });
-    const city = await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
+    await cityFactory({
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];
@@ -125,9 +113,7 @@ describe("add location suite case", () => {
       metaData: [],
       locations: {},
     });
-    const city = await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
+    await cityFactory({
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [30.342228, 31.367271];
@@ -147,8 +133,6 @@ describe("add location suite case", () => {
     const provider = await providerFactory({ locations: {}, metaData: [] });
     await buildProviderParams();
     await cityFactory({
-      enName: "alex",
-      arName: "Alexandria",
       area: { coordinates: alexCoordinates },
     });
     const AlexLocation = [29.909118589546985, 31.201643509821597];

@@ -4,12 +4,8 @@ import path from "path";
 import { ADD_COUPON } from "../endpoints/provider.js";
 import { buildCouponParams } from "../../src/coupon/coupon.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 import { userFactory } from "../../src/user/user.factory.js";
 describe("add coupon suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("add coupon successfully", async () => {
     const mockProvider = await providerFactory();
     const { provider, isActive, logoURL, code, ...variables } =

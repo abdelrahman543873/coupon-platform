@@ -7,11 +7,7 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { UPDATE_TERMS_AND_CONDITIONS } from "../endpoints/terms-and-conditions.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForTermsAndConditions } from "./rollback-for-terms-and-conditions.js";
 describe("add terms and conditions suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForTermsAndConditions();
-  });
   it("update terms and conditions", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const termsAndConditions = await termsAndConditionFactory();

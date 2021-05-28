@@ -3,11 +3,7 @@ import { buildUserParams } from "../../src/user/user.factory";
 import { CHANGE_PHONE, UPDATE_CUSTOMER } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForCustomer } from "./rollback-for-customer";
 describe("change phone suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("should change phone and sent otp successfully", async () => {
     const params = await buildUserParams();
     const customer = await customerFactory();

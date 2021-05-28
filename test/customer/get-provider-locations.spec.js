@@ -3,11 +3,7 @@ import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { customerFactory } from "../../src/customer/customer.factory.js";
 import { GET_PROVIDER_LOCATIONS } from "../endpoints/customer.js";
-import { rollbackDbForCustomer } from "./rollback-for-customer.js";
 describe("get provider locations suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("should get providers locations suite case", async () => {
     const customer = await customerFactory();
     const provider = await providerFactory({

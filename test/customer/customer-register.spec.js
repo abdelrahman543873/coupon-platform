@@ -2,12 +2,8 @@ import { buildUserParams } from "../../src/user/user.factory";
 import { CUSTOMER_REGISTER } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForCustomer } from "./rollback-for-customer";
 import path from "path";
 describe("customer register suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("customer register", async () => {
     const { role, fcmToken, ...variables } = await buildUserParams();
     const res = await testRequest({

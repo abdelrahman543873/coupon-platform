@@ -10,11 +10,7 @@ import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { ADMIN_UPDATE_COUPON } from "../endpoints/admin.js";
 import { userFactory } from "../../src/user/user.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 describe("admin update coupon suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
   it("admin update coupon successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const coupon = await couponFactory();

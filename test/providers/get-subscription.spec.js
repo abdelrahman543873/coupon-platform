@@ -3,11 +3,7 @@ import { GET_SUBSCRIPTION } from "../endpoints/provider.js";
 import { providerCustomerCouponsFactory } from "../../src/coupon/coupon.factory.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForProvider } from "./rollback-for-provider.js";
 describe("get subscription suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForProvider();
-  });
   it("get subscription successfully", async () => {
     const provider = await providerFactory();
     const subscriptions = await providerCustomerCouponsFactory(

@@ -6,17 +6,12 @@ import {
   providerCustomerCouponsFactory,
 } from "../../src/coupon/coupon.factory";
 import { customerFactory } from "../../src/customer/customer.factory";
-import { ProviderModel } from "../../src/provider/models/provider.model";
 import { providerFactory } from "../../src/provider/provider.factory";
 import { GET_CUSTOMERS_COUPONS } from "../endpoints/customer";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
-import { rollbackDbForCustomer } from "./rollback-for-customer";
 
 describe("get customer coupons suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForCustomer();
-  });
   it("get customers coupons service", async () => {
     await couponsFactory();
     const res = await testRequest({
@@ -24,16 +19,19 @@ describe("get customer coupons suite case", () => {
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
     });
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs.length).toBe(10);
+    expect(res.body.data.docs.length).toBeGreaterThanOrEqual(10);
   });
 
-  it("shouldn't get the coupons if they are sold out in the newest section", async () => {
-    await couponsFactory(10, { amount: 0 });
+  it("shouldn't get the coupon if it's sold out in the newest section", async () => {
+    const coupon = await couponFactory({ amount: 0 });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    });
+    expect(couponResult.length).toBe(0);
   });
 
   it("shouldn't get the coupons if they are sold out in the best seller section", async () => {
@@ -42,7 +40,10 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id == decodeURI(encodeURI(coupon._id));
+    });
+    expect(couponResult.length).toBe(0);
   });
 
   it("get logged in customers coupons service", async () => {
@@ -60,7 +61,7 @@ describe("get customer coupons suite case", () => {
     });
     expect(res.body.data.docs[0].isSubscribe).toBe(true);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs.length).toBe(10);
+    expect(res.body.data.docs.length).toBeGreaterThanOrEqual(10);
   });
 
   it("get logged in customers coupons service for newest", async () => {
@@ -77,7 +78,7 @@ describe("get customer coupons suite case", () => {
       token: customer.token,
     });
     const fav = res.body.data.docs.filter((coupon) => {
-      return coupon._id === customer.favCoupons[0].toString();
+      return coupon._id === decodeURI(encodeURI(customer.favCoupons[0]));
     });
     const subscribed = res.body.data.docs.filter((coupon) => {
       return coupon.isSubscribe === true;
@@ -85,7 +86,7 @@ describe("get customer coupons suite case", () => {
     expect(fav.length).toBe(1);
     expect(subscribed.length).toBe(10);
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs.length).toBe(11);
+    expect(res.body.data.docs.length).toBeGreaterThanOrEqual(11);
   });
 
   it("should get coupons by category filter", async () => {
@@ -128,23 +129,29 @@ describe("get customer coupons suite case", () => {
   it("shouldn't get coupons by newest for inactive providers", async () => {
     const category = await categoryFactory();
     const provider = await providerFactory({ isActive: false });
-    await couponsFactory(12, { provider: provider._id });
+    const coupon = await couponFactory({ provider: provider._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}`,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    });
+    expect(couponResult.length).toBe(0);
   });
 
   it("shouldn't get coupons by newest for unverified providers", async () => {
     const category = await categoryFactory();
     const provider = await providerFactory({ isVerified: false });
-    await couponsFactory(12, { provider: provider._id });
+    const coupon = await couponFactory({ provider: provider._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}`,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    });
+    expect(couponResult.length).toBe(0);
   });
 
   it("error if not newest or best seller ", async () => {
@@ -189,7 +196,10 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
-    expect(res.body.data.docs.length).toBe(0);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id == additionalCoupon.coupon;
+    });
+    expect(couponResult.length).toBe(0);
   });
 
   it("customer get best seller coupons successfully and filter by provider", async () => {
@@ -252,8 +262,11 @@ describe("get customer coupons suite case", () => {
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
       token: customer.token,
     });
-    expect(res.body.data.docs[0].isFav).toBe(true);
-    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    })[0];
+    expect(couponResult.isFav).toBe(true);
+    expect(couponResult.isSubscribe).toBe(true);
   });
 
   it("subscribe and isFav evaluates to false if no user is logged in", async () => {
@@ -262,8 +275,11 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
     });
-    expect(res.body.data.docs[0].isFav).toBe(false);
-    expect(res.body.data.docs[0].isSubscribe).toBe(false);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    })[0];
+    expect(couponResult.isFav).toBe(false);
+    expect(couponResult.isSubscribe).toBe(false);
   });
 
   it("subscribe and isFav evaluates to true if user is logged in for best selling", async () => {
@@ -279,8 +295,11 @@ describe("get customer coupons suite case", () => {
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
       token: customer.token,
     });
-    expect(res.body.data.docs[0].isFav).toBe(true);
-    expect(res.body.data.docs[0].isSubscribe).toBe(true);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    })[0];
+    expect(couponResult.isFav).toBe(true);
+    expect(couponResult.isSubscribe).toBe(true);
   });
 
   it("subscribe and isFav evaluates to false if no user is logged in for best selling", async () => {
@@ -290,8 +309,11 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
-    expect(res.body.data.docs[0].isFav).toBe(false);
-    expect(res.body.data.docs[0].isSubscribe).toBe(false);
+    const couponResult = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(coupon._id));
+    })[0];
+    expect(couponResult.isFav).toBe(false);
+    expect(couponResult.isSubscribe).toBe(false);
   });
 
   it("should get all coupons if category is empty", async () => {
@@ -301,6 +323,6 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&category=`,
     });
-    expect(res.body.data.totalDocs).toBe(1);
+    expect(res.body.data.totalDocs).toBeGreaterThanOrEqual(1);
   });
 });

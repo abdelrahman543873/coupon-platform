@@ -3,16 +3,14 @@ import { userFactory } from "../../src/user/user.factory.js";
 import { UPDATE_CREDIT } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import { rollbackDbForAdmin } from "./rollback-for-admin.js";
 import {
   buildCreditParams,
   creditFactory,
 } from "../../src/credit/credit.factory";
+import { CreditModel } from "../../src/credit/models/credit.model.js";
 describe("update credit suite case", () => {
-  afterEach(async () => {
-    await rollbackDbForAdmin();
-  });
-  it("should update credit", async () => {
+
+  it("should update credit and throw error if credit doesn't exist", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     await creditFactory();
     const params = await buildCreditParams();
@@ -24,17 +22,13 @@ describe("update credit suite case", () => {
     });
     expect(res.body.data.merchantEmail).toBe(params.merchantEmail);
     expect(res.body.data.secretKey).toBe(params.secretKey);
-  });
-
-  it("should throw error if credit doesn't exist", async () => {
-    const admin = await userFactory({ role: UserRoleEnum[2] });
-    const params = await buildCreditParams();
-    const res = await testRequest({
+    await CreditModel.deleteMany({});
+    const res1 = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_CREDIT,
       variables: { ...params },
       token: admin.token,
     });
-    expect(res.body.statusCode).toBe(646);
+    expect(res1.body.statusCode).toBe(646);
   });
 });
