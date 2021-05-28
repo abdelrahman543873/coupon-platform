@@ -10,3 +10,4 @@ Subscriptions-Images
 /dist
 /public
 /coverage
+/test/globalConfig.json/
