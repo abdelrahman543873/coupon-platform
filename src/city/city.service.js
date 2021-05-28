@@ -22,7 +22,10 @@ export const addCityService = async (req, res, next) => {
 
 export const getCitiesService = async (req, res, next) => {
   try {
-    const cities = await getCitiesRepository(req.body);
+    const cities = await getCitiesRepository(
+      req?.query?.offset,
+      req?.query?.limit
+    );
     cities.docs.forEach((city) => {
       const center = polylabel(city.area.coordinates);
       city.center = { long: center[0], lat: center[1] };

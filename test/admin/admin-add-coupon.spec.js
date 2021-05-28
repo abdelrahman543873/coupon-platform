@@ -15,8 +15,6 @@ describe("admin add coupon suite case", () => {
       token: admin.token,
       variables,
     });
-    expect(res.body.data.provider.name).toBeTruthy();
-    expect(res.body.data.category.enName).toBeTruthy();
     expect(res.body.data.enName).toBe(variables.enName);
   });
 
@@ -45,8 +43,6 @@ describe("admin add coupon suite case", () => {
       filePath,
       variables,
     });
-    expect(res.body.data.provider.name).toBeTruthy();
-    expect(res.body.data.category.enName).toBeTruthy();
     expect(res.body.data.logoURL).toContain(".jpg");
   });
 

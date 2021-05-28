@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "test": "cross-env NODE_ENV=test jest --forceExit --logHeapUsage --verbose --watchAll=false --maxWorkers=50%",
+    "test": "cross-env NODE_ENV=test jest --forceExit --logHeapUsage --verbose --watchAll=false",
     "test:cov": "jest --coverage --forceExit --detectOpenHandles --logHeapUsage --verbose --runInBand"
   },
   "author": "Abdelrahman Mysara",

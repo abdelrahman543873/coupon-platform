@@ -35,21 +35,25 @@ describe("get customer coupons suite case", () => {
   });
 
   it("shouldn't get the coupons if they are sold out in the best seller section", async () => {
-    await providerCustomerCouponsFactory(10, {}, {}, { amount: 0 });
+    const coupon = await providerCustomerCouponsFactory(
+      10,
+      {},
+      {},
+      { amount: 0 }
+    );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
-      return couponElement._id == decodeURI(encodeURI(coupon._id));
+      return couponElement._id == decodeURI(encodeURI(coupon.coupon));
     });
     expect(couponResult.length).toBe(0);
   });
 
   it("get logged in customers coupons service", async () => {
     const customer = await customerFactory();
-    await providerCustomerCouponsFactory(
-      10,
+    const subscription = await providerCustomerCouponFactory(
       {},
       { customer: customer.user },
       {}
@@ -59,34 +63,31 @@ describe("get customer coupons suite case", () => {
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
       token: customer.token,
     });
-    expect(res.body.data.docs[0].isSubscribe).toBe(true);
-    expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs.length).toBeGreaterThanOrEqual(10);
+    const result = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(subscription.coupon));
+    })[0];
+    expect(result.isSubscribe).toBe(true);
+    expect(result.provider.name).toBeTruthy();
   });
 
   it("get logged in customers coupons service for newest", async () => {
     const customer = await customerFactory();
-    await providerCustomerCouponsFactory(
-      10,
+    const subscription = await providerCustomerCouponFactory(
       {},
       { customer: customer.user },
-      {}
+      { coupon: customer.favCoupons[0] }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
       token: customer.token,
     });
-    const fav = res.body.data.docs.filter((coupon) => {
-      return coupon._id === decodeURI(encodeURI(customer.favCoupons[0]));
-    });
-    const subscribed = res.body.data.docs.filter((coupon) => {
-      return coupon.isSubscribe === true;
-    });
-    expect(fav.length).toBe(1);
-    expect(subscribed.length).toBe(10);
-    expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs.length).toBeGreaterThanOrEqual(11);
+    const coupon = res.body.data.docs.filter((coupon) => {
+      return coupon._id === decodeURI(encodeURI(subscription.coupon));
+    })[0];
+    expect(coupon.isFav).toBe(true);
+    expect(coupon.isSubscribe).toBe(true);
+    expect(coupon.provider.name).toBeTruthy();
   });
 
   it("should get coupons by category filter", async () => {
@@ -176,10 +177,11 @@ describe("get customer coupons suite case", () => {
       method: HTTP_METHODS_ENUM.GET,
       url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
     });
-    expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs[0]._id).toBe(
-      decodeURI(encodeURI(additionalCoupon.coupon))
-    );
+    const result = res.body.data.docs.filter((coupon) => {
+      return coupon._id === decodeURI(encodeURI(additionalCoupon.coupon));
+    });
+    expect(result[0].provider.name).toBeTruthy();
+    expect(result.length).toBe(1);
   });
 
   it("shouldn't get best seller coupons if unverified", async () => {
@@ -259,7 +261,7 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
       token: customer.token,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
@@ -273,7 +275,7 @@ describe("get customer coupons suite case", () => {
     const coupon = await couponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
       return couponElement._id === decodeURI(encodeURI(coupon._id));
@@ -292,7 +294,7 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=500`,
       token: customer.token,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
@@ -307,7 +309,7 @@ describe("get customer coupons suite case", () => {
     await providerCustomerCouponFactory({}, {}, { coupon: coupon._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=500`,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
       return couponElement._id === decodeURI(encodeURI(coupon._id));

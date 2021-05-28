@@ -25,10 +25,10 @@ describe("add city suite case", () => {
     });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: GET_CITIES,
+      url: `${GET_CITIES}?offset=0&limit=500`,
     });
     const cityResult = res.body.data.docs.filter((cityElement) => {
-      return cityElement._id == city._id;
+      return cityElement._id === decodeURI(encodeURI(city._id));
     })[0];
     expect(cityResult.center.lat).toBe(31.1908120947568);
     expect(cityResult.center.long).toBe(29.923042490039307);

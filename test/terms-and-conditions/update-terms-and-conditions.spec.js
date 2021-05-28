@@ -1,3 +1,5 @@
+import { termsAndConditionsModel } from "../../src/terms-and-conditions/models/terms-and-conditions.model.js";
+import { TermsAndConditionsEnum } from "../../src/terms-and-conditions/terms-and-conditions.enum.js";
 import {
   buildTermsAndConditionsParams,
   termsAndConditionFactory,
@@ -10,7 +12,9 @@ import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 describe("add terms and conditions suite case", () => {
   it("update terms and conditions", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const termsAndConditions = await termsAndConditionFactory();
+    const termsAndConditions = await termsAndConditionFactory({
+      key: TermsAndConditionsEnum[2],
+    });
     delete termsAndConditions._id;
     const params = await buildTermsAndConditionsParams();
     const res = await testRequest({
@@ -20,11 +24,16 @@ describe("add terms and conditions suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.enDescription).toBe(params.enDescription);
+    await termsAndConditionsModel.deleteMany({
+      key: TermsAndConditionsEnum[2],
+    });
   });
 
   it("error if terms and conditions key don't exist", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const params = await buildTermsAndConditionsParams();
+    const params = await buildTermsAndConditionsParams({
+      key: TermsAndConditionsEnum[2],
+    });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_TERMS_AND_CONDITIONS,
