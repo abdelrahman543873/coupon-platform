@@ -1,10 +1,11 @@
+
+import path from "path";
 import { buildCategoryParams } from "../../src/category/category.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { userFactory } from "../../src/user/user.factory.js";
 import { ADD_CATEGORY } from "../endpoints/admin.js";
 import { testRequest } from "../request.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
-import path from "path";
 describe("add category suite case", () => {
   it("error if files aren't uploaded", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });

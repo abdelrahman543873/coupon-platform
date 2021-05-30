@@ -31,9 +31,8 @@ describe("add terms and conditions suite case", () => {
 
   it("error if terms and conditions key don't exist", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
-    const params = await buildTermsAndConditionsParams({
-      key: TermsAndConditionsEnum[2],
-    });
+    await termsAndConditionsModel.deleteMany({});
+    const params = await buildTermsAndConditionsParams({});
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
       url: UPDATE_TERMS_AND_CONDITIONS,
