@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { UserRoleEnum } from "../../user/user-role.enum.js";
-import mongoosePaginate from "mongoose-paginate-v2";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const contactUs = mongoose.Schema(
   {
@@ -27,5 +27,5 @@ const contactUs = mongoose.Schema(
     versionKey: false,
   }
 );
-contactUs.plugin(mongoosePaginate);
+contactUs.plugin(aggregatePaginate);
 export const ContactUsModel = mongoose.model("ContactUs", contactUs);

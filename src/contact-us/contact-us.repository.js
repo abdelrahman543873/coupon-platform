@@ -1,5 +1,5 @@
 import { ContactUsModel } from "./models/contact-us.model.js";
-
+import { ProviderModel } from "../provider/models/provider.model.js";
 export const sendContactUsMessageRepository = async (message) => {
   return await ContactUsModel.create(message);
 };
@@ -23,10 +23,32 @@ export const getContactUsMessagesRepository = async (
   offset = 0,
   limit = 15
 ) => {
-  return await ContactUsModel.paginate(
-    {},
-    { offset: offset * limit, limit, sort: "-createdAt" }
-  );
+  const aggregation = ContactUsModel.aggregate([
+    {
+      $lookup: {
+        from: ProviderModel.collection.name,
+        localField: "email",
+        foreignField: "email",
+        as: "provider",
+      },
+    },
+    {
+      $unwind: "$provider",
+    },
+    {
+      $addFields: {
+        image: "$provider.image",
+      },
+    },
+    {
+      $project: { provider: 0 },
+    },
+  ]);
+  return await ContactUsModel.aggregatePaginate(aggregation, {
+    offset: offset * limit,
+    limit,
+    sort: "-createdAt",
+  });
 };
 
 export const rawDeleteContactUs = async () => {
