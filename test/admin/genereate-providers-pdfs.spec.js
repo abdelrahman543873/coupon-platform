@@ -8,7 +8,7 @@ describe("add category suite case", () => {
   it("should generate providers pdf", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const provider = await providerFactory();
-    const something = await testRequest({
+    await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: GENERATE_PDF,
       variables: { provider: provider._id },

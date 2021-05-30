@@ -79,7 +79,7 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=1000`,
       token: customer.token,
     });
     const coupon = res.body.data.docs.filter((coupon) => {
@@ -261,7 +261,7 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=1000`,
       token: customer.token,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
@@ -275,7 +275,7 @@ describe("get customer coupons suite case", () => {
     const coupon = await couponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=500`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=1000`,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
       return couponElement._id === decodeURI(encodeURI(coupon._id));
@@ -294,7 +294,7 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=500`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=1000`,
       token: customer.token,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
@@ -309,7 +309,7 @@ describe("get customer coupons suite case", () => {
     await providerCustomerCouponFactory({}, {}, { coupon: coupon._id });
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=500`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=1000`,
     });
     const couponResult = res.body.data.docs.filter((couponElement) => {
       return couponElement._id === decodeURI(encodeURI(coupon._id));

@@ -1,3 +1,4 @@
+import { termsAndConditionsModel } from "../../src/terms-and-conditions/models/terms-and-conditions.model.js";
 import { TermsAndConditionsEnum } from "../../src/terms-and-conditions/terms-and-conditions.enum.js";
 import { buildTermsAndConditionsParams } from "../../src/terms-and-conditions/terms-and-conditions.factory.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
@@ -18,6 +19,9 @@ describe("add terms and conditions suite case", () => {
       token: admin.token,
     });
     expect(res.body.data.enDescription).toBe(params.enDescription);
+    await termsAndConditionsModel.deleteMany({
+      key: TermsAndConditionsEnum[2],
+    });
   });
 
   it("return error if arDescription doesn't exists", async () => {

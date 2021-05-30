@@ -12,16 +12,19 @@ import { SEARCH } from "../endpoints/search";
 import { testRequest } from "../request";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum";
 
-describe("add coupon suite case", () => {
+describe("search coupon suite case", () => {
   it("should search for exact word ", async () => {
     const coupon = await couponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${SEARCH}?name=${coupon.enName}`,
+      url: `${SEARCH}?name=${coupon.enName}&offset=0&limit=500`,
+    });
+    const result = res.body.data.docs.filter((couponElement) => {
+      return couponElement.enName === coupon.enName;
     });
     expect(res.body.data.docs[0].category.enName).toBeTruthy();
     expect(res.body.data.docs[0].provider.name).toBeTruthy();
-    expect(res.body.data.docs[0].enName).toBe(coupon.enName);
+    expect(result.length).toBe(1);
   });
 
   it("should search and return isSubscribe and isFav correctly for logged in user", async () => {

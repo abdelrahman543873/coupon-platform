@@ -6,10 +6,6 @@ import { ProviderModel } from "./models/provider.model.js";
 import mongoose from "mongoose";
 
 export const buildProviderParams = async (obj = {}) => {
-  const qrURL =
-    obj.qrURL === null || typeof obj.qrURL === "string"
-      ? obj.qrURL
-      : faker.internet.url();
   const location = [+faker.address.longitude(), +faker.address.latitude()];
   return {
     name: obj.name || faker.name.firstName(),
@@ -24,8 +20,8 @@ export const buildProviderParams = async (obj = {}) => {
     facebookLink: obj.facebookLink || faker.internet.url(),
     instagramLink: obj.instagramLink || faker.internet.url(),
     twitterLink: obj.twitterLink || faker.internet.url(),
-    fcmToken: obj.fcmToken || "",
-    qrURL: qrURL,
+    fcmToken: obj.fcmToken ?? "",
+    qrURL: obj.qrURL ?? null,
     phone: obj.phone || faker.phone.phoneNumber("+20165#######"),
     locations: obj.locations ?? {
       coordinates: [location],
