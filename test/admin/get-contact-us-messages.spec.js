@@ -13,8 +13,8 @@ describe("get contact us messages suite case", () => {
       url: GET_CONTACT_US_MESSAGES,
       token: admin.token,
     });
+    expect(res.body.data.messages.docs[0].name).toBeTruthy();
     expect(res.body.data.messages.docs[0].image).toBeTruthy();
-    // console.log(res.body.data.docs[0]);
     expect(res.body.data.messages.docs.length).toBeGreaterThanOrEqual(10);
   });
 });

@@ -38,6 +38,7 @@ export const getContactUsMessagesRepository = async (
     {
       $addFields: {
         image: "$provider.image",
+        name: "$provider.name",
       },
     },
     {
