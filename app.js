@@ -12,7 +12,6 @@ let dbUrl = process.env.RUN_INSIDE_DOCKER
 
 const mongo = await connectDB(dbUrl);
 
-await ContactUsModel.deleteMany({});
 // when dropping database
 // await mongo.connection.db.dropDatabase((error, result) => {
 //   if (error) console.log(error);
