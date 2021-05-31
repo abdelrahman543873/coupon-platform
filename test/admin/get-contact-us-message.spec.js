@@ -13,6 +13,8 @@ describe("get contact us suite case", () => {
       url: `${GET_CONTACT_US_MESSAGE}?contactUsMessage=${message.id}`,
       token: admin.token,
     });
+    expect(res.body.data.message.name).toBeTruthy();
+    expect(res.body.data.message.image).toBeTruthy();
     expect(res.body.data.message._id).toBe(message.id);
   });
 });
