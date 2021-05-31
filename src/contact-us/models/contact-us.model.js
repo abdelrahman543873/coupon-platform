@@ -13,8 +13,10 @@ const contactUs = mongoose.Schema(
       required: true,
     },
     reply: {
+      email: String,
       message: String,
       date: Date,
+      name: String,
     },
     type: {
       type: String,
