@@ -12,6 +12,23 @@ describe("add city suite case", () => {
     expect(res.body.data.docs.length).toBeGreaterThanOrEqual(10);
   });
 
+  it("should get city only if it's active", async () => {
+    const activeCity = await cityFactory();
+    const inactiveCity = await cityFactory({ isActive: false });
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CITIES}?limit=100&isActive=true`,
+    });
+    const activeResult = res.body.data.docs.filter((city) => {
+      return city._id === decodeURI(encodeURI(activeCity._id));
+    });
+    const inactiveResult = res.body.data.docs.filter((city) => {
+      return city._id === decodeURI(encodeURI(inactiveCity._id));
+    });
+    expect(activeResult.length).toBe(1);
+    expect(inactiveResult.length).toBe(0);
+  });
+
   it("should get correct city center", async () => {
     const city = await cityFactory({
       area: {
