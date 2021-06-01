@@ -56,7 +56,7 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
-    await notifyUsers(NewAdminProviderMessage(updatedProvider));
+    await notifyUsers(NewAdminProviderMessage(provider));
     return res.status(201).json({
       success: true,
       data: {
