@@ -1,16 +1,18 @@
 import NodeGeocoder from "node-geocoder";
+import dotenv from "dotenv";
 
+dotenv.config();
 const optionsEn = {
   provider: "google",
   httpAdapter: "https", // Default
-  apiKey: "AIzaSyDXuT4CGvD2Ei7HRFqmL4Tj5TGUTZEPCaQ", // for Mapquest, OpenCage, Google Premier
+  apiKey: process.env.GOOGLE_API, // for Mapquest, OpenCage, Google Premier
   formatter: "json", // 'gpx', 'string', ...
 };
 
 const optionsAr = {
   provider: "google",
   httpAdapter: "https", // Default
-  apiKey: "AIzaSyDXuT4CGvD2Ei7HRFqmL4Tj5TGUTZEPCaQ", // for Mapquest, OpenCage, Google Premier
+  apiKey: process.env.GOOGLE_API, // for Mapquest, OpenCage, Google Premier
   formatter: "json", // 'gpx', 'string', ...
   language: "ar",
 };
