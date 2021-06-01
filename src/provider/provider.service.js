@@ -29,7 +29,10 @@ import { findPointCities } from "../city/city.repository.js";
 import { getRecentlySoldCouponsRepository } from "../../src/subscription/subscription.repository.js";
 import { formattedGeo } from "../_common/helpers/geo-encoder.js";
 import { notifyUsers } from "../notification/notification.service.js";
-import { NewCouponMessage } from "../notification/notification.enum.js";
+import {
+  NewAdminProviderMessage,
+  NewCouponMessage,
+} from "../notification/notification.enum.js";
 import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 import { generateToken } from "../_common/helpers/jwt-helper.js";
 import polylabel from "polylabel";
@@ -53,6 +56,7 @@ export const providerRegisterService = async (req, res, next) => {
       to: req.body.phone,
       text: verificationCode.code,
     });
+    await notifyUsers(NewAdminProviderMessage(updatedProvider));
     return res.status(201).json({
       success: true,
       data: {
