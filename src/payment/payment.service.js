@@ -22,7 +22,8 @@ export const getPaymentTypesService = async (req, res, next) => {
   try {
     const payments = await getPaymentTypesRepository(
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.isActive == "true"
     );
     res.status(200).json({
       success: true,

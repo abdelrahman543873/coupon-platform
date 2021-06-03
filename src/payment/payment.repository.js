@@ -3,9 +3,13 @@ export const addPaymentTypeRepository = async ({ payment }) => {
   return await PaymentModel.create(payment);
 };
 
-export const getPaymentTypesRepository = async (offset = 0, limit = 15) => {
+export const getPaymentTypesRepository = async (
+  offset = 0,
+  limit = 15,
+  isActive = false
+) => {
   return await PaymentModel.paginate(
-    {},
+    { ...(isActive && { isActive: true }) },
     { offset: offset * limit, limit, sort: "-createdAt" }
   );
 };
