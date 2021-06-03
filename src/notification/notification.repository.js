@@ -33,6 +33,10 @@ export const getNotificationsRepository = async (
           { user: NotifiedEnum[1] },
           { user: NotifiedEnum[3] },
           { user: NotifiedEnum[4] },
+          {
+            user: NotifiedEnum[6],
+            id: id ? new mongoose.Types.ObjectId(id) : null,
+          },
         ],
       }),
       ...(user === UserRoleEnum[2] && {
