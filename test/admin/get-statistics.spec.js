@@ -37,9 +37,8 @@ describe("statistics suite case", () => {
     await providerCustomerCouponsFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: ADMIN_GET_STATISTICS,
+      url: `${ADMIN_GET_STATISTICS}?filtrationDate=${faker.date.future()}`,
       token: admin.token,
-      variables: { filtrationDate: faker.date.future() },
     });
     expect(res.body.data.providers).toBe(0);
     expect(res.body.data.coupons).toBe(0);
@@ -53,11 +52,8 @@ describe("statistics suite case", () => {
     await providerCustomerCouponFactory();
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: ADMIN_GET_STATISTICS,
+      url: `${ADMIN_GET_STATISTICS}?filtrationDate=2018-04-10T12:44:47.872Z`,
       token: admin.token,
-      variables: {
-        filtrationDate: "2018-04-10T12:44:47.872Z",
-      },
     });
     expect(res.body.data.providers).toBeGreaterThanOrEqual(4);
     expect(res.body.data.coupons).toBeGreaterThanOrEqual(2);
