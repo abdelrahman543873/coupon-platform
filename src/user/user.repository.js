@@ -86,6 +86,9 @@ export const findUserById = async (_id) => {
 export const getAllCustomersTokens = async () => {
   return await UserModel.distinct("fcmToken", { role: UserRoleEnum[1] });
 };
+export const getUserToken = async (_id) => {
+  return await UserModel.findOne({ _id }, { fcmToken: 1, _id: 0 });
+};
 
 export const getAllAdminsTokens = async () => {
   return await UserModel.distinct("fcmToken", { role: UserRoleEnum[2] });

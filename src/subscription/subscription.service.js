@@ -16,7 +16,10 @@ import {
   createSubscriptionRepository,
 } from "./subscription.repository.js";
 import { notifyUsers } from "../notification/notification.service.js";
-import { NewSubscriptionMessage } from "../notification/notification.enum.js";
+import {
+  NewCustomerMessage,
+  NewSubscriptionMessage,
+} from "../notification/notification.enum.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 
 export const getAllSubscriptionsService = async (req, res, next) => {
@@ -161,6 +164,15 @@ export const confirmPaymentService = async (req, res, next) => {
     const updatedSubscription = await confirmCouponPayment({
       _id: subscription._id,
     });
+    if (req.body.arMessage)
+      await notifyUsers(
+        NewCustomerMessage(
+          req.body.arMessage,
+          req.body.enMessage,
+          subscription.customer
+        ),
+        subscription.customer
+      );
     res.status(200).json({
       success: true,
       data: { subscription: updatedSubscription },

@@ -34,6 +34,18 @@ export const NewAdminProviderMessage = (provider) => {
   };
 };
 
+export const NewCustomerMessage = (arMessage, enMessage, customer) => {
+  return {
+    user: NotifiedEnum[6],
+    arTitle: arMessage,
+    enTitle: enMessage,
+    enBody: enMessage,
+    arBody: arMessage,
+    action: "view_message",
+    data: customer,
+  };
+};
+
 export const NewSubscriptionMessage = (customer, coupon, subscription) => {
   return {
     user: NotifiedEnum[5],
@@ -53,4 +65,5 @@ export const NotifiedEnum = [
   "ALL",
   "CUSTOMERS&ADMINS",
   "ADMINS&PROVIDER",
+  "CUSTOMER",
 ];

@@ -2,6 +2,7 @@ import { customerFactory } from "../../src/customer/customer.factory.js";
 import { notifyUsers } from "../../src/notification/notification.service.js";
 import {
   NewCouponMessage,
+  NewCustomerMessage,
   NewSubscriptionMessage,
 } from "../../src/notification/notification.enum.js";
 import { providerFactory } from "../../src/provider/provider.factory.js";
@@ -54,6 +55,17 @@ describe("notify users suite case", () => {
     const result = await notifyUsers(
       NewSubscriptionMessage(customer, coupon, subscription),
       provider._id
+    );
+    expect(result.failureCount).toBeGreaterThanOrEqual(1);
+  });
+
+  it("should notify provider on coupon subscription", async () => {
+    const customer = await userFactory({
+      fcmToken: "random",
+    });
+    const result = await notifyUsers(
+      NewCustomerMessage("this", "كلمه", customer._id),
+      customer._id
     );
     expect(result.failureCount).toBeGreaterThanOrEqual(1);
   });

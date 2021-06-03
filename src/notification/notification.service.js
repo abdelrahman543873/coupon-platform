@@ -7,6 +7,7 @@ import {
 import {
   getAllAdminsTokens,
   getAllCustomersTokens,
+  getUserToken,
 } from "../user/user.repository.js";
 import admin from "firebase-admin";
 import dotenv from "dotenv";
@@ -76,6 +77,10 @@ export const notifyUsers = async (message, _id = null) => {
     notifiedUsers.push(...(await getAllAdminsTokens()));
   if (message.user === NotifiedEnum[5] && _id) {
     notifiedUsers.push((await getProviderToken(_id)).fcmToken);
+    message.id = _id;
+  }
+  if (message.user === NotifiedEnum[6] && _id) {
+    notifiedUsers.push((await getUserToken(_id)).fcmToken);
     message.id = _id;
   }
   if (notifiedUsers.length === 0) return null;
