@@ -41,9 +41,11 @@ const providerCustomerCoupon = mongoose.Schema(
     account: {
       type: mongoose.Schema.Types.ObjectId,
     },
-    note: {
+    enRejectionReason: {
       type: String,
-      default: "",
+    },
+    arRejectionReason: {
+      type: String,
     },
     image: { type: String },
     total: { type: Number },

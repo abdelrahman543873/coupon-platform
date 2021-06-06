@@ -35,6 +35,8 @@ describe("confirm payment suite case", () => {
         enMessage: "somethingElse",
       },
     });
+    expect(res.body.data.subscription.arRejectionReason).toBe("something");
+    expect(res.body.data.subscription.enRejectionReason).toBe("somethingElse");
     expect(res.body.data.subscription.isConfirmed).toBe(false);
   });
 });

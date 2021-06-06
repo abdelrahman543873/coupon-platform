@@ -163,7 +163,11 @@ export const confirmPaymentService = async (req, res, next) => {
     if (!subscription) throw new BaseHttpError(619);
     const updatedSubscription = await confirmCouponPayment({
       _id: subscription._id,
-      ...(req.body.arMessage && { isConfirmed: false }),
+      ...(req.body.arMessage && {
+        isConfirmed: false,
+        enRejectionReason: req.body.enMessage,
+        arRejectionReason: req.body.arMessage,
+      }),
       ...(!req.body.arMessage && { isConfirmed: true }),
     });
     if (req.body.arMessage)

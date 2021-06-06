@@ -35,7 +35,6 @@ export const buildProviderCustomerCouponParams = async (
 ) => {
   return {
     transactionId: subscriptionObj.transactionId || faker.datatype.uuid(),
-    //change this RED ALERT
     account: subscriptionObj.account || (await bankFactory())._id,
     note: subscriptionObj.note || faker.random.words(),
     image: subscriptionObj.imgURL || faker.internet.url(),
@@ -46,6 +45,10 @@ export const buildProviderCustomerCouponParams = async (
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
     total: couponObj.total || faker.datatype.number(),
+    enRejectionReason:
+      subscriptionObj.enRejectionReason || faker.commerce.productDescription(),
+    arRejectionReason:
+      subscriptionObj.arRejectionReason || faker.commerce.productDescription(),
   };
 };
 

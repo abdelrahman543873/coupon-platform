@@ -901,10 +901,19 @@ export const rawDeleteProviderCustomerCoupon = async () => {
   return await providerCustomerCouponModel.deleteMany({});
 };
 
-export const confirmCouponPayment = async ({ _id, isConfirmed }) => {
+export const confirmCouponPayment = async ({
+  _id,
+  isConfirmed,
+  enRejectionReason,
+  arRejectionReason,
+}) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
     { _id },
-    { isConfirmed },
+    {
+      isConfirmed,
+      ...(enRejectionReason && { enRejectionReason }),
+      ...(arRejectionReason && { arRejectionReason }),
+    },
     { new: true }
   );
 };
