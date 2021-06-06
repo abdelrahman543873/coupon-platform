@@ -6,4 +6,4 @@ const getInfoRouter = express.Router();
 
 getInfoRouter.route("/").get(noActiveValidationMiddleware, getInfoService);
 
-export { getInfoRouter };
+export { getInfoRouter }
