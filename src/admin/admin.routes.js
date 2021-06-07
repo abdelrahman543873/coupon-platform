@@ -59,6 +59,7 @@ import {
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
+  getPaymentTypeService,
   getPaymentTypesService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
@@ -101,6 +102,7 @@ import { adminGetProviderInput } from "./inputs/admin-get-provider.input.js";
 import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
 import { GetSubscriptionInput } from "../provider/inputs/get-subscription.input.js";
 import { AdminDeleteLocationInput } from "./inputs/admin-delete-location.input.js";
+import { GetPaymentTypeInput } from "./inputs/get-payment.input.js";
 
 const adminRouter = express.Router();
 
@@ -316,6 +318,14 @@ adminRouter
 adminRouter
   .route("/getPaymentTypes")
   .get(authenticationMiddleware, getPaymentTypesService);
+
+adminRouter
+  .route("/getPaymentType")
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(GetPaymentTypeInput),
+    getPaymentTypeService
+  );
 
 adminRouter
   .route("/togglePaymentType")

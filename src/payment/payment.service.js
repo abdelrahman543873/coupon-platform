@@ -34,6 +34,18 @@ export const getPaymentTypesService = async (req, res, next) => {
   }
 };
 
+export const getPaymentTypeService = async (req, res, next) => {
+  try {
+    const payment = await findPayment({ _id: req.body.payment });
+    res.status(200).json({
+      success: true,
+      data: payment,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updatePaymentTypeService = async (req, res, next) => {
   try {
     const payment = await findPayment({ _id: req.body.paymentTypeId });

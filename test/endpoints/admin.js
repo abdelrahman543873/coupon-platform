@@ -23,6 +23,7 @@ export const GET_CONTACT_US_MESSAGES = "/admin-management/getContactUsMessages";
 export const ADMIN_SEND_CONTACT_US_MESSAGE = "/admin-management/mailReply";
 export const ADD_PAYMENT_TYPE = "/admin-management/addPaymentType";
 export const GET_PAYMENT_TYPES = "/admin-management/getPaymentTypes";
+export const GET_PAYMENT_TYPE = "/admin-management/getPaymentType";
 export const TOGGLE_PAYMENT_TYPE = "/admin-management/togglePaymentType";
 export const CONFIRM_PAYMENT = "/admin-management/confirmPayment";
 export const GET_UNCONFIRMED_PAYMENTS =
@@ -40,5 +41,4 @@ export const ADMIN_ADD_LOCATION = "/admin-management/addLocation";
 export const GET_PROVIDERS_PDF = "/admin-management/getProvidersPdf";
 export const ADMIN_ADD_LOCATIONS = "/admin-management/addLocations";
 export const ADMIN_DELETE_LOCATION = "/admin-management/deleteLocation";
-export const GET_CONTACT_US_MESSAGE =
-  "/admin-management/getContactUsMessage";
+export const GET_CONTACT_US_MESSAGE = "/admin-management/getContactUsMessage";
