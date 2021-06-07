@@ -642,6 +642,8 @@ export const getCustomerCouponNotUsedSubscriptionRepository = async ({
       ...(coupon && { coupon }),
       ...(provider && { provider }),
       isUsed: false,
+      enRejectionReason: { $exists: false },
+      arRejectionReason: { $exists: false },
     },
     {}
   );

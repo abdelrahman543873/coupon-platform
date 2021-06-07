@@ -70,7 +70,7 @@ describe("get customers subscriptions suite case", () => {
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
     expect(res.body.data.docs.length).toBe(1);
-    await testRequest({
+    const something = await testRequest({
       method: HTTP_METHODS_ENUM.POST,
       url: MARK_COUPON_USED,
       variables: { subscription: subscription._id },

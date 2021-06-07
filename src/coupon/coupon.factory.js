@@ -45,10 +45,8 @@ export const buildProviderCustomerCouponParams = async (
     customer: customerObj.customer || (await userFactory(customerObj))._id,
     coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
     total: couponObj.total || faker.datatype.number(),
-    enRejectionReason:
-      subscriptionObj.enRejectionReason || faker.commerce.productDescription(),
-    arRejectionReason:
-      subscriptionObj.arRejectionReason || faker.commerce.productDescription(),
+    enRejectionReason: subscriptionObj.enRejectionReason,
+    arRejectionReason: subscriptionObj.arRejectionReason,
   };
 };
 
