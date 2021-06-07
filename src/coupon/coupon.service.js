@@ -10,6 +10,8 @@ import {
 import { bcryptCheckPass } from "../_common/helpers/bcryptHelper.js";
 import { findCategoryRepository } from "../category/category.repository.js";
 import { verifyOTPRepository } from "../verification/verification.repository.js";
+import { NewCouponMessage } from "../notification/notification.enum.js";
+import { notifyUsers } from "../notification/notification.service.js";
 
 export const adminAddCouponService = async (req, res, next) => {
   try {
@@ -22,6 +24,7 @@ export const adminAddCouponService = async (req, res, next) => {
       logoURL: req?.file,
     });
     const couponDetails = await getCoupon({ _id: coupon._id });
+    await notifyUsers(NewCouponMessage(coupon, provider));
     return res.status(200).json({
       success: true,
       data: coupon,
