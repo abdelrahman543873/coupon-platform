@@ -177,7 +177,7 @@ export const confirmPaymentService = async (req, res, next) => {
         NewCustomerMessage(
           req.body.arMessage,
           req.body.enMessage,
-          subscription.customer
+          subscription
         ),
         subscription.customer
       );

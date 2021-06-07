@@ -34,15 +34,15 @@ export const NewAdminProviderMessage = (provider) => {
   };
 };
 
-export const NewCustomerMessage = (arMessage, enMessage, customer) => {
+export const NewCustomerMessage = (arMessage, enMessage, subscription) => {
   return {
     user: NotifiedEnum[6],
     arTitle: arMessage,
     enTitle: enMessage,
     enBody: enMessage,
     arBody: arMessage,
-    action: "view_message",
-    data: customer,
+    action: "view_subscription",
+    data: subscription,
   };
 };
 
