@@ -29,6 +29,29 @@ describe("get customer subscription suite case", () => {
     expect(res.body.data._id).toBe(decodeURI(encodeURI(subscription._id)));
   });
 
+  it("get customer subscription successfully which is rejected", async () => {
+    const customer = await customerFactory();
+    const subscription = await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: customer.favCoupons[0] },
+      { enRejectionReason: "something", arRejectionReason: "something" }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMER_SUBSCRIPTION}?subscription=${subscription._id}`,
+      token: customer.token,
+    });
+    expect(res.body.data.coupon.isFav).toBe(true);
+    expect(res.body.data.coupon.isRejected).toBe(true);
+    expect(res.body.data.coupon.isSubscribe).toBe(false);
+    expect(res.body.data.coupon._id).toBeTruthy();
+    expect(res.body.data.customer._id).toBeTruthy();
+    expect(res.body.data.paymentType._id).toBeTruthy();
+    expect(res.body.data.coupon.provider._id).toBeTruthy();
+    expect(res.body.data._id).toBe(decodeURI(encodeURI(subscription._id)));
+  });
+
   it("shouldn't duplicate value", async () => {
     const customer = await customerFactory();
     const customer1 = await customerFactory();
