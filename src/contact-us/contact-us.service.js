@@ -55,7 +55,8 @@ export const getContactUsMessagesService = async (req, res, next) => {
   try {
     const messages = await getContactUsMessagesRepository(
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.email
     );
     res.status(200).json({
       success: true,

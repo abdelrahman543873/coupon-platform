@@ -51,7 +51,8 @@ export const updateContactUsMessage = async ({ _id, contactUsMessage }) => {
 
 export const getContactUsMessagesRepository = async (
   offset = 0,
-  limit = 15
+  limit = 15,
+  email
 ) => {
   const aggregation = ContactUsModel.aggregate([
     {
@@ -64,6 +65,11 @@ export const getContactUsMessagesRepository = async (
     },
     {
       $unwind: "$provider",
+    },
+    {
+      $match: {
+        ...(email && { email }),
+      },
     },
     {
       $addFields: {
