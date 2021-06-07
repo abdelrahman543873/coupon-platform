@@ -136,7 +136,13 @@ export const getRecentlyAdddedCouponsRepository = async (
       },
     },
     {
-      $project: { count: 0, "provider.password": 0, user: 0, subscriptions: 0 },
+      $project: {
+        user: 0,
+        count: 0,
+        subscriptions: 0,
+        "provider.password": 0,
+        rejectedSubscriptions: 0,
+      },
     },
     {
       $sort: { createdAt: -1 },
