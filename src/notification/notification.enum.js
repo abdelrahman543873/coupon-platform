@@ -41,7 +41,7 @@ export const NewCustomerMessage = (arMessage, enMessage, subscription) => {
     enTitle: enMessage,
     enBody: enMessage,
     arBody: arMessage,
-    action: "view_subscription",
+    action: "view_rejection",
     data: subscription,
   };
 };
