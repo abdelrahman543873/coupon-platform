@@ -46,3 +46,15 @@ export const getBankAccountsService = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getBankAccountService = async (req, res, next) => {
+  try {
+    const bank = await getBankAccountRepository({ _id: req.query.bank });
+    res.status(200).json({
+      success: true,
+      data: bank,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

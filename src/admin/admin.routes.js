@@ -77,6 +77,7 @@ import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
 import { AddBankAccountInput } from "../../src/bank/inputs/add-bank-account.input.js";
 import {
   addBankAccountService,
+  getBankAccountService,
   getBankAccountsService,
   toggleBankAccountService,
 } from "../../src/bank/bank.service.js";
@@ -103,7 +104,7 @@ import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
 import { GetSubscriptionInput } from "../provider/inputs/get-subscription.input.js";
 import { AdminDeleteLocationInput } from "./inputs/admin-delete-location.input.js";
 import { GetPaymentTypeInput } from "./inputs/get-payment.input.js";
-
+import { GetBankInput } from "./inputs/get-bank.input.js";
 const adminRouter = express.Router();
 
 adminRouter
@@ -404,6 +405,14 @@ adminRouter
     authenticationMiddleware,
     ValidationMiddleware(offSetLimitInput),
     getBankAccountsService
+  );
+
+adminRouter
+  .route("/getBankAccount")
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(GetBankInput),
+    getBankAccountService
   );
 
 adminRouter
