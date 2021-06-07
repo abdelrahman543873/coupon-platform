@@ -11,8 +11,7 @@ describe("get customers subscriptions suite case", () => {
   it("get customers subscriptions successfully", async () => {
     const customer = await customerFactory();
     const provider = await providerFactory();
-    await providerCustomerCouponsFactory(
-      10,
+    await providerCustomerCouponFactory(
       { provider: provider._id },
       { customer: customer.user },
       { provider: provider._id }
@@ -23,15 +22,11 @@ describe("get customers subscriptions suite case", () => {
       token: customer.token,
       variables: { code: provider.code },
     });
-    const subscribed = res.body.data.docs.filter((subscription) => {
-      return subscription.coupon.isSubscribe === true;
-    });
-    expect(subscribed.length).toBe(10);
+    expect(res.body.data.docs[0].coupon.isSubscribe).toBe(true);
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.docs[0].customer._id).toBeTruthy();
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
-    expect(res.body.data.docs.length).toBe(10);
   });
 
   it("error if no subscriptions", async () => {

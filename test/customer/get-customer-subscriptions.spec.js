@@ -12,27 +12,38 @@ import {
 describe("get customers subscriptions suite case", () => {
   it("get customers subscriptions successfully", async () => {
     const customer = await customerFactory();
-    const customer1 = await customerFactory();
-    await providerCustomerCouponsFactory(
-      10,
+    await providerCustomerCouponFactory({}, { customer: customer.user }, {});
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: GET_CUSTOMER_SUBSCRIPTIONS,
+      token: customer.token,
+    });
+    expect(res.body.data.docs[0].coupon.isSubscribe).toBe(true);
+    expect(res.body.data.docs[0].coupon._id).toBeTruthy();
+    expect(res.body.data.docs[0].customer._id).toBeTruthy();
+    expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
+    expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
+  });
+
+  it("get customers subscriptions successfully with rejected to be true", async () => {
+    const customer = await customerFactory();
+    await providerCustomerCouponFactory(
       {},
       { customer: customer.user },
-      {}
+      {},
+      { enRejectionReason: "something", arRejectionReason: "something" }
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
       url: GET_CUSTOMER_SUBSCRIPTIONS,
       token: customer.token,
     });
-    const subscribed = res.body.data.docs.filter((subscription) => {
-      return subscription.coupon.isSubscribe === true;
-    });
-    expect(subscribed.length).toBe(10);
+    expect(res.body.data.docs[0].coupon.isRejected).toBe(true);
+    expect(res.body.data.docs[0].coupon.isSubscribe).toBe(false);
     expect(res.body.data.docs[0].coupon._id).toBeTruthy();
     expect(res.body.data.docs[0].customer._id).toBeTruthy();
     expect(res.body.data.docs[0].paymentType._id).toBeTruthy();
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
-    expect(res.body.data.docs.length).toBe(10);
   });
 
   it("shouldn't duplicate values", async () => {

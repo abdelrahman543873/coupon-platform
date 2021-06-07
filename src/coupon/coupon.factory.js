@@ -97,6 +97,7 @@ export const providerCustomerCouponsFactory = async (
     );
   }
   return await providerCustomerCouponModel.collection.insertMany(
-    providerCustomerCoupons
+    providerCustomerCoupons,
+    {}
   );
 };
