@@ -105,7 +105,7 @@ import { GetSubscriptionInput } from "../provider/inputs/get-subscription.input.
 import { AdminDeleteLocationInput } from "./inputs/admin-delete-location.input.js";
 import { GetPaymentTypeInput } from "./inputs/get-payment.input.js";
 import { GetBankInput } from "./inputs/get-bank.input.js";
-import { GetContactUsMessagesInput } from "./inputs/get-contact-us-messages.input";
+import { GetContactUsMessagesInput } from "./inputs/get-contact-us-messages.input.js";
 
 const adminRouter = express.Router();
 
