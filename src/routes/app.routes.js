@@ -28,4 +28,4 @@ router.use("/reset-password", resetPassword);
 router.use("/getCities", cityRouter);
 router.use("/logout", logoutRouter);
 
-export { router };
+export { router }
