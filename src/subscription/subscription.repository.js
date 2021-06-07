@@ -443,7 +443,6 @@ export const getCustomerSubscriptionRepository = async ({
           ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
         },
       },
-      { $limit: 1 },
       {
         $lookup: {
           from: UserModel.collection.name,
@@ -593,6 +592,7 @@ export const getCustomerSubscriptionRepository = async ({
           "coupon.provider.password": 0,
         },
       },
+      { $sort: { createdAt: -1 } },
     ])
   )[0];
 };
