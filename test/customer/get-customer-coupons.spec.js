@@ -60,13 +60,33 @@ describe("get customer coupons suite case", () => {
     );
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.GET,
-      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller`,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=1000`,
       token: customer.token,
     });
     const result = res.body.data.docs.filter((couponElement) => {
       return couponElement._id === decodeURI(encodeURI(subscription.coupon));
     })[0];
     expect(result.isSubscribe).toBe(true);
+    expect(result.provider.name).toBeTruthy();
+  });
+
+  it("get logged in customers coupons service with a rejected coupon", async () => {
+    const customer = await customerFactory();
+    const subscription = await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      {},
+      { enRejectionReason: "something", arRejectionReason: "something else" }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=bestSeller&limit=1000`,
+      token: customer.token,
+    });
+    const result = res.body.data.docs.filter((couponElement) => {
+      return couponElement._id === decodeURI(encodeURI(subscription.coupon));
+    })[0];
+    expect(result.isRejected).toBe(true);
     expect(result.provider.name).toBeTruthy();
   });
 
@@ -87,6 +107,28 @@ describe("get customer coupons suite case", () => {
     })[0];
     expect(coupon.isFav).toBe(true);
     expect(coupon.isSubscribe).toBe(true);
+    expect(coupon.provider.name).toBeTruthy();
+  });
+
+  it("get logged in customers coupons service for newest where the subscription is reject", async () => {
+    const customer = await customerFactory();
+    const subscription = await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: customer.favCoupons[0] },
+      { enRejectionReason: "something", arRejectionReason: "somethingElse" }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMERS_COUPONS}?section=newest&limit=1000`,
+      token: customer.token,
+    });
+    const coupon = res.body.data.docs.filter((coupon) => {
+      return coupon._id === decodeURI(encodeURI(subscription.coupon));
+    })[0];
+    expect(coupon.isRejected).toBe(true);
+    expect(coupon.isFav).toBe(true);
+    expect(coupon.isSubscribe).toBe(false);
     expect(coupon.provider.name).toBeTruthy();
   });
 

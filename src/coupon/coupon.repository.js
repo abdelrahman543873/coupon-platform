@@ -80,8 +80,33 @@ export const getRecentlyAdddedCouponsRepository = async (
           {
             $match: {
               isUsed: false,
-              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
               $expr: { coupon: "$_id" },
+              enRejectionReason: { $exists: false },
+              arRejectionReason: { $exists: false },
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "rejectedSubscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              $expr: { coupon: "$_id" },
+              enRejectionReason: { $exists: true },
+              arRejectionReason: { $exists: true },
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
           },
           {
@@ -97,6 +122,13 @@ export const getRecentlyAdddedCouponsRepository = async (
       $addFields: {
         isSubscribe: {
           $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
+        },
+        isRejected: {
+          $cond: [
+            { $in: ["$_id", "$rejectedSubscriptions.coupon"] },
+            true,
+            false,
+          ],
         },
         isFav: {
           $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
