@@ -29,6 +29,24 @@ describe("get customers subscriptions suite case", () => {
     expect(res.body.data.docs[0].coupon.provider._id).toBeTruthy();
   });
 
+  it("get only confirmed subscriptions successfully", async () => {
+    const customer = await customerFactory();
+    const provider = await providerFactory();
+    await providerCustomerCouponFactory(
+      { provider: provider._id },
+      { customer: customer.user },
+      { provider: provider._id },
+      { isConfirmed: false }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: SCAN,
+      token: customer.token,
+      variables: { code: provider.code },
+    });
+    expect(res.body.statusCode).toBe(640);
+  });
+
   it("error if no subscriptions", async () => {
     const customer = await customerFactory();
     const provider = await providerFactory();
