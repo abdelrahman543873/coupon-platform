@@ -247,12 +247,15 @@ export const getCustomerSubscriptionsRepository = async (
   offset = 0,
   limit = 15,
   code,
-  isUsed
+  isUsed,
+  isConfirmed
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
       $match: {
-        isConfirmed: true,
+        ...(isConfirmed !== undefined && {
+          isConfirmed,
+        }),
         ...(isUsed !== undefined && {
           isUsed,
         }),

@@ -197,7 +197,8 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
       req.query.offset,
       req.query.limit,
       req.body.code,
-      false
+      false,
+      true
     );
     if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
     res.status(200).json({
