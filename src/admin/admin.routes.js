@@ -106,6 +106,7 @@ import { AdminDeleteLocationInput } from "./inputs/admin-delete-location.input.j
 import { GetPaymentTypeInput } from "./inputs/get-payment.input.js";
 import { GetBankInput } from "./inputs/get-bank.input.js";
 import { GetContactUsMessagesInput } from "./inputs/get-contact-us-messages.input.js";
+import { langMiddleware } from "../_common/helpers/lang.js";
 
 const adminRouter = express.Router();
 
@@ -180,7 +181,7 @@ adminRouter
     addProviderService
   );
 
-adminRouter.route("/getProviders").get(getProvidersService);
+adminRouter.route("/getProviders").get(langMiddleware, getProvidersService);
 
 adminRouter
   .route("/addCoupon")
@@ -262,7 +263,11 @@ adminRouter
 
 adminRouter
   .route("/getProvider")
-  .get(ValidationMiddleware(adminGetProviderInput), adminGetProviderService);
+  .get(
+    langMiddleware,
+    ValidationMiddleware(adminGetProviderInput),
+    adminGetProviderService
+  );
 
 adminRouter
   .route("/updateProfile")
@@ -320,7 +325,7 @@ adminRouter
 
 adminRouter
   .route("/getPaymentTypes")
-  .get(authenticationMiddleware, getPaymentTypesService);
+  .get(langMiddleware, authenticationMiddleware, getPaymentTypesService);
 
 adminRouter
   .route("/getPaymentType")

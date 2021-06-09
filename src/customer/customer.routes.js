@@ -51,12 +51,13 @@ import {
   getProviderLocationsService,
 } from "../provider/provider.service.js";
 import { noActiveValidationMiddleware } from "../_common/helpers/no-active-validation-auth.js";
-
+import { langMiddleware } from "../_common/helpers/lang.js";
 const customersRouter = express.Router();
 
 customersRouter
   .route("/")
   .post(
+    langMiddleware,
     uploadHelper("public/profile-pictures").single("image"),
     fileValidationMiddleWare,
     ValidationMiddleware(CustomerRegisterInput),
@@ -73,15 +74,27 @@ customersRouter
 
 customersRouter
   .route("/social-auth")
-  .post(ValidationMiddleware(SocialLoginInput), socialLoginService);
+  .post(
+    langMiddleware,
+    ValidationMiddleware(SocialLoginInput),
+    socialLoginService
+  );
 
 customersRouter
   .route("/social-register")
-  .post(ValidationMiddleware(SocialRegisterInput), socialRegisterService);
+  .post(
+    langMiddleware,
+    ValidationMiddleware(SocialRegisterInput),
+    socialRegisterService
+  );
 
 customersRouter
   .route("/home")
-  .get(ValidationMiddleware(offSetLimitInput), getCustomerHomeService);
+  .get(
+    langMiddleware,
+    ValidationMiddleware(offSetLimitInput),
+    getCustomerHomeService
+  );
 
 customersRouter
   .route("/getCoupons")
@@ -214,6 +227,8 @@ customersRouter
     getProviderLocationsService
   );
 
-customersRouter.route("/getProviders").get(getCustomerProvidersService);
+customersRouter
+  .route("/getProviders")
+  .get(langMiddleware, getCustomerProvidersService);
 
-export { customersRouter }
+export { customersRouter };

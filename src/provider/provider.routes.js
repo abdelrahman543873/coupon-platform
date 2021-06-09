@@ -33,12 +33,16 @@ import {
 import { getSubscriptionService } from "../subscription/subscription.service.js";
 import { offSetLimitInput } from "../_common/helpers/limit-skip-validation.js";
 import { noActiveValidationMiddleware } from "../_common/helpers/no-active-validation-auth.js";
-
+import { langMiddleware } from "../_common/helpers/lang.js";
 const providersRouter = express.Router();
 
 providersRouter
   .route("/")
-  .post(ValidationMiddleware(ProviderRegisterInput), providerRegisterService);
+  .post(
+    langMiddleware,
+    ValidationMiddleware(ProviderRegisterInput),
+    providerRegisterService
+  );
 
 providersRouter
   .route("/")
@@ -134,7 +138,11 @@ providersRouter
 
 providersRouter
   .route("/getCategories")
-  .get(ValidationMiddleware(offSetLimitInput), getCategoriesService);
+  .get(
+    langMiddleware,
+    ValidationMiddleware(offSetLimitInput),
+    getCategoriesService
+  );
 
 providersRouter
   .route("/deleteLocation")
