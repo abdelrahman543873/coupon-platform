@@ -4,7 +4,7 @@ const handleError = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message =
     statusCode < 600
-      ? err
+      ? err.message || err
       : getLocalizedMessage(err.statusCode, req?.lang?.toUpperCase());
   res.status(statusCode).json({
     success: false,
@@ -20,9 +20,10 @@ const getLocalizedMessage = (int, lang = "AR") => {
 };
 
 class BaseHttpError extends Error {
-  constructor(statusCode) {
+  constructor(statusCode, message) {
     super();
     this.statusCode = statusCode || 500;
+    this.message = message;
   }
 }
 export { BaseHttpError, handleError };

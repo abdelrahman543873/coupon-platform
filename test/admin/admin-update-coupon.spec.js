@@ -14,13 +14,8 @@ describe("admin update coupon suite case", () => {
   it("admin update coupon successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const coupon = await couponFactory();
-    const {
-      provider,
-      isActive,
-      logoURL,
-      code,
-      ...variables
-    } = await buildCouponParams();
+    const { provider, isActive, logoURL, code, ...variables } =
+      await buildCouponParams();
     variables.coupon = coupon.id;
     const res = await testRequest({
       method: HTTP_METHODS_ENUM.PUT,
@@ -30,18 +25,30 @@ describe("admin update coupon suite case", () => {
     });
     expect(res.body.data.enName).toBe(variables.enName);
   });
+
+  it("should throw error if offerPrice is bigger than service price", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const coupon = await couponFactory();
+    const { provider, isActive, logoURL, code, ...variables } =
+      await buildCouponParams();
+    variables.coupon = coupon.id;
+    variables.servicePrice = 50;
+    variables.offerPrice = 60;
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: ADMIN_UPDATE_COUPON,
+      token: admin.token,
+      variables,
+    });
+    expect(res.body.statusCode).toBe(400);
+  });
   it("successful coupon file upload", async () => {
     const provider = await providerFactory();
     const coupon = await couponFactory({ provider: provider._id });
     const testFiles = path.resolve(process.cwd(), "test");
     const filePath = `${testFiles}/test-files/test-duck.jpg`;
-    const {
-      providerId,
-      isActive,
-      logoURL,
-      code,
-      ...variables
-    } = await buildCouponParams();
+    const { providerId, isActive, logoURL, code, ...variables } =
+      await buildCouponParams();
     delete variables.provider;
     variables.coupon = coupon.id;
     const res = await testRequest({
