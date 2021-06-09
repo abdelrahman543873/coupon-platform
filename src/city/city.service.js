@@ -24,7 +24,8 @@ export const getCitiesService = async (req, res, next) => {
   try {
     const cities = await getCitiesRepository(
       req?.query?.offset,
-      req?.query?.limit
+      req?.query?.limit,
+      req.query?.isActive == "true"
     );
     cities.docs.forEach((city) => {
       const center = polylabel(city.area.coordinates);

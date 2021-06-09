@@ -13,7 +13,7 @@ export const buildCityParams = (obj = {}) => {
     area: obj.area || {
       coordinates: polygonPoints,
     },
-    isActive: obj.isActive || true,
+    isActive: obj.isActive ?? true,
   };
 };
 

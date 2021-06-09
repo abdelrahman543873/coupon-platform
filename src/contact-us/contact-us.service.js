@@ -55,7 +55,8 @@ export const getContactUsMessagesService = async (req, res, next) => {
   try {
     const messages = await getContactUsMessagesRepository(
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.email
     );
     res.status(200).json({
       success: true,
@@ -75,7 +76,12 @@ export const adminSendContactsUsMessage = async (req, res, next) => {
     const updatedMessage = await updateContactUsMessage({
       _id: message._id,
       contactUsMessage: {
-        reply: { message: req.body.reply, date: new Date() },
+        reply: {
+          message: req.body.reply,
+          date: new Date(),
+          email: req.currentUser.email,
+          name: req.currentUser.name,
+        },
       },
     });
     res.status(200).json({

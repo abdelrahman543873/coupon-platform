@@ -12,13 +12,37 @@ export const NewCouponMessage = (coupon, provider) => {
 
 export const NewProviderMessage = (provider) => {
   return {
-    user: NotifiedEnum[4],
+    user: NotifiedEnum[1],
     enTitle: `new provider ${provider.name} 🥳🥳 `,
     arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
     enBody: `A new provider  ${provider.name} has just joined coupons`,
-    arBody: `الي كوبونات${provider.name} انضم`,
+    arBody: `${provider.name}الي كوبونات انضم`,
     action: "view_provider",
     data: provider._id,
+  };
+};
+
+export const NewAdminProviderMessage = (provider) => {
+  return {
+    user: NotifiedEnum[2],
+    enTitle: `new provider ${provider.name} 🥳🥳 `,
+    arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
+    enBody: `A new provider  ${provider.name} has just joined coupons`,
+    arBody: `${provider.name} الي كوبونات انضم`,
+    action: "view_provider",
+    data: provider._id,
+  };
+};
+
+export const NewCustomerMessage = (arMessage, enMessage, subscription) => {
+  return {
+    user: NotifiedEnum[6],
+    arTitle: arMessage,
+    enTitle: enMessage,
+    enBody: enMessage,
+    arBody: arMessage,
+    action: "view_rejection",
+    data: subscription,
   };
 };
 
@@ -41,4 +65,5 @@ export const NotifiedEnum = [
   "ALL",
   "CUSTOMERS&ADMINS",
   "ADMINS&PROVIDER",
+  "CUSTOMER",
 ];

@@ -1,8 +1,11 @@
 import { LocalizedErrorMessages } from "./error-messages.js";
 //the unnecessary paramter here are for the sake of the controller
 const handleError = (err, req, res, next) => {
-  const statusCode = err.statusCode ? err.statusCode : 500;
-  const message = err.message ? err.message : err;
+  const statusCode = err.statusCode || 500;
+  const message =
+    statusCode < 600
+      ? err.message || err
+      : getLocalizedMessage(err.statusCode, req?.lang?.toUpperCase());
   res.status(statusCode).json({
     success: false,
     statusCode,
@@ -10,17 +13,17 @@ const handleError = (err, req, res, next) => {
   });
 };
 
-const getLocalizedMessage = (int, lang = "EN") => {
+const getLocalizedMessage = (int, lang = "AR") => {
   const message = LocalizedErrorMessages[int][lang];
   if (!message) throw new BaseHttpError(605);
   return message;
 };
 
 class BaseHttpError extends Error {
-  constructor(statusCode, message, lang = "EN") {
+  constructor(statusCode, message) {
     super();
     this.statusCode = statusCode || 500;
-    this.message = message || getLocalizedMessage(this.statusCode, lang);
+    this.message = message;
   }
 }
 export { BaseHttpError, handleError };

@@ -5,9 +5,13 @@ export const addCityRepository = async (city) => {
   return await CityModel.create({ ...city, area: { coordinates: city.area } });
 };
 
-export const getCitiesRepository = async (offset = 0, limit = 15) => {
+export const getCitiesRepository = async (
+  offset = 0,
+  limit = 15,
+  isActive = false
+) => {
   return await CityModel.paginate(
-    {},
+    { ...(isActive && { isActive: true }) },
     { offset: offset * limit, limit, sort: "-createdAt", lean: true }
   );
 };

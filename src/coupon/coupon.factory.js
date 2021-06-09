@@ -34,18 +34,19 @@ export const buildProviderCustomerCouponParams = async (
   subscriptionObj = {}
 ) => {
   return {
-    transactionId: subscriptionObj.transactionId || faker.datatype.uuid(),
-    //change this RED ALERT
-    account: subscriptionObj.account || (await bankFactory())._id,
-    note: subscriptionObj.note || faker.random.words(),
-    image: subscriptionObj.imgURL || faker.internet.url(),
-    isConfirmed: subscriptionObj.isConfirmed ?? true,
     isUsed: subscriptionObj.isUsed ?? false,
-    provider: providerObj.provider || (await providerFactory(providerObj))._id,
-    paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,
-    customer: customerObj.customer || (await userFactory(customerObj))._id,
-    coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
+    isConfirmed: subscriptionObj.isConfirmed ?? true,
     total: couponObj.total || faker.datatype.number(),
+    note: subscriptionObj.note || faker.random.words(),
+    enRejectionReason: subscriptionObj.enRejectionReason,
+    arRejectionReason: subscriptionObj.arRejectionReason,
+    image: subscriptionObj.imgURL || faker.internet.url(),
+    account: subscriptionObj.account || (await bankFactory())._id,
+    coupon: couponObj.coupon || (await couponFactory(couponObj))._id,
+    transactionId: subscriptionObj.transactionId || faker.datatype.uuid(),
+    customer: customerObj.customer || (await userFactory(customerObj))._id,
+    paymentType: subscriptionObj.paymentType || (await paymentFactory())._id,
+    provider: providerObj.provider || (await providerFactory(providerObj))._id,
   };
 };
 
@@ -96,6 +97,7 @@ export const providerCustomerCouponsFactory = async (
     );
   }
   return await providerCustomerCouponModel.collection.insertMany(
-    providerCustomerCoupons
+    providerCustomerCoupons,
+    {}
   );
 };

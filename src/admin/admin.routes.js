@@ -59,6 +59,7 @@ import {
 import { AdminReplyInput } from "../contact-us/inputs/admin-reply.input.js";
 import {
   addPaymentTypeService,
+  getPaymentTypeService,
   getPaymentTypesService,
   updatePaymentTypeService,
 } from "../payment/payment.service.js";
@@ -76,6 +77,7 @@ import { toggleCityInput } from "../city/inputs/toggle-city.input.js";
 import { AddBankAccountInput } from "../../src/bank/inputs/add-bank-account.input.js";
 import {
   addBankAccountService,
+  getBankAccountService,
   getBankAccountsService,
   toggleBankAccountService,
 } from "../../src/bank/bank.service.js";
@@ -101,6 +103,10 @@ import { adminGetProviderInput } from "./inputs/admin-get-provider.input.js";
 import { GetCouponsInput } from "../admin/inputs/admin-get-coupons.input.js";
 import { GetSubscriptionInput } from "../provider/inputs/get-subscription.input.js";
 import { AdminDeleteLocationInput } from "./inputs/admin-delete-location.input.js";
+import { GetPaymentTypeInput } from "./inputs/get-payment.input.js";
+import { GetBankInput } from "./inputs/get-bank.input.js";
+import { GetContactUsMessagesInput } from "./inputs/get-contact-us-messages.input.js";
+import { langMiddleware } from "../_common/helpers/lang.js";
 
 const adminRouter = express.Router();
 
@@ -175,7 +181,7 @@ adminRouter
     addProviderService
   );
 
-adminRouter.route("/getProviders").get(getProvidersService);
+adminRouter.route("/getProviders").get(langMiddleware, getProvidersService);
 
 adminRouter
   .route("/addCoupon")
@@ -257,7 +263,11 @@ adminRouter
 
 adminRouter
   .route("/getProvider")
-  .get(ValidationMiddleware(adminGetProviderInput), adminGetProviderService);
+  .get(
+    langMiddleware,
+    ValidationMiddleware(adminGetProviderInput),
+    adminGetProviderService
+  );
 
 adminRouter
   .route("/updateProfile")
@@ -282,7 +292,7 @@ adminRouter
   .get(
     authenticationMiddleware,
     authorizationMiddleware(UserRoleEnum[2]),
-    ValidationMiddleware(offSetLimitInput),
+    ValidationMiddleware(GetContactUsMessagesInput),
     getContactUsMessagesService
   );
 
@@ -315,7 +325,15 @@ adminRouter
 
 adminRouter
   .route("/getPaymentTypes")
-  .get(authenticationMiddleware, getPaymentTypesService);
+  .get(langMiddleware, authenticationMiddleware, getPaymentTypesService);
+
+adminRouter
+  .route("/getPaymentType")
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(GetPaymentTypeInput),
+    getPaymentTypeService
+  );
 
 adminRouter
   .route("/togglePaymentType")
@@ -394,6 +412,14 @@ adminRouter
     authenticationMiddleware,
     ValidationMiddleware(offSetLimitInput),
     getBankAccountsService
+  );
+
+adminRouter
+  .route("/getBankAccount")
+  .get(
+    authenticationMiddleware,
+    ValidationMiddleware(GetBankInput),
+    getBankAccountService
   );
 
 adminRouter

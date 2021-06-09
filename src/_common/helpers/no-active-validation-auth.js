@@ -20,6 +20,7 @@ export const noActiveValidationMiddleware = async (req, res, next) => {
       (await ProviderModel.findById(user.id));
     if (!authenticatedUser) throw new BaseHttpError(614);
     req.currentUser = authenticatedUser;
+    req.lang = req?.headers?.lang;
     next();
   } catch (err) {
     next(err);

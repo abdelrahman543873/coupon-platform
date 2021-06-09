@@ -14,6 +14,21 @@ describe("customer register suite case", () => {
     expect(res.body.data.user.name).toBe(variables.name);
   });
 
+  it("customer register twice throws error", async () => {
+    const { role, fcmToken, ...variables } = await buildUserParams();
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_REGISTER,
+      variables,
+    });
+    const res1 = await testRequest({
+      method: HTTP_METHODS_ENUM.POST,
+      url: CUSTOMER_REGISTER,
+      variables,
+    });
+    expect(res1.body.statusCode).toBe(601);
+  });
+
   it("should register register two customers", async () => {
     const { role, email, fcmToken, ...variables } = await buildUserParams();
     const variables2 = await buildUserParams();

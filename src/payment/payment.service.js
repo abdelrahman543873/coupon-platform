@@ -22,11 +22,24 @@ export const getPaymentTypesService = async (req, res, next) => {
   try {
     const payments = await getPaymentTypesRepository(
       req.query.offset,
-      req.query.limit
+      req.query.limit,
+      req.query.isActive == "true"
     );
     res.status(200).json({
       success: true,
       data: payments,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPaymentTypeService = async (req, res, next) => {
+  try {
+    const payment = await findPayment({ _id: req.body.payment });
+    res.status(200).json({
+      success: true,
+      data: payment,
     });
   } catch (error) {
     next(error);

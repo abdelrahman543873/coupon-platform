@@ -25,6 +25,7 @@ export const semiAuthenticationMiddleware = async (req, res, next) => {
         req.currentUser = authenticatedUser;
       }
     }
+    req.lang = req?.headers?.lang;
     next();
   } catch (err) {
     next(err);

@@ -197,10 +197,10 @@ export const adminDeleteCategoryService = async (req, res, next) => {
 
 export const getStatisticsService = async (req, res, next) => {
   try {
-    const providers = await countProvidersRepository(req.body.filtrationDate);
-    const coupons = await countCouponsRepository(req.body.filtrationDate);
+    const providers = await countProvidersRepository(req.query.filtrationDate);
+    const coupons = await countCouponsRepository(req.query.filtrationDate);
     const subscriptions = await countSubscriptionsRepository(
-      req.body.filtrationDate
+      req.query.filtrationDate
     );
     return res.status(200).json({
       success: true,

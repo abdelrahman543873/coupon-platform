@@ -43,4 +43,23 @@ describe("get coupon suite case", () => {
     expect(res.body.data.isSubscribe).toBe(true);
     expect(res.body.data.isFav).toBe(true);
   });
+
+  it("isSubscribe is false and isFav true when user is subscribed and favorite a coupon when a subscription is rejected", async () => {
+    const coupon = await couponFactory();
+    const customer = await customerFactory({ favCoupons: [coupon._id] });
+    await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: coupon._id },
+      { enRejectionReason: "something", arRejectionReason: "something" }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_COUPON}?coupon=${coupon._id}`,
+      token: customer.token,
+    });
+    expect(res.body.data.isRejected).toBe(true);
+    expect(res.body.data.isSubscribe).toBe(false);
+    expect(res.body.data.isFav).toBe(true);
+  });
 });

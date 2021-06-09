@@ -16,7 +16,10 @@ import {
   createSubscriptionRepository,
 } from "./subscription.repository.js";
 import { notifyUsers } from "../notification/notification.service.js";
-import { NewSubscriptionMessage } from "../notification/notification.enum.js";
+import {
+  NewCustomerMessage,
+  NewSubscriptionMessage,
+} from "../notification/notification.enum.js";
 import { UserRoleEnum } from "../user/user-role.enum.js";
 
 export const getAllSubscriptionsService = async (req, res, next) => {
@@ -114,7 +117,9 @@ export const subscribeService = async (req, res, next) => {
         account: req.body.account,
         transactionId: req.body.transactionId,
         total: req.body.total,
-        isConfirmed: paymentType.key === PaymentEnum[0],
+        isConfirmed:
+          paymentType.key === PaymentEnum[2] ||
+          paymentType.key === PaymentEnum[0],
       },
     });
     await updateCouponById(coupon._id, {
@@ -160,7 +165,22 @@ export const confirmPaymentService = async (req, res, next) => {
     if (!subscription) throw new BaseHttpError(619);
     const updatedSubscription = await confirmCouponPayment({
       _id: subscription._id,
+      ...(req.body.arMessage && {
+        isConfirmed: false,
+        enRejectionReason: req.body.enMessage,
+        arRejectionReason: req.body.arMessage,
+      }),
+      ...(!req.body.arMessage && { isConfirmed: true }),
     });
+    if (req.body.arMessage)
+      await notifyUsers(
+        NewCustomerMessage(
+          req.body.arMessage,
+          req.body.enMessage,
+          subscription._id
+        ),
+        subscription.customer
+      );
     res.status(200).json({
       success: true,
       data: { subscription: updatedSubscription },
@@ -177,7 +197,8 @@ export const getCustomerSubscriptionsService = async (req, res, next) => {
       req.query.offset,
       req.query.limit,
       req.body.code,
-      false
+      false,
+      true
     );
     if (subscriptions.docs.length === 0) throw new BaseHttpError(640);
     res.status(200).json({

@@ -30,6 +30,7 @@ export const authenticationMiddleware = async (req, res, next) => {
       if (!customer.isVerified) throw new BaseHttpError(648);
     }
     req.currentUser = authenticatedUser;
+    req.lang = req?.headers?.lang;
     next();
   } catch (err) {
     next(err);

@@ -6,7 +6,7 @@ export const buildPaymentParams = (obj = {}) => {
   return {
     enName: obj.enName || faker.datatype.uuid(),
     arName: obj.arName || faker.datatype.uuid(),
-    isActive: obj.isActive || true,
+    isActive: obj.isActive ?? true,
     key: obj.key || faker.random.arrayElement(PaymentEnum),
   };
 };

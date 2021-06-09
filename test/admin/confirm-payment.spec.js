@@ -4,8 +4,8 @@ import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { CONFIRM_PAYMENT } from "../endpoints/admin.js";
 import { UserRoleEnum } from "../../src/user/user-role.enum.js";
 import { userFactory } from "../../src/user/user.factory.js";
-describe("admin get subscription suite case", () => {
-  it("admin get subscription successfully", async () => {
+describe("confirm payment suite case", () => {
+  it("should confirm payment successfully successfully", async () => {
     const admin = await userFactory({ role: UserRoleEnum[2] });
     const subscription = await providerCustomerCouponFactory();
     const res = await testRequest({
@@ -15,5 +15,28 @@ describe("admin get subscription suite case", () => {
       variables: { subscription: subscription.id },
     });
     expect(res.body.data.subscription.isConfirmed).toBe(true);
+  });
+
+  it("should reject payment successfully successfully", async () => {
+    const admin = await userFactory({ role: UserRoleEnum[2] });
+    const subscription = await providerCustomerCouponFactory(
+      {},
+      {},
+      {},
+      { isConfirmed: true }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.PUT,
+      url: CONFIRM_PAYMENT,
+      token: admin.token,
+      variables: {
+        subscription: subscription.id,
+        arMessage: "something",
+        enMessage: "somethingElse",
+      },
+    });
+    expect(res.body.data.subscription.arRejectionReason).toBe("something");
+    expect(res.body.data.subscription.enRejectionReason).toBe("somethingElse");
+    expect(res.body.data.subscription.isConfirmed).toBe(false);
   });
 });

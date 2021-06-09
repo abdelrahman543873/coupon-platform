@@ -12,8 +12,8 @@ const contactUsRouter = express.Router();
 contactUsRouter
   .route("/")
   .post(
-    ValidationMiddleware(contactUsInput),
     authenticationMiddleware,
+    ValidationMiddleware(contactUsInput),
     sendContactUsMessageService
   );
 

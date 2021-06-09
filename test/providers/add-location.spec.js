@@ -3,7 +3,7 @@ import {
   buildProviderParams,
   providerFactory,
 } from "../../src/provider/provider.factory.js";
-import { ADD_LOCATION, DELETE_LOCATION } from "../endpoints/provider.js";
+import { ADD_LOCATION } from "../endpoints/provider.js";
 import { HTTP_METHODS_ENUM } from "../request.methods.enum.js";
 import { cityFactory } from "../../src/city/city.factory.js";
 import { alexCoordinates } from "../test-coordinates.js";

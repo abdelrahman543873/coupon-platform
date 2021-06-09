@@ -247,11 +247,15 @@ export const getCustomerSubscriptionsRepository = async (
   offset = 0,
   limit = 15,
   code,
-  isUsed
+  isUsed,
+  isConfirmed
 ) => {
   const aggregation = providerCustomerCouponModel.aggregate([
     {
       $match: {
+        ...(isConfirmed !== undefined && {
+          isConfirmed,
+        }),
         ...(isUsed !== undefined && {
           isUsed,
         }),
@@ -346,6 +350,31 @@ export const getCustomerSubscriptionsRepository = async (
           {
             $match: {
               isUsed: false,
+              enRejectionReason: { $exists: false },
+              arRejectionReason: { $exists: false },
+              customer: new mongoose.Types.ObjectId(customer),
+              $expr: { coupon: "$coupon._id" },
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "rejectedSubscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              enRejectionReason: { $exists: true },
+              arRejectionReason: { $exists: true },
               customer: new mongoose.Types.ObjectId(customer),
               $expr: { coupon: "$coupon._id" },
             },
@@ -368,6 +397,13 @@ export const getCustomerSubscriptionsRepository = async (
             false,
           ],
         },
+        "coupon.isRejected": {
+          $cond: [
+            { $in: ["$coupon._id", "$rejectedSubscriptions.coupon"] },
+            true,
+            false,
+          ],
+        },
         "coupon.isFav": {
           $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
         },
@@ -375,12 +411,13 @@ export const getCustomerSubscriptionsRepository = async (
     },
     {
       $project: {
-        count: 0,
-        "coupon.provider.password": 0,
-        "customer.password": 0,
-        provider: 0,
         user: 0,
+        count: 0,
+        provider: 0,
         subscriptions: 0,
+        "customer.password": 0,
+        rejectedSubscriptions: 0,
+        "coupon.provider.password": 0,
       },
     },
     {
@@ -410,7 +447,6 @@ export const getCustomerSubscriptionRepository = async ({
           ...(coupon && { coupon: new mongoose.Types.ObjectId(coupon) }),
         },
       },
-      { $limit: 1 },
       {
         $lookup: {
           from: UserModel.collection.name,
@@ -490,8 +526,33 @@ export const getCustomerSubscriptionRepository = async ({
             {
               $match: {
                 isUsed: false,
-                customer: new mongoose.Types.ObjectId(customer),
                 $expr: { coupon: "$coupon._id" },
+                enRejectionReason: { $exists: false },
+                arRejectionReason: { $exists: false },
+                customer: new mongoose.Types.ObjectId(customer),
+              },
+            },
+            {
+              $project: {
+                coupon: 1,
+                _id: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: providerCustomerCouponModel.collection.name,
+          as: "rejectedSubscriptions",
+          pipeline: [
+            {
+              $match: {
+                isUsed: false,
+                $expr: { coupon: "$coupon._id" },
+                enRejectionReason: { $exists: true },
+                arRejectionReason: { $exists: true },
+                customer: new mongoose.Types.ObjectId(customer),
               },
             },
             {
@@ -512,6 +573,13 @@ export const getCustomerSubscriptionRepository = async ({
               false,
             ],
           },
+          "coupon.isRejected": {
+            $cond: [
+              { $in: ["$coupon._id", "$rejectedSubscriptions.coupon"] },
+              true,
+              false,
+            ],
+          },
           "coupon.isFav": {
             $cond: [{ $in: ["$coupon._id", "$user.favCoupons"] }, true, false],
           },
@@ -519,14 +587,16 @@ export const getCustomerSubscriptionRepository = async ({
       },
       {
         $project: {
-          count: 0,
-          "coupon.provider.password": 0,
-          "customer.password": 0,
-          provider: 0,
           user: 0,
+          count: 0,
+          provider: 0,
           subscriptions: 0,
+          "customer.password": 0,
+          rejectedSubscriptions: 0,
+          "coupon.provider.password": 0,
         },
       },
+      { $sort: { createdAt: -1 } },
     ])
   )[0];
 };
@@ -642,6 +712,8 @@ export const getCustomerCouponNotUsedSubscriptionRepository = async ({
       ...(coupon && { coupon }),
       ...(provider && { provider }),
       isUsed: false,
+      enRejectionReason: { $exists: false },
+      arRejectionReason: { $exists: false },
     },
     {}
   );
@@ -740,8 +812,33 @@ export const getMostSellingCouponRepository = async (
           {
             $match: {
               isUsed: false,
-              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
               $expr: { coupon: "$_id" },
+              enRejectionReason: { $exists: false },
+              arRejectionReason: { $exists: false },
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
+            },
+          },
+          {
+            $project: {
+              coupon: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: providerCustomerCouponModel.collection.name,
+        as: "rejectedSubscriptions",
+        pipeline: [
+          {
+            $match: {
+              isUsed: false,
+              $expr: { coupon: "$_id" },
+              enRejectionReason: { $exists: true },
+              arRejectionReason: { $exists: true },
+              customer: user ? new mongoose.Types.ObjectId(user._id) : user,
             },
           },
           {
@@ -758,6 +855,13 @@ export const getMostSellingCouponRepository = async (
         isSubscribe: {
           $cond: [{ $in: ["$_id", "$subscriptions.coupon"] }, true, false],
         },
+        isRejected: {
+          $cond: [
+            { $in: ["$_id", "$rejectedSubscriptions.coupon"] },
+            true,
+            false,
+          ],
+        },
         isFav: {
           $cond: [{ $in: ["$_id", "$user.favCoupons"] }, true, false],
         },
@@ -765,10 +869,11 @@ export const getMostSellingCouponRepository = async (
     },
     {
       $project: {
-        count: 0,
-        "coupon.provider.password": 0,
-        subscription: 0,
         user: 0,
+        count: 0,
+        subscriptions: 0,
+        rejectedSubscriptions: 0,
+        "coupon.provider.password": 0,
       },
     },
   ]);
@@ -901,10 +1006,19 @@ export const rawDeleteProviderCustomerCoupon = async () => {
   return await providerCustomerCouponModel.deleteMany({});
 };
 
-export const confirmCouponPayment = async ({ _id }) => {
+export const confirmCouponPayment = async ({
+  _id,
+  isConfirmed,
+  enRejectionReason,
+  arRejectionReason,
+}) => {
   return await providerCustomerCouponModel.findOneAndUpdate(
     { _id },
-    { isConfirmed: true },
+    {
+      isConfirmed,
+      ...(enRejectionReason && { enRejectionReason }),
+      ...(arRejectionReason && { arRejectionReason }),
+    },
     { new: true }
   );
 };
