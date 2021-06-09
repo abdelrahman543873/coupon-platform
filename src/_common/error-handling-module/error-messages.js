@@ -109,7 +109,7 @@ export const LocalizedErrorMessages = {
   },
   631: {
     EN: "invalid id",
-    AR: "invalid id",
+    AR: "رقم تعريف خاطىء",
   },
   632: {
     EN: "message not found",

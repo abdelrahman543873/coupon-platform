@@ -29,6 +29,21 @@ describe("get customer subscription suite case", () => {
     expect(res.body.data._id).toBe(decodeURI(encodeURI(subscription._id)));
   });
 
+  it("get arabic lang error", async () => {
+    const customer = await customerFactory();
+    const subscription = await providerCustomerCouponFactory(
+      {},
+      { customer: customer.user },
+      { coupon: customer.favCoupons[0] }
+    );
+    const res = await testRequest({
+      method: HTTP_METHODS_ENUM.GET,
+      url: `${GET_CUSTOMER_SUBSCRIPTION}?coupon=something`,
+      token: customer.token,
+    });
+    expect(res.body.statusCode).toBe(631);
+  });
+
   it("get customer subscription successfully which is rejected", async () => {
     const customer = await customerFactory();
     const subscription = await providerCustomerCouponFactory(
