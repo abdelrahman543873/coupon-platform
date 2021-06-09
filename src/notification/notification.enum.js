@@ -16,7 +16,7 @@ export const NewProviderMessage = (provider) => {
     enTitle: `new provider ${provider.name} 🥳🥳 `,
     arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
     enBody: `A new provider  ${provider.name} has just joined coupons`,
-    arBody: `الي كوبونات${provider.name} انضم`,
+    arBody: `${provider.name}الي كوبونات انضم`,
     action: "view_provider",
     data: provider._id,
   };
@@ -28,7 +28,7 @@ export const NewAdminProviderMessage = (provider) => {
     enTitle: `new provider ${provider.name} 🥳🥳 `,
     arTitle: `مقدم خدمه جديد 🥳🥳 ${provider.name}`,
     enBody: `A new provider  ${provider.name} has just joined coupons`,
-    arBody: `الي كوبونات${provider.name} انضم`,
+    arBody: `${provider.name} الي كوبونات انضم`,
     action: "view_provider",
     data: provider._id,
   };
