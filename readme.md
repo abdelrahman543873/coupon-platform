@@ -9,6 +9,6 @@
 <img src="https://www.gstatic.com/devrel-devsite/prod/ve6010286661f973c8a44ecd021b66ac8957259bcceefb6c1b1428b622ca8a90e/firebase/images/lockup.png" class="devsite-site-logo" alt="Firebase">
 
 ## description
-coupons is a production ready tested platform that allows providers from 
+coupons is a production ready 13000 lines of code, tested platform that allows providers from 
 different industries to share discounts for their customers , the platform supports both providers and customers and an admin panel 
 allowing for different levels of control on the application and providing lots of functionalities , have a look and leave your feedback when possible
